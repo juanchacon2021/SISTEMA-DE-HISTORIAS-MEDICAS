@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,100..900;1,100..900&family=Marcellus&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
+
+.inicio {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.texto-inicio {
+    font-family: 'Sora';
+}
+
+.texto-bienvenida {
+    float: right;
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.fondo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 80px;
+}
+
+.fondo img {
+    width: 200px;
+    height: 170px;
+}
+
+.pacientes {
+    width: 80%;
+    float: right;
+    padding: 20px;
+}
+
+.boton {
+    font-family: 'Sora';
+    background-color: rgb(220 38 38);
+    border-radius: 0.5rem;
+    border: 0.5rem solid rgb(220 38 38);
+    color: white;
+    width: auto;
+}
+
+.botonazul {
+    font-family: 'Sora';
+    background-color: rgb(16, 175, 63);
+    border-radius: 0.5rem;
+    border: 0.5rem solid rgb(16, 175, 63);
+    color: white;
+}
+
+.boton:hover {
+    background-color: rgb(153, 27, 27);
+    border: 0.5rem solid rgb(153, 27, 27);
+}
+
+.botonazul:hover {
+    background-color: rgb(17, 119, 48);
+    border: 0.5rem solid rgb(17, 119, 48);
+}
+
+
+  
