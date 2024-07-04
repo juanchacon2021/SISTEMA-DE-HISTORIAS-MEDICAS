@@ -25,7 +25,7 @@ require_once("modelo/".$pagina.".php");
 	  
 	  
 	  if(!empty($_POST)){
-		$o = new pacientes();   
+		$o = new historias();   
 		  //como ya sabemos si estamos aca es //porque se recibio alguna informacion
 		  //de la vista, por lo que lo primero que //debemos hacer ahora que tenemos una 
 		  //clase es guardar esos valores en ella //con los metodos set
@@ -34,22 +34,17 @@ require_once("modelo/".$pagina.".php");
 		  if($accion=='consultar'){
 			 echo  json_encode($o->consultar());  
 		  }
-		  else if($accion=='obtienefecha'){
-			 echo json_encode($o->obtienefecha());
-		  }
 		  elseif($accion=='eliminar'){
-			 $o->set_cedula($_POST['cedula']);
+			 $o->set_cedula_historia($_POST['cedula_historia']);
 			 echo  json_encode($o->eliminar());
 		  }
 		  else{		  
-			  $o->set_cedula($_POST['cedula']);
-			  $o->set_apellidos($_POST['apellidos']);
-			  $o->set_nombres($_POST['nombres']);
-			  $o->set_fechadenacimiento($_POST['fechadenacimiento']);
-			//  if(!empty($_POST['sexo'])){
-			  $o->set_sexo($_POST['sexo']);
-			//  }
-			  $o->set_gradodeinstruccion($_POST['gradodeinstruccion']);
+			  $o->set_cedula_historia($_POST['cedula_historia']);
+			  $o->set_apellido($_POST['apellido']);
+			  $o->set_nombre($_POST['nombre']);
+			  $o->set_fecha_nac($_POST['fecha_nac']);
+			  $o->set_edad($_POST['edad']);
+			  $o->set_telefono($_POST['telefono']);
 			  if($accion=='incluir'){
 				echo  json_encode($o->incluir());
 			  }

@@ -1,11 +1,4 @@
-function pone_fecha(){
-	
-	
-	var datos = new FormData();
-	datos.append('accion','obtienefecha');
-	enviaAjax(datos);	
-	
-}
+
 function consultar(){
 	var datos = new FormData();
 	datos.append('accion','consultar');
@@ -13,19 +6,19 @@ function consultar(){
 }
 function destruyeDT(){
 	//1 se destruye el datatablet
-	if ($.fn.DataTable.isDataTable("#tablapersona")) {
-            $("#tablapersona").DataTable().destroy();
+	if ($.fn.DataTable.isDataTable("#tablapersonal")) {
+            $("#tablapersonal").DataTable().destroy();
     }
 }
 function crearDT(){
 	//se crea nuevamente
-    if (!$.fn.DataTable.isDataTable("#tablapersona")) {
-            $("#tablapersona").DataTable({
+    if (!$.fn.DataTable.isDataTable("#tablapersonal")) {
+            $("#tablapersonal").DataTable({
               language: {
                 lengthMenu: "Mostrar _MENU_ por página",
-                zeroRecords: "No se encontraron personas",
+                zeroRecords: "No se encontró personal",
                 info: "Mostrando página _PAGE_ de _PAGES_",
-                infoEmpty: "No hay personas registradas",
+                infoEmpty: "No hay personal registrado",
                 infoFiltered: "(filtrado de _MAX_ registros totales)",
                 search: "Buscar:",
                 paginate: {
@@ -41,48 +34,47 @@ function crearDT(){
     }         
 }
 $(document).ready(function(){
-	//para obtener la fecha del servidor y calcular la 
-	//edad de nacimiento que debe ser mayor a 18 
-	pone_fecha();
-	//fin de colocar fecha en input fecha de nacimiento
 	
 	//ejecuta una consulta a la base de datos para llenar la tabla
 	consultar();
 	
 //VALIDACION DE DATOS	
-	$("#cedula").on("keypress",function(e){
+	$("#cedula_historia").on("keypress",function(e){
 		validarkeypress(/^[0-9-\b]*$/,e);
 	});
 	
-	$("#cedula").on("keyup",function(){
+	$("#cedula_historia").on("keyup",function(){
 		validarkeyup(/^[0-9]{7,8}$/,$(this),
-		$("#scedula"),"El formato debe ser 9999999 ");
+		$("#scedula_historia"),"El formato debe ser 12345678 ");
 	});
 	
 	
-	$("#apellidos").on("keypress",function(e){
+	$("#apellido").on("keypress",function(e){
 		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
 	});
 	
-	$("#apellidos").on("keyup",function(){
+	$("#apellido").on("keyup",function(){
 		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#sapellidos"),"Solo letras  entre 3 y 30 caracteres");
+		$(this),$("#sapellido"),"Solo letras  entre 3 y 30 caracteres");
 	});
 	
-	$("#nombres").on("keypress",function(e){
+	$("#nombre").on("keypress",function(e){
 		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
 	});
 	
-	$("#nombres").on("keyup",function(){
+	$("#nombre").on("keyup",function(){
 		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#snombres"),"Solo letras  entre 3 y 30 caracteres");
+		$(this),$("#snombre"),"Solo letras  entre 3 y 30 caracteres");
 	});
 	
-	$("#fechadenacimiento").on("keyup",function(){
-		validarkeyup(/^(?:(?:1[6-9]|[2-9]\d)?\d{2})(?:(?:(\/|-|\.)(?:0?[13578]|1[02])\1(?:31))|(?:(\/|-|\.)(?:0?[13-9]|1[0-2])\2(?:29|30)))$|^(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00)))(\/|-|\.)0?2\3(?:29)$|^(?:(?:1[6-9]|[2-9]\d)?\d{2})(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:0?[1-9]|1\d|2[0-8])$/,
-		$(this),$("#sfechadenacimiento"),"Ingrese una fecha valida");
+	$("#correo").on("keypress",function(e){
+		validarkeypress(/^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/);
 	});
 	
+	$("#correo").on("keyup",function(){
+		validarkeyup(/^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/ ,
+		$(this),$("#scorreo"),"Formato incorrecto");
+	});
 	
 	
 	
@@ -96,17 +88,12 @@ $("#proceso").on("click",function(){
 		if(validarenvio()){
 			var datos = new FormData();
 			datos.append('accion','incluir');
-			datos.append('cedula',$("#cedula").val());
-			datos.append('apellidos',$("#apellidos").val());
-			datos.append('nombres',$("#nombres").val());
-			datos.append('fechadenacimiento',$("#fechadenacimiento").val());
-			datos.append('gradodeinstruccion',$("#gradodeinstruccion").val());
-			if($("#masculino").is(":checked")){
-				datos.append('sexo','M');
-			}
-			else{
-				datos.append('sexo','F');
-			}
+			datos.append('cedula_historia',$("#cedula_historia").val());
+			datos.append('apellido',$("#apellido").val());
+			datos.append('nombre',$("#nombre").val());
+			datos.append('fecha_nac',$("#fecha_nac").val());
+			datos.append('edad',$("#edad").val());
+			datos.append('telefono',$("#telefono").val());
 			enviaAjax(datos);
 		}
 	}
@@ -114,31 +101,26 @@ $("#proceso").on("click",function(){
 		if(validarenvio()){
 			var datos = new FormData();
 			datos.append('accion','modificar');
-			datos.append('cedula',$("#cedula").val());
-			datos.append('apellidos',$("#apellidos").val());
-			datos.append('nombres',$("#nombres").val());
-			datos.append('fechadenacimiento',$("#fechadenacimiento").val());
-			datos.append('gradodeinstruccion',$("#gradodeinstruccion").val());
-			if($("#masculino").is(":checked")){
-				datos.append('sexo','M');
-			}
-			else{
-				datos.append('sexo','F');
-			}
+			datos.append('cedula_historia',$("#cedula_historia").val());
+			datos.append('apellido',$("#apellido").val());
+			datos.append('nombre',$("#nombre").val());
+			datos.append('fecha_nac',$("#fecha_nac").val());
+			datos.append('edad',$("#edad").val());
+			datos.append('telefono',$("#telefono").val());
 			enviaAjax(datos);
 		}
 	}
 	if($(this).text()=="ELIMINAR"){
-		if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula"),
-		$("#scedula"),"El formato debe ser 9999999")==0){
+		if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula_historia"),
+		$("#scedula_historia"),"El formato debe ser 12345678")==0){
 	    muestraMensaje("La cedula debe coincidir con el formato <br/>"+ 
-						"99999999");	
+						"12345678");	
 		
 	    }
 		else{
 			var datos = new FormData();
 			datos.append('accion','eliminar');
-			datos.append('cedula',$("#cedula").val());
+			datos.append('cedula_historia',$("#cedula_historia").val());
 			enviaAjax(datos);
 		}
 	}
@@ -159,40 +141,21 @@ $("#incluir").on("click",function(){
 
 //Validación de todos los campos antes del envio
 function validarenvio(){
-	if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula"),
-		$("#scedula"),"El formato debe ser 9999999")==0){
+	if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula_historia"),
+		$("#scedula_historia"),"El formato debe ser 12345678")==0){
 	    muestraMensaje("La cedula debe coincidir con el formato <br/>"+ 
-						"99999999");	
+						"12345678");	
 		return false;					
 	}	
 	else if(validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$("#apellidos"),$("#sapellidos"),"Solo letras  entre 3 y 30 caracteres")==0){
-		muestraMensaje("Apellidos <br/>Solo letras  entre 3 y 30 caracteres");
+		$("#apellido"),$("#sapellido"),"Solo letras  entre 3 y 30 caracteres")==0){
+		muestraMensaje("apellido <br/>Solo letras  entre 3 y 30 caracteres");
 		return false;
 	}
 	else if(validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$("#nombres"),$("#snombres"),"Solo letras  entre 3 y 30 caracteres")==0){
-		muestraMensaje("Nombres <br/>Solo letras  entre 3 y 30 caracteres");
+		$("#nombre"),$("#snombre"),"Solo letras  entre 3 y 30 caracteres")==0){
+		muestraMensaje("nombre <br/>Solo letras  entre 3 y 30 caracteres");
 		return false;
-	}
-	else if(validarkeyup(/^(?:(?:1[6-9]|[2-9]\d)?\d{2})(?:(?:(\/|-|\.)(?:0?[13578]|1[02])\1(?:31))|(?:(\/|-|\.)(?:0?[13-9]|1[0-2])\2(?:29|30)))$|^(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00)))(\/|-|\.)0?2\3(?:29)$|^(?:(?:1[6-9]|[2-9]\d)?\d{2})(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:0?[1-9]|1\d|2[0-8])$/,
-		$("#fechadenacimiento"),$("#sfechadenacimiento"),"Ingrese una fecha valida")==0){
-		muestraMensaje("Fecha de Nacimiento <br/>Ingrese una fecha valida");
-		return false;	
-	}
-	else if(!$("#masculino").is(":checked") && !$("#femenino").is(":checked")) {
-		muestraMensaje("Sexo <br/>Debe seleccionar el sexo");
-		return false;	
-	}
-	else {
-		var f1 = new Date(1950,01,01);
-		var f2 = new Date($("#fechadenacimiento").val());
-		
-		if(f2 < f1){
-			muestraMensaje("Fecha de Nacimiento <br/>La fecha debe ser mayor o igual a 01/01/1950");
-			return false;
-		}
-		
 	}
 	
 	return true;
@@ -254,19 +217,12 @@ function pone(pos,accion){
 	else{
 		$("#proceso").text("ELIMINAR");
 	}
-	$("#cedula").val($(linea).find("td:eq(1)").text());
-	$("#apellidos").val($(linea).find("td:eq(2)").text());
-	$("#nombres").val($(linea).find("td:eq(3)").text());
-	$("#fechadenacimiento").val($(linea).find("td:eq(4)").text());
-	if($(linea).find("td:eq(5)").text()=="M"){
-		$("#masculino").prop("checked",true);
-		$("#femenino").prop("checked",false);
-	}
-	else{
-		$("#femenino").prop("checked",true);
-		$("#masculino").prop("checked",false);
-	}
-	$("#gradodeinstruccion").val($(linea).find("td:eq(6)").text());
+	$("#cedula_historia").val($(linea).find("td:eq(1)").text());
+	$("#apellido").val($(linea).find("td:eq(2)").text());
+	$("#nombre").val($(linea).find("td:eq(3)").text());
+	$("#fecha_nac").val($(linea).find("td:eq(4)").text());
+	$("#edad").val($(linea).find("td:eq(5)").text());
+	$("#telefono").val($(linea).find("td:eq(6)").text());
 	
 	$("#modal1").modal("show");
 }
@@ -285,34 +241,31 @@ function enviaAjax(datos) {
     beforeSend: function () {},
     timeout: 10000, //tiempo maximo de espera por la respuesta del servidor
     success: function (respuesta) {
-    // console.log(respuesta);
+    console.log(respuesta);
       try {
         var lee = JSON.parse(respuesta);
-        if (lee.resultado == "obtienefecha") {
-          $("#fechadenacimiento").val(lee.mensaje);
-        }
-		else if (lee.resultado == "consultar") {
+        if (lee.resultado == "consultar") {
 		   destruyeDT();	
            $("#resultadoconsulta").html(lee.mensaje);
 		   crearDT();
         }
 		else if (lee.resultado == "incluir") {
            muestraMensaje(lee.mensaje);
-		   if(lee.mensaje=='Registro Inluido'){
+		   if(lee.mensaje=='Paciente Registrado Exitosamente'){
 			   $("#modal1").modal("hide");
 			   consultar();
 		   }
         }
 		else if (lee.resultado == "modificar") {
            muestraMensaje(lee.mensaje);
-		   if(lee.mensaje=='Registro Modificado'){
+		   if(lee.mensaje=='Paciente Modificado Exitosamente'){
 			   $("#modal1").modal("hide");
 			   consultar();
 		   }
         }
 		else if (lee.resultado == "eliminar") {
            muestraMensaje(lee.mensaje);
-		   if(lee.mensaje=='Registro Eliminado'){
+		   if(lee.mensaje=='Paciente Eliminado Exitosamente'){
 			   $("#modal1").modal("hide");
 			   consultar();
 		   }
@@ -341,16 +294,10 @@ function enviaAjax(datos) {
 }
 
 function limpia(){
-	pone_fecha();
-	if($("#masculino").is(":checked")){
-		$("#masculino").prop("checked",false);
-	}
-	else{
-	    $("#femenino").prop("checked",false);
-	}
-	
-	$("#cedula").val("");
-	$("#apellidos").val("");
-	$("#nombres").val("");
-	$("#gradodeinstruccion").prop("selectedIndex",0);
+	$("#cedula_historia").val("");
+	$("#apellido").val("");
+	$("#nombre").val("");
+	$("#fecha_nac").val("");
+	$("#edad").val("");
+	$("#telefono").prop("selectedIndex",0);
 }

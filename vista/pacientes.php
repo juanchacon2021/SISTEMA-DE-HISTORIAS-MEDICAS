@@ -22,15 +22,15 @@ Pacientes
 	</div>
 	<div class="container">
 	   <div class="table-responsive">
-		<table class="table table-striped table-hover" id="tablapersona">
+		<table class="table table-striped table-hover" id="tablapersonal">
 			<thead>
 			  <tr>
 				<th>Acciones</th>
 				<th>Cedula</th>
-				<th>Apellidos</th>
-				<th>Nombres</th>
+				<th>Apellido</th>
+				<th>Nombre</th>
 				<th>Fecha de Nacimiento</th>
-				<th>Sexo</th>
+				<th>Edad</th>
 				<th>Telefono</th>
 			  </tr>
 			</thead>
@@ -65,22 +65,22 @@ Pacientes
 					   <span id="scedula"></span>
 					</div>
 					<div class="col-md-8">
-					   <label for="apellidos">Apellidos</label>
-					   <input class="form-control" type="text" id="apellidos" />
-					   <span id="sapellidos"></span>
+					   <label for="apellido">apellido</label>
+					   <input class="form-control" type="text" id="apellido" />
+					   <span id="sapellido"></span>
 					</div>
 				</div>
 				
 				<div class="row mb-3">
 					<div class="col-md-8">
-					   <label for="nombres">Nombres</label>
-					   <input class="form-control" type="text" id="nombres"  />
-					   <span id="snombres"></span>
+					   <label for="nombre">nombre</label>
+					   <input class="form-control" type="text" id="nombre"  />
+					   <span id="snombre"></span>
 					</div>
 					<div class="col-md-4">
-					   <label for="fechadenacimiento">Fecha de Nacimiento</label>
-					   <input class="form-control" type="date" id="fechadenacimiento" name="fechadenacimiento" />
-					   <span id="sfechadenacimiento"></span>
+					   <label for="fecha_nac">Fecha de Nacimiento</label>
+					   <input class="form-control" type="date" id="fecha_nac" name="fecha_nac" />
+					   <span id="sfecha_nac"></span>
 					</div>
 				</div>
 				
