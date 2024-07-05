@@ -3,51 +3,48 @@ $(document).ready(function(){
 	//para obtener la fecha del servidor y calcular la 
 	//edad de nacimiento que debe ser mayor a 18 
 	var datos = new FormData();
-		datos.append('accion','obtienefecha');
 		enviaAjax(datos);	
 	//fin de colocar fecha en input fecha de nacimiento
 //VALIDACION DE DATOS	
-	$("#cedula").on("keypress",function(e){
-		validarkeypress(/^[0-9-\b]*$/,e);
-	});
-	
-	$("#cedula").on("keyup",function(){
-		validarkeyup(/^[0-9]{7,8}$/,$(this),
-		$("#scedula"),"El formato debe ser 9999999 ");
-		if($("#cedula").val().length > 7){
-		  var datos = new FormData();
-		    datos.append('accion','consultatr');
-			datos.append('cedula',$(this).val());
-			enviaAjax(datos,'consultatr');	
-		}
-	});
-	
-	
-	$("#apellidos").on("keypress",function(e){
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
-	});
-	
-	$("#apellidos").on("keyup",function(){
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#sapellidos"),"Solo letras  entre 3 y 30 caracteres");
-	});
-	
-	$("#nombres").on("keypress",function(e){
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
-	});
-	
-	$("#nombres").on("keyup",function(){
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#snombres"),"Solo letras  entre 3 y 30 caracteres");
-	});
-	
-	$("#fechadenacimiento").on("keyup",function(){
-		validarkeyup(/^(?:(?:1[6-9]|[2-9]\d)?\d{2})(?:(?:(\/|-|\.)(?:0?[13578]|1[02])\1(?:31))|(?:(\/|-|\.)(?:0?[13-9]|1[0-2])\2(?:29|30)))$|^(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00)))(\/|-|\.)0?2\3(?:29)$|^(?:(?:1[6-9]|[2-9]\d)?\d{2})(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:0?[1-9]|1\d|2[0-8])$/,
-		$(this),$("#sfechadenacimiento"),"Ingrese una fecha valida");
-	});
-	
-	
-	
+		$("#cedula_personal").on("keypress",function(e){
+			validarkeypress(/^[0-9-\b]*$/,e);
+		});
+
+		$("#cedula_personal").on("keyup",function(){
+			validarkeyup(/^[0-9]{7,8}$/,$(this),
+			$("#scedula_personal"),"El formato debe ser 12345678 ");
+		});
+
+
+		$("#apellido").on("keypress",function(e){
+			validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+		});
+
+		$("#apellido").on("keyup",function(){
+			validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+			$(this),$("#sapellido"),"Solo letras  entre 3 y 30 caracteres");
+		});
+
+		$("#nombre").on("keypress",function(e){
+			validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+		});
+
+		$("#nombre").on("keyup",function(){
+			validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+			$(this),$("#snombre"),"Solo letras  entre 3 y 30 caracteres");
+		});
+
+		$("#correo").on("keypress",function(e){
+			validarkeypress(/^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/);
+		});
+
+		$("#correo").on("keyup",function(){
+			validarkeyup(/^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/ ,
+			$(this),$("#scorreo"),"Formato incorrecto");
+		});
+
+
+
 	
 //FIN DE VALIDACION DE DATOS
 
@@ -59,12 +56,6 @@ $("#incluir").on("click",function(){
 	if(validarenvio()){
 		var datos = new FormData($("#f")[0]);
 		datos.append('accion','incluir');
-		if($("#masculino").is(":checked")){
-			datos.append('sexof','M');
-		}
-		else{
-			datos.append('sexof','F');
-		}
 		enviaAjax(datos);
 	}
 });
@@ -73,17 +64,12 @@ $("#modificar").on("click",function(){
 
 		var datos = new FormData();
 		datos.append('accion','modificar');
-		datos.append('cedula',$("#cedula").val());
-		datos.append('apellidos',$("#apellidos").val());
-		datos.append('nombres',$("#nombres").val());
-		datos.append('fechadenacimiento',$("#fechadenacimiento").val());
-		if($("#masculino").is(":checked")){
-			datos.append('sexof','M');
-		}
-		else{
-			datos.append('sexof','F');
-		}
-		datos.append('gradodeinstruccion',$("#gradodeinstruccion").val());
+			datos.append('cedula_personal',$("#cedula_personal").val());
+			datos.append('apellido',$("#apellido").val());
+			datos.append('nombre',$("#nombre").val());
+			datos.append('correo',$("#correo").val());
+			datos.append('telefono',$("#telefono").val());
+			datos.append('cargo',$("#cargo").val());
 		enviaAjax(datos);
 		
 	}
@@ -91,17 +77,17 @@ $("#modificar").on("click",function(){
 
 $("#eliminar").on("click",function(){
 	
-	if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula"),
-		$("#scedula"),"El formato debe ser 9999999")==0){
-	    muestraMensaje("La cedula debe coincidir con el formato <br/>"+ 
-						"99999999");	
+	if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula_personal"),
+		$("#scedula_personal"),"El formato debe ser 12345678")==0){
+	    muestraMensaje("La cedula_personal debe coincidir con el formato <br/>"+ 
+						"12345678");	
 		
 	}
 	else{	
 	    
 		var datos = new FormData();
 		datos.append('accion','eliminar');
-		datos.append('cedula',$("#cedula").val());
+		datos.append('cedula_personal',$("#cedula_personal").val());
 		enviaAjax(datos);
 	}
 	
@@ -122,19 +108,19 @@ $("#consultar").on("click",function(){
 //funcion para enlazar al DataTablet
 function destruyeDT(){
 	//1 se destruye el datatablet
-	if ($.fn.DataTable.isDataTable("#tablapersona")) {
-            $("#tablapersona").DataTable().destroy();
+	if ($.fn.DataTable.isDataTable("#tablapersonal")) {
+            $("#tablapersonal").DataTable().destroy();
     }
 }
 function crearDT(){
 	//se crea nuevamente
-    if (!$.fn.DataTable.isDataTable("#tablapersona")) {
-            $("#tablapersona").DataTable({
+    if (!$.fn.DataTable.isDataTable("#tablapersonal")) {
+            $("#tablapersonal").DataTable({
               language: {
                 lengthMenu: "Mostrar _MENU_ por página",
-                zeroRecords: "No se encontraron personas",
+                zeroRecords: "No se encontraron personals",
                 info: "Mostrando página _PAGE_ de _PAGES_",
-                infoEmpty: "No hay personas registradas",
+                infoEmpty: "No hay personals registradas",
                 infoFiltered: "(filtrado de _MAX_ registros totales)",
                 search: "Buscar:",
                 paginate: {
@@ -153,44 +139,26 @@ function crearDT(){
 
 //Validación de todos los campos antes del envio
 function validarenvio(){
-	if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula"),
-		$("#scedula"),"El formato debe ser 9999999")==0){
+	if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula_personal"),
+		$("#scedula_personal"),"El formato debe ser 12345678")==0){
 	    muestraMensaje("La cedula debe coincidir con el formato <br/>"+ 
-						"99999999");	
+						"12345678");	
 		return false;					
 	}	
 	else if(validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$("#apellidos"),$("#sapellidos"),"Solo letras  entre 3 y 30 caracteres")==0){
-		muestraMensaje("Apellidos <br/>Solo letras  entre 3 y 30 caracteres");
+		$("#apellido"),$("#sapellido"),"Solo letras  entre 3 y 30 caracteres")==0){
+		muestraMensaje("apellido <br/>Solo letras  entre 3 y 30 caracteres");
 		return false;
 	}
 	else if(validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$("#nombres"),$("#snombres"),"Solo letras  entre 3 y 30 caracteres")==0){
-		muestraMensaje("Nombres <br/>Solo letras  entre 3 y 30 caracteres");
+		$("#nombre"),$("#snombre"),"Solo letras  entre 3 y 30 caracteres")==0){
+		muestraMensaje("nombre <br/>Solo letras  entre 3 y 30 caracteres");
 		return false;
-	}
-	else if(validarkeyup(/^(?:(?:1[6-9]|[2-9]\d)?\d{2})(?:(?:(\/|-|\.)(?:0?[13578]|1[02])\1(?:31))|(?:(\/|-|\.)(?:0?[13-9]|1[0-2])\2(?:29|30)))$|^(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00)))(\/|-|\.)0?2\3(?:29)$|^(?:(?:1[6-9]|[2-9]\d)?\d{2})(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:0?[1-9]|1\d|2[0-8])$/,
-		$("#fechadenacimiento"),$("#sfechadenacimiento"),"Ingrese una fecha valida")==0){
-		muestraMensaje("Fecha de Nacimiento <br/>Ingrese una fecha valida");
-		return false;	
-	}
-	else if(!$("#masculino").is(":checked") && !$("#femenino").is(":checked")) {
-		muestraMensaje("Sexo <br/>Debe seleccionar el sexo");
-		return false;	
-	}
-	else {
-		var f1 = new Date(1950,01,01);
-		var f2 = new Date($("#fechadenacimiento").val());
-		
-		if(f2 < f1){
-			muestraMensaje("Fecha de Nacimiento <br/>La fecha debe ser mayor o igual a 01/01/1950");
-			return false;
-		}
-		
 	}
 	
 	return true;
 }
+
 
 
 //Funcion que muestra el modal con un mensaje
@@ -238,19 +206,12 @@ mensaje){
 
 //funcion para pasar de la lista a el formulario
 function coloca(linea){
-	$("#cedula").val($(linea).find("td:eq(0)").text());
-	$("#apellidos").val($(linea).find("td:eq(1)").text());
-	$("#nombres").val($(linea).find("td:eq(2)").text());
-	$("#fechadenacimiento").val($(linea).find("td:eq(3)").text());
-	if($(linea).find("td:eq(4)").text()=="M"){
-		$("#masculino").prop("checked",true);
-		$("#femenino").prop("checked",false);
-	}
-	else{
-		$("#femenino").prop("checked",true);
-		$("#masculino").prop("checked",false);
-	}
-	$("#gradodeinstruccion").val($(linea).find("td:eq(5)").text());
+	$("#cedula_personal").val($(linea).find("td:eq(1)").text());
+	$("#apellido").val($(linea).find("td:eq(2)").text());
+	$("#nombre").val($(linea).find("td:eq(3)").text());
+	$("#correo").val($(linea).find("td:eq(4)").text());
+	$("#telefono").val($(linea).find("td:eq(5)").text());
+	$("#cargo").val($(linea).find("td:eq(6)").text());
 	
 }
 
@@ -271,28 +232,18 @@ function enviaAjax(datos){
 			console.log(respuesta);
 				try {
 					var lee = JSON.parse(respuesta);
-					if (lee.resultado == "obtienefecha") {
-					  $("#fechadenacimiento").val(lee.mensaje);
-					}
-					else if (lee.resultado == "consultar") {
+					if (lee.resultado == "consultar") {
 					   destruyeDT();
 					   $("#resultadoconsulta").html(lee.mensaje);
 					   crearDT();
 					   $("#modal1").modal("show");
 					}
 					else if (lee.resultado == "encontro") {
-					   $("#apellidos").val(lee.mensaje[0][2]);
-					   $("#nombres").val(lee.mensaje[0][3]);
-					   $("#fechadenacimiento").val(lee.mensaje[0][4]);	
-					   if(lee.mensaje[0][5]=="M"){
-							$("#masculino").prop("checked",true);
-							$("#femenino").prop("checked",false);
-						}
-						else{
-							$("#femenino").prop("checked",true);
-							$("#masculino").prop("checked",false);
-						}
-						$("#gradodeinstruccion").val(lee.mensaje[0][6]);
+					   $("#apellido").val(lee.mensaje[0][2]);
+					   $("#nombre").val(lee.mensaje[0][3]);
+					   $("#correo").val(lee.mensaje[0][4]);
+					   $("#telefono").val(lee.mensaje[0][5]);	
+						$("#cargo").val(lee.mensaje[0][6]);
 					}
 					else if (lee.resultado == "incluir" || 
 					lee.resultado == "modificar" || 
@@ -303,10 +254,13 @@ function enviaAjax(datos){
 					else if (lee.resultado == "error") {
 					   muestraMensaje(lee.mensaje);
 					}
-			  } catch (e) {
-				alert("Error en JSON " + e.name);
-			  }
-			   
+					else if (e) {
+						alert("Error en JSON " + e.name);
+					  }
+			  } 
+			   catch {
+				console.log("todo fino")
+			   }
             },
             error: function (request, status, err) {
 			  // si ocurrio un error en la trasmicion
@@ -327,18 +281,10 @@ function enviaAjax(datos){
 }
 
 function limpia(){
-	if($("#masculino").is(":checked")){
-		$("#masculino").prop("checked",false);
-	}
-	else{
-	    $("#femenino").prop("checked",false);
-	}
-	
-	$("#cedula").val("");
-	$("#apellidos").val("");
-	$("#nombres").val("");
-	var datos = new FormData();
-		datos.append('accion','obtienefecha');
-		enviaAjax(datos,'obtienefecha');	
-	$("#gradodeinstruccion").prop("selectedIndex",0);
+	$("#cedula_personal").val("");
+	$("#apellido").val("");
+	$("#nombre").val("");
+	$("#correo").val("");
+	$("#telefono").val("");
+	$("#cargo").prop("selectedIndex",0);
 }

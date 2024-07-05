@@ -94,8 +94,8 @@ Personal
 					<div class="col-md-9">
 					   <label for="cargo">Cargo</label>
 					   <select class="form-control" id="cargo">
-							<option value="doctor">Doctor</option>
-							<option value="enfermera">Enfermera</option>
+							<option value="Doctor">Doctor</option>
+							<option value="Enfermera">Enfermera</option>
 							
 					   </select>
 					</div>
