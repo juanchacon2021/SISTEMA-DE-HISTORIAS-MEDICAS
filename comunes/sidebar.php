@@ -43,7 +43,7 @@
                     aparecer los permisos que le otorgaron-->
                     <a href=""><h1 class="cursor-pointer p-2 hover:bg-red-800 rounded-md mt-1 text-lg hover:text-white">Permisos</h1></a>
                 
-                    <a href="?pagina=historias"><h1 class="cursor-pointer p-2 hover:bg-red-800 rounded-md mt-1 text-lg hover:text-white">Historias</h1></a>
+                    <a href="?pagina=examenes"><h1 class="cursor-pointer p-2 hover:bg-red-800 rounded-md mt-1 text-lg hover:text-white">Examenes</h1></a>
                 </div>
 
                 <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:text-white hover:bg-red-800 text-stone-600">
