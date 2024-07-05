@@ -9,7 +9,7 @@ require_once('modelo/datos.php');
 //que decirle a esta clase que puede usar los mismos metodos
 //que estan en la clase de dodne hereda (La padre) como sir fueran de el
 
-class crear extends datos{
+class crearpersonal extends datos{
 	//el primer paso dentro de la clase
 	//sera declarar los atributos (variables) que describen la clase
 	//para nostros no es mas que colcoar los inputs (controles) de
@@ -18,11 +18,11 @@ class crear extends datos{
 	//misma clase, la forma de colcoarlo privado es usando la palabra private
 	
 	private $cedula_personal; //recuerden que en php, las variables no tienen tipo predefinido
-	private $apellido;
 	private $nombre;
+	private $apellido;
 	private $correo;
-	private $sexo;
-	private $gradodeinstruccion;
+	private $telefono;
+	private $cargo;
 	
 	//Ok ya tenemos los atributos, pero como son privados no podemos acceder a ellos desde fueran
 	//por lo que debemos colcoar metodos (funciones) que me permitan leer (get) y colocar (set)
@@ -34,7 +34,7 @@ class crear extends datos{
 		//a un elemento de this, es decir esta clase
 		//luego el nombre del elemento sin el $
 	}
-	//lo mismo que se hizo para cedula se hace para usuario y clave
+	//lo mismo que se hizo para cedula_personal se hace para usuario y clave
 	
 	function set_apellido($valor){
 		$this->apellido = $valor;
@@ -48,12 +48,12 @@ class crear extends datos{
 		$this->correo = $valor;
 	}
 	
-	function set_sexo($valor){
-		$this->sexo = $valor;
+	function set_telefono($valor){
+		$this->telefono = $valor;
 	}
 	
-	function set_gradodeinstruccion($valor){
-		$this->gradodeinstruccion = $valor;
+	function set_cargo($valor){
+		$this->cargo = $valor;
 	}
 	
 	//ahora la misma cosa pero para leer, es decir get
@@ -71,17 +71,16 @@ class crear extends datos{
 	}
 	
 	function get_correo(){
-		return $this->fechanacimiento;
+		return $this->correo;
 	}
 	
-	function get_sexo(){
-		return $this->sexo;
+	function get_telefono(){
+		return $this->telefono;
 	}
 	
-	function get_gradodeinstruccion(){
-		return $this->gradodeinstruccion;
+	function get_cargo(){
+		return $this->cargo;
 	}
-	
 	//Lo siguiente que demos hacer es crear los metodos para incluir, consultar y eliminar
 	
 	function incluir(){
@@ -107,23 +106,23 @@ class crear extends datos{
 						apellido,
 						nombre,
 						correo,
-						sexo,
-						gradodeinstruccion
+						telefono,
+						cargo
 						)
 						Values(
 						:cedula_personal,
 						:apellido,
 						:nombre,
 						:correo,
-						:sexo,
-						:gradodeinstruccion
+						:telefono,
+						:cargo
 						)");
 					$p->bindParam(':cedula_personal',$this->cedula_personal);		
 					$p->bindParam(':apellido',$this->apellido);
 					$p->bindParam(':nombre',$this->nombre);	
 					$p->bindParam(':correo',$this->correo);
-					$p->bindParam(':sexo',$this->sexo);		
-					$p->bindParam(':gradodeinstruccion',$this->gradodeinstruccion);
+					$p->bindParam(':telefono',$this->telefono);		
+					$p->bindParam(':cargo',$this->cargo);
 					
 					$p->execute();
 					
@@ -157,8 +156,8 @@ class crear extends datos{
 						apellido = $this->apellido,
 						nombre = $this->nombre,
 						correo = $this->correo,
-						sexo = $this->sexo,
-						gradodeinstruccion = $this->gradodeinstruccion
+						telefono = $this->telefono,
+						cargo = $this->cargo
 						where
 						cedula_personal = $this->cedula_personal";
 				echo $aux;
@@ -168,8 +167,8 @@ class crear extends datos{
 						apellido = :apellido,
 						nombre = :nombre,
 						correo = :correo,
-						sexo = :sexo,
-						gradodeinstruccion = :gradodeinstruccion
+						telefono = :telefono,
+						cargo = :cargo
 						where
 						cedula_personal = :cedula_personal
 						");
@@ -177,8 +176,8 @@ class crear extends datos{
 					$p->bindParam(':apellido',$this->apellido);
 					$p->bindParam(':nombre',$this->nombre);	
 					$p->bindParam(':correo',$this->correo);
-					$p->bindParam(':sexo',$this->sexo);		
-					$p->bindParam(':gradodeinstruccion',$this->gradodeinstruccion);
+					$p->bindParam(':telefono',$this->telefono);		
+					$p->bindParam(':cargo',$this->cargo);
 					
 					$p->execute();
 					
@@ -251,10 +250,10 @@ class crear extends datos{
 							$respuesta = $respuesta.$r['correo'];
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['sexo'];
+							$respuesta = $respuesta.$r['telefono'];
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['gradodeinstruccion'];
+							$respuesta = $respuesta.$r['cargo'];
 						$respuesta = $respuesta."</td>";
 					$respuesta = $respuesta."</tr>";
 				}
@@ -305,7 +304,7 @@ class crear extends datos{
 		$r = array();
 		try{
 			
-			$resultado = $co->query("Select * from personal where cedula='$this->cedula'");
+			$resultado = $co->query("Select * from personal where cedula='$this->cedula_personal'");
 			$fila = $resultado->fetchAll(PDO::FETCH_BOTH);
 			if($fila){
 			    
@@ -329,18 +328,6 @@ class crear extends datos{
 		
 	}
 	
-	function obtienefecha(){
-		$r = array();
-		
-			  $f = date('Y-m-d');
-		      $f1 = strtotime ('-18 year' , strtotime($f)); 
-		      $f1 = date ('Y-m-d',$f1);
-			  $r['resultado'] = 'obtienefecha';
-			  $r['mensaje'] =  $f1;
-		
-		return $r;
-	}
-
 	
 	
 	

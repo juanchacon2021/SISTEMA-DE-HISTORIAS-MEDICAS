@@ -21,8 +21,8 @@ require_once("modelo/".$pagina.".php");
 	  //para poderlos usar
 	  
 	  
-	  $o = new crear(); //ahora nuestro objeto //se llama $o y es una copia en memoria de la
-	  //clase personasht
+	  $o = new crearpersonal(); //ahora nuestro objeto //se llama $o y es una copia en memoria de la
+	  //clase 
 	  
 	  if(!empty($_POST)){
 		  
@@ -35,23 +35,20 @@ require_once("modelo/".$pagina.".php");
 			 echo  json_encode($o->consultar());  
 		  }
 		  elseif($accion=='consultatr'){
-			 $o->set_cedula($_POST['cedula']); 
+			 $o->set_cedula_personal($_POST['cedula_personal']); 
 			 echo  json_encode($o->consultatr());  
 		  }
-		  elseif($accion=='obtienefecha'){
-			 echo json_encode($o->obtienefecha());
-		  }
 		  elseif($accion=='eliminar'){
-			 $o->set_cedula($_POST['cedula']);
+			 $o->set_cedula_personal($_POST['cedula_personal']);
 			 echo  json_encode($o->eliminar());
 		  }
 		  else{		  
-			  $o->set_cedula($_POST['cedula']);
-			  $o->set_apellidos($_POST['apellidos']);
-			  $o->set_nombres($_POST['nombres']);
-			  $o->set_fechadenacimiento($_POST['fechadenacimiento']);
-			  $o->set_sexo($_POST['sexof']);
-			  $o->set_gradodeinstruccion($_POST['gradodeinstruccion']);
+			  $o->set_cedula_personal($_POST['cedula_personal']);
+			  $o->set_apellido($_POST['apellido']);
+			  $o->set_nombre($_POST['nombre']);
+			  $o->set_correo($_POST['correo']);
+			  $o->set_telefono($_POST['telefono']);
+			  $o->set_cargo($_POST['cargo']);
 			  if($accion=='incluir'){
 				echo  json_encode($o->incluir());
 			  }

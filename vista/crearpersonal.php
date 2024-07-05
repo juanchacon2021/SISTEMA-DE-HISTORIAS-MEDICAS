@@ -12,17 +12,16 @@ Registrar Personal
 <div class="container pl-64"> <!-- todo el contenido ira dentro de esta etiqueta-->
    <form method="post" id="f" autocomplete="off">
 	
-   <input autocomplete="off" type="text" class="form-control" name="accion" id="accion" style="display: none;">
 			<div class="container">	
 				<div class="row mb-3">
 					<div class="col-md-4">
 					   <label for="cedula_personal">Cedula</label>
-					   <input class="form-control" type="text" id="cedula_personal" />
+					   <input class="form-control" type="text" id="cedula_personal" name="cedula_personal" />
 					   <span id="scedula_personal"></span>
 					</div>
 					<div class="col-md-8">
 					   <label for="apellido">Apellidos</label>
-					   <input class="form-control" type="text" id="apellido" />
+					   <input class="form-control" type="text" id="apellido" name="apellido"/>
 					   <span id="sapellido"></span>
 					</div>
 				</div>
@@ -30,7 +29,7 @@ Registrar Personal
 				<div class="row mb-3">
 					<div class="col-md-8">
 					   <label for="nombre">Nombres</label>
-					   <input class="form-control" type="text" id="nombre"  />
+					   <input class="form-control" type="text" id="nombre" name="nombre"  />
 					   <span id="snombre"></span>
 					</div>
 					<div class="col-md-4">
@@ -43,15 +42,15 @@ Registrar Personal
 				<div class="row mb-3">
 					<div class="col-md-8">
 					   <label for="telefono">Telefono</label>
-					   <input class="form-control" type="text" id="telefono"  />
+					   <input class="form-control" type="text" id="telefono" name="telefono"  />
 					   <span id="stelefono"></span>
 					</div>
 
 					<div class="col-md-9">
 					   <label for="cargo">Cargo</label>
-					   <select class="form-control" id="cargo">
-							<option value="doctor">Doctor</option>
-							<option value="enfermera">Enfermera</option>
+					   <select class="form-control" id="cargo" name="cargo">
+							<option value="Doctor">Doctor</option>
+							<option value="Enfermera">Enfermera</option>
 							
 					   </select>
 					</div>
@@ -66,11 +65,13 @@ Registrar Personal
 				</div>
 
 				<div class="row mt-3 justify-content-center">
-					<div class="col-md-2">
-						   <button type="button" class="btn btn-primary" 
-						   id="proceso" ></button>
-					</div>
-				</div>
+			<div class="col-md-2">
+				   <button type="button" class="boton" id="incluir" >Registrar</button>
+			</div>
+			<div class="col-md-2">	
+				   <a href="?pagina=personal" class="boton">Regresar</a>
+			</div>
+		</div>
 			</div>	
 	</form>
 </div> <!-- fin de container -->
@@ -80,7 +81,7 @@ Registrar Personal
 <div class="modal fade" tabindex="-1" role="dialog"  id="modal1">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-header text-light bg-info">
-        <h5 class="modal-title">Listado de Personas</h5>
+        <h5 class="modal-title">Listado de Personal</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
           <span aria-hidden="true">&times;</span>
         </button>
