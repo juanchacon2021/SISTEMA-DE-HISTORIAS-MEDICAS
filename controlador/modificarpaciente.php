@@ -21,11 +21,11 @@ require_once("modelo/".$pagina.".php");
 	  //para poderlos usar
 	  
 	  
-	  
-	  
+	  $o = new crear(); //ahora nuestro objeto //se llama $o y es una copia en memoria de la
+	  //clase personasht
 	  
 	  if(!empty($_POST)){
-		$o = new historias();   
+		  
 		  //como ya sabemos si estamos aca es //porque se recibio alguna informacion
 		  //de la vista, por lo que lo primero que //debemos hacer ahora que tenemos una 
 		  //clase es guardar esos valores en ella //con los metodos set
@@ -33,6 +33,13 @@ require_once("modelo/".$pagina.".php");
 		  
 		  if($accion=='consultar'){
 			 echo  json_encode($o->consultar());  
+		  }
+		  elseif($accion=='consultatr'){
+			 $o->set_cedula_historia($_POST['cedula_historia']); 
+			 echo  json_encode($o->consultatr());  
+		  }
+		  elseif($accion=='obtienefecha'){
+			 echo json_encode($o->obtienefecha());
 		  }
 		  elseif($accion=='eliminar'){
 			 $o->set_cedula_historia($_POST['cedula_historia']);

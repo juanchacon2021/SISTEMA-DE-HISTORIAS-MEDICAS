@@ -9,7 +9,7 @@ require_once('modelo/datos.php');
 //que decirle a esta clase que puede usar los mismos metodos
 //que estan en la clase de dodne hereda (La padre) como sir fueran de el
 
-class historias extends datos{
+class modificarpaciente extends datos{
 	//el primer paso dentro de la clase
 	//sera declarar los atributos (variables) que describen la clase
 	//para nostros no es mas que colcoar los inputs (controles) de
@@ -261,8 +261,6 @@ class historias extends datos{
 		return $this->neurologico;
 	}
 	
-	
-	
 	//Lo siguiente que demos hacer es crear los metodos para incluir, consultar y eliminar
 	
 	function incluir(){
@@ -272,7 +270,7 @@ class historias extends datos{
 		//Lo primero que debemos hacer es consultar por el campo clave
 		//en este caso la cedula, para ello se creo la funcion existe
 		//que retorna true en caso de exitir el registro
-		$r = array();
+		
 		if(!$this->existe($this->cedula_historia)){
 			//si estamos aca es porque la cedula no existe es decir se puede incluir
 			//los pasos a seguir son
@@ -280,63 +278,94 @@ class historias extends datos{
 			$co = $this->conecta();
 			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			//2 Se ejecuta el sql
+			$r = array();
 			try {
-				$p = $co->prepare("Insert into historias(
-							cedula_historia,
-							apellido,
-							nombre,
-							fecha_nac,
-							edad,
-							telefono,
-							estadocivi,
-							direccion,
-							ocupacion,
-							hda,
-							habtoxico,
-							alergias,
-							quirurgico,
-							transsanguineo,
-							boca_abierta,
-							boca_cerrada,
-							oidos,
-							cabeza_craneo,
-							ojos,
-							nariz,
-							tiroides,
-							cardiovascular,
-							respiratorio,
-							abdomen,
-							extremidades,
-							neurologico
-							)
-							Values(
-							'$this->cedula_historia',
-							'$this->apellido',
-							'$this->nombre',
-							'$this->fecha_nac',
-							'$this->edad',
-							'$this->telefono',
-							'$this->estadocivi',
-							'$this->direccion',
-							'$this->ocupacion',
-							'$this->hda',
-							'$this->habtoxico',
-							'$this->alergias',
-							'$this->quirurgico',
-							'$this->transsanguineo',
-							'$this->boca_abierta',
-							'$this->boca_cerrada',
-							'$this->oidos',
-							'$this->cabeza_craneo',
-							'$this->ojos',
-							'$this->nariz',
-							'$this->tiroides',
-							'$this->cardiovascular',
-							'$this->respiratorio',
-							'$this->abdomen',
-							'$this->extremidades',
-							'$this->neurologico'
-							)");
+				
+					$p = $co->prepare("Insert into historias(
+						cedula_historia,
+						apellido,
+						nombre,
+						fecha_nac,
+						edad,
+						telefono,
+						estadocivi,
+						direccion,
+						ocupacion,
+						hda,
+						habtoxico,
+						alergias,
+						quirurgico,
+						transsanguineo,
+						boca_abierta,
+						boca_cerrada,
+						oidos,
+						cabeza_craneo,
+						ojos,
+						nariz,
+						tiroides,
+						cardiovascular,
+						respiratorio,
+						abdomen,
+						extremidades,
+						neurologico
+						)
+						Values(
+						:cedula_historia,
+						:apellido,
+						:nombre,
+						:fecha_nac,
+						:edad,
+						:telefono,
+						:estadocivi,
+						:direccion,
+						:ocupacion,
+						:hda,
+						:habtoxico,
+						:alergias,
+						:quirurgico,
+						:transsanguineo,
+						:boca_abierta,
+						:boca_cerrada,
+						:oidos,
+						:cabeza_craneo,
+						:ojos,
+						:nariz,
+						:tiroides,
+						:cardiovascular,
+						:respiratorio,
+						:abdomen,
+						:extremidades,
+						:neurologico
+						)");
+					$p->bindParam(':cedula_historia',$this->cedula_historia);		
+					$p->bindParam(':apellido',$this->apellido);
+					$p->bindParam(':nombre',$this->nombre);	
+					$p->bindParam(':fecha_nac',$this->fecha_nac);
+					$p->bindParam(':edad',$this->edad);		
+					$p->bindParam(':telefono',$this->telefono);
+					$p->bindParam(':estadocivi',$this->estadocivi);
+					$p->bindParam(':direccion',$this->direccion);	
+					$p->bindParam(':ocupacion',$this->ocupacion);
+					$p->bindParam(':hda',$this->hda);		
+					$p->bindParam(':habtoxico',$this->habtoxico);
+					$p->bindParam(':alergias',$this->alergias);
+					$p->bindParam(':quirurgico',$this->quirurgico);	
+					$p->bindParam(':transsanguineo',$this->transsanguineo);
+					$p->bindParam(':boca_abierta',$this->boca_abierta);		
+					$p->bindParam(':boca_cerrada',$this->boca_cerrada);
+					$p->bindParam(':oidos',$this->oidos);
+					$p->bindParam(':cabeza_craneo',$this->cabeza_craneo);	
+					$p->bindParam(':ojos',$this->ojos);
+					$p->bindParam(':nariz',$this->nariz);		
+					$p->bindParam(':tiroides',$this->tiroides);
+					$p->bindParam(':cardiovascular',$this->cardiovascular);
+					$p->bindParam(':respiratorio',$this->respiratorio);
+					$p->bindParam(':abdomen',$this->abdomen);		
+					$p->bindParam(':extremidades',$this->extremidades);
+					$p->bindParam(':neurologico',$this->neurologico);
+					
+					$p->execute();
+					
 						$r['resultado'] = 'incluir';
 			            $r['mensaje'] =  'Registro Inluido';
 			} catch(Exception $e) {
@@ -348,10 +377,12 @@ class historias extends datos{
 			$r['resultado'] = 'incluir';
 			$r['mensaje'] =  'Ya existe la cedula';
 		}
-		return $r;
+		
 		//Listo eso es todo y es igual para el resto de las operaciones
 		//incluir, modificar y eliminar
 		//solo cambia para buscar 
+		return $r;
+		
 	}
 	
 	function modificar(){
@@ -360,36 +391,76 @@ class historias extends datos{
 		$r = array();
 		if($this->existe($this->cedula_historia)){
 			try {
-					$co->query("Update historias set 
-						cedula_historia = '$this->cedula_historia',
-						apellido = '$this->apellido',
-						nombre = '$this->nombre',
-						fecha_nac = '$this->fecha_nac',
-						edad = '$this->edad',
-						telefono = '$this->telefono',
-						estadocivi = '$this->estadocivi',
-						direccion = '$this->direccion',
-						ocupacion = '$this->ocupacion',
-						hda = '$this->hda',
-						habtoxico = '$this->habtoxico',
-						alergias = '$this->alergias',
-						quirurgico = '$this->quirurgico',
-						transsanguineo = '$this->transsanguineo',
-						boca_abierta = '$this->boca_abierta',
-						boca_cerrada = '$this->boca_cerrada',
-						oidos = '$this->oidos',
-						cabeza_craneo = '$this->cabeza_craneo',
-						ojos = '$this->ojos',
-						nariz = '$this->nariz',
-						tiroides = '$this->tiroides',
-						cardiovascular = '$this->cardiovascular',
-						respiratorio = '$this->respiratorio',
-						abdomen = '$this->abdomen',
-						extremidades = '$this->extremidades',
-						neurologico = '$this->neurologico'
+				/**
+				$aux = "Update personas set 
+						apellido = $this->apellido,
+						nombre = $this->nombre,
+						fecha_nac = $this->fecha_nac,
+						edad = $this->edad,
+						telefono = $this->telefono
 						where
-						cedula_historia = '$this->cedula_historia'
+						cedula = $this->cedula";
+				echo $aux;
+				exit;
+				**/
+				$p = $co->prepare("Update historias set 
+						apellido = :apellido,
+						nombre = :nombre,
+						fecha_nac = :fecha_nac,
+						edad = :edad,
+						telefono = :telefono,
+						estadocivi = :estadocivi
+						direccion = :direccion,
+						ocupacion = :ocupacion,
+						hda = :hda,
+						habtoxico = :habtoxico,
+						alergias = :alergias,
+						quirurgico = :quirurgico,
+						transsanguineo = :transsanguineo,
+						boca_abierta = :boca_abierta,
+						boca_cerrada = :boca_cerrada,
+						oidos = :oidos,
+						cabeza_craneo = :cabeza_craneo,
+						ojos = :ojos,
+						nariz = :nariz,
+						tiroides = :tiroides,
+						cardiovascular = :cardiovascular,
+						respiratorio = :respiratorio,
+						abdomen = :abdomen,
+						extremidades = :extremidades,
+						neurologico = :neurologico
+						where
+						cedula_historia = :cedula_historia
 						");
+					$p->bindParam(':cedula_historia',$this->cedula_historia);		
+					$p->bindParam(':apellido',$this->apellido);
+					$p->bindParam(':nombre',$this->nombre);	
+					$p->bindParam(':fecha_nac',$this->fecha_nac);
+					$p->bindParam(':edad',$this->edad);		
+					$p->bindParam(':telefono',$this->telefono);
+					$p->bindParam(':estadocivi',$this->estadocivi);
+					$p->bindParam(':direccion',$this->direccion);	
+					$p->bindParam(':ocupacion',$this->ocupacion);
+					$p->bindParam(':hda',$this->hda);		
+					$p->bindParam(':habtoxico',$this->habtoxico);
+					$p->bindParam(':alergias',$this->alergias);
+					$p->bindParam(':quirurgico',$this->quirurgico);	
+					$p->bindParam(':transsanguineo',$this->transsanguineo);
+					$p->bindParam(':boca_abierta',$this->boca_abierta);		
+					$p->bindParam(':boca_cerrada',$this->boca_cerrada);
+					$p->bindParam(':oidos',$this->oidos);
+					$p->bindParam(':cabeza_craneo',$this->cabeza_craneo);	
+					$p->bindParam(':ojos',$this->ojos);
+					$p->bindParam(':nariz',$this->nariz);		
+					$p->bindParam(':tiroides',$this->tiroides);
+					$p->bindParam(':cardiovascular',$this->cardiovascular);
+					$p->bindParam(':respiratorio',$this->respiratorio);
+					$p->bindParam(':abdomen',$this->abdomen);		
+					$p->bindParam(':extremidades',$this->extremidades);
+					$p->bindParam(':neurologico',$this->neurologico);
+					
+					$p->execute();
+					
 						$r['resultado'] = 'modificar';
 			            $r['mensaje'] =  'Registro Modificado';
 			} catch(Exception $e) {
@@ -399,7 +470,7 @@ class historias extends datos{
 		}
 		else{
 			$r['resultado'] = 'modificar';
-			$r['mensaje'] =  'Cedula no registrada';
+			    $r['mensaje'] =  'No existe la cedula';
 		}
 		return $r;
 	}
@@ -410,12 +481,16 @@ class historias extends datos{
 		$r = array();
 		if($this->existe($this->cedula_historia)){
 			try {
-					$co->query("delete from historias 
-						where
-						cedula_historia = '$this->cedula_historia'
+					$p = $co->prepare("delete from historias 
+					    where
+						cedula_historia = :cedula_historia
 						");
-						$r['resultado'] = 'eliminar';
-			            $r['mensaje'] =  'Registro Eliminado';
+					$p->bindParam(':cedula_historia',$this->cedula_historia);		
+					
+					
+					$p->execute();
+					$r['resultado'] = 'eliminar';
+			        $r['mensaje'] =  'Registro Eliminado';
 			} catch(Exception $e) {
 				$r['resultado'] = 'error';
 			    $r['mensaje'] =  $e->getMessage();
@@ -441,12 +516,7 @@ class historias extends datos{
 				
 				$respuesta = '';
 				foreach($resultado as $r){
-					$respuesta = $respuesta."<tr>";
-					    $respuesta = $respuesta."<td>";
-							$respuesta = $respuesta."<button type='button'
-							class='btn btn-danger w-100 small-width my-3' 
-							onclick='pone(this,0)'
-						    >Modificar</button><br/>";
+					$respuesta = $respuesta."<tr style='cursor:pointer' onclick='coloca(this);'>";
 						$respuesta = $respuesta."<td>";
 							$respuesta = $respuesta.$r['cedula_historia'];
 						$respuesta = $respuesta."</td>";
@@ -464,72 +534,72 @@ class historias extends datos{
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td>";
 							$respuesta = $respuesta.$r['telefono'];
-						 $respuesta = $respuesta."</td>";
-						 $respuesta = $respuesta."<td>";
-						 	$respuesta = $respuesta.$r['estadocivi'];
-						 $respuesta = $respuesta."</td>";
-						 $respuesta = $respuesta."<td>";
-						 	$respuesta = $respuesta.$r['direccion'];
-						 $respuesta = $respuesta."</td>";
-						 $respuesta = $respuesta."<td>";
-						 	$respuesta = $respuesta.$r['ocupacion'];
-						 $respuesta = $respuesta."</td>";
-						 $respuesta = $respuesta."<td>";
-						 	$respuesta = $respuesta.$r['hda'];
-						 $respuesta = $respuesta."</td>";
-						 $respuesta = $respuesta."<td>";
-						 	$respuesta = $respuesta.$r['habtoxico'];
-						 $respuesta = $respuesta."</td>";
-						 $respuesta = $respuesta."<td>";
-						 	$respuesta = $respuesta.$r['alergias'];
-						 $respuesta = $respuesta."</td>";
-						 $respuesta = $respuesta."<td>";
-						 	$respuesta = $respuesta.$r['quirurgico'];
-						 $respuesta = $respuesta."</td>";
-						 $respuesta = $respuesta."<td>";
-						 	$respuesta = $respuesta.$r['transsanguineo'];
-						 $respuesta = $respuesta."</td>";
-						 $respuesta = $respuesta."<td>";
-						 	$respuesta = $respuesta.$r['boca_abierta'];
-						 $respuesta = $respuesta."</td>";
-						 $respuesta = $respuesta."<td>";
-						 	$respuesta = $respuesta.$r['boca_cerrada'];
-						 $respuesta = $respuesta."</td>";
-						 $respuesta = $respuesta."<td>";
-						 	$respuesta = $respuesta.$r['oidos'];
-						 $respuesta = $respuesta."</td>";
-						 $respuesta = $respuesta."<td>";
-						 	$respuesta = $respuesta.$r['cabeza_craneo'];
-						 $respuesta = $respuesta."</td>";
-						 $respuesta = $respuesta."<td>";
-						 	$respuesta = $respuesta.$r['ojos'];
-						 $respuesta = $respuesta."</td>";
-						 $respuesta = $respuesta."<td>";
-						 	$respuesta = $respuesta.$r['nariz'];
-						 $respuesta = $respuesta."</td>";
-						 $respuesta = $respuesta."<td>";
-						 	$respuesta = $respuesta.$r['tiroides'];
-						 $respuesta = $respuesta."</td>";
-						 $respuesta = $respuesta."<td>";
-						 	$respuesta = $respuesta.$r['cardiovascular'];
-						 $respuesta = $respuesta."</td>";
-						 $respuesta = $respuesta."<td>";
-						 	$respuesta = $respuesta.$r['respiratorio'];
-						 $respuesta = $respuesta."</td>";
-						 $respuesta = $respuesta."<td>";
-						 	$respuesta = $respuesta.$r['abdomen'];
-						 $respuesta = $respuesta."</td>";
-						 $respuesta = $respuesta."<td>";
-						 	$respuesta = $respuesta.$r['extremidades'];
-						 $respuesta = $respuesta."</td>";
-						 $respuesta = $respuesta."<td>";
-						 	$respuesta = $respuesta.$r['neurologico'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['estadocivi'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['direccion'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['ocupacion'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['hda'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['habtoxico'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['alergias'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['quirurgico'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['transsanguineo'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."</td>";
+							$respuesta = $respuesta.$r['boca_abierta'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['boca_cerrada'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['oidos'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['cabeza_craneo'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['ojos'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['nariz'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['tiroides'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['cardiovascular'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['respiratorio'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['abdomen'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['extremidades'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['neurologico'];
 						$respuesta = $respuesta."</td>";
 					$respuesta = $respuesta."</tr>";
 				}
-				
-			    $r['resultado'] = 'consultar';
+				$r['resultado'] = 'consultar';
 				$r['mensaje'] =  $respuesta;
+			    
 			}
 			else{
 				$r['resultado'] = 'consultar';
@@ -568,21 +638,50 @@ class historias extends datos{
 		}
 	}
 	
-	
-	
-	// function obtienefecha(){
-	// 	$r = array();
+	function consultatr(){
+		$co = $this->conecta();
+		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$r = array();
+		try{
+			
+			$resultado = $co->query("Select * from historias where cedula_historia='$this->cedula_historia'");
+			$fila = $resultado->fetchAll(PDO::FETCH_BOTH);
+			if($fila){
+			    
+				$r['resultado'] = 'encontro';
+			    $r['mensaje'] =  $fila;
+				
+			    
+			}
+			else{
+				
+				$r['resultado'] = 'noencontro';
+				$r['mensaje'] =  '';
+				
+			}
+			
+		}catch(Exception $e){
+			$r['resultado'] = 'error';
+			$r['mensaje'] =  $e->getMessage();
+		}
+		return $r;
 		
-	// 		  $f = date('Y-m-d');
-	// 	      $f1 = strtotime ('-18 year' , strtotime($f)); 
-	// 	      $f1 = date ('Y-m-d',$f1);
-	// 		  $r['resultado'] = 'obtienefecha';
-	// 		  $r['mensaje'] =  $f1;
+	}
+	
+	function obtienefecha(){
+		$r = array();
 		
-	// 	return $r;
-	// }
+			  $f = date('Y-m-d');
+		      $f1 = strtotime ('-18 year' , strtotime($f)); 
+		      $f1 = date ('Y-m-d',$f1);
+			  $r['resultado'] = 'obtienefecha';
+			  $r['mensaje'] =  $f1;
+		
+		return $r;
+	}
 
 	
 	
 	
 }
+?>

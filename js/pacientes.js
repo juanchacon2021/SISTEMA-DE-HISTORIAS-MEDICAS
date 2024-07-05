@@ -16,9 +16,9 @@ function crearDT(){
             $("#tablapersonal").DataTable({
               language: {
                 lengthMenu: "Mostrar _MENU_ por página",
-                zeroRecords: "No se encontró personal",
+                zeroRecords: "No se encontró pacientes",
                 info: "Mostrando página _PAGE_ de _PAGES_",
-                infoEmpty: "No hay personal registrado",
+                infoEmpty: "No hay pacientes registrados",
                 infoFiltered: "(filtrado de _MAX_ registros totales)",
                 search: "Buscar:",
                 paginate: {
@@ -94,6 +94,26 @@ $("#proceso").on("click",function(){
 			datos.append('fecha_nac',$("#fecha_nac").val());
 			datos.append('edad',$("#edad").val());
 			datos.append('telefono',$("#telefono").val());
+			datos.append('estadocivi',$("#estadocivi").val());
+			datos.append('direccion',$("#direccion").val());
+			datos.append('ocupacion',$("#ocupacion").val());
+			datos.append('hda',$("#hda").val());
+			datos.append('habtoxico',$("#habtoxico").val());
+			datos.append('alergias',$("#alergias").val());
+			datos.append('quirurgico',$("#quirurgico").val());
+			datos.append('transsanguineo',$("#transsanguineo").val());
+			datos.append('boca_abierta',$("#boca_abierta").val());
+			datos.append('boca_cerrada',$("#boca_cerrada").val());
+			datos.append('oidos',$("#oidos").val());
+			datos.append('cabeza_craneo',$("#cabeza_craneo").val());
+			datos.append('ojos',$("#ojos").val());
+			datos.append('nariz',$("#nariz").val());
+			datos.append('tiroides',$("#tiroides").val());
+			datos.append('cardiovascular',$("#cardiovascular").val());
+			datos.append('respiratorio',$("#respiratorio").val());
+			datos.append('abdomen',$("#abdomen").val());
+			datos.append('extremidades',$("#extremidades").val());
+			datos.append('neurologico',$("#neurologico").val());
 			enviaAjax(datos);
 		}
 	}
@@ -107,6 +127,26 @@ $("#proceso").on("click",function(){
 			datos.append('fecha_nac',$("#fecha_nac").val());
 			datos.append('edad',$("#edad").val());
 			datos.append('telefono',$("#telefono").val());
+			datos.append('estadocivi',$("#estadocivi").val());
+			datos.append('direccion',$("#direccion").val());
+			datos.append('ocupacion',$("#ocupacion").val());
+			datos.append('hda',$("#hda").val());
+			datos.append('habtoxico',$("#habtoxico").val());
+			datos.append('alergias',$("#alergias").val());
+			datos.append('quirurgico',$("#quirurgico").val());
+			datos.append('transsanguineo',$("#transsanguineo").val());
+			datos.append('boca_abierta',$("#boca_abierta").val());
+			datos.append('boca_cerrada',$("#boca_cerrada").val());
+			datos.append('oidos',$("#oidos").val());
+			datos.append('cabeza_craneo',$("#cabeza_craneo").val());
+			datos.append('ojos',$("#ojos").val());
+			datos.append('nariz',$("#nariz").val());
+			datos.append('tiroides',$("#tiroides").val());
+			datos.append('cardiovascular',$("#cardiovascular").val());
+			datos.append('respiratorio',$("#respiratorio").val());
+			datos.append('abdomen',$("#abdomen").val());
+			datos.append('extremidades',$("#extremidades").val());
+			datos.append('neurologico',$("#neurologico").val());
 			enviaAjax(datos);
 		}
 	}
@@ -223,6 +263,26 @@ function pone(pos,accion){
 	$("#fecha_nac").val($(linea).find("td:eq(4)").text());
 	$("#edad").val($(linea).find("td:eq(5)").text());
 	$("#telefono").val($(linea).find("td:eq(6)").text());
+	$("#estadocivi").val($(linea).find("td:eq(7)").text());
+	$("#direccion").val($(linea).find("td:eq(8)").text());
+	$("#ocupacion").val($(linea).find("td:eq(9)").text());
+	$("#hda").val($(linea).find("td:eq(10)").text());
+	$("#habtoxico").val($(linea).find("td:eq(11)").text());
+	$("#alergias").val($(linea).find("td:eq(12)").text());
+	$("#quirurgico").val($(linea).find("td:eq(13)").text());
+	$("#transsanguineo").val($(linea).find("td:eq(14)").text());
+	$("#boca_abierta").val($(linea).find("td:eq(15)").text());
+	$("#boca_cerrada").val($(linea).find("td:eq(16)").text());
+	$("#oidos").val($(linea).find("td:eq(17)").text());
+	$("#cabeza_craneo").val($(linea).find("td:eq(18)").text());
+	$("#ojos").val($(linea).find("td:eq(19)").text());
+	$("#nariz").val($(linea).find("td:eq(20)").text());
+	$("#tiroides").val($(linea).find("td:eq(21)").text());
+	$("#cardiovascular").val($(linea).find("td:eq(22)").text());
+	$("#respiratorio").val($(linea).find("td:eq(23)").text());
+	$("#abdomen").val($(linea).find("td:eq(24)").text());
+	$("#extremidades").val($(linea).find("td:eq(25)").text());
+	$("#neurologico").val($(linea).find("td:eq(26)").text());
 	
 	$("#modal1").modal("show");
 }

@@ -6,7 +6,7 @@
 ?>
 <body >
 
-<div class="container texto-inicio h2 text-center text-zinc-800 bg-white py-8 px-4">
+<div class="container texto-inicio h2 text-center text-zinc-800 bg-stone-100 py-8 px-4">
 Registrar Pacientes
 </div>
 <div class="container pl-64"> <!-- todo el contenido ira dentro de esta etiqueta-->
@@ -78,7 +78,6 @@ Registrar Pacientes
 		<div class="row py-4">
 			<div class="col-md-12">
 				<hr/>
-				Examen Fisico
 			</div>
 		</div>
 
