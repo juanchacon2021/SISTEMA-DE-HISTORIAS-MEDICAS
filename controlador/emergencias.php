@@ -31,24 +31,22 @@ require_once("modelo/".$pagina.".php");
 		  //clase es guardar esos valores en ella //con los metodos set
 		  $accion = $_POST['accion'];
 		  
-          if($accion=='mostrar'){
-            echo  json_encode($o->mostrar());  
-         }
 		  if($accion=='consultar'){
 			 echo  json_encode($o->consultar());  
 		  }
 		  elseif($accion=='eliminar'){
-			 $o->set_cedula_h($_POST['cedula_h']);
+			 $o->set_cod_emergencia($_POST['cod_emergencia']);
 			 echo  json_encode($o->eliminar());
 		  }
-		  else{	          	  
-			  $o->set_horaingreso($_POST['horaingeso']);
+		  else{		  
+			  
+			  $o->set_horaingreso($_POST['horaingreso']);
 			  $o->set_fechaingreso($_POST['fechaingreso']);
 			  $o->set_motingreso($_POST['motingreso']);
 			  $o->set_diagnostico_e($_POST['diagnostico_e']);
 			  $o->set_tratamientos($_POST['tratamientos']);
 			  $o->set_cedula_p($_POST['cedula_p']);
-              $o->set_cedula_h($_POST['cedula_h']);
+			  $o->set_cedula_h($_POST['cedula_h']);
 			  if($accion=='incluir'){
 				echo  json_encode($o->incluir());
 			  }

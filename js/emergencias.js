@@ -1,12 +1,6 @@
-console.log("holaa");
 function consultar(){
 	var datos = new FormData();
 	datos.append('accion','consultar');
-	enviaAjax(datos);	
-}
-function mostrar(){
-	var datos = new FormData();
-	datos.append('accion','mostrar');
 	enviaAjax(datos);	
 }
 function destruyeDT(){
@@ -21,9 +15,9 @@ function crearDT(){
             $("#tablapersonal").DataTable({
               language: {
                 lengthMenu: "Mostrar _MENU_ por página",
-                zeroRecords: "No se encontró personal",
+                zeroRecords: "No se encontró ningun Examen",
                 info: "Mostrando página _PAGE_ de _PAGES_",
-                infoEmpty: "No hay personal registrado",
+                infoEmpty: "No hay examenes registrados",
                 infoFiltered: "(filtrado de _MAX_ registros totales)",
                 search: "Buscar:",
                 paginate: {
@@ -43,52 +37,7 @@ $(document).ready(function(){
 	//ejecuta una consulta a la base de datos para llenar la tabla
 	consultar();
 	
-//VALIDACION DE DATOS		
-	
-	/*$("#apellido").on("keypress",function(e){
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
-	});
-	
-	$("#apellido").on("keyup",function(){
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#sapellido"),"Solo letras  entre 3 y 30 caracteres");
-	});
-	
-	$("#nombre").on("keypress",function(e){
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
-	});
-	
-	$("#nombre").on("keyup",function(){
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#snombre"),"Solo letras  entre 3 y 30 caracteres");
-	});
-	
-	$("#correo").on("keypress",function(e){
-		validarkeypress(/^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/);
-	});
-	
-	$("#correo").on("keyup",function(){
-		validarkeyup(/^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/ ,
-		$(this),$("#scorreo"),"Formato incorrecto");
-	});*/
-
-    $("#cedula_p").on("keypress",function(e){
-		validarkeypress(/^[0-9-\b]*$/,e);
-	});
-	
-	$("#cedula_p").on("keyup",function(){
-		validarkeyup(/^[0-9]{7,8}$/,$(this),
-		$("#scedula_p"),"El formato debe ser 12345678 ");
-	});
-    $("#cedula_h").on("keypress",function(e){
-		validarkeypress(/^[0-9-\b]*$/,e);
-	});
-	
-	$("#cedula_h").on("keyup",function(){
-		validarkeyup(/^[0-9]{7,8}$/,$(this),
-		$("#scedula_h"),"El formato debe ser 12345678 ");
-	});
-	
+//VALIDACION DE DATOS	
 	
 	
 //FIN DE VALIDACION DE DATOS
@@ -101,12 +50,14 @@ $("#proceso").on("click",function(){
 		if(validarenvio()){
 			var datos = new FormData();
 			datos.append('accion','incluir');
-			datos.append('',$("#cedula_personal").val());
-			datos.append('apellido',$("#apellido").val());
-			datos.append('nombre',$("#nombre").val());
-			datos.append('correo',$("#correo").val());
-			datos.append('telefono',$("#telefono").val());
-			datos.append('cargo',$("#cargo").val());
+			datos.append('cod_emergencia',$("#cod_emergencia").val());
+			datos.append('horaingreso',$("#horaingreso").val());
+			datos.append('fechaingreso',$("#fechaingreso").val());
+			datos.append('motingreso',$("#motingreso").val());
+			datos.append('diagnostico_e',$("#diagnostico_e").val());
+			datos.append('tratamientos',$("#tratamientos").val());
+			datos.append('cedula_p',$("#cedula_p").val());
+			datos.append('cedula_h',$("#cedula_h").val());
 			enviaAjax(datos);
 		}
 	}
@@ -114,34 +65,30 @@ $("#proceso").on("click",function(){
 		if(validarenvio()){
 			var datos = new FormData();
 			datos.append('accion','modificar');
-			datos.append('cedula_personal',$("#cedula_personal").val());
-			datos.append('apellido',$("#apellido").val());
-			datos.append('nombre',$("#nombre").val());
-			datos.append('correo',$("#correo").val());
-			datos.append('telefono',$("#telefono").val());
-			datos.append('cargo',$("#cargo").val());
+			datos.append('cod_emergencia',$("#cod_emergencia").val());
+			datos.append('horaingreso',$("#horaingreso").val());
+			datos.append('fechaingreso',$("#fechaingreso").val());
+			datos.append('motingreso',$("#motingreso").val());
+			datos.append('diagnostico_e',$("#diagnostico_e").val());
+			datos.append('tratamientos',$("#tratamientos").val());
+			datos.append('cedula_p',$("#cedula_p").val());
+			datos.append('cedula_h',$("#cedula_h").val());
 			enviaAjax(datos);
 		}
 	}
-	if($(this).text()=="ELIMINAR"){
-		if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula_personal"),
-		$("#scedula_personal"),"El formato debe ser 12345678")==0){
-	    muestraMensaje("La cedula debe coincidir con el formato <br/>"+ 
-						"12345678");	
-		
-	    }
-		else{
-			var datos = new FormData();
+
+	else{
+		    var datos = new FormData();
 			datos.append('accion','eliminar');
-			datos.append('cedula_personal',$("#cedula_personal").val());
+			datos.append('cod_emergencia',$("#cod_emergencia").val());
 			enviaAjax(datos);
 		}
-	}
+	
 });
 $("#incluir").on("click",function(){
 	limpia();
 	$("#proceso").text("INCLUIR");
-	$("#modal1").modal("show");
+	$("#modal2").modal("show");
 });
 
 
@@ -154,22 +101,6 @@ $("#incluir").on("click",function(){
 
 //Validación de todos los campos antes del envio
 function validarenvio(){
-	if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula_personal"),
-		$("#scedula_h"),"El formato debe ser 12345678")==0){
-	    muestraMensaje("La cedula debe coincidir con el formato <br/>"+ 
-						"12345678");	
-		return false;					
-	}	
-	/*else if(validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$("#apellido"),$("#sapellido"),"Solo letras  entre 3 y 30 caracteres")==0){
-		muestraMensaje("apellido <br/>Solo letras  entre 3 y 30 caracteres");
-		return false;
-	}
-	else if(validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$("#nombre"),$("#snombre"),"Solo letras  entre 3 y 30 caracteres")==0){
-		muestraMensaje("nombre <br/>Solo letras  entre 3 y 30 caracteres");
-		return false;
-	}*/
 	
 	return true;
 }
@@ -227,17 +158,20 @@ function pone(pos,accion){
 	if(accion==0){
 		$("#proceso").text("MODIFICAR");
 	}
-	else{
+	else if (accion==1){
 		$("#proceso").text("ELIMINAR");
 	}
-	$("#horaingreso").val($(linea).find("td:eq(1)").text());
-	$("#fechaingreso").val($(linea).find("td:eq(2)").text());
-	$("#motingreso").val($(linea).find("td:eq(3)").text());
-	$("#diagnostico_e").val($(linea).find("td:eq(4)").text());
-	$("#tratamientos").val($(linea).find("td:eq(5)").text());
-	$("#cedula_p").val($(linea).find("td:eq(6)").text());
-    $("#cedula_h").val($(linea).find("td:eq(7)").text());
-	
+	else{
+		$("#proceso").text("INCLUIR");
+	}
+	$("#cod_emergencia").val($(linea).find("td:eq(1)").text());
+	$("#horaingreso").val($(linea).find("td:eq(2)").text());
+	$("#fechaingreso").val($(linea).find("td:eq(3)").text());
+	$("#motingreso").val($(linea).find("td:eq(4)").text());
+	$("#diagnostico_e").val($(linea).find("td:eq(5)").text());
+	$("#tratamientos").val($(linea).find("td:eq(6)").text());
+	$("#cedula_p").val($(linea).find("td:eq(7)").text());
+	$("#cedula_h").val($(linea).find("td:eq(8)").text());
 	$("#modal1").modal("show");
 }
 
@@ -263,15 +197,10 @@ function enviaAjax(datos) {
            $("#resultadoconsulta").html(lee.mensaje);
 		   crearDT();
         }
-        else if (lee.resultado == "mostrar") {
-            destruyeDT();	
-            $("#resultamostrar").html(lee.mensaje);
-            crearDT();
-         }
 		else if (lee.resultado == "incluir") {
            muestraMensaje(lee.mensaje);
 		   if(lee.mensaje=='Registro Inluido'){
-			   $("#modal1").modal("hide");
+			   $("#modal2").modal("hide");
 			   consultar();
 		   }
         }
@@ -313,11 +242,14 @@ function enviaAjax(datos) {
 }
 
 function limpia(){
+	$("#cod_emergencia").val("");
 	$("#horaingreso").val("");
 	$("#fechaingreso").val("");
 	$("#motingreso").val("");
 	$("#diagnostico_e").val("");
 	$("#tratamientos").val("");
-    $("#cedula_p").val("");
-	$("#cedula_h").prop("selectedIndex",0);
+	$("#cedula_p").val("");
+	$("#cedula_h").val("");
+
 }
+
