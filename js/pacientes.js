@@ -288,6 +288,8 @@ function pone(pos,accion){
 }
 
 
+
+
 //funcion que envia y recibe datos por AJAX
 function enviaAjax(datos) {
   $.ajax({

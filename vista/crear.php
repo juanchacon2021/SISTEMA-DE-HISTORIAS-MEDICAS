@@ -4,7 +4,7 @@
 	require_once("comunes/sidebar.php");	
 	require_once("comunes/modal.php");
 ?>
-<body >
+<body class="pb-12"
 
 <div class="container texto-inicio h2 text-center text-zinc-800 bg-stone-100 py-8 px-4">
 Registrar Pacientes
@@ -126,41 +126,19 @@ Registrar Pacientes
 			   <span id="stranssanguineo"></span>
 			</div>
 			
-			<div class="col-md-3">
-			   <label for="boca_abierta" class="texto-inicio font-medium">Boca Abierta</label>
-			   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="boca_abierta"
-					name="boca_abierta"/>
-			   <span id="sboca_abierta"></span>
-			</div>
+			
 		</div>
 
 		<div class="row mb-3">
-			<div class="col-md-3">
-			   <label for="boca_cerrada" class="texto-inicio font-medium">Boca Cerrada</label>
-			   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="boca_cerrada"
-					name="boca_cerrada"/>
-			   <span id="sboca_cerrada"></span>
-			</div>
+			
 
 			<div class="col-md-3">
-			   <label for="oidos" class="texto-inicio font-medium">Oidos</label>
-			   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="oidos"
-					name="oidos"/>
-			   <span id="soidos"></span>
 			</div>
 			
 			<div class="col-md-3">
-			   <label for="cabeza_craneo" class="texto-inicio font-medium">Cabeza Craneo</label>
-			   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cabeza_craneo"
-					name="cabeza_craneo"/>
-			   <span id="scabeza_craneo"></span>
 			</div>
 			
 			<div class="col-md-3">
-			   <label for="ojos" class="texto-inicio font-medium">Ojos</label>
-			   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="ojos"
-					name="ojos"/>
-			   <span id="sojos"></span>
 			</div>
 		</div>
 
@@ -172,59 +150,311 @@ Registrar Pacientes
 
 		<div class="row mb-3">
 			<div class="col-md-3">
-			<label for="nariz" class="texto-inicio font-medium">Nariz</label>
-			<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="nariz"
-					name="nariz"/>
-			<span id="snariz"></span>
 			</div>
 
-			<div class="col-md-3">
-			<label for="tiroides" class="texto-inicio font-medium">Tiroides</label>
-			<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="tiroides"
-					name="tiroides"/>
-			<span id="stiroides"></span>
-			</div>
 			
-			<div class="col-md-3">
-			<label for="cardiovascular" class="texto-inicio font-medium">Cardiovascular</label>
-			<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cardiovascular"
-					name="cardiovascular"/>
-			<span id="scardiovascular"></span>
-			</div>
 			
-			<div class="col-md-3">
-			<label for="respiratorio" class="texto-inicio font-medium">Respiratorio</label>
-			<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="respiratorio"
-					name="respiratorio"/>
-			<span id="srespiratorio"></span>
-			</div>
+			
 		</div>
 
 		<div class="row mb-3">
-			<div class="col-md-3">
-			<label for="abdomen" class="texto-inicio font-medium">Abdomen</label>
-			<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="abdomen"
-					name="abdomen"/>
-			<span id="sabdomen"></span>
-			</div>
-
-			<div class="col-md-3">
-			<label for="extremidades" class="texto-inicio font-medium">Extremidades</label>
-			<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="extremidades"
-					name="extremidades"/>
-			<span id="sextremidades"></span>
-			</div>
 			
-			<div class="col-md-3">
-			<label for="neurologico" class="texto-inicio font-medium">Neurologico</label>
-			<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="neurologico"
-					name="neurologico"/>
-			<span id="sneurologico"></span>
-			</div>
 		</div>
 	</div>
 		
+	<div class="d-flex">
+		<button type='button' class='btn btn-danger w-100 small-width my-4 py-2' onclick='pone(this,0)'>Registrar Antecedentes</button>
 		
+		<button type='button' class='btn btn-danger w-100 small-width my-4 ml-12 py-2' onclick='poneregional(this,0)'>Registrar Examenes Regionales</button>
+
+		<button type='button' class='btn btn-danger w-100 small-width my-4 ml-12 py-2' onclick='ponegeneral(this,0)'>Registrar Examenes Generales</button>
+		
+		<button type='button' class='btn btn-danger w-100 small-width my-4 ml-12 py-2' onclick='ponesistema(this,0)'>Registrar Examenes Sistema</button>
+
+		<br/>
+	</div>
+
+	
+
+<!-- MODAL DE REGISTRAR ANTECEDENTES -->
+
+	<div class="modal fade" tabindex="-1" role="dialog"  id="modal1">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-header text-light bg-danger flex justify-content-between">
+				<h5 class="modal-title font-semibold text-xl">Registrar Antecedentes</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+				<span aria-hidden="true" class="pe-auto">&times;</span>
+				</button>
+			</div>
+			<div class="modal-content">
+				<div class="container mt-4"> <!-- todo el contenido ira dentro de esta etiqueta-->
+					<form method="post" id="f" autocomplete="off">
+						<input autocomplete="off" type="text" class="form-control" name="accion" id="accion" style="display: none;">
+						<div class="container">	
+							<div class="row mb-3">
+								<div class="col-md-6">
+									<label for="antec_madre" class="texto-inicio font-medium">Antecedentes de la Madre</label>
+									
+									<textarea name="antec_madre" id="antec_madre" class="form-control bg-gray-200 rounded-lg border-white"></textarea>
+									<span id="santec_madre"></span>
+								</div>
+
+								<div class="col-md-6">
+									<label for="antec_padre" class="texto-inicio font-medium">Antecedentes del Padre</label>
+									
+									<textarea name="antec_personal" id="antec_padre" class="form-control bg-gray-200 rounded-lg border-white"></textarea>
+									<span id="santec_padre"></span>
+								</div>
+							</div>
+							
+							<div class="row mb-3">
+								<div class="col-md-6">
+									<label for="antec_hermano" class="texto-inicio font-medium">Antecedentes Hermanos</label>
+									
+									<textarea name="antec_hermano" id="antec_hermano" class="form-control bg-gray-200 rounded-lg border-white"></textarea>
+									<span id="santec_hermano"></span>
+								</div>
+
+								<div class="col-md-6">
+									<label for="antec_personal" class="texto-inicio font-medium">Antecedentes Personales</label>
+									
+									<textarea name="antec_personal" id="antec_personal" class="form-control bg-gray-200 rounded-lg border-white"></textarea>
+									<span id="santec_personal"></span>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<hr/>
+								</div>
+							</div>
+
+							<div class="row mt-3 justify-content-center">
+								<div class="col-md-2 pb-4">
+									<button type="button" class="btn btn-danger" 
+									id="proceso" ></button>
+								</div>
+							</div>
+						</div>	
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<!-- FIN MODAL DE REGISTRAR ANTECEDENTES -->
+
+<!-- MODAL DE REGISTRAR EXAMENES REGIONALES -->
+
+	<div class="modal fade" tabindex="-1" role="dialog"  id="modal2">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-header text-light bg-danger flex justify-content-between">
+				<h5 class="modal-title font-semibold text-xl">Registrar Examenes Regionales</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+				<span aria-hidden="true" class="pe-auto">&times;</span>
+				</button>
+			</div>
+			<div class="modal-content">
+				<div class="container mt-4"> <!-- todo el contenido ira dentro de esta etiqueta-->
+					<form method="post" id="f" autocomplete="off">
+						<input autocomplete="off" type="text" class="form-control" name="accion" id="accion" style="display: none;">
+						<div class="container">	
+							<div class="row mb-3">
+								<div class="col-md-6">
+									<label for="cabeza_craneo" class="texto-inicio font-medium">Cabeza Craneo</label>
+									<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cabeza_craneo"
+											name="cabeza_craneo"/>
+									<span id="scabeza_craneo"></span>
+								</div>
+
+								<div class="col-md-6">
+									<label for="ojos" class="texto-inicio font-medium">Ojos</label>
+									<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="ojos"
+											name="ojos"/>
+									<span id="sojos"></span>
+								</div>
+							</div>
+							
+							<div class="row mb-3">
+								<div class="col-md-6">
+									<label for="nariz" class="texto-inicio font-medium">Nariz</label>
+									<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="nariz"
+											name="nariz"/>
+									<span id="snariz"></span>
+								</div>
+
+								<div class="col-md-6">
+									<label for="oidos" class="texto-inicio font-medium">Oidos</label>
+									<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="oidos"
+											name="oidos"/>
+									<span id="soidos"></span>
+								</div>			
+							</div>
+
+							<div class="row mb-3">
+								<div class="col-md-6">
+									<label for="boca_abierta" class="texto-inicio font-medium">Boca Abierta</label>
+									<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="boca_abierta"
+											name="boca_abierta"/>
+									<span id="sboca_abierta"></span>
+								</div>
+								<div class="col-md-6">
+									<label for="boca_cerrada" class="texto-inicio font-medium">Boca Cerrada</label>
+									<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="boca_cerrada"
+											name="boca_cerrada"/>
+									<span id="sboca_cerrada"></span>
+								</div>	
+							</div>
+
+							<div class="row mb-3">
+								<div class="col-md-6">
+									<label for="tiroides" class="texto-inicio font-medium">Tiroides</label>
+									<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="tiroides"
+											name="tiroides"/>
+									<span id="stiroides"></span>
+								</div>
+
+								<div class="col-md-6">
+									<label for="extremidades" class="texto-inicio font-medium">Extremidades</label>
+									<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="extremidades"
+											name="extremidades"/>
+									<span id="sextremidades"></span>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<hr/>
+								</div>
+							</div>
+
+							<div class="row mt-3 justify-content-center">
+								<div class="col-md-2 pb-4">
+									<button type="button" class="btn btn-danger" 
+									id="proceso2" ></button>
+								</div>
+							</div>
+						</div>	
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<!-- FIN MODAL EXAMENES REGIONALES -->
+
+
+<!-- MODAL DE REGISTRAR EXAMENES GENERALES -->
+
+<div class="modal fade" tabindex="-1" role="dialog"  id="modal3">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-header text-light bg-danger flex justify-content-between">
+				<h5 class="modal-title font-semibold text-xl">Registrar Examenes Generales</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+				<span aria-hidden="true" class="pe-auto">&times;</span>
+				</button>
+			</div>
+			<div class="modal-content">
+				<div class="container mt-4"> <!-- todo el contenido ira dentro de esta etiqueta-->
+					<form method="post" id="f" autocomplete="off">
+						<input autocomplete="off" type="text" class="form-control" name="accion" id="accion" style="display: none;">
+						<div class="container">	
+							<div class="row mb-3">
+								<div class="col-md-12">
+									<label for="cabeza_craneo" class="texto-inicio font-medium">Examen General</label>
+									<textarea name="general" id="general" class="form-control bg-gray-200 rounded-lg border-white" rows="10"></textarea>
+									<span id="sgeneral"></span>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<hr/>
+								</div>
+							</div>
+
+							<div class="row mt-3 justify-content-center">
+								<div class="col-md-2 pb-4">
+									<button type="button" class="btn btn-danger" 
+									id="proceso3" ></button>
+								</div>
+							</div>
+						</div>	
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<!-- FIN MODAL EXAMENES REGIONALES -->
+
+<!-- MODAL DE REGISTRAR EXAMENES SISTEMA -->
+
+	<div class="modal fade" tabindex="-1" role="dialog"  id="modal4">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-header text-light bg-danger flex justify-content-between">
+				<h5 class="modal-title font-semibold text-xl">Registrar Examenes Sistema</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+				<span aria-hidden="true" class="pe-auto">&times;</span>
+				</button>
+			</div>
+			<div class="modal-content">
+				<div class="container mt-4"> <!-- todo el contenido ira dentro de esta etiqueta-->
+					<form method="post" id="f" autocomplete="off">
+						<input autocomplete="off" type="text" class="form-control" name="accion" id="accion" style="display: none;">
+						<div class="container">	
+							<div class="row mb-3">
+								<div class="col-md-6">
+									<label for="cardiovascular" class="texto-inicio font-medium">Cardiovascular</label>
+									<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cardiovascular"
+											name="cardiovascular"/>
+									<span id="scardiovascular"></span>
+								</div>
+				
+								<div class="col-md-6">
+									<label for="respiratorio" class="texto-inicio font-medium">Respiratorio</label>
+									<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="respiratorio"
+											name="respiratorio"/>
+									<span id="srespiratorio"></span>
+								</div>
+							</div>
+
+							<div class="row mb-3">
+								<div class="col-md-6">
+									<label for="abdomen" class="texto-inicio font-medium">Abdomen</label>
+									<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="abdomen"
+											name="abdomen"/>
+									<span id="sabdomen"></span>
+								</div>
+
+								<div class="col-md-6">
+									<label for="neurologico" class="texto-inicio font-medium">Neurologico</label>
+									<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="neurologico"
+											name="neurologico"/>
+									<span id="sneurologico"></span>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12">
+									<hr/>
+								</div>
+							</div>
+
+							<div class="row mt-3 justify-content-center">
+								<div class="col-md-2 pb-4">
+									<button type="button" class="btn btn-danger" 
+									id="proceso4" ></button>
+								</div>
+							</div>
+						</div>	
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<!-- FIN MODAL EXAMENES REGIONALES -->
 		
 		<div class="row py-4">
 			<div class="col-md-12">
@@ -232,12 +462,12 @@ Registrar Pacientes
 			</div>
 		</div>
 
-		<div class="row mt-3 justify-content-between">
-			<div class="col-md-2 pl-32">
-				   <button type="button" class="boton" id="incluir" >Registrar</button>
+		<div class="row mt-3 d-flex justify-content-between w-100">
+			<div class="col-md-2">
+				   <button type="button" class="boton w-[300px]" id="incluir" >Registrar Paciente</button>
 			</div>
 			<div class="col-md-2">	
-				   <a href="?pagina=pacientes" class="boton">Regresar</a>
+				   <a href="?pagina=pacientes" class="boton px-12">Regresar</a>
 			</div>
 		</div>
 	</div>	
