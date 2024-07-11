@@ -234,7 +234,7 @@ Registrar Pacientes
 
 		<div class="row mt-3 justify-content-between">
 			<div class="col-md-2 pl-32">
-				   <button type="button" class="botonverde" id="incluir" >Registrar</button>
+				   <button type="button" class="boton" id="incluir" >Registrar</button>
 			</div>
 			<div class="col-md-2">	
 				   <a href="?pagina=pacientes" class="boton">Regresar</a>
@@ -274,7 +274,7 @@ Registrar Pacientes
 		</table>
     </div>
 	<div class="modal-footer bg-light">
-        <button type="button" class="btn boton" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
     </div>
   </div>
 </div>
