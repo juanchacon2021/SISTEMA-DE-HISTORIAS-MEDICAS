@@ -25,8 +25,6 @@ require_once("modelo/".$pagina.".php");
 			 echo json_encode($o->obtienefecha());
 		  }
 		  elseif($accion=='eliminar'){
-			 $o->set_cedula_historia($_POST['cedula_historia']);
-			 echo  json_encode($o->eliminar());
 		  }
 		  else{		  
 			  $o->set_cedula_historia($_POST['cedula_historia']);
@@ -55,6 +53,7 @@ require_once("modelo/".$pagina.".php");
 			  $o->set_abdomen($_POST['abdomen']);
 			  $o->set_extremidades($_POST['extremidades']);
 			  $o->set_neurologico($_POST['neurologico']);
+			  $o->set_general($_POST['general']);
 			  if($accion=='incluir'){
 				echo  json_encode($o->incluir());
 			  }

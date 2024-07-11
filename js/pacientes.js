@@ -254,7 +254,14 @@ function pone(pos,accion){
 	$("#modal1").modal("show");
 }
 
+<<<<<<< HEAD
 //Envio de Datos USANDO AJAX !!
+=======
+
+
+
+//funcion que envia y recibe datos por AJAX
+>>>>>>> 0a6f048205cec86e35cb7b85ac92cbb7441dc2cf
 function enviaAjax(datos) {
   $.ajax({
     async: true,

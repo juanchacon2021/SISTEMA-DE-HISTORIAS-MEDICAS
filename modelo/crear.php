@@ -29,6 +29,18 @@ class crear extends datos{
 	private $abdomen;
 	private $extremidades;
 	private $neurologico;
+<<<<<<< HEAD
+=======
+	private $antec_madre;
+	private $antec_padre;
+	private $antec_hermano;
+	private $antec_personal;
+	private $general;
+	//Ok ya tenemos los atributos, pero como son privados no podemos acceder a ellos desde fueran
+	//por lo que debemos colcoar metodos (funciones) que me permitan leer (get) y colocar (set)
+	//valores en ello, esto es  muy mal llamado geters y seters por si alguien se los pregunta
+	
+>>>>>>> 0a6f048205cec86e35cb7b85ac92cbb7441dc2cf
 	function set_cedula_historia($valor){
 		$this->cedula_historia = $valor;
 	}
@@ -119,6 +131,20 @@ class crear extends datos{
 	function set_respiratorio($valor){
 		$this->respiratorio = $valor;
 	}
+	function set_antec_madre($valor){
+		$this->antec_madre = $valor;
+	}
+	
+	function set_antec_padre($valor){
+		$this->antec_padre = $valor;
+	}
+	
+	function set_antec_hermano($valor){
+		$this->antec_hermano = $valor;
+	}
+	function set_antec_personal($valor){
+		$this->antec_personal = $valor;
+	}
 	
 	function set_abdomen($valor){
 		$this->abdomen = $valor;
@@ -130,6 +156,9 @@ class crear extends datos{
 	
 	function set_neurologico($valor){
 		$this->neurologico = $valor;
+	}
+	function set_general($valor){
+		$this->general = $valor;
 	}
 	
 	//ahora la misma cosa pero para leer, es decir get
@@ -226,6 +255,22 @@ class crear extends datos{
 		return $this->respiratorio;
 	}
 	
+	function get_antec_madre(){
+		return $this->antec_madre;
+	}
+	
+	function get_antec_padre(){
+		return $this->antec_padre;
+	}
+	
+	function get_antec_hermano(){
+		return $this->antec_hermano;
+	}
+	
+	function get_antec_personal(){
+		return $this->antec_personal;
+	}
+	
 	function get_abdomen(){
 		return $this->abdomen;
 	}
@@ -236,6 +281,10 @@ class crear extends datos{
 	
 	function get_neurologico(){
 		return $this->neurologico;
+	}
+	
+	function get_general(){
+		return $this->general;
 	}
 	
 	//Lo siguiente que demos hacer es crear los metodos para incluir, consultar y eliminar
@@ -273,17 +322,9 @@ class crear extends datos{
 						alergias,
 						quirurgico,
 						transsanguineo,
-						boca_abierta,
-						boca_cerrada,
-						oidos,
-						cabeza_craneo,
-						ojos,
-						nariz,
-						tiroides,
 						cardiovascular,
 						respiratorio,
 						abdomen,
-						extremidades,
 						neurologico
 						)
 						Values(
@@ -301,17 +342,9 @@ class crear extends datos{
 						:alergias,
 						:quirurgico,
 						:transsanguineo,
-						:boca_abierta,
-						:boca_cerrada,
-						:oidos,
-						:cabeza_craneo,
-						:ojos,
-						:nariz,
-						:tiroides,
 						:cardiovascular,
 						:respiratorio,
 						:abdomen,
-						:extremidades,
 						:neurologico
 						)");
 					$p->bindParam(':cedula_historia',$this->cedula_historia);		
@@ -344,7 +377,7 @@ class crear extends datos{
 					$p->execute();
 					
 						$r['resultado'] = 'incluir';
-			            $r['mensaje'] =  'Registro Inluido';
+			            $r['mensaje'] =  'Paciente Registrado Exitosamente';
 			} catch(Exception $e) {
 				$r['resultado'] = 'error';
 			    $r['mensaje'] =  $e->getMessage();
@@ -452,33 +485,33 @@ class crear extends datos{
 		return $r;
 	}
 	
-	function eliminar(){
-		$co = $this->conecta();
-		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$r = array();
-		if($this->existe($this->cedula_historia)){
-			try {
-					$p = $co->prepare("delete from historias 
-					    where
-						cedula_historia = :cedula_historia
-						");
-					$p->bindParam(':cedula_historia',$this->cedula_historia);		
+	// function eliminar(){
+	// 	$co = $this->conecta();
+	// 	$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	// 	$r = array();
+	// 	if($this->existe($this->cedula_historia)){
+	// 		try {
+	// 				$p = $co->prepare("delete from historias 
+	// 				    where
+	// 					cedula_historia = :cedula_historia
+	// 					");
+	// 				$p->bindParam(':cedula_historia',$this->cedula_historia);		
 					
 					
-					$p->execute();
-					$r['resultado'] = 'eliminar';
-			        $r['mensaje'] =  'Registro Eliminado';
-			} catch(Exception $e) {
-				$r['resultado'] = 'error';
-			    $r['mensaje'] =  $e->getMessage();
-			}
-		}
-		else{
-			$r['resultado'] = 'eliminar';
-			$r['mensaje'] =  'No existe la cedula';
-		}
-		return $r;
-	}
+	// 				$p->execute();
+	// 				$r['resultado'] = 'eliminar';
+	// 		        $r['mensaje'] =  'Registro Eliminado';
+	// 		} catch(Exception $e) {
+	// 			$r['resultado'] = 'error';
+	// 		    $r['mensaje'] =  $e->getMessage();
+	// 		}
+	// 	}
+	// 	else{
+	// 		$r['resultado'] = 'eliminar';
+	// 		$r['mensaje'] =  'No existe la cedula';
+	// 	}
+	// 	return $r;
+	// }
 	
 	
 	function consultar(){
@@ -537,38 +570,38 @@ class crear extends datos{
 							$respuesta = $respuesta.$r['transsanguineo'];
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."</td>";
-							$respuesta = $respuesta.$r['boca_abierta'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['boca_cerrada'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['oidos'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['cabeza_craneo'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['ojos'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['nariz'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['tiroides'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['cardiovascular'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['respiratorio'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['abdomen'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['extremidades'];
-						$respuesta = $respuesta."</td>";
+						// 	$respuesta = $respuesta.$r['boca_abierta'];
+						// $respuesta = $respuesta."</td>";
+						// $respuesta = $respuesta."<td>";
+						// 	$respuesta = $respuesta.$r['boca_cerrada'];
+						// $respuesta = $respuesta."</td>";
+						// $respuesta = $respuesta."<td>";
+						// 	$respuesta = $respuesta.$r['oidos'];
+						// $respuesta = $respuesta."</td>";
+						// $respuesta = $respuesta."<td>";
+						// 	$respuesta = $respuesta.$r['cabeza_craneo'];
+						// $respuesta = $respuesta."</td>";
+						// $respuesta = $respuesta."<td>";
+						// 	$respuesta = $respuesta.$r['ojos'];
+						// $respuesta = $respuesta."</td>";
+						// $respuesta = $respuesta."<td>";
+						// 	$respuesta = $respuesta.$r['nariz'];
+						// $respuesta = $respuesta."</td>";
+						// $respuesta = $respuesta."<td>";
+						// 	$respuesta = $respuesta.$r['tiroides'];
+						// $respuesta = $respuesta."</td>";
+						// $respuesta = $respuesta."<td>";
+						// 	$respuesta = $respuesta.$r['cardiovascular'];
+						// $respuesta = $respuesta."</td>";
+						// $respuesta = $respuesta."<td>";
+						// 	$respuesta = $respuesta.$r['respiratorio'];
+						// $respuesta = $respuesta."</td>";
+						// $respuesta = $respuesta."<td>";
+						// 	$respuesta = $respuesta.$r['abdomen'];
+						// $respuesta = $respuesta."</td>";
+						// $respuesta = $respuesta."<td>";
+						// 	$respuesta = $respuesta.$r['extremidades'];
+						// $respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td>";
 							$respuesta = $respuesta.$r['neurologico'];
 						$respuesta = $respuesta."</td>";
@@ -645,6 +678,139 @@ class crear extends datos{
 		
 	}
 	
+
+	function antecedentes(){
+		$r = array();
+		if(!$this->existe($this->cedula_historia)){
+			$co = $this->conecta();
+			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			try {
+					$co->query("Insert into antecedentes(
+						antec_madre,
+						antec_padre,
+						antec_hermano,
+						) 
+						Values(
+						'$this->antec_madre',
+						'$this->antec_padre',
+						'$this->antec_hermano',
+						'$this->antec_personal'
+						)");
+						$r['resultado'] = 'incluir';
+			            $r['mensaje'] =  'Registro Inluido';
+			} catch(Exception $e) {
+				$r['resultado'] = 'error';
+			    $r['mensaje'] =  $e->getMessage();
+			}
+		}
+		else{
+			$r['resultado'] = 'incluir';
+			$r['mensaje'] =  'Ya existe la cedula';
+		}
+		return $r;
+	}
+
+	function regionales(){
+		$r = array();
+		if(!$this->existe($this->cedula_historia)){
+			$co = $this->conecta();
+			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			//2 Se ejecuta el sql
+			try {
+					$co->query("Insert into examenes_r(
+						cabeza_craneo,
+						ojos,
+						nariz,
+						oidos,
+						boca_abierta,
+						boca_cerrada,
+						tiroides,
+						extremidades
+						) 
+						Values(
+						'$this->cabeza_craneo',
+						'$this->ojos',
+						'$this->nariz',
+						'$this->oidos',
+						'$this->boca_abierta',
+						'$this->boca_cerrada',
+						'$this->tiroides',
+						'$this->extremidades'
+						)");
+						$r['resultado'] = 'incluir';
+			            $r['mensaje'] =  'Registro Inluido';
+			} catch(Exception $e) {
+				$r['resultado'] = 'error';
+			    $r['mensaje'] =  $e->getMessage();
+			}
+		}
+		else{
+			$r['resultado'] = 'incluir';
+			$r['mensaje'] =  'Ya existe la cedula';
+		}
+		return $r;
+	}
+
+	function general(){
+		$r = array();
+		if(!$this->existe($this->cedula_historia)){
+			$co = $this->conecta();
+			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			//2 Se ejecuta el sql
+			try {
+					$co->query("Insert into examenes_f(
+						general
+						) 
+						Values(
+						'$this->general'
+						)");
+						$r['resultado'] = 'incluir';
+			            $r['mensaje'] =  'Registro Inluido';
+			} catch(Exception $e) {
+				$r['resultado'] = 'error';
+			    $r['mensaje'] =  $e->getMessage();
+			}
+		}
+		else{
+			$r['resultado'] = 'incluir';
+			$r['mensaje'] =  'Ya existe la cedula';
+		}
+		return $r;
+	}
+
+	function sistema(){
+		$r = array();
+		if(!$this->existe($this->cedula_historia)){
+			$co = $this->conecta();
+			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			//2 Se ejecuta el sql
+			try {
+					$co->query("Insert into examenes_s(
+						cardiovascular,
+						respiratorio,
+						abdomen,
+						neurologico
+						) 
+						Values(
+						'$this->cardiovascular',
+						'$this->respiratorio',
+						'$this->abdomen',
+						'$this->neurologico'
+						)");
+						$r['resultado'] = 'incluir';
+			            $r['mensaje'] =  'Registro Inluido';
+			} catch(Exception $e) {
+				$r['resultado'] = 'error';
+			    $r['mensaje'] =  $e->getMessage();
+			}
+		}
+		else{
+			$r['resultado'] = 'incluir';
+			$r['mensaje'] =  'Ya existe la cedula';
+		}
+		return $r;
+	}
+
 	function obtienefecha(){
 		$r = array();
 		
@@ -656,9 +822,5 @@ class crear extends datos{
 		
 		return $r;
 	}
-
-	
-	
-	
 }
 ?>

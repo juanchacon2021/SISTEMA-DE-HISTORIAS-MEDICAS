@@ -15,9 +15,9 @@ function crearDT(){
             $("#tablapersonal").DataTable({
               language: {
                 lengthMenu: "Mostrar _MENU_ por página",
-                zeroRecords: "No se encontró ningun Examen",
+                zeroRecords: "No se encontró ninguna Emergencia",
                 info: "Mostrando página _PAGE_ de _PAGES_",
-                infoEmpty: "No hay examenes registrados",
+                infoEmpty: "No hay emergencias registradas",
                 infoFiltered: "(filtrado de _MAX_ registros totales)",
                 search: "Buscar:",
                 paginate: {
@@ -88,7 +88,7 @@ $("#proceso").on("click",function(){
 $("#incluir").on("click",function(){
 	limpia();
 	$("#proceso").text("INCLUIR");
-	$("#modal2").modal("show");
+	$("#modal1").modal("show");
 });
 
 
@@ -200,7 +200,7 @@ function enviaAjax(datos) {
 		else if (lee.resultado == "incluir") {
            muestraMensaje(lee.mensaje);
 		   if(lee.mensaje=='Registro Inluido'){
-			   $("#modal2").modal("hide");
+			   $("#modal1").modal("hide");
 			   consultar();
 		   }
         }

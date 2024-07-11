@@ -66,6 +66,22 @@ $("#incluir").on("click",function(){
 		enviaAjax(datos);
 	}
 });
+
+$("#incluir").on("click",function(){
+	if(validarenvio()){
+
+		var datos = new FormData($("#f")[0]);
+		datos.append('accion','incluir');
+		datos.append('antec_madre',$("#antec_madre").val());
+		datos.append('antec_padre',$("#antec_padre").val());
+		datos.append('antec_hermano',$("#antec_hermano").val());
+		datos.append('antec_personal',$("#antec_personal").val());
+		
+		enviaAjax(datos);
+		
+	}
+});
+
 $("#modificar").on("click",function(){
 	if(validarenvio()){
 
@@ -237,11 +253,6 @@ function coloca(linea){
 	$("#ojos").val($(linea).find("td:eq(18)").text());
 	$("#nariz").val($(linea).find("td:eq(19)").text());
 	$("#tiroides").val($(linea).find("td:eq(20)").text());
-	$("#cardiovascular").val($(linea).find("td:eq(21)").text());
-	$("#respiratorio").val($(linea).find("td:eq(22)").text());
-	$("#abdomen").val($(linea).find("td:eq(23)").text());
-	$("#extremidades").val($(linea).find("td:eq(24)").text());
-	$("#neurologico").val($(linea).find("td:eq(25)").text());
 	
 }
 
@@ -321,6 +332,75 @@ function enviaAjax(datos){
 			},
 			complete: function () {},
     }); 
+}
+
+function pone(pos,accion){
+	
+	linea=$(pos).closest('tr');
+
+
+	if(accion==0){
+		$("#proceso").text("Enviar");
+	}
+	else if (accion==1){
+		$("#proceso").text("ELIMINAR");
+	}
+	else{
+		$("#proceso").text("INCLUIR");
+	}
+	$("#antec_madre").val($(linea).find("td:eq(1)").text());
+	$("#antec_padre").val($(linea).find("td:eq(2)").text());
+	$("#antec_hermano").val($(linea).find("td:eq(3)").text());
+	$("#antec_personal").val($(linea).find("td:eq(4)").text());
+	$("#modal1").modal("show");
+}
+
+function poneregional(pos,accion){
+	
+	linea=$(pos).closest('tr');
+
+
+	if(accion==0){
+		$("#proceso2").text("Enviar");
+	}
+	
+	$("#boca_abierta").val($(linea).find("td:eq(1)").text());
+	$("#boca_cerrada").val($(linea).find("td:eq(2)").text());
+	$("#oidos").val($(linea).find("td:eq(3)").text());
+	$("#cabeza_craneo").val($(linea).find("td:eq(4)").text());
+	$("#ojos").val($(linea).find("td:eq(5)").text());
+	$("#nariz").val($(linea).find("td:eq(6)").text());
+	$("#tiroides").val($(linea).find("td:eq(7)").text());
+	$("#extremidades").val($(linea).find("td:eq(8)").text());
+	$("#modal2").modal("show");
+}
+
+function ponegeneral(pos,accion){
+	
+	linea=$(pos).closest('tr');
+
+
+	if(accion==0){
+		$("#proceso3").text("Enviar");
+	}
+	
+	$("#general").val($(linea).find("td:eq(1)").text());
+	$("#modal3").modal("show");
+}
+
+function ponesistema(pos,accion){
+	
+	linea=$(pos).closest('tr');
+
+
+	if(accion==0){
+		$("#proceso4").text("Enviar");
+	}
+	$("#cardiovascular").val($(linea).find("td:eq(1)").text());
+	$("#respiratorio").val($(linea).find("td:eq(2)").text());
+	$("#abdomen").val($(linea).find("td:eq(3)").text());
+	$("#neurologico").val($(linea).find("td:eq(4)").text());
+	$("#modal4").modal("show");
 }
 
 function limpia(){

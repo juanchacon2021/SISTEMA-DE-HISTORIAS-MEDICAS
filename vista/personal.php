@@ -11,7 +11,7 @@ Personal
 <div class="container pl-64"> <!-- todo el contenido ira dentro de esta etiqueta-->
 	<div class="container">
 		<div class="row mt-3 justify-content-between">
-		    <div class="col-md-2 boton" onclick='pone(this,3)' >
+		    <div class="col-md-2 botonverde" onclick='pone(this,3)' style="cursor: pointer;" >
 				Registrar Personal
 			</div>
 					
@@ -47,11 +47,10 @@ Personal
 <!-- seccion del modal -->
 <div class="modal fade" tabindex="-1" role="dialog"  id="modal1">
   <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-header text-light bg-info">
+    <div class="modal-header text-light bg-info gradiente">
         <h5 class="modal-title">Formulario de Personal</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-          <span aria-hidden="true">&times;</span>
-        </button>
+		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+         
     </div>
     <div class="modal-content">
 		<div class="container"> <!-- todo el contenido ira dentro de esta etiqueta-->
@@ -111,8 +110,8 @@ Personal
 
 				<div class="row mt-3 justify-content-center">
 					<div class="col-md-2">
-						   <button type="button" class="btn btn-primary" 
-						   id="proceso" onclick="modal(hide);" ></button>
+						   <button type="button" class="btn botonverde" 
+						   id="proceso"></button>
 					</div>
 				</div>
 			</div>	

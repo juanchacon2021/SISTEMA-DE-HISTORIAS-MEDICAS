@@ -227,13 +227,13 @@ class emergencias extends datos{
 					    $respuesta = $respuesta."<tr>";
 					    $respuesta = $respuesta."<td>";
 							$respuesta = $respuesta."<button type='button'
-							class='btn btn-primary w-100 small-width mb-3' 
+							class='btn botonazul w-100 small-width mb-3' 
 							onclick='pone(this,0)'
-						    style='background: #00AC0D'>Modificar</button><br/>";
+						    >Modificar</button><br/>";
 							$respuesta = $respuesta."<button type='button'
-							class='btn btn-primary w-100 small-width mt-2' 
+							class='btn boton w-100 small-width mt-2' 
 							onclick='pone(this,1)'
-						    style='background: #D30000'>Eliminar</button><br/>";
+						    >Eliminar</button><br/>";
 							$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td>";
 							$respuesta = $respuesta.$r['cod_emergencia'];
