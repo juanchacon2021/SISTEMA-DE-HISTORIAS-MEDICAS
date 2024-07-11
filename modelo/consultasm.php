@@ -202,11 +202,11 @@ class consultas extends datos{
 					    $respuesta = $respuesta."<tr>";
 					    $respuesta = $respuesta."<td>";
 							$respuesta = $respuesta."<button type='button'
-							class='boton btn-primary w-100 small-width mb-3' 
+							class='btn botonazul w-100 small-width mb-3' 
 							onclick='pone(this,0)'
 						    >Modificar</button><br/>";
 							$respuesta = $respuesta."<button type='button'
-							class='boton btn-primary w-100 small-width mt-2' 
+							class='btn boton w-100 small-width mt-2' 
 							onclick='pone(this,1)'
 						    >Eliminar</button><br/>";
 						$respuesta = $respuesta."</td>";

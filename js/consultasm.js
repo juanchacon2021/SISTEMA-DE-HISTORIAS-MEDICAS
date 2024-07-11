@@ -16,9 +16,9 @@ function crearDT(){
             $("#tablapersonal").DataTable({
               language: {
                 lengthMenu: "Mostrar _MENU_ por página",
-                zeroRecords: "No se encontró ningun Examen",
+                zeroRecords: "No se encontró ninguna Consulta Médica",
                 info: "Mostrando página _PAGE_ de _PAGES_",
-                infoEmpty: "No hay examenes registrados",
+                infoEmpty: "No hay consultas médicas registradas",
                 infoFiltered: "(filtrado de _MAX_ registros totales)",
                 search: "Buscar:",
                 paginate: {
