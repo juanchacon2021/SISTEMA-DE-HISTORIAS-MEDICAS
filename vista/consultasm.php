@@ -112,7 +112,7 @@ Consultas Medicas
 				</div>
 
 				<div class="row mt-3 justify-content-center">
-					<div class="col-md-2">
+					<div class="col-md-2 boton">
 						   <button type="button" class="btn btn-primary" 
 						   id="proceso" ></button>
 					</div>
