@@ -11,8 +11,8 @@ Personal
 <div class="container pl-64"> <!-- todo el contenido ira dentro de esta etiqueta-->
 	<div class="container">
 		<div class="row mt-3 justify-content-between">
-		    <div class="col-md-2">
-				<a href="?pagina=crearpersonal" class="boton">Registrar Personal</a>
+		    <div class="col-md-2 boton" onclick='pone(this,3)' >
+				Registrar Personal
 			</div>
 					
 			<div class="col-md-2">	
@@ -112,7 +112,7 @@ Personal
 				<div class="row mt-3 justify-content-center">
 					<div class="col-md-2">
 						   <button type="button" class="btn btn-primary" 
-						   id="proceso" ></button>
+						   id="proceso" onclick="modal(hide);" ></button>
 					</div>
 				</div>
 			</div>	

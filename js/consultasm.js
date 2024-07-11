@@ -85,7 +85,7 @@ $("#proceso").on("click",function(){
 $("#incluir").on("click",function(){
 	limpia();
 	$("#proceso").text("INCLUIR");
-	$("#modal2").modal("show");
+	$("#modal1").modal("show");
 });
 
 
@@ -165,8 +165,8 @@ function pone(pos,accion){
 	$("#fechaconsulta").val($(linea).find("td:eq(2)").text());
 	$("#diagnostico").val($(linea).find("td:eq(3)").text());
 	$("#tratamientos").val($(linea).find("td:eq(4)").text());
-	$("#cedula_p").val($(linea).find("td:eq(5)").text());
-	$("#cedula_h").val($(linea).find("td:eq(6)").text());
+	$("#cedula_h").val($(linea).find("td:eq(5)").text());
+	$("#cedula_p").val($(linea).find("td:eq(6)").text());
 	$("#modal1").modal("show");
 }
 
@@ -195,7 +195,7 @@ function enviaAjax(datos) {
 		else if (lee.resultado == "incluir") {
            muestraMensaje(lee.mensaje);
 		   if(lee.mensaje=='Registro Inluido'){
-			   $("#modal2").modal("hide");
+			   $("#modal1").modal("hide");
 			   consultar();
 		   }
         }

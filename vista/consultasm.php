@@ -61,7 +61,7 @@ Consultas Medicas
 				<div class="row mb-3">
 				
 				<div class="col-md-4" style="display: none;">
-					   <label for="cod_consulta">cod_consulta</label>
+					   <label for="cod_consulta" >cod_consulta</label>
 					   <input class="form-control" type="text" id="cod_consulta" />
 					   <span id="scod_consulta"></span>
 					</div>
