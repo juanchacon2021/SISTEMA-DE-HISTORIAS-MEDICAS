@@ -29,18 +29,13 @@ class crear extends datos{
 	private $abdomen;
 	private $extremidades;
 	private $neurologico;
-<<<<<<< HEAD
-=======
+
 	private $antec_madre;
 	private $antec_padre;
 	private $antec_hermano;
 	private $antec_personal;
 	private $general;
-	//Ok ya tenemos los atributos, pero como son privados no podemos acceder a ellos desde fueran
-	//por lo que debemos colcoar metodos (funciones) que me permitan leer (get) y colocar (set)
-	//valores en ello, esto es  muy mal llamado geters y seters por si alguien se los pregunta
-	
->>>>>>> 0a6f048205cec86e35cb7b85ac92cbb7441dc2cf
+
 	function set_cedula_historia($valor){
 		$this->cedula_historia = $valor;
 	}
