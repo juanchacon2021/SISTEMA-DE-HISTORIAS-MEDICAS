@@ -124,6 +124,8 @@ class emergencias extends datos{
 						horaingreso,
 						fechaingreso,
 						motingreso,
+						diagnostico_e,
+						tratamientos,
 						cedula_p,
 						cedula_h
 						) 
@@ -164,8 +166,8 @@ class emergencias extends datos{
 						horaingreso = '$this->horaingreso',
 						fechaingreso = '$this->fechaingreso',
 						motingreso = '$this->motingreso',
-						motingreso = '$this->diagnostico_e',
-						motingreso = '$this->tratamientos',
+						diagnostico_e = '$this->diagnostico_e',
+						tratamientos= '$this->tratamientos',
 						cedula_p = '$this->cedula_p',
 						cedula_h = '$this->cedula_h'
 						where
@@ -227,11 +229,14 @@ class emergencias extends datos{
 							$respuesta = $respuesta."<button type='button'
 							class='btn btn-primary w-100 small-width mb-3' 
 							onclick='pone(this,0)'
-						    >Modificar</button><br/>";
+						    style='background: #00AC0D'>Modificar</button><br/>";
 							$respuesta = $respuesta."<button type='button'
 							class='btn btn-primary w-100 small-width mt-2' 
 							onclick='pone(this,1)'
-						    >Eliminar</button><br/>";
+						    style='background: #D30000'>Eliminar</button><br/>";
+							$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['cod_emergencia'];
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td>";
 							$respuesta = $respuesta.$r['horaingreso'];
@@ -253,6 +258,7 @@ class emergencias extends datos{
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td>";
 							$respuesta = $respuesta.$r['cedula_h'];
+							
                         
 				}
 				

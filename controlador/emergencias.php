@@ -40,6 +40,7 @@ require_once("modelo/".$pagina.".php");
 		  }
 		  else{		  
 			  
+			  $o->set_cod_emergencia($_POST['cod_emergencia']);
 			  $o->set_horaingreso($_POST['horaingreso']);
 			  $o->set_fechaingreso($_POST['fechaingreso']);
 			  $o->set_motingreso($_POST['motingreso']);
