@@ -444,10 +444,10 @@ class historias extends datos{
 					$respuesta = $respuesta."<tr>";
 					    $respuesta = $respuesta."<td>";
 							$respuesta = $respuesta."<button type='button'
-							class='btn btn-danger w-100 small-width my-3' 
+							class='btn botonazul w-100 small-width mb-3' 
 							onclick='pone(this,0)'
 						    >Modificar</button><br/>";
-							$respuesta = $respuesta."<a class='btn btn-success w-100 small-width mt-2'
+							$respuesta = $respuesta."<a class='btn boton w-100 small-width mt-2'
 							 href='vista/fpdf/historia.php' target='_blank'>
 							Descargar</a> <br/>";
 						$respuesta = $respuesta."<td>";
