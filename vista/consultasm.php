@@ -5,14 +5,16 @@
 ?>
 <body >
 
-<div class="container texto-bienvenida h2 text-center py-8 text-zinc-800">
-Consultas Medicas
-</div>
+<h1 class="container texto-bienvenida h2 text-center py-8 text-zinc-800">
+	Consultas Médicas
+</h1><br>
+
+
 <div class="container pl-64"> <!-- todo el contenido ira dentro de esta etiqueta-->
 	<div class="container">
-		<div class="row mt-3 justify-content-between">
-		    <div class="col-md-2 boton" onclick='pone(this,3)' >
-				Registrar Consultas Medicas
+		<div class="row mt-3 justify-content-between" style="margin-left: 15px; cursor:pointer;">
+		    <div class="col-md-4 row-md-4 botonverde" onclick='pone(this,3)' >
+				Registrar Consulta Médica
 			</div>
 					
 			<div class="col-md-2">	
@@ -47,11 +49,9 @@ Consultas Medicas
 <!-- seccion del modal -->
 <div class="modal fade" tabindex="-1" role="dialog"  id="modal1">
   <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-header text-light bg-info">
+    <div class="modal-header text-light bg-info gradiente">
         <h5 class="modal-title">Formulario de Consultas</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-content">
 		<div class="container"> <!-- todo el contenido ira dentro de esta etiqueta-->
@@ -61,7 +61,7 @@ Consultas Medicas
 				<div class="row mb-3">
 				
 				<div class="col-md-4" style="display: none;">
-					   <label for="cod_consulta">cod_consulta</label>
+					   <label for="cod_consulta" >cod_consulta</label>
 					   <input class="form-control" type="text" id="cod_consulta" />
 					   <span id="scod_consulta"></span>
 					</div>
@@ -113,7 +113,7 @@ Consultas Medicas
 
 				<div class="row mt-3 justify-content-center">
 					<div class="col-md-2">
-						   <button type="button" class="btn btn-primary" 
+						   <button type="button" class="btn botonverde" 
 						   id="proceso" ></button>
 					</div>
 				</div>

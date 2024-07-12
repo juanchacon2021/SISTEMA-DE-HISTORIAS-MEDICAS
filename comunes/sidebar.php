@@ -40,9 +40,9 @@
 
                     <!--    PERMISOS: Muestra la lista de permisos que tiene el usuario ingresado ejemplo
                     Al doctor le deben aparecer todos los permisos en cambio a los usuarios que creo el doctor solo le deben
-                    aparecer los permisos que le otorgaron-->
+                    aparecer los permisos que le otorgaron
                     <a href=""><h1 class="cursor-pointer p-2 hover:bg-red-800 rounded-md mt-1 text-lg hover:text-white">Permisos</h1></a>
-                
+                -->
                     <a href="?pagina=examenes"><h1 class="cursor-pointer p-2 hover:bg-red-800 rounded-md mt-1 text-lg hover:text-white">Examenes</h1></a>
                 </div>
 

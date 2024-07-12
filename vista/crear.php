@@ -9,7 +9,7 @@
 <div class="container texto-inicio h2 text-center text-zinc-800 bg-stone-100 py-8 px-4">
 Registrar Pacientes
 </div>
-<div class="container pl-64"> <!-- todo el contenido ira dentro de esta etiqueta-->
+<div class="container pl-64">
    <form method="post" id="f" autocomplete="off">
 	
 	<div class="container">	
@@ -113,7 +113,7 @@ Registrar Pacientes
 			</div>
 
 			<div class="col-md-3">
-			   <label for="quirurgico" class="texto-inicio font-medium">quirurgico</label>
+			   <label for="quirurgico" class="texto-inicio font-medium">Quirurgico</label>
 			   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="quirurgico"
 					name="quirurgico"/>
 			   <span id="squirurgico"></span>
@@ -234,51 +234,18 @@ Registrar Pacientes
 
 		<div class="row mt-3 justify-content-between">
 			<div class="col-md-2 pl-32">
-				   <button type="button" class="boton" id="incluir" >Registrar</button>
+				   <button type="button" class="boton w-[200px]" id="incluir" >Registrar Paciente</button>
 			</div>
 			<div class="col-md-2">	
-				   <a href="?pagina=pacientes" class="boton">Regresar</a>
+				   <a href="?pagina=pacientes" class="boton w-[200px]">Volver</a>
 			</div>
 		</div>
 	</div>	
 	</form>
-</div> <!-- fin de container -->
+</div> <!-- FIN DEL CONTAINER -->
 
 
-<!-- seccion del modal -->
-<div class="modal fade" tabindex="-1" role="dialog"  id="modal1">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-header text-light bg-info">
-        <h5 class="modal-title">Listado de Personas</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-          <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-content">
-	    <!--se agrega un id para poder enlazar con el datatablet--> 
-		<table class="table table-striped table-hover" id="tablapersona">
-		<thead>
-		  <tr>
-			<th>Cedula</th>
-			<th>Apellidos</th>
-			<th>Nombres</th>
-			<th>Fecha Nac</th>
-			<th>Sexo</th>
-			<th>Grado Instruccion</th>
-		  </tr>
-		</thead>
-		<tbody id="resultadoconsulta">
-		  
-		  
-		</tbody>
-		</table>
-    </div>
-	<div class="modal-footer bg-light">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-    </div>
-  </div>
-</div>
-<!--fin de seccion modal-->
+
 <script type="text/javascript" src="js/crear.js"></script>
 
 </body>

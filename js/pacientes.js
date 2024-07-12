@@ -5,13 +5,11 @@ function consultar(){
 	enviaAjax(datos);	
 }
 function destruyeDT(){
-	//1 se destruye el datatablet
 	if ($.fn.DataTable.isDataTable("#tablapersonal")) {
             $("#tablapersonal").DataTable().destroy();
     }
 }
 function crearDT(){
-	//se crea nuevamente
     if (!$.fn.DataTable.isDataTable("#tablapersonal")) {
             $("#tablapersonal").DataTable({
               language: {
@@ -34,11 +32,9 @@ function crearDT(){
     }         
 }
 $(document).ready(function(){
-	
-	//ejecuta una consulta a la base de datos para llenar la tabla
 	consultar();
 	
-//VALIDACION DE DATOS	
+// Validaciones
 	$("#cedula_historia").on("keypress",function(e){
 		validarkeypress(/^[0-9-\b]*$/,e);
 	});
@@ -66,23 +62,11 @@ $(document).ready(function(){
 		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
 		$(this),$("#snombre"),"Solo letras  entre 3 y 30 caracteres");
 	});
-	
-	$("#correo").on("keypress",function(e){
-		validarkeypress(/^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/);
-	});
-	
-	$("#correo").on("keyup",function(){
-		validarkeyup(/^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/ ,
-		$(this),$("#scorreo"),"Formato incorrecto");
-	});
-	
-	
-	
-//FIN DE VALIDACION DE DATOS
 
 
 
-//CONTROL DE BOTONES
+
+// Control de los Botones
 $("#proceso").on("click",function(){
 	if($(this).text()=="INCLUIR"){
 		if(validarenvio()){
@@ -170,16 +154,10 @@ $("#incluir").on("click",function(){
 	$("#proceso").text("INCLUIR");
 	$("#modal1").modal("show");
 });
-
-
-
-
-
-	
 	
 });
 
-//Validación de todos los campos antes del envio
+//Validación de todos los campos antes de eviar
 function validarenvio(){
 	if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula_historia"),
 		$("#scedula_historia"),"El formato debe ser 12345678")==0){
@@ -215,22 +193,14 @@ function muestraMensaje(mensaje){
 
 //Función para validar por Keypress
 function validarkeypress(er,e){
-	
 	key = e.keyCode;
-	
-	
     tecla = String.fromCharCode(key);
-	
-	
     a = er.test(tecla);
-	
     if(!a){
-	
 		e.preventDefault();
     }
-	
-    
 }
+
 //Función para validar por keyup
 function validarkeyup(er,etiqueta,etiquetamensaje,
 mensaje){
@@ -247,10 +217,7 @@ mensaje){
 
 //funcion para pasar de la lista a el formulario
 function pone(pos,accion){
-	
 	linea=$(pos).closest('tr');
-
-
 	if(accion==0){
 		$("#proceso").text("MODIFICAR");
 	}
@@ -287,8 +254,14 @@ function pone(pos,accion){
 	$("#modal1").modal("show");
 }
 
+<<<<<<< HEAD
+//Envio de Datos USANDO AJAX !!
+=======
+
+
 
 //funcion que envia y recibe datos por AJAX
+>>>>>>> 0a6f048205cec86e35cb7b85ac92cbb7441dc2cf
 function enviaAjax(datos) {
   $.ajax({
     async: true,
@@ -299,7 +272,7 @@ function enviaAjax(datos) {
     processData: false,
     cache: false,
     beforeSend: function () {},
-    timeout: 10000, //tiempo maximo de espera por la respuesta del servidor
+    timeout: 10000,
     success: function (respuesta) {
     console.log(respuesta);
       try {
@@ -323,13 +296,6 @@ function enviaAjax(datos) {
 			   consultar();
 		   }
         }
-		else if (lee.resultado == "eliminar") {
-           muestraMensaje(lee.mensaje);
-		   if(lee.mensaje=='Paciente Eliminado Exitosamente'){
-			   $("#modal1").modal("hide");
-			   consultar();
-		   }
-        }
 		else if (lee.resultado == "error") {
            muestraMensaje(lee.mensaje);
         }
@@ -338,26 +304,12 @@ function enviaAjax(datos) {
       }
     },
     error: function (request, status, err) {
-      // si ocurrio un error en la trasmicion
-      // o recepcion via ajax entra aca
-      // y se muestran los mensaje del error
       if (status == "timeout") {
-        //pasa cuando superan los 10000 10 segundos de timeout
         muestraMensaje("Servidor ocupado, intente de nuevo");
       } else {
-        //cuando ocurre otro error con ajax
         muestraMensaje("ERROR: <br/>" + request + status + err);
       }
     },
     complete: function () {},
   });
-}
-
-function limpia(){
-	$("#cedula_historia").val("");
-	$("#apellido").val("");
-	$("#nombre").val("");
-	$("#fecha_nac").val("");
-	$("#edad").val("");
-	$("#telefono").prop("selectedIndex",0);
 }

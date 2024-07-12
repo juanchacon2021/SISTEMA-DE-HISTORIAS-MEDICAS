@@ -1,12 +1,10 @@
 
 $(document).ready(function(){
-	//para obtener la fecha del servidor y calcular la 
-	//edad de nacimiento que debe ser mayor a 18 
 	var datos = new FormData();
 		datos.append('accion','obtienefecha');
 		enviaAjax(datos);	
-	//fin de colocar fecha en input fecha de nacimiento
-//VALIDACION DE DATOS	
+
+// VALIDAR LOS DATOS
 	$("#cedula_historia").on("keypress",function(e){
 		validarkeypress(/^[0-9-\b]*$/,e);
 	});
@@ -49,11 +47,11 @@ $(document).ready(function(){
 	
 	
 	
-//FIN DE VALIDACION DE DATOS
+//FIN VALIDAR DATOS
 
 
 
-//CONTROL DE BOTONES
+// CONTROL DE LOS BOTONES
 
 $("#incluir").on("click",function(){
 	if(validarenvio()){
@@ -68,6 +66,22 @@ $("#incluir").on("click",function(){
 		enviaAjax(datos);
 	}
 });
+
+$("#incluir").on("click",function(){
+	if(validarenvio()){
+
+		var datos = new FormData($("#f")[0]);
+		datos.append('accion','incluir');
+		datos.append('antec_madre',$("#antec_madre").val());
+		datos.append('antec_padre',$("#antec_padre").val());
+		datos.append('antec_hermano',$("#antec_hermano").val());
+		datos.append('antec_personal',$("#antec_personal").val());
+		
+		enviaAjax(datos);
+		
+	}
+});
+
 $("#modificar").on("click",function(){
 	if(validarenvio()){
 
@@ -134,15 +148,12 @@ $("#consultar").on("click",function(){
 	
 });
 
-//funcion para enlazar al DataTablet
 function destruyeDT(){
-	//1 se destruye el datatablet
 	if ($.fn.DataTable.isDataTable("#tablapersonas")) {
             $("#tablapersonas").DataTable().destroy();
     }
 }
 function crearDT(){
-	//se crea nuevamente
     if (!$.fn.DataTable.isDataTable("#tablapersonas")) {
             $("#tablapersonas").DataTable({
               language: {
@@ -166,7 +177,7 @@ function crearDT(){
 }
 
 
-//Validación de todos los campos antes del envio
+// VALIDAR ANTES DE ENVIAR
 function validarenvio(){
 	if(validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
 		$("#apellido"),$("#sapellido"),"Solo letras  entre 3 y 30 caracteres")==0){
@@ -188,7 +199,6 @@ function validarenvio(){
 }
 
 
-//Funcion que muestra el modal con un mensaje
 function muestraMensaje(mensaje){
 	
 	$("#contenidodemodal").html(mensaje);
@@ -199,25 +209,15 @@ function muestraMensaje(mensaje){
 }
 
 
-//Función para validar por Keypress
 function validarkeypress(er,e){
-	
 	key = e.keyCode;
-	
-	
     tecla = String.fromCharCode(key);
-	
-	
     a = er.test(tecla);
-	
     if(!a){
-	
 		e.preventDefault();
     }
-	
-    
 }
-//Función para validar por keyup
+
 function validarkeyup(er,etiqueta,etiquetamensaje,
 mensaje){
 	a = er.test(etiqueta.val());
@@ -231,7 +231,6 @@ mensaje){
 	}
 }
 
-//funcion para pasar de la lista a el formulario
 function coloca(linea){
 	$("#cedula_historia").val($(linea).find("td:eq(0)").text());
 	$("#apellido").val($(linea).find("td:eq(1)").text());
@@ -254,15 +253,9 @@ function coloca(linea){
 	$("#ojos").val($(linea).find("td:eq(18)").text());
 	$("#nariz").val($(linea).find("td:eq(19)").text());
 	$("#tiroides").val($(linea).find("td:eq(20)").text());
-	$("#cardiovascular").val($(linea).find("td:eq(21)").text());
-	$("#respiratorio").val($(linea).find("td:eq(22)").text());
-	$("#abdomen").val($(linea).find("td:eq(23)").text());
-	$("#extremidades").val($(linea).find("td:eq(24)").text());
-	$("#neurologico").val($(linea).find("td:eq(25)").text());
 	
 }
 
-//funcion que envia y recibe datos por AJAX
 function enviaAjax(datos){
 	 
 	$.ajax({
@@ -274,8 +267,8 @@ function enviaAjax(datos){
 			processData: false,
 			cache: false,
 			beforeSend: function () {},
-			timeout: 10000, //tiempo maximo de espera por la respuesta del servidor
-            success: function(respuesta) {//si resulto exitosa la transmision
+			timeout: 10000,
+            success: function(respuesta) {
 			console.log(respuesta);
 				try {
 					var lee = JSON.parse(respuesta);
@@ -331,21 +324,83 @@ function enviaAjax(datos){
 			   
             },
             error: function (request, status, err) {
-			  // si ocurrio un error en la trasmicion
-			  // o recepcion via ajax entra aca
-			  // y se muestran los mensaje del error
 			  if (status == "timeout") {
-				//pasa cuando superan los 10000 10 segundos de timeout
 				muestraMensaje("Servidor ocupado, intente de nuevo");
 			  } else {
-				//cuando ocurre otro error con ajax
 				muestraMensaje("ERROR: <br/>" + request + status + err);
 			  }
 			},
 			complete: function () {},
-			
     }); 
+}
+
+function pone(pos,accion){
 	
+	linea=$(pos).closest('tr');
+
+
+	if(accion==0){
+		$("#proceso").text("Enviar");
+	}
+	else if (accion==1){
+		$("#proceso").text("ELIMINAR");
+	}
+	else{
+		$("#proceso").text("INCLUIR");
+	}
+	$("#antec_madre").val($(linea).find("td:eq(1)").text());
+	$("#antec_padre").val($(linea).find("td:eq(2)").text());
+	$("#antec_hermano").val($(linea).find("td:eq(3)").text());
+	$("#antec_personal").val($(linea).find("td:eq(4)").text());
+	$("#modal1").modal("show");
+}
+
+function poneregional(pos,accion){
+	
+	linea=$(pos).closest('tr');
+
+
+	if(accion==0){
+		$("#proceso2").text("Enviar");
+	}
+	
+	$("#boca_abierta").val($(linea).find("td:eq(1)").text());
+	$("#boca_cerrada").val($(linea).find("td:eq(2)").text());
+	$("#oidos").val($(linea).find("td:eq(3)").text());
+	$("#cabeza_craneo").val($(linea).find("td:eq(4)").text());
+	$("#ojos").val($(linea).find("td:eq(5)").text());
+	$("#nariz").val($(linea).find("td:eq(6)").text());
+	$("#tiroides").val($(linea).find("td:eq(7)").text());
+	$("#extremidades").val($(linea).find("td:eq(8)").text());
+	$("#modal2").modal("show");
+}
+
+function ponegeneral(pos,accion){
+	
+	linea=$(pos).closest('tr');
+
+
+	if(accion==0){
+		$("#proceso3").text("Enviar");
+	}
+	
+	$("#general").val($(linea).find("td:eq(1)").text());
+	$("#modal3").modal("show");
+}
+
+function ponesistema(pos,accion){
+	
+	linea=$(pos).closest('tr');
+
+
+	if(accion==0){
+		$("#proceso4").text("Enviar");
+	}
+	$("#cardiovascular").val($(linea).find("td:eq(1)").text());
+	$("#respiratorio").val($(linea).find("td:eq(2)").text());
+	$("#abdomen").val($(linea).find("td:eq(3)").text());
+	$("#neurologico").val($(linea).find("td:eq(4)").text());
+	$("#modal4").modal("show");
 }
 
 function limpia(){

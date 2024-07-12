@@ -9,8 +9,8 @@
 			</div>
      </div>
      <div class="modal-body">
-            <h4>Resultado</h4>
-            <div id="contenidodemodal">
+            <span class=" d-flex justify-content-center fas fa-check-circle" style="font-size: 80px; color: green;"></span>
+            <div class=" d-flex justify-content-center font-semibold py-4" id="contenidodemodal">
 			</div>    
      </div>
      <div class="modal-footer">

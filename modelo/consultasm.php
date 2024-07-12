@@ -140,8 +140,7 @@ class consultas extends datos{
 		if($this->existe($this->cod_consulta)){
 			try {
 					$co->query("Update consultas set 
-					    cod_consulta = '$this->cod_consulta',
-						fechaconsulta = '$this->fechaconsulta',
+					    fechaconsulta = '$this->fechaconsulta',
 						diagnostico = '$this->diagnostico',
 						tratamientos = '$this->tratamientos',
 						cedula_p = '$this->cedula_p',
@@ -158,7 +157,7 @@ class consultas extends datos{
 		}
 		else{
 			$r['resultado'] = 'modificar';
-			$r['mensaje'] =  'Cedula no registrada';
+			$r['mensaje'] =  'cod de consulta no registrado';
 		}
 		return $r;
 	}
@@ -182,7 +181,7 @@ class consultas extends datos{
 		}
 		else{
 			$r['resultado'] = 'eliminar';
-			$r['mensaje'] =  'No existe la cedula';
+			$r['mensaje'] =  'No existe el codigo de consulta';
 		}
 		return $r;
 	}
@@ -203,11 +202,11 @@ class consultas extends datos{
 					    $respuesta = $respuesta."<tr>";
 					    $respuesta = $respuesta."<td>";
 							$respuesta = $respuesta."<button type='button'
-							class='btn btn-primary w-100 small-width mb-3' 
+							class='btn botonazul w-100 small-width mb-3' 
 							onclick='pone(this,0)'
 						    >Modificar</button><br/>";
 							$respuesta = $respuesta."<button type='button'
-							class='btn btn-primary w-100 small-width mt-2' 
+							class='btn boton w-100 small-width mt-2' 
 							onclick='pone(this,1)'
 						    >Eliminar</button><br/>";
 						$respuesta = $respuesta."</td>";
@@ -224,11 +223,10 @@ class consultas extends datos{
 						$respuesta = $respuesta.$r['tratamientos'];
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td>";
-						$respuesta = $respuesta.$r['cedula_p'];
+							$respuesta = $respuesta.$r['cedula_h'];
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['cedula_h'];
-                        
+							$respuesta = $respuesta.$r['cedula_p'];
 				}
 				
 			    $r['resultado'] = 'consultar';

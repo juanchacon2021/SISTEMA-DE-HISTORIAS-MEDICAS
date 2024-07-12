@@ -34,21 +34,21 @@ require_once("modelo/".$pagina.".php");
 		  if($accion=='consultar'){
 			 echo  json_encode($o->consultar());  
 		  }
-		  elseif($accion=='eliminar'){
+		  else if($accion=='eliminar'){
 			 $o->set_cod_consulta($_POST['cod_consulta']);
 			 echo  json_encode($o->eliminar());
 		  }
 		  else{		  
-			  
+		      $o->set_cod_consulta($_POST['cod_consulta']);
 			  $o->set_fechaconsulta($_POST['fechaconsulta']);
 			  $o->set_diagnostico($_POST['diagnostico']);
 			  $o->set_tratamientos($_POST['tratamientos']);
-			  $o->set_cedula_p($_POST['cedula_p']);
 			  $o->set_cedula_h($_POST['cedula_h']);
+			  $o->set_cedula_p($_POST['cedula_p']);
 			  if($accion=='incluir'){
 				echo  json_encode($o->incluir());
 			  }
-			  elseif($accion=='modificar'){
+			  else if($accion=='modificar'){
 				echo  json_encode($o->modificar());
 			  }
 		  }

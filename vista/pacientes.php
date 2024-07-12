@@ -8,11 +8,11 @@
 <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
 Pacientes
 </div>
-<div class="container pl-64"> <!-- todo el contenido ira dentro de esta etiqueta-->
+<div class="container pl-64">
 	<div class="container">
 		<div class="row mt-3 justify-content-between">
-		    <div class="col-md-2">
-				<a href="?pagina=crear" class="boton">Registrar Paciente</a>
+		    <div class="col-md-2 botonverde">
+				<a href="?pagina=crear" >Registrar Paciente</a>
 			</div>
 					
 			<div class="col-md-2">	
@@ -41,13 +41,13 @@ Pacientes
 	   </table>
 	  </div>
   </div>
-</div> <!-- fin de container -->
+</div> <!-- FIN DEL CONTAINER -->
 
 
-<!-- seccion del modal -->
+<!-- SECCION MODIFICAR -->
 <div class="modal fade" tabindex="-1" role="dialog"  id="modal1">
   	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-header text-light bg-danger flex justify-content-between">
+		<div class="modal-header text-light gradiente flex justify-content-between ">
 			<h5 class="modal-title font-semibold text-xl">Modificar Paciente</h5>
 			<button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
 			<span aria-hidden="true" class="pe-auto">&times;</span>
@@ -280,18 +280,17 @@ Pacientes
 
 						<div class="row mt-3 justify-content-center">
 							<div class="col-md-2">
-								<button type="button" class="btn btn-primary" 
+								<button type="button" class="btn botonverde" 
 								id="proceso" ></button>
 							</div>
 						</div>
 					</div>	
 				</form>
 			</div>
-		</div> <!-- fin de container -->
+		</div>
     </div>
 </div>
-<!--fin de seccion modal-->
-<!--Llamada a archivo modal.php, dentro de el hay una sección modal-->
+
 <?php require_once("comunes/modal.php"); ?>
 <script type="text/javascript" src="js/pacientes.js"></script>
 

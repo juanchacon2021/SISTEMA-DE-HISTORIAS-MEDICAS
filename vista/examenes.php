@@ -11,8 +11,8 @@ Examenes
 <div class="container pl-64"> <!-- todo el contenido ira dentro de esta etiqueta-->
 	<div class="container">
 		<div class="row mt-3 justify-content-between">
-		    <div class="col-md-2">
-				<a href="?pagina=crearexamenes" class="boton">Registrar Examenes</a>
+		    <div class="col-md-2 botonverde">
+				<a href="?pagina=crearexamenes">Registrar Examenes</a>
 			</div>
 					
 			<div class="col-md-2">	
@@ -45,11 +45,9 @@ Examenes
 <!-- seccion del modal -->
 <div class="modal fade" tabindex="-1" role="dialog"  id="modal1">
   <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-header text-light bg-info">
+    <div class="modal-header text-light bg-info gradiente">
         <h5 class="modal-title">Formulario de Examenes</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-content">
 		<div class="container"> <!-- todo el contenido ira dentro de esta etiqueta-->
@@ -108,7 +106,7 @@ Examenes
 		-->
     </div>
 	<div class="modal-footer bg-light">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn botonverde" data-dismiss="modal">Cerrar</button>
     </div>
   </div>
 </div>
