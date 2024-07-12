@@ -205,7 +205,7 @@ class emergencias extends datos{
 							onclick='pone(this,1)'
 						    >Eliminar</button><br/>";
 							$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
+						$respuesta = $respuesta."<td style='display:none;'>";
 							$respuesta = $respuesta.$r['cod_emergencia'];
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td>";

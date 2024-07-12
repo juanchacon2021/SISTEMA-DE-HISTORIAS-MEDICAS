@@ -22,7 +22,7 @@ Emergencias
 			<thead>
 			  <tr>
 				<th>Acciones</th>
-				<th>Cod. de emergencia</th>
+			    <th style="display:none;">Cod. de emergencia</th> 
 				<th>Hora de Ingreso</th>
 				<th>Fecha de Ingreso</th>
 				<th>Motivo de Ingrso</th>				
