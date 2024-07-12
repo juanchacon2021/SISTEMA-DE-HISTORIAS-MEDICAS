@@ -8,95 +8,11 @@
 <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800">
 Emergencias
 </div>
-<!--nuevo-->
-<div class="container">	
-				<div class="row mb-3">
-				
-				<div class="col-md-4" style="display: none;">
-					   <label for="cod_emergencia">cod_emergencia</label>
-					   <input class="form-control" type="text" id="cod_emergencia" />
-					   <span id="scod_emergencia"></span>
-					</div>
-					
-					<div class="col-md-4">
-					   <label for="horaingreso">Hora de Ingreso</label>
-					   <input class="form-control" type="text" id="horaingreso" />
-					   <span id="shoraingreso"></span>
-					</div>
-
-                    <div class="col-md-4">
-					   <label for="fechaingreso">Fecha de Ingreso</label>
-					   <input class="form-control" type="date" id="fechaingreso" />
-					   <span id="fechaingreso"></span>
-					</div>
-
-					
-				</div>
-				
-				<div class="col-md-4">
-					   <label for="motingreso">Motivo de Ingrso</label>
-					   <input class="form-control" type="text" id="motingreso" />
-					   <span id="smotingreso"></span>
-					</div>
-
-				<div class="row mb-3">
-
-					<div class="col-md-12">
-					   <label for="diagnostico_e">Diagnostico</label>
-					   <input class="form-control" type="text" id="diagnostico_e"  />
-					   <span id="sdiagnostico_e"></span>
-					</div>
-                    
-				</div>
-				<div class="row mb-3">
-
-					<div class="col-md-12">
-					   <label for="tratamientos">Tratamientos</label>
-					   <input class="form-control" type="text" id="tratamientos"/>
-					   <span id="stratamientos"></span>
-					</div>
-                    
-				</div>
-
-
-				<div class="row mb-3">
-
-					<div class="col-md-12">
-					   <label for="cedula_p">Cedula_p</label>
-					   <input class="form-control" type="text" id="cedula_p"  />
-					   <span id="scedula_p"></span>
-					</div>
-					<div class="col-md-12">
-					   <label for="cedula_h">Cedula_h</label>
-					   <input class="form-control" type="text" id="cedula_h"  />
-					   <span id="scedula_h"></span>
-					</div>
-                    
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<hr/>
-					</div>
-				</div>
-
-				<div class="row mt-3 justify-content-center">
-					<div class="col-md-2">
-						   <button type="button" class="btn btn-primary" 
-						   id="proceso" style="background: #FF0000"></button>
-					</div>
-				</div>
-			</div>
-
-<!--nuevo-->
 <div class="container pl-64">
 	<div class="container">
 		<div class="row mt-3 justify-content-between">
 		    <div class="col-md-2 botonverde" style="cursor: pointer;" onclick='pone(this,3)' >
 				Registrar Emergencias
-			</div>
-					
-			<div class="col-md-2">	
-                <a href="?pagina=principal" class="boton">Volver</a>
 			</div>
 		</div>
 	</div>
@@ -121,8 +37,12 @@ Emergencias
 			  
 			</tbody>
 	   </table>
+
 	  </div>
   </div>
+  <div class="col-md-2" style="margin-left: 1100px;" >	
+        <a href="?pagina=principal" class="boton">Volver</a>
+	</div>
 </div> 
 
 
