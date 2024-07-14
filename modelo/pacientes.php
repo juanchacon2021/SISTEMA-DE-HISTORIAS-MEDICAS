@@ -243,7 +243,7 @@ class historias extends datos{
 	function incluir(){
 		$r = array();
 		if(!$this->existe($this->cedula_historia)){
-<<<<<<< HEAD
+
 			$co = $this->conecta();
 			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			//2 Se ejecuta el sql
@@ -310,7 +310,7 @@ class historias extends datos{
 				$r['resultado'] = 'error';
 			    $r['mensaje'] =  $e->getMessage();
 			}
-=======
+
 		  $co = $this->conecta();
 		  $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		  try {
@@ -376,7 +376,7 @@ class historias extends datos{
 			$r['resultado'] = 'error';
 			$r['mensaje'] =  $e->getMessage();
 		  }
->>>>>>> e675df40b1d0cc90d1eebad129c7032db62886f5
+
 		}
 		else{
 		  $r['resultado'] = 'incluir';
