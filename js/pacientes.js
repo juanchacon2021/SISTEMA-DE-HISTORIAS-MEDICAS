@@ -45,23 +45,23 @@ $(document).ready(function(){
 	});
 	
 	
-	$("#apellido").on("keypress",function(e){
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
-	});
+	// $("#apellido").on("keypress",function(e){
+	// 	validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	// });
 	
-	$("#apellido").on("keyup",function(){
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#sapellido"),"Solo letras  entre 3 y 30 caracteres");
-	});
+	// $("#apellido").on("keyup",function(){
+	// 	validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+	// 	$(this),$("#sapellido"),"Solo letras  entre 3 y 30 caracteres");
+	// });
 	
-	$("#nombre").on("keypress",function(e){
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
-	});
+	// $("#nombre").on("keypress",function(e){
+	// 	validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	// });
 	
-	$("#nombre").on("keyup",function(){
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#snombre"),"Solo letras  entre 3 y 30 caracteres");
-	});
+	// $("#nombre").on("keyup",function(){
+	// 	validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+	// 	$(this),$("#snombre"),"Solo letras  entre 3 y 30 caracteres");
+	// });
 
 
 
@@ -254,14 +254,6 @@ function pone(pos,accion){
 	$("#modal1").modal("show");
 }
 
-<<<<<<< HEAD
-//Envio de Datos USANDO AJAX !!
-=======
-
-
-
-//funcion que envia y recibe datos por AJAX
->>>>>>> 0a6f048205cec86e35cb7b85ac92cbb7441dc2cf
 function enviaAjax(datos) {
   $.ajax({
     async: true,

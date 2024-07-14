@@ -53,7 +53,7 @@ require_once("modelo/".$pagina.".php");
 			  $o->set_abdomen($_POST['abdomen']);
 			  $o->set_extremidades($_POST['extremidades']);
 			  $o->set_neurologico($_POST['neurologico']);
-			  $o->set_general($_POST['general']);
+			//   $o->set_general($_POST['general']);
 			  if($accion=='incluir'){
 				echo  json_encode($o->incluir());
 			  }

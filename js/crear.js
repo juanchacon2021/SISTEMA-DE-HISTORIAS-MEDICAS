@@ -72,10 +72,36 @@ $("#incluir").on("click",function(){
 
 		var datos = new FormData($("#f")[0]);
 		datos.append('accion','incluir');
-		datos.append('antec_madre',$("#antec_madre").val());
-		datos.append('antec_padre',$("#antec_padre").val());
-		datos.append('antec_hermano',$("#antec_hermano").val());
-		datos.append('antec_personal',$("#antec_personal").val());
+		datos.append('cedula_historia',$("#cedula_historia").val());
+		datos.append('apellido',$("#apellido").val());
+		datos.append('nombre',$("#nombre").val());
+		datos.append('fecha_nac',$("#fecha_nac").val());
+		datos.append('edad',$("#edad").val());
+		datos.append('telefono',$("#telefono").val());
+		datos.append('estadocivi',$("#estadocivi").val());
+		datos.append('direccion',$("#direccion").val());
+		datos.append('ocupacion',$("#ocupacion").val());
+		datos.append('hda',$("#hda").val());
+		datos.append('habtoxico',$("#habtoxico").val());
+		datos.append('alergias',$("#alergias").val());
+		datos.append('quirurgicos',$("#quirurgicos").val());
+		datos.append('transsanguineo',$("#transsanguineo").val());
+		datos.append('boca_abierta',$("#boca_abierta").val());
+		datos.append('boca_cerrada',$("#boca_cerrada").val());
+		datos.append('oidos',$("#oidos").val());
+		datos.append('cabeza_craneo',$("#cabeza_craneo").val());
+		datos.append('ojos',$("#ojos").val());
+		datos.append('nariz',$("#nariz").val());
+		datos.append('tiroides',$("#tiroides").val());
+		datos.append('cardiovascular',$("#cardiovascular").val());
+		datos.append('respiratorio',$("#respiratorio").val());
+		datos.append('abdomen',$("#abdomen").val());
+		datos.append('extremidades',$("#extremidades").val());
+		datos.append('neurologico',$("#neurologico").val());
+		// datos.append('antec_madre',$("#antec_madre").val());
+		// datos.append('antec_padre',$("#antec_padre").val());
+		// datos.append('antec_hermano',$("#antec_hermano").val());
+		// datos.append('antec_personal',$("#antec_personal").val());
 		
 		enviaAjax(datos);
 		
@@ -94,25 +120,25 @@ $("#modificar").on("click",function(){
 		datos.append('edad',$("#edad").val());
 		datos.append('telefono',$("#telefono").val());
 		datos.append('estadocivi',$("#estadocivi").val());
-		datos.append('direccion',$("#apellido").val());
-		datos.append('ocupacion',$("#nombre").val());
-		datos.append('hda',$("#fecha_nac").val());
-		datos.append('habtoxico',$("#edad").val());
-		datos.append('alergias',$("#telefono").val());
-		datos.append('quirurgicos',$("#estadocivi").val());
-		datos.append('transsanguineo',$("#apellido").val());
-		datos.append('boca_abierta',$("#nombre").val());
-		datos.append('boca_cerrada',$("#fecha_nac").val());
-		datos.append('oidos',$("#edad").val());
-		datos.append('cabeza_craneo',$("#telefono").val());
-		datos.append('ojos',$("#estadocivi").val());
-		datos.append('nariz',$("#estadocivi").val());
-		datos.append('tiroides',$("#apellido").val());
-		datos.append('cardiovascular',$("#nombre").val());
-		datos.append('respiratorio',$("#fecha_nac").val());
-		datos.append('abdomen',$("#edad").val());
-		datos.append('extremidades',$("#telefono").val());
-		datos.append('neurologico',$("#estadocivi").val());
+		datos.append('direccion',$("#direccion").val());
+		datos.append('ocupacion',$("#ocupacion").val());
+		datos.append('hda',$("#hda").val());
+		datos.append('habtoxico',$("#habtoxico").val());
+		datos.append('alergias',$("#alergias").val());
+		datos.append('quirurgicos',$("#quirurgicos").val());
+		datos.append('transsanguineo',$("#transsanguineo").val());
+		datos.append('boca_abierta',$("#boca_abierta").val());
+		datos.append('boca_cerrada',$("#boca_cerrada").val());
+		datos.append('oidos',$("#oidos").val());
+		datos.append('cabeza_craneo',$("#cabeza_craneo").val());
+		datos.append('ojos',$("#ojos").val());
+		datos.append('nariz',$("#nariz").val());
+		datos.append('tiroides',$("#tiroides").val());
+		datos.append('cardiovascular',$("#cardiovascular").val());
+		datos.append('respiratorio',$("#respiratorio").val());
+		datos.append('abdomen',$("#abdomen").val());
+		datos.append('extremidades',$("#extremidades").val());
+		datos.append('neurologico',$("#neurologico").val());
 		enviaAjax(datos);
 		
 	}
@@ -282,32 +308,32 @@ function enviaAjax(datos){
 					   $("#modal1").modal("show");
 					}
 					else if (lee.resultado == "encontro") {
-						$("#cedula_historia").val(lee.mensaje[0][2]);
-					   $("#apellido").val(lee.mensaje[0][2]);
-					   $("#nombre").val(lee.mensaje[0][3]);
+						$("#cedula_historia").val(lee.mensaje[0][10]);
+					   $("#apellido").val(lee.mensaje[0][10]);
+					   $("#nombre").val(lee.mensaje[0][10]);
 					   $("#fecha_nac").val(lee.mensaje[0][10]);
-					   $("#edad").val(lee.mensaje[0][3]);
+					   $("#edad").val(lee.mensaje[0][10]);
 					   $("#telefono").val(lee.mensaje[0][12]);
-					   $("#estadocivi").val(lee.mensaje[0][4]);
-					   $("#direccion").val(lee.mensaje[0][2]);
-					   $("#ocupacion").val(lee.mensaje[0][2]);
-					   $("#hda").val(lee.mensaje[0][3]);
-					   $("#habtoxico").val(lee.mensaje[0][4]);
-					   $("#alergias").val(lee.mensaje[0][2]);
-					   $("#quirurgicos").val(lee.mensaje[0][3]);
-					   $("#transsanguineo").val(lee.mensaje[0][2]);
-					   $("#boca_abierta").val(lee.mensaje[0][3]);
-					   $("#boca_cerrada").val(lee.mensaje[0][4]);
-					   $("#oidos").val(lee.mensaje[0][2]);
-					   $("#cabeza_craneo").val(lee.mensaje[0][3]);
+					   $("#estadocivi").val(lee.mensaje[0][10]);
+					   $("#direccion").val(lee.mensaje[0][10]);
+					   $("#ocupacion").val(lee.mensaje[0][10]);
+					   $("#hda").val(lee.mensaje[0][10]);
+					   $("#habtoxico").val(lee.mensaje[0][10]);
+					   $("#alergias").val(lee.mensaje[0][10]);
+					   $("#quirurgicos").val(lee.mensaje[0][10]);
+					   $("#transsanguineo").val(lee.mensaje[0][10]);
+					   $("#boca_abierta").val(lee.mensaje[0][10]);
+					   $("#boca_cerrada").val(lee.mensaje[0][10]);
+					   $("#oidos").val(lee.mensaje[0][10]);
+					   $("#cabeza_craneo").val(lee.mensaje[0][10]);
 					   $("#ojos").val(lee.mensaje[0][10]);
-					   $("#nariz").val(lee.mensaje[0][3]);
-					   $("#tiroides").val(lee.mensaje[0][4]);
-					   $("#cardiovascular").val(lee.mensaje[0][2]);
-					   $("#respiratorio").val(lee.mensaje[0][3]);
-					   $("#abdomen").val(lee.mensaje[0][2]);
-					   $("#extremidades").val(lee.mensaje[0][3]);
-					   $("#neurologico").val(lee.mensaje[0][4]);
+					   $("#nariz").val(lee.mensaje[0][10]);
+					   $("#tiroides").val(lee.mensaje[0][10]);
+					   $("#cardiovascular").val(lee.mensaje[0][10]);
+					   $("#respiratorio").val(lee.mensaje[0][10]);
+					   $("#abdomen").val(lee.mensaje[0][10]);
+					   $("#extremidades").val(lee.mensaje[0][10]);
+					   $("#neurologico").val(lee.mensaje[0][10]);
 					}
 					else if (lee.resultado == "incluir" || 
 					lee.resultado == "modificar" || 
@@ -334,74 +360,80 @@ function enviaAjax(datos){
     }); 
 }
 
-function pone(pos,accion){
+// function pone(pos,accion){
 	
-	linea=$(pos).closest('tr');
+// 	linea=$(pos).closest('tr');
 
 
-	if(accion==0){
-		$("#proceso").text("Enviar");
-	}
-	else if (accion==1){
-		$("#proceso").text("ELIMINAR");
-	}
-	else{
-		$("#proceso").text("INCLUIR");
-	}
-	$("#antec_madre").val($(linea).find("td:eq(1)").text());
-	$("#antec_padre").val($(linea).find("td:eq(2)").text());
-	$("#antec_hermano").val($(linea).find("td:eq(3)").text());
-	$("#antec_personal").val($(linea).find("td:eq(4)").text());
-	$("#modal1").modal("show");
-}
-
-function poneregional(pos,accion){
+// 	if(accion==0){
+// 		$("#proceso").text("Enviar");
+// 	}
+// 	else if (accion==1){
+// 		$("#proceso").text("ELIMINAR");
+// 	}
+// 	else{
+// 		$("#proceso").text("INCLUIR");
+// 	}
 	
-	linea=$(pos).closest('tr');
+// 	$("#antec_madre").val($(linea).find("td:eq(1)").text());
+// 	$("#antec_padre").val($(linea).find("td:eq(2)").text());
+// 	$("#antec_hermano").val($(linea).find("td:eq(3)").text());
+// 	$("#antec_personal").val($(linea).find("td:eq(4)").text());
+// 	$("#cardiovascular").val($(linea).find("td:eq(1)").text());
+// 	$("#respiratorio").val($(linea).find("td:eq(2)").text());
+// 	$("#abdomen").val($(linea).find("td:eq(3)").text());
+// 	$("#neurologico").val($(linea).find("td:eq(4)").text());
+// 	$("#modal1").modal("show");
+// }
 
-
-	if(accion==0){
-		$("#proceso2").text("Enviar");
-	}
+// function poneregional(pos,accion){
 	
-	$("#boca_abierta").val($(linea).find("td:eq(1)").text());
-	$("#boca_cerrada").val($(linea).find("td:eq(2)").text());
-	$("#oidos").val($(linea).find("td:eq(3)").text());
-	$("#cabeza_craneo").val($(linea).find("td:eq(4)").text());
-	$("#ojos").val($(linea).find("td:eq(5)").text());
-	$("#nariz").val($(linea).find("td:eq(6)").text());
-	$("#tiroides").val($(linea).find("td:eq(7)").text());
-	$("#extremidades").val($(linea).find("td:eq(8)").text());
-	$("#modal2").modal("show");
-}
+// 	linea=$(pos).closest('tr');
 
-function ponegeneral(pos,accion){
+
+// 	if(accion==0){
+// 		$("#proceso2").text("Enviar");
+// 	}
 	
-	linea=$(pos).closest('tr');
-
-
-	if(accion==0){
-		$("#proceso3").text("Enviar");
-	}
+// 	$("#boca_abierta").val($(linea).find("td:eq(1)").text());
+// 	$("#boca_cerrada").val($(linea).find("td:eq(2)").text());
+// 	$("#oidos").val($(linea).find("td:eq(3)").text());
+// 	$("#cabeza_craneo").val($(linea).find("td:eq(4)").text());
+// 	$("#ojos").val($(linea).find("td:eq(5)").text());
+// 	$("#nariz").val($(linea).find("td:eq(6)").text());
+// 	$("#tiroides").val($(linea).find("td:eq(7)").text());
+// 	$("#extremidades").val($(linea).find("td:eq(8)").text());
 	
-	$("#general").val($(linea).find("td:eq(1)").text());
-	$("#modal3").modal("show");
-}
+// 	$("#modal2").modal("show");
+// }
 
-function ponesistema(pos,accion){
+// function ponegeneral(pos,accion){
 	
-	linea=$(pos).closest('tr');
+// 	linea=$(pos).closest('tr');
 
 
-	if(accion==0){
-		$("#proceso4").text("Enviar");
-	}
-	$("#cardiovascular").val($(linea).find("td:eq(1)").text());
-	$("#respiratorio").val($(linea).find("td:eq(2)").text());
-	$("#abdomen").val($(linea).find("td:eq(3)").text());
-	$("#neurologico").val($(linea).find("td:eq(4)").text());
-	$("#modal4").modal("show");
-}
+// 	if(accion==0){
+// 		$("#proceso3").text("Enviar");
+// 	}
+	
+// 	$("#general").val($(linea).find("td:eq(1)").text());
+// 	$("#modal3").modal("show");
+// }
+
+// function ponesistema(pos,accion){
+	
+// 	linea=$(pos).closest('tr');
+
+
+// 	if(accion==0){
+// 		$("#proceso4").text("Enviar");
+// 	}
+// 	$("#cardiovascular").val($(linea).find("td:eq(1)").text());
+// 	$("#respiratorio").val($(linea).find("td:eq(2)").text());
+// 	$("#abdomen").val($(linea).find("td:eq(3)").text());
+// 	$("#neurologico").val($(linea).find("td:eq(4)").text());
+// 	$("#modal4").modal("show");
+// }
 
 function limpia(){
 	$("#cedula_historia").val("");
