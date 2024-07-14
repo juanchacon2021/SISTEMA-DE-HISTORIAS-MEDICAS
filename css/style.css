@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,100..900;1,100..900&family=Marcellus&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
+
+.inicio {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.texto-inicio {
+    font-family: 'Sora';
+}
+
+.texto-bienvenida {
+    float: right;
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.fondo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 80px;
+}
+
+.fondo img {
+    width: 200px;
+    height: 170px;
+}
+
+.pacientes {
+    width: 80%;
+    float: right;
+    padding: 20px;
+}
+
+.boton {
+    font-family: 'Sora';
+    background-color: rgb(220 38 38);
+    border-radius: 0.5rem;
+    border: 0.5rem solid rgb(220 38 38);
+    color: white;
+    width: auto;
+}
+
+.botonazul {
+    font-family: 'Sora';
+    background-color: rgb(0 0 255);
+    border-radius: 0.5rem;
+    border: 0.5rem solid rgb(0 0 255);
+    color: white;
+    width: auto;
+}
+
+.botonverde {
+    font-family: 'Sora';
+    background-color: rgb(47, 148, 52);
+    border-radius: 0.5rem;
+    border: 0.5rem solid rgb(47, 148, 52);
+    color: white;
+    width: auto;
+}
+
+.boton:hover {
+    background-color: rgb(153, 27, 27);
+    border: 0.5rem solid rgb(153, 27, 27);
+}
+
+.botonverde:hover {
+    background-color: rgb(47, 148, 52);
+    border: 0.5rem solid rgb(47, 148, 52);
+}
+
+.botonazul:hover {
+    background-color: rgb(0, 0, 255);
+    border: 0.5rem solid rgb(0 0 255);
+}
+.botonverde1 {
+    font-family: 'Sora';
+    background-color: rgb(0, 161, 0);
+    border-radius: 0.5rem;
+    border: 0.5rem solid rgb(0, 161, 0);
+    color: white;
+    width: auto;
+}
+.botonverde1:hover {
+    background-color: rgb(0, 95, 5);
+    border: 0.5rem solid rgba(0, 102, 5, 0.925);
+}
+
+.gradiente{
+background: -webkit-linear-gradient(90deg, #ff0000,#ff8080);/* Chrome 10-25, Safari 5.1-6 */ 
+background: linear-gradient(90deg, #ff0000,#ff8080);/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
