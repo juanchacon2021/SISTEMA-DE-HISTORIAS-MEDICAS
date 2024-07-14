@@ -4,13 +4,11 @@ function consultar(){
 	enviaAjax(datos);	
 }
 function destruyeDT(){
-	//1 se destruye el datatablet
 	if ($.fn.DataTable.isDataTable("#tablapersonal")) {
             $("#tablapersonal").DataTable().destroy();
     }
 }
 function crearDT(){
-	//se crea nuevamente
     if (!$.fn.DataTable.isDataTable("#tablapersonal")) {
             $("#tablapersonal").DataTable({
               language: {
@@ -34,17 +32,8 @@ function crearDT(){
 }
 $(document).ready(function(){
 	
-	//ejecuta una consulta a la base de datos para llenar la tabla
 	consultar();
-	
-//VALIDACION DE DATOS	
-	
-	
-//FIN DE VALIDACION DE DATOS
 
-
-
-//CONTROL DE BOTONES
 $("#proceso").on("click",function(){
 	if($(this).text()=="INCLUIR"){
 		if(validarenvio()){
@@ -99,14 +88,14 @@ $("#incluir").on("click",function(){
 	
 });
 
-//Validación de todos los campos antes del envio
+
 function validarenvio(){
 	
 	return true;
 }
 
 
-//Funcion que muestra el modal con un mensaje
+
 function muestraMensaje(mensaje){
 	
 	$("#contenidodemodal").html(mensaje);
@@ -117,7 +106,7 @@ function muestraMensaje(mensaje){
 }
 
 
-//Función para validar por Keypress
+
 function validarkeypress(er,e){
 	
 	key = e.keyCode;
@@ -135,7 +124,7 @@ function validarkeypress(er,e){
 	
     
 }
-//Función para validar por keyup
+
 function validarkeyup(er,etiqueta,etiquetamensaje,
 mensaje){
 	a = er.test(etiqueta.val());
@@ -149,7 +138,6 @@ mensaje){
 	}
 }
 
-//funcion para pasar de la lista a el formulario
 function pone(pos,accion){
 	
 	linea=$(pos).closest('tr');
@@ -176,7 +164,7 @@ function pone(pos,accion){
 }
 
 
-//funcion que envia y recibe datos por AJAX
+
 function enviaAjax(datos) {
   $.ajax({
     async: true,
@@ -187,7 +175,7 @@ function enviaAjax(datos) {
     processData: false,
     cache: false,
     beforeSend: function () {},
-    timeout: 10000, //tiempo maximo de espera por la respuesta del servidor
+    timeout: 10000, 
     success: function (respuesta) {
     console.log(respuesta);
       try {
@@ -226,14 +214,12 @@ function enviaAjax(datos) {
       }
     },
     error: function (request, status, err) {
-      // si ocurrio un error en la trasmicion
-      // o recepcion via ajax entra aca
-      // y se muestran los mensaje del error
+      
       if (status == "timeout") {
-        //pasa cuando superan los 10000 10 segundos de timeout
+        
         muestraMensaje("Servidor ocupado, intente de nuevo");
       } else {
-        //cuando ocurre otro error con ajax
+        
         muestraMensaje("ERROR: <br/>" + request + status + err);
       }
     },

@@ -84,13 +84,13 @@ class examenes extends datos{
 			//2 Se ejecuta el sql
 			try {
 					$co->query("Insert into examenes(
-						cod_examenes,
+						
 						tipo_examen,
 						observacion_medica,
 						cedula_h
 						) 
 						Values(
-						'$this->cod_examenes',
+						
 						'$this->tipo_examen',
 						'$this->observacion_medica',
 						'$this->cedula_h'

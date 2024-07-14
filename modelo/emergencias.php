@@ -1,23 +1,12 @@
 <?php
-//llamda al archivo que contiene la clase
-//datos, en ella posteriormente se colcora el codigo
-//para enlazar a su base de datos
+
 require_once('modelo/datos.php');
 
-//declaracion de la clase usuarios que hereda de la clase datos
-//la herencia se declara con la palabra extends y no es mas 
-//que decirle a esta clase que puede usar los mismos metodos
-//que estan en la clase de dodne hereda (La padre) como sir fueran de el
 
 class emergencias extends datos{
-	//el primer paso dentro de la clase
-	//sera declarar los atributos (variables) que describen la clase
-	//para nostros no es mas que colcoar los inputs (controles) de
-	//la vista como variables aca
-	//cada atributo debe ser privado, es decir, ser visible solo dentro de la
-	//misma clase, la forma de colcoarlo privado es usando la palabra private
+
 	
-	private $cod_emergencia; //recuerden que en php, las variables no tienen tipo predefinido
+	private $cod_emergencia; 
 	private $horaingreso;
 	private $fechaingreso;
 	private $motingreso;
@@ -27,15 +16,8 @@ class emergencias extends datos{
 	private $cedula_h;
 
 	
-	//Ok ya tenemos los atributos, pero como son privados no podemos acceder a ellos desde fueran
-	//por lo que debemos colcoar metodos (funciones) que me permitan leer (get) y colocar (set)
-	//valores en ello, esto es  muy mal llamado geters y seters por si alguien se los pregunta
-	
 	function set_cod_emergencia($valor){
-		$this->cod_emergencia = $valor; //fijencen como se accede a los elementos dentro de una clase
-		//this que singnifica esto es decir esta clase luego -> simbolo que indica que apunte
-		//a un elemento de this, es decir esta clase
-		//luego el nombre del elemento sin el $
+		$this->cod_emergencia = $valor;
 	}
 	
 	
@@ -68,7 +50,6 @@ class emergencias extends datos{
 		$this->cedula_h = $valor;
 	}
 	
-	//ahora la misma cosa pero para leer, es decir get
 	
 	function get_cod_emergencia(){
 		return $this->cod_emergencia;
@@ -102,23 +83,14 @@ class emergencias extends datos{
 		return $this->cedula_h;
 	}
 
-	//Lo siguiente que demos hacer es crear los metodos para incluir, consultar y eliminar
-	
 	function incluir(){
-		//Ok ya tenemos la base de datos y la funcion conecta dentro de la clase
-		//datos, ahora debemos ejecutar las operaciones para realizar las emergencias 
 		
-		//Lo primero que debemos hacer es consultar por el campo clave
-		//en este caso la cedula, para ello se creo la funcion existe
-		//que retorna true en caso de exitir el registro
 		$r = array();
 		if(!$this->existe($this->cod_emergencia)){
-			//si estamos aca es porque la cedula no existe es decir se puede incluir
-			//los pasos a seguir son
-			//1 Se llama a la funcion conecta 
+		
 			$co = $this->conecta();
 			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			//2 Se ejecuta el sql
+		
 			try {
 					$co->query("Insert into emergencias(
 						horaingreso,
@@ -150,9 +122,7 @@ class emergencias extends datos{
 			$r['mensaje'] =  'Ya existe el Cod de Consulta';
 		}
 		return $r;
-		//Listo eso es todo y es igual para el resto de las operaciones
-		//incluir, modificar y eliminar
-		//solo cambia para buscar 
+		
 	}
 	
 	function modificar(){
@@ -227,7 +197,7 @@ class emergencias extends datos{
 					    $respuesta = $respuesta."<tr>";
 					    $respuesta = $respuesta."<td>";
 							$respuesta = $respuesta."<button type='button'
-							class='btn botonazul w-100 small-width mb-3' 
+							class='btn botonverde1 w-100 small-width mb-3' 
 							onclick='pone(this,0)'
 						    >Modificar</button><br/>";
 							$respuesta = $respuesta."<button type='button'
@@ -235,7 +205,7 @@ class emergencias extends datos{
 							onclick='pone(this,1)'
 						    >Eliminar</button><br/>";
 							$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
+						$respuesta = $respuesta."<td style='display:none;'>";
 							$respuesta = $respuesta.$r['cod_emergencia'];
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td>";
@@ -303,18 +273,6 @@ class emergencias extends datos{
 	}
 	
 	
-	
-	/*	function obtienefecha(){
-		$r = array();
-		
-			  $f = date('Y-m-d');
-		      $f1 = strtotime ('-18 year' , strtotime($f)); 
-		      $f1 = date ('Y-m-d',$f1);
-			  $r['resultado'] = 'obtienefecha';
-			  $r['mensaje'] =  $f1;
-		
-		return $r;
-	}*/
 
 	
 	

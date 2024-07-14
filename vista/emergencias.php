@@ -8,15 +8,11 @@
 <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800">
 Emergencias
 </div>
-<div class="container pl-64"> <!-- todo el contenido ira dentro de esta etiqueta-->
+<div class="container pl-64">
 	<div class="container">
 		<div class="row mt-3 justify-content-between">
 		    <div class="col-md-2 botonverde" style="cursor: pointer;" onclick='pone(this,3)' >
 				Registrar Emergencias
-			</div>
-					
-			<div class="col-md-2">	
-                <a href="?pagina=principal" class="boton">Volver</a>
 			</div>
 		</div>
 	</div>
@@ -26,7 +22,7 @@ Emergencias
 			<thead>
 			  <tr>
 				<th>Acciones</th>
-				<th>Cod. de emergencia</th>
+			    <th style="display:none;">Cod. de emergencia</th> 
 				<th>Hora de Ingreso</th>
 				<th>Fecha de Ingreso</th>
 				<th>Motivo de Ingrso</th>				
@@ -41,12 +37,15 @@ Emergencias
 			  
 			</tbody>
 	   </table>
+
 	  </div>
   </div>
-</div> <!-- fin de container -->
+  <div class="col-md-2" style="margin-left: 1100px;" >	
+        <a href="?pagina=principal" class="boton">Volver</a>
+	</div>
+</div> 
 
 
-<!-- seccion del modal -->
 <div class="modal fade" tabindex="-1" role="dialog"  id="modal1">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -54,7 +53,7 @@ Emergencias
         <h5 class="modal-title">Formulario de Emergencias</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
-		<div class="container"> <!-- todo el contenido ira dentro de esta etiqueta-->
+		<div class="container">
 		   <form method="post" id="f" autocomplete="off">
 			<input autocomplete="off" type="text" class="form-control" name="accion" id="accion" style="display: none;">
 			<div class="container">	
@@ -135,17 +134,13 @@ Emergencias
 				</div>
 			</div>	
 			</form>
-		</div> <!-- fin de container -->
-		<!--
+		</div> 
 		
-		-->
     </div>
 	
   </div>
 </div>
 
-<!--fin de seccion modal-->
-<!--Llamada a archivo modal.php, dentro de el hay una sección modal-->
 <?php require_once("comunes/modal.php"); ?>
 <script type="text/javascript" src="js/emergencias.js"></script> 
 

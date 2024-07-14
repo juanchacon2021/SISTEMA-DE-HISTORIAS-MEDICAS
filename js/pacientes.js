@@ -69,7 +69,7 @@ $(document).ready(function(){
 // Control de los Botones
 $("#proceso").on("click",function(){
 	if($(this).text()=="INCLUIR"){
-		if(validarenvio()){
+		
 			var datos = new FormData();
 			datos.append('accion','incluir');
 			datos.append('cedula_historia',$("#cedula_historia").val());
@@ -99,7 +99,7 @@ $("#proceso").on("click",function(){
 			datos.append('extremidades',$("#extremidades").val());
 			datos.append('neurologico',$("#neurologico").val());
 			enviaAjax(datos);
-		}
+		
 	}
 	else if($(this).text()=="MODIFICAR"){
 		if(validarenvio()){
@@ -216,13 +216,13 @@ mensaje){
 }
 
 //funcion para pasar de la lista a el formulario
-function pone(pos,accion){
+function pone(pos,accion){ 
 	linea=$(pos).closest('tr');
 	if(accion==0){
 		$("#proceso").text("MODIFICAR");
 	}
 	else{
-		$("#proceso").text("ELIMINAR");
+		$("#proceso").text("INCLUIR");
 	}
 	$("#cedula_historia").val($(linea).find("td:eq(1)").text());
 	$("#apellido").val($(linea).find("td:eq(2)").text());
@@ -254,54 +254,71 @@ function pone(pos,accion){
 	$("#modal1").modal("show");
 }
 
+<<<<<<< HEAD
+=======
+
+//Envio de Datos USANDO AJAX !!
+
+
+
+
+//funcion que envia y recibe datos por AJAX
+
+>>>>>>> e675df40b1d0cc90d1eebad129c7032db62886f5
 function enviaAjax(datos) {
-  $.ajax({
-    async: true,
-    url: "",
-    type: "POST",
-    contentType: false,
-    data: datos,
-    processData: false,
-    cache: false,
-    beforeSend: function () {},
-    timeout: 10000,
-    success: function (respuesta) {
-    console.log(respuesta);
-      try {
-        var lee = JSON.parse(respuesta);
-        if (lee.resultado == "consultar") {
-		   destruyeDT();	
-           $("#resultadoconsulta").html(lee.mensaje);
-		   crearDT();
-        }
-		else if (lee.resultado == "incluir") {
-           muestraMensaje(lee.mensaje);
-		   if(lee.mensaje=='Paciente Registrado Exitosamente'){
-			   $("#modal1").modal("hide");
-			   consultar();
-		   }
-        }
-		else if (lee.resultado == "modificar") {
-           muestraMensaje(lee.mensaje);
-		   if(lee.mensaje=='Paciente Modificado Exitosamente'){
-			   $("#modal1").modal("hide");
-			   consultar();
-		   }
-        }
-		else if (lee.resultado == "error") {
-           muestraMensaje(lee.mensaje);
-        }
-      } catch (e) {
-        alert("Error en JSON " + e.name);
-      }
-    },
-    error: function (request, status, err) {
-      if (status == "timeout") {
-        muestraMensaje("Servidor ocupado, intente de nuevo");
-      } else {
-        muestraMensaje("ERROR: <br/>" + request + status + err);
-      }
-    },
-    complete: function () {},
-  });
-}
+	$.ajax({
+	  async: true,
+	  url: "",
+	  type: "POST",
+	  contentType: false,
+	  data: datos,
+	  processData: false,
+	  cache: false,
+	  beforeSend: function () {},
+	  timeout: 10000, //tiempo maximo de espera por la respuesta del servidor
+	  success: function (respuesta) {
+	  console.log(respuesta);
+		try {
+		  var lee = JSON.parse(respuesta);
+		  if (lee.resultado == "consultar") {
+			 destruyeDT();	
+			 $("#resultadoconsulta").html(lee.mensaje);
+			 crearDT();
+		  }
+		  else if (lee.resultado == "incluir") {
+			 muestraMensaje(lee.mensaje);
+			 if(lee.mensaje=='Registro Inluido'){
+				 $("#modal1").modal("hide");
+				 consultar();
+			 }
+		  }
+		  else if (lee.resultado == "modificar") {
+			 muestraMensaje(lee.mensaje);
+			 if(lee.mensaje=='Registro Modificado'){
+				 $("#modal1").modal("hide");
+				 consultar();
+			 }
+		  }
+		  
+		  else if (lee.resultado == "error") {
+			 muestraMensaje(lee.mensaje);
+		  }
+		} catch (e) {
+		  alert("Error en JSON " + e.name);
+		}
+	  },
+	  error: function (request, status, err) {
+		// si ocurrio un error en la trasmicion
+		// o recepcion via ajax entra aca
+		// y se muestran los mensaje del error
+		if (status == "timeout") {
+		  //pasa cuando superan los 10000 10 segundos de timeout
+		  muestraMensaje("Servidor ocupado, intente de nuevo");
+		} else {
+		  //cuando ocurre otro error con ajax
+		  muestraMensaje("ERROR: <br/>" + request + status + err);
+		}
+	  },
+	  complete: function () {},
+	});
+  }

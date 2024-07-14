@@ -11,8 +11,8 @@ Pacientes
 <div class="container pl-64">
 	<div class="container">
 		<div class="row mt-3 justify-content-between">
-		    <div class="col-md-2 botonverde">
-				<a href="?pagina=crear" >Registrar Paciente</a>
+		<div class="col-md-2 botonverde" onclick='pone(this,3)' style="cursor: pointer;" >
+				Registrar Pacientes
 			</div>
 					
 			<div class="col-md-2">	

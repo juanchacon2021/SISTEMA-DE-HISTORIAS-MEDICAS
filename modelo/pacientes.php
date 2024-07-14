@@ -243,6 +243,7 @@ class historias extends datos{
 	function incluir(){
 		$r = array();
 		if(!$this->existe($this->cedula_historia)){
+<<<<<<< HEAD
 			$co = $this->conecta();
 			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			//2 Se ejecuta el sql
@@ -309,16 +310,80 @@ class historias extends datos{
 				$r['resultado'] = 'error';
 			    $r['mensaje'] =  $e->getMessage();
 			}
+=======
+		  $co = $this->conecta();
+		  $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		  try {
+			  $co->query("Insert into historias(
+				cedula_historia,
+				apellido,
+				nombre,
+				fecha_nac,
+				edad,
+				telefono,
+				estadocivi,
+				direccion,
+				ocupacion,
+				hda,
+				habtoxico,
+				alergias,
+				quirurgico,
+				transsanguineo,
+				boca_abierta,
+				boca_cerrada,
+				oidos,
+				cabeza_craneo,
+				ojos,
+				nariz,
+				tiroides,
+				cardiovascular,
+				respiratorio,
+				abdomen,
+				extremidades,
+				neurologico
+				) 
+				Values(
+				'$this->cedula_historia',
+				'$this->apellido',
+				'$this->nombre',
+				'$this->fecha_nac',
+				'$this->edad',
+				'$this->telefono',
+				'$this->estadocivi',
+				'$this->direccion',
+				'$this->ocupacion',
+				'$this->hda',
+				'$this->habtoxico',
+				'$this->alergias',
+				'$this->quirurgico',
+				'$this->transsanguineo',
+				'$this->boca_abierta',
+				'$this->boca_cerrada',
+				'$this->oidos',
+				'$this->cabeza_craneo',
+				'$this->ojos',
+				'$this->nariz',
+				'$this->tiroides',
+				'$this->cardiovascular',
+				'$this->respiratorio',
+				'$this->abdomen',
+				'$this->extremidades',
+				'$this->neurologico'
+				)");
+				$r['resultado'] = 'incluir';
+				$r['mensaje'] =  'Registro Inluido';
+		  } catch(Exception $e) {
+			$r['resultado'] = 'error';
+			$r['mensaje'] =  $e->getMessage();
+		  }
+>>>>>>> e675df40b1d0cc90d1eebad129c7032db62886f5
 		}
 		else{
-			$r['resultado'] = 'incluir';
-			$r['mensaje'] =  'Ya existe la cedula';
+		  $r['resultado'] = 'incluir';
+		  $r['mensaje'] =  'Ya existe la cedula';
 		}
 		return $r;
-		//Listo eso es todo y es igual para el resto de las operaciones
-		//incluir, modificar y eliminar
-		//solo cambia para buscar 
-	}
+	  }
 	
 	function modificar(){
 		$co = $this->conecta();
