@@ -12,7 +12,9 @@ Examenes
 	<div class="container">
 		<div class="row mt-3 justify-content-between">
 		    <div class="col-md-2 botonverde">
-				<a href="?pagina=crearexamenes">Registrar Examenes</a>
+			<div class="col-md-2 botonverde" onclick='pone(this,3)' style="cursor: pointer;" >
+				Registrar Examen Medico
+			</div>
 			</div>
 					
 			<div class="col-md-2">	
@@ -57,7 +59,7 @@ Examenes
 				<div class="row mb-3">
 
 					<div class="col-md-4">
-					   <label for="cod_examenes">COD Examen</label>
+					   <label for="cod_examenes" style="display: NONE;">COD Examen</label>
 					   <input class="form-control" type="text" id="cod_examenes" />
 					   <span id="scod_examenes"></span>
 					</div>

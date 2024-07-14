@@ -266,93 +266,80 @@ class historias extends datos{
 	//Lo siguiente que demos hacer es crear los metodos para incluir, consultar y eliminar
 	
 	function incluir(){
-		//Ok ya tenemos la base de datos y la funcion conecta dentro de la clase
-		//datos, ahora debemos ejecutar las operaciones para realizar las consultas 
-		
-		//Lo primero que debemos hacer es consultar por el campo clave
-		//en este caso la cedula, para ello se creo la funcion existe
-		//que retorna true en caso de exitir el registro
 		$r = array();
 		if(!$this->existe($this->cedula_historia)){
-			//si estamos aca es porque la cedula no existe es decir se puede incluir
-			//los pasos a seguir son
-			//1 Se llama a la funcion conecta 
-			$co = $this->conecta();
-			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			//2 Se ejecuta el sql
-			try {
-				$p = $co->prepare("Insert into historias(
-							cedula_historia,
-							apellido,
-							nombre,
-							fecha_nac,
-							edad,
-							telefono,
-							estadocivi,
-							direccion,
-							ocupacion,
-							hda,
-							habtoxico,
-							alergias,
-							quirurgico,
-							transsanguineo,
-							boca_abierta,
-							boca_cerrada,
-							oidos,
-							cabeza_craneo,
-							ojos,
-							nariz,
-							tiroides,
-							cardiovascular,
-							respiratorio,
-							abdomen,
-							extremidades,
-							neurologico
-							)
-							Values(
-							'$this->cedula_historia',
-							'$this->apellido',
-							'$this->nombre',
-							'$this->fecha_nac',
-							'$this->edad',
-							'$this->telefono',
-							'$this->estadocivi',
-							'$this->direccion',
-							'$this->ocupacion',
-							'$this->hda',
-							'$this->habtoxico',
-							'$this->alergias',
-							'$this->quirurgico',
-							'$this->transsanguineo',
-							'$this->boca_abierta',
-							'$this->boca_cerrada',
-							'$this->oidos',
-							'$this->cabeza_craneo',
-							'$this->ojos',
-							'$this->nariz',
-							'$this->tiroides',
-							'$this->cardiovascular',
-							'$this->respiratorio',
-							'$this->abdomen',
-							'$this->extremidades',
-							'$this->neurologico'
-							)");
-						$r['resultado'] = 'incluir';
-			            $r['mensaje'] =  'Registro Inluido';
-			} catch(Exception $e) {
-				$r['resultado'] = 'error';
-			    $r['mensaje'] =  $e->getMessage();
-			}
+		  $co = $this->conecta();
+		  $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		  try {
+			  $co->query("Insert into historias(
+				cedula_historia,
+				apellido,
+				nombre,
+				fecha_nac,
+				edad,
+				telefono,
+				estadocivi,
+				direccion,
+				ocupacion,
+				hda,
+				habtoxico,
+				alergias,
+				quirurgico,
+				transsanguineo,
+				boca_abierta,
+				boca_cerrada,
+				oidos,
+				cabeza_craneo,
+				ojos,
+				nariz,
+				tiroides,
+				cardiovascular,
+				respiratorio,
+				abdomen,
+				extremidades,
+				neurologico
+				) 
+				Values(
+				'$this->cedula_historia',
+				'$this->apellido',
+				'$this->nombre',
+				'$this->fecha_nac',
+				'$this->edad',
+				'$this->telefono',
+				'$this->estadocivi',
+				'$this->direccion',
+				'$this->ocupacion',
+				'$this->hda',
+				'$this->habtoxico',
+				'$this->alergias',
+				'$this->quirurgico',
+				'$this->transsanguineo',
+				'$this->boca_abierta',
+				'$this->boca_cerrada',
+				'$this->oidos',
+				'$this->cabeza_craneo',
+				'$this->ojos',
+				'$this->nariz',
+				'$this->tiroides',
+				'$this->cardiovascular',
+				'$this->respiratorio',
+				'$this->abdomen',
+				'$this->extremidades',
+				'$this->neurologico'
+				)");
+				$r['resultado'] = 'incluir';
+				$r['mensaje'] =  'Registro Inluido';
+		  } catch(Exception $e) {
+			$r['resultado'] = 'error';
+			$r['mensaje'] =  $e->getMessage();
+		  }
 		}
 		else{
-			$r['resultado'] = 'incluir';
-			$r['mensaje'] =  'Ya existe la cedula';
+		  $r['resultado'] = 'incluir';
+		  $r['mensaje'] =  'Ya existe la cedula';
 		}
 		return $r;
-		//Listo eso es todo y es igual para el resto de las operaciones
-		//incluir, modificar y eliminar
-		//solo cambia para buscar 
-	}
+	  }
 	
 	function modificar(){
 		$co = $this->conecta();

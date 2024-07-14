@@ -151,8 +151,11 @@ function pone(pos,accion){
 	if(accion==0){
 		$("#proceso").text("MODIFICAR");
 	}
-	else{
+	else if(accion==1){
 		$("#proceso").text("ELIMINAR");
+	}
+	else{
+		$("#proceso").text("INCLUIR");
 	}
 	$("#cod_examenes").val($(linea).find("td:eq(1)").text());
 	$("#tipo_examen").val($(linea).find("td:eq(2)").text());

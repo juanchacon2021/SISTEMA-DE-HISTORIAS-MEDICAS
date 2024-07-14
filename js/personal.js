@@ -254,21 +254,25 @@ function enviaAjax(datos) {
         }
 		else if (lee.resultado == "incluir") {
            muestraMensaje(lee.mensaje);
-		   if(lee.mensaje=='Registro Inluido'){
+		   if(lee.mensaje=='Personal Inluido'){
 			   $("#modal1").modal("hide");
-			   consultar();
+			   crearDT();
+			   destruyeDT();
+
 		   }
         }
 		else if (lee.resultado == "modificar") {
            muestraMensaje(lee.mensaje);
-		   if(lee.mensaje=='Registro Modificado'){
+		   if(lee.mensaje=='Personal Modificado'){
 			   $("#modal1").modal("hide");
 			   consultar();
+			   crearDT();
+			   destruyeDT();
 		   }
         }
 		else if (lee.resultado == "eliminar") {
            muestraMensaje(lee.mensaje);
-		   if(lee.mensaje=='Registro Eliminado'){
+		   if(lee.mensaje=='Personal Eliminado'){
 			   $("#modal1").modal("hide");
 			   consultar();
 		   }
