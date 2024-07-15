@@ -8,7 +8,7 @@
 <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800">
 Personal
 </div>
-<div class="container pl-64"> <!-- todo el contenido ira dentro de esta etiqueta-->
+<div class="container pl-64"> <!-- container-->
 	<div class="container">
 		<div class="row mt-3 justify-content-between">
 		    <div class="col-md-2 botonverde" onclick='pone(this,3)' style="cursor: pointer;" >
@@ -53,12 +53,13 @@ Personal
          
     </div>
     <div class="modal-content">
-		<div class="container"> <!-- todo el contenido ira dentro de esta etiqueta-->
+		<div class="container"> <!-- contenido -->
 		   <form method="post" id="f" autocomplete="off">
 			<input autocomplete="off" type="text" class="form-control" name="accion" id="accion" style="display: none;">
 			<div class="container">	
 				<div class="row mb-3">
-					<div class="col-md-4">
+					
+				<div class="col-md-4">
 					   <label for="cedula_personal">Cedula</label>
 					   <input class="form-control" type="text" id="cedula_personal" />
 					   <span id="scedula_personal"></span>
@@ -117,16 +118,13 @@ Personal
 			</div>	
 			</form>
 		</div> <!-- fin de container -->
-		<!--
-		
-		-->
+	 
     </div>
 	<div class="modal-footer bg-light">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
     </div>
   </div>
 </div>
-<!--fin de seccion modal-->
 <!--Llamada a archivo modal.php, dentro de el hay una sección modal-->
 <?php require_once("comunes/modal.php"); ?>
 <script type="text/javascript" src="js/personal.js"></script>
