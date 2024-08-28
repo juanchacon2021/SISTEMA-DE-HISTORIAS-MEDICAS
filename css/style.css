@@ -8,6 +8,22 @@
     align-items: center;
 }
 
+.superponer {
+    z-index: 99;
+}
+
+.sidebarr {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Asegúrate de que el z-index del sidebar sea mayor */
+}
+
+.table-responsive {
+    position: relative;
+    z-index: 1; /* Asegúrate de que el z-index del contenedor de la tabla sea menor */
+}
+
 .texto-inicio {
     font-family: 'Sora';
 }
@@ -16,6 +32,10 @@
     float: right;
     font-size: 30px;
     font-weight: 600;
+}
+
+.espacio {
+    padding-left: 256px;
 }
 
 .fondo {
@@ -43,6 +63,11 @@
     border: 0.5rem solid rgb(220 38 38);
     color: white;
     width: auto;
+}
+
+.botones {
+    display: flex;
+    justify-content: space-between;
 }
 
 .botonazul {
@@ -94,4 +119,32 @@
 background: -webkit-linear-gradient(90deg, #ff0000,#ff8080);/* Chrome 10-25, Safari 5.1-6 */ 
 background: linear-gradient(90deg, #ff0000,#ff8080);/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.table td, .table th {
+    text-align: center; /* Centra el texto horizontalmente */
+    vertical-align: middle; /* Centra el texto verticalmente */
+}
+
+@media (max-width: 768px) {
+    .espacio {
+        padding-left: 0px;
+    }
+
+    .botones {
+        display: flex;
+        justify-content: end;
+    }
+
+    .button-container {
+        flex-direction: column;
+        align-items: center;
+    }
 }

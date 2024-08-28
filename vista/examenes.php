@@ -58,8 +58,8 @@ Examenes
 			<div class="container">	
 				<div class="row mb-3">
 
-					<div class="col-md-4">
-					   <label for="cod_examenes" style="display: NONE;">COD Examen</label>
+					<div class="col-md-4" style="display: NONE;">
+					   <label for="cod_examenes" >COD Examen</label>
 					   <input class="form-control" type="text" id="cod_examenes" />
 					   <span id="scod_examenes"></span>
 					</div>

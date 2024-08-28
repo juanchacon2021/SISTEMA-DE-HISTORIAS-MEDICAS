@@ -8,10 +8,10 @@
 <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
 Pacientes
 </div>
-<div class="container pl-64">
+<div class="container espacio">
 	<div class="container">
-		<div class="row mt-3 justify-content-between">
-		<div class="col-md-2 boton" onclick='pone(this,3)' style="cursor: pointer;" >
+		<div class="row mt-3 botones">
+			<div class="col-md-2 boton" onclick='pone(this,3)' style="cursor: pointer;" >
 				Registrar Pacientes
 			</div>
 					
@@ -47,10 +47,15 @@ Pacientes
 <!-- SECCION MODIFICAR -->
 <div class="modal fade" tabindex="-1" role="dialog"  id="modal1">
   	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-header text-light gradiente flex justify-content-between ">
-			<h5 class="modal-title font-semibold text-xl" >Paciente</h5>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-			<span aria-hidden="true" class="pe-auto">&times;</span>
+		<div class="modal-header text-light gradiente flex justify-content-between">
+			<div class="flex justify-content-end w-[50%]">
+				<h5 class="modal-title font-semibold text-xl">Paciente</h5>
+			</div>
+			<div class="w-[50%] flex justify-content-end">
+				<button type="button" class="close text-[30px]"  style="cursor: pointer" data-dismiss="modal" aria-label="Cerrar">
+					<span aria-hidden="true" style="cursor: pointer">&times;</span>
+				</button>
+			</div>
 			</button>
 		</div>
 		<div class="modal-content">

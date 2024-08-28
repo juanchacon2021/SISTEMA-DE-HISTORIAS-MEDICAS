@@ -5,13 +5,11 @@ function consultar(){
 	enviaAjax(datos);	
 }
 function destruyeDT(){
-	//1 se destruye el datatablet
 	if ($.fn.DataTable.isDataTable("#tablapersonal")) {
             $("#tablapersonal").DataTable().destroy();
     }
 }
 function crearDT(){
-	//se crea nuevamente
     if (!$.fn.DataTable.isDataTable("#tablapersonal")) {
             $("#tablapersonal").DataTable({
               language: {
@@ -35,7 +33,6 @@ function crearDT(){
 }
 $(document).ready(function(){
 	
-	//ejecuta una consulta a la base de datos para llenar la tabla
 	consultar();
 	
 //VALIDACION DE DATOS	
@@ -82,7 +79,6 @@ $(document).ready(function(){
 
 
 
-//CONTROL DE BOTONES
 $("#proceso").on("click",function(){
 	if($(this).text()=="INCLUIR"){
 		if(validarenvio()){
@@ -139,7 +135,6 @@ $("#incluir").on("click",function(){
 	
 });
 
-//Validación de todos los campos antes del envio
 function validarenvio(){
 	if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula_personal"),
 		$("#scedula_personal"),"El formato debe ser 12345678")==0){
@@ -162,18 +157,16 @@ function validarenvio(){
 }
 
 
-//Funcion que muestra el modal con un mensaje
 function muestraMensaje(mensaje){
 	
 	$("#contenidodemodal").html(mensaje);
 			$("#mostrarmodal").modal("show");
 			setTimeout(function() {
-					$("#mostrarmodal").modal("hide");
+			$("#mostrarmodal").modal("hide");
 			},5000);
 }
 
 
-//Función para validar por Keypress
 function validarkeypress(er,e){
 	
 	key = e.keyCode;
@@ -191,7 +184,6 @@ function validarkeypress(er,e){
 	
     
 }
-//Función para validar por keyup
 function validarkeyup(er,etiqueta,etiquetamensaje,
 mensaje){
 	a = er.test(etiqueta.val());
@@ -205,7 +197,6 @@ mensaje){
 	}
 }
 
-//funcion para pasar de la lista a el formulario
 function pone(pos,accion){
 	
 	linea=$(pos).closest('tr');
@@ -215,7 +206,7 @@ function pone(pos,accion){
 		$("#proceso").text("MODIFICAR");
 	}
 	else if(accion==1){
-		$("#proceso").text("ELIMINAR");
+		$("#proceso").text("ELIMINAR"); 
 	}
 	else{
 		$("#proceso").text("INCLUIR");
@@ -231,74 +222,64 @@ function pone(pos,accion){
 }
 
 
-//funcion que envia y recibe datos por AJAX
 function enviaAjax(datos) {
-  $.ajax({
-    async: true,
-    url: "",
-    type: "POST",
-    contentType: false,
-    data: datos,
-    processData: false,
-    cache: false,
-    beforeSend: function () {},
-    timeout: 10000, //tiempo maximo de espera por la respuesta del servidor
-    success: function (respuesta) {
-    console.log(respuesta);
-      try {
-        var lee = JSON.parse(respuesta);
-        if (lee.resultado == "consultar") {
-		   destruyeDT();	
-           $("#resultadoconsulta").html(lee.mensaje);
-		   crearDT();
-        }
-		else if (lee.resultado == "incluir") {
-           muestraMensaje(lee.mensaje);
-		   if(lee.mensaje=='Personal Inluido'){
-			   $("#modal1").modal("hide");
-			   crearDT();
-			   destruyeDT();
-
-		   }
-        }
-		else if (lee.resultado == "modificar") {
-           muestraMensaje(lee.mensaje);
-		   if(lee.mensaje=='Personal Modificado'){
-			   $("#modal1").modal("hide");
-			   consultar();
-			   crearDT();
-			   destruyeDT();
-		   }
-        }
-		else if (lee.resultado == "eliminar") {
-           muestraMensaje(lee.mensaje);
-		   if(lee.mensaje=='Personal Eliminado'){
-			   $("#modal1").modal("hide");
-			   consultar();
-		   }
-        }
-		else if (lee.resultado == "error") {
-           muestraMensaje(lee.mensaje);
-        }
-      } catch (e) {
-        alert("Error en JSON " + e.name);
-      }
-    },
-    error: function (request, status, err) {
-      // si ocurrio un error en la trasmicion
-      // o recepcion via ajax entra aca
-      // y se muestran los mensaje del error
-      if (status == "timeout") {
-        //pasa cuando superan los 10000 10 segundos de timeout
-        muestraMensaje("Servidor ocupado, intente de nuevo");
-      } else {
-        //cuando ocurre otro error con ajax
-        muestraMensaje("ERROR: <br/>" + request + status + err);
-      }
-    },
-    complete: function () {},
-  });
-}
+	$.ajax({
+	  async: true,
+	  url: "",
+	  type: "POST",
+	  contentType: false,
+	  data: datos,
+	  processData: false,
+	  cache: false,
+	  beforeSend: function () {},
+	  timeout: 10000, 
+	  success: function (respuesta) {
+	  console.log(respuesta);
+		try {
+		  var lee = JSON.parse(respuesta);
+		  if (lee.resultado == "consultar") {
+			 destruyeDT();	
+			 $("#resultadoconsulta").html(lee.mensaje);
+			 crearDT();
+		  }
+		  else if (lee.resultado == "incluir") {
+			 muestraMensaje(lee.mensaje);
+			 if(lee.mensaje=='Registro Inluido'){
+				 $("#modal1").modal("hide");
+				 consultar();
+			 }
+		  }
+		  else if (lee.resultado == "modificar") {
+			 muestraMensaje(lee.mensaje);
+			 if(lee.mensaje=='Registro Modificado'){
+				 $("#modal1").modal("hide");
+				 consultar();
+			 }
+		  }
+		  else if (lee.resultado == "eliminar") {
+			 muestraMensaje(lee.mensaje);
+			 if(lee.mensaje=='Registro Eliminado'){
+				 $("#modal1").modal("hide");
+				 consultar();
+			 }
+		  }
+		  else if (lee.resultado == "error") {
+			 muestraMensaje(lee.mensaje);
+		  }
+		} catch (e) {
+		  alert("Error en JSON " + e.name);
+		}
+	  },
+	  error: function (request, status, err) {
+		if (status == "timeout") {
+		  muestraMensaje("Servidor ocupado, intente de nuevo");
+		} else {
+		  muestraMensaje("ERROR: <br/>" + request + status + err);
+		}
+	  },
+	  complete: function () {},
+	});
+  }
 
 function limpia(){
 	$("#cedula_personal").val("");

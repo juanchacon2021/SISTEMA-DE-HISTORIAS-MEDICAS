@@ -1,6 +1,6 @@
-<header>
+<header class="sidebarr">
         <span class="absolute text-white text-4xl top-5 left-4 cursor-pointer" onclick="Openbar()">
-            <i class="fa-solid fa-stethoscope bi bi-filter-left px-2 bg-red-600 rounded-md"></i>
+            <i class="fa-solid fa-bars py-2 px-2 bg-red-600 rounded-md" style="color: #ffffff;"></i>
         </span>
         <div class="sidebar fixed top-0 bottom-0 lg:left-0 left-[-300px] duration-1000 
             p-2 w-[300px] overflow-y-auto text-center bg-white shadow h-screen">
@@ -11,8 +11,8 @@
                     <span class="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
                 </span>
                 <a href="?pagina=principal"><i class="fa-solid fa-house px-2 py-2 bg-red-800 rounded-md text-white hover:text-white"></i></a>
-                <a href="?pagina=principal" class="text-[15px]  ml-3 text-xl text-stone-600 font-bold cursor-pointer text-stone-500 hover:text-stone-800">CDI - Carmen Estella Mendoza de Flores</a>
-                <a href="?pagina=principal"><i class="bi bi-x ml-20 cursor-pointer lg:hidden cursor-pointer hover:text-white" onclick="Openbar()"></i></a>
+                <a href="?pagina=principal" class="text-[18px] ml-3 text-stone-600 font-bold cursor-pointer text-stone-500 hover:text-stone-800">CDI - Carmen Estella Mendoza de Flores</a>
+                <a href="?pagina=principal"><i class="bi bi-x cursor-pointer lg:hidden cursor-pointer hover:text-white" onclick="Openbar()"></i></a>
             </div>
             <hr class="my-2 text-gray-600">
 

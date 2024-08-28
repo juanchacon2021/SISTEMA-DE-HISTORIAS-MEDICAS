@@ -431,17 +431,17 @@ class historias extends datos{
 					$respuesta = $respuesta."<tr>";
 					    $respuesta = $respuesta."<td>";
 
-						$respuesta = $respuesta."<div style='display: flex; justify-content: center; gap: 10px; margin-top: 10px'>
-						
-							<button type='button' class='btn btn-danger' onclick='pone(this,0)'>
-								<img src='img/lapiz.svg' style='width: 20px'>
-							</button>
+						$respuesta = $respuesta."<div class='button-container' style='display: flex; justify-content: center; gap: 10px; margin-top: 10px'>
+                        
+                            <button type='button' class='btn btn-danger' onclick='pone(this,0)'>
+                                <img src='img/lapiz.svg' style='width: 20px'>
+                            </button>
 
-							<a class='btn btn-success' href='vista/fpdf/historia.php' target='_blank'>
-								<img src='img/descarga.svg' style='width: 20px;'>
-							</a>
+                            <a class='btn btn-success' href='vista/fpdf/historia.php' target='_blank'>
+                                <img src='img/descarga.svg' style='width: 20px;'>
+                            </a>
 
-						</div><br/>";
+                        </div><br/>";
 
 							$respuesta = $respuesta."<td>".$r['cedula_historia']."</td>";
 							$respuesta = $respuesta."<td>".$r['apellido']."</td>";
