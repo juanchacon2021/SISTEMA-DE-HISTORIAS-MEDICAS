@@ -11,7 +11,7 @@ Pacientes
 <div class="container pl-64">
 	<div class="container">
 		<div class="row mt-3 justify-content-between">
-		<div class="col-md-2 botonverde" onclick='pone(this,3)' style="cursor: pointer;" >
+		<div class="col-md-2 boton" onclick='pone(this,3)' style="cursor: pointer;" >
 				Registrar Pacientes
 			</div>
 					
@@ -48,7 +48,7 @@ Pacientes
 <div class="modal fade" tabindex="-1" role="dialog"  id="modal1">
   	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-header text-light gradiente flex justify-content-between ">
-			<h5 class="modal-title font-semibold text-xl" >Modificar Paciente</h5>
+			<h5 class="modal-title font-semibold text-xl" >Paciente</h5>
 			<button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
 			<span aria-hidden="true" class="pe-auto">&times;</span>
 			</button>

@@ -254,7 +254,6 @@ function pone(pos,accion){
 }
 
 
-//Envio de Datos USANDO AJAX !!
 
 
 
@@ -318,3 +317,54 @@ function enviaAjax(datos) {
 	  complete: function () {},
 	});
   }
+
+  $(document).on('click', '.btn-modificar', function() {
+    var row = $(this).closest('tr');
+    
+    // Leer los valores de los atributos data-*
+    var estadocivi = row.data('estadocivi');
+    var direccion = row.data('direccion');
+    var ocupacion = row.data('ocupacion');
+    var hda = row.data('hda');
+    var habtoxico = row.data('habtoxico');
+    var alergias = row.data('alergias');
+    var quirurgico = row.data('quirurgico');
+    var transsanguineo = row.data('transsanguineo');
+    var boca_abierta = row.data('boca_abierta');
+    var boca_cerrada = row.data('boca_cerrada');
+    var oidos = row.data('oidos');
+    var cabeza_craneo = row.data('cabeza_craneo');
+    var ojos = row.data('ojos');
+    var nariz = row.data('nariz');
+    var tiroides = row.data('tiroides');
+    var cardiovascular = row.data('cardiovascular');
+    var respiratorio = row.data('respiratorio');
+    var abdomen = row.data('abdomen');
+    var extremidades = row.data('extremidades');
+    var neurologico = row.data('neurologico');
+    
+    // Rellenar los campos del formulario en el modal
+    $('#modalModificar input[name="estadocivi"]').val(estadocivi);
+    $('#modalModificar input[name="direccion"]').val(direccion);
+    $('#modalModificar input[name="ocupacion"]').val(ocupacion);
+    $('#modalModificar input[name="hda"]').val(hda);
+    $('#modalModificar input[name="habtoxico"]').val(habtoxico);
+    $('#modalModificar input[name="alergias"]').val(alergias);
+    $('#modalModificar input[name="quirurgico"]').val(quirurgico);
+    $('#modalModificar input[name="transsanguineo"]').val(transsanguineo);
+    $('#modalModificar input[name="boca_abierta"]').val(boca_abierta);
+    $('#modalModificar input[name="boca_cerrada"]').val(boca_cerrada);
+    $('#modalModificar input[name="oidos"]').val(oidos);
+    $('#modalModificar input[name="cabeza_craneo"]').val(cabeza_craneo);
+    $('#modalModificar input[name="ojos"]').val(ojos);
+    $('#modalModificar input[name="nariz"]').val(nariz);
+    $('#modalModificar input[name="tiroides"]').val(tiroides);
+    $('#modalModificar input[name="cardiovascular"]').val(cardiovascular);
+    $('#modalModificar input[name="respiratorio"]').val(respiratorio);
+    $('#modalModificar input[name="abdomen"]').val(abdomen);
+    $('#modalModificar input[name="extremidades"]').val(extremidades);
+    $('#modalModificar input[name="neurologico"]').val(neurologico);
+    
+    // Mostrar el modal
+    $('#modalModificar').modal('show');
+});

@@ -328,7 +328,7 @@ class historias extends datos{
 				'$this->neurologico'
 				)");
 				$r['resultado'] = 'incluir';
-				$r['mensaje'] =  'Registro Inluido';
+				$r['mensaje'] =  'Paciente Registrado Exitosamente';
 		  } catch(Exception $e) {
 			$r['resultado'] = 'error';
 			$r['mensaje'] =  $e->getMessage();
@@ -430,92 +430,26 @@ class historias extends datos{
 				foreach($resultado as $r){
 					$respuesta = $respuesta."<tr>";
 					    $respuesta = $respuesta."<td>";
-							$respuesta = $respuesta."<button type='button'
-							class='btn botonazul w-100 small-width mb-3' 
-							onclick='pone(this,0)'
-						    >Modificar</button><br/>";
-							$respuesta = $respuesta."<a class='btn boton w-100 small-width mt-2'
-							 href='vista/fpdf/historia.php' target='_blank'>
-							Descargar</a> <br/>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['cedula_historia'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['apellido'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['nombre'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['fecha_nac'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['edad'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['telefono'];
-						 $respuesta = $respuesta."</td>";
-						//  $respuesta = $respuesta."<td>";
-						//  	$respuesta = $respuesta.$r['estadocivi'];
-						//  $respuesta = $respuesta."</td>";
-						//  $respuesta = $respuesta."<td>";
-						//  	$respuesta = $respuesta.$r['direccion'];
-						//  $respuesta = $respuesta."</td>";
-						//  $respuesta = $respuesta."<td>";
-						//  	$respuesta = $respuesta.$r['ocupacion'];
-						//  $respuesta = $respuesta."</td>";
-						//  $respuesta = $respuesta."<td>";
-						//  	$respuesta = $respuesta.$r['hda'];
-						//  $respuesta = $respuesta."</td>";
-						//  $respuesta = $respuesta."<td>";
-						//  	$respuesta = $respuesta.$r['habtoxico'];
-						//  $respuesta = $respuesta."</td>";
-						//  $respuesta = $respuesta."<td>";
-						//  	$respuesta = $respuesta.$r['alergias'];
-						//  $respuesta = $respuesta."</td>";
-						//  $respuesta = $respuesta."<td>";
-						//  	$respuesta = $respuesta.$r['quirurgico'];
-						//  $respuesta = $respuesta."</td>";
-						//  $respuesta = $respuesta."<td>";
-						//  	$respuesta = $respuesta.$r['transsanguineo'];
-						//  $respuesta = $respuesta."</td>";
-						//  $respuesta = $respuesta."<td>";
-						//  	$respuesta = $respuesta.$r['boca_abierta'];
-						//  $respuesta = $respuesta."</td>";
-						//  $respuesta = $respuesta."<td>";
-						//  	$respuesta = $respuesta.$r['boca_cerrada'];
-						//  $respuesta = $respuesta."</td>";
-						//  $respuesta = $respuesta."<td>";
-						//  	$respuesta = $respuesta.$r['oidos'];
-						//  $respuesta = $respuesta."</td>";
-						//  $respuesta = $respuesta."<td>";
-						//  	$respuesta = $respuesta.$r['cabeza_craneo'];
-						//  $respuesta = $respuesta."</td>";
-						//  $respuesta = $respuesta."<td>";
-						//  	$respuesta = $respuesta.$r['ojos'];
-						//  $respuesta = $respuesta."</td>";
-						//  $respuesta = $respuesta."<td>";
-						//  	$respuesta = $respuesta.$r['nariz'];
-						//  $respuesta = $respuesta."</td>";
-						//  $respuesta = $respuesta."<td>";
-						//  	$respuesta = $respuesta.$r['tiroides'];
-						//  $respuesta = $respuesta."</td>";
-						//  $respuesta = $respuesta."<td>";
-						//  	$respuesta = $respuesta.$r['cardiovascular'];
-						//  $respuesta = $respuesta."</td>";
-						//  $respuesta = $respuesta."<td>";
-						//  	$respuesta = $respuesta.$r['respiratorio'];
-						//  $respuesta = $respuesta."</td>";
-						//  $respuesta = $respuesta."<td>";
-						//  	$respuesta = $respuesta.$r['abdomen'];
-						//  $respuesta = $respuesta."</td>";
-						//  $respuesta = $respuesta."<td>";
-						//  	$respuesta = $respuesta.$r['extremidades'];
-						//  $respuesta = $respuesta."</td>";
-						//  $respuesta = $respuesta."<td>";
-						//  	$respuesta = $respuesta.$r['neurologico'];
-						// $respuesta = $respuesta."</td>";
-					$respuesta = $respuesta."</tr>";
+
+						$respuesta = $respuesta."<div style='display: flex; justify-content: center; gap: 10px; margin-top: 10px'>
+						
+							<button type='button' class='btn btn-danger' onclick='pone(this,0)'>
+								<img src='img/lapiz.svg' style='width: 20px'>
+							</button>
+
+							<a class='btn btn-success' href='vista/fpdf/historia.php' target='_blank'>
+								<img src='img/descarga.svg' style='width: 20px;'>
+							</a>
+
+						</div><br/>";
+
+							$respuesta = $respuesta."<td>".$r['cedula_historia']."</td>";
+							$respuesta = $respuesta."<td>".$r['apellido']."</td>";
+							$respuesta = $respuesta."<td>".$r['nombre']."</td>";
+							$respuesta = $respuesta."<td>".$r['fecha_nac']."</td>";
+							$respuesta = $respuesta."<td>".$r['edad']."</td>";
+							$respuesta = $respuesta."<td>".$r['telefono']."</td>";
+							$respuesta = $respuesta."</tr>";
 				}
 				
 			    $r['resultado'] = 'consultar';
