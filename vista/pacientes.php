@@ -11,11 +11,11 @@ Pacientes
 <div class="container espacio">
 	<div class="container">
 		<div class="row mt-3 botones">
-			<div class="col-md-2 boton" onclick='pone(this,3)' style="cursor: pointer;" >
-				Registrar Pacientes
+			<div class="col-md-2 botonverde" style="cursor: pointer;" >
+				<a href="?pagina=historia" class="">Registrar Paciente</a>
 			</div>
 					
-			<div class="col-md-2">	
+			<div class="col-md-2 recortar">	
                 <a href="?pagina=principal" class="boton">Volver</a>
 			</div>
 		</div>
@@ -44,8 +44,8 @@ Pacientes
 </div> <!-- FIN DEL CONTAINER -->
 
 
-<!-- SECCION MODIFICAR -->
-<div class="modal fade" tabindex="-1" role="dialog"  id="modal1">
+<!-- SECCION MODAL -->
+<!-- <div class="modal fade" tabindex="-1" role="dialog"  id="modal1">
   	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-header text-light gradiente flex justify-content-between">
 			<div class="flex justify-content-end w-[50%]">
@@ -60,7 +60,7 @@ Pacientes
 		</div>
 		<div class="modal-content">
 			<div class="container mt-4"> <!-- todo el contenido ira dentro de esta etiqueta-->
-				<form method="post" id="f" autocomplete="off">
+				<!-- <form method="post" id="f" autocomplete="off">
 					<input autocomplete="off" type="text" class="form-control" name="accion" id="accion" style="display: none;">
 					<div class="container">	
 						<div class="row mb-3">
@@ -277,16 +277,41 @@ Pacientes
 							</div>
 						</div>
 
-						<div class="row">
+						<div class="row py-4">
 							<div class="col-md-12">
 								<hr/>
 							</div>
 						</div>
 
+						<div class="row mb-3 mx-1">
+							<div class="col-md-6">
+								<label for="nariz" class="texto-inicio font-medium">Antecedentes Personales</label>
+								<textarea class="form-control bg-gray-200 rounded-lg border-white" name="anteecpersonal" id=""></textarea>
+								<span id="santecpersonal"></span>
+							</div>
+
+							<div class="col-md-6">
+								<label for="tiroides" class="texto-inicio font-medium">Antecedentes Maternos</label>
+								<textarea class="form-control bg-gray-200 rounded-lg border-white" name="antecmadre" id=""></textarea>
+								<span id="santecmadre"></span>
+							</div>
+							
+							<div class="col-md-6">
+								<label for="cardiovascular" class="texto-inicio font-medium">Antecedentes Paternos</label>
+								<textarea class="form-control bg-gray-200 rounded-lg border-white" name="antecpadre" id=""></textarea>
+								<span id="santecpadre"></span>
+							</div>
+							
+							<div class="col-md-6">
+								<label for="respiratorio" class="texto-inicio font-medium">Antecedentes Hermanos</label>
+								<textarea class="form-control bg-gray-200 rounded-lg border-white" name="antechermano" id=""></textarea>
+								<span id="santechermano"></span>
+							</div>
+						</div>
+
 						<div class="row mt-3 justify-content-center">
 							<div class="col-md-2">
-								<button type="button" class="btn botonverde" 
-								id="proceso" ></button>
+								<button type="button" class="btn botonverde" id="proceso"></button>
 							</div>
 						</div>
 					</div>	
@@ -294,7 +319,7 @@ Pacientes
 			</div>
 		</div>
     </div>
-</div>
+</div> --> 
 
 <?php require_once("comunes/modal.php"); ?>
 <script type="text/javascript" src="js/pacientes.js"></script>

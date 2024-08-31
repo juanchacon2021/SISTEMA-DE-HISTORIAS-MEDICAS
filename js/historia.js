@@ -255,6 +255,8 @@ function pone(pos,accion){
 
 //funcion que envia y recibe datos por AJAX
 
+
+
 function enviaAjax(datos) {
 	$.ajax({
 	  async: true,
@@ -280,6 +282,9 @@ function enviaAjax(datos) {
 			 if(lee.mensaje=='Registro Inluido'){
 				 $("#modal1").modal("hide");
 				 consultar();
+                setTimeout(function() {
+                    window.location.href = '?pagina=pacientes';
+                }, 2000);
 			 }
 		  }
 		  else if (lee.resultado == "modificar") {
@@ -298,14 +303,9 @@ function enviaAjax(datos) {
 		}
 	  },
 	  error: function (request, status, err) {
-		// si ocurrio un error en la trasmicion
-		// o recepcion via ajax entra aca
-		// y se muestran los mensaje del error
 		if (status == "timeout") {
-		  //pasa cuando superan los 10000 10 segundos de timeout
 		  muestraMensaje("Servidor ocupado, intente de nuevo");
 		} else {
-		  //cuando ocurre otro error con ajax
 		  muestraMensaje("ERROR: <br/>" + request + status + err);
 		}
 	  },

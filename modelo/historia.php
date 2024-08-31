@@ -2,7 +2,7 @@
 require_once('modelo/datos.php');
 
 class historias extends datos{
-	private $cedula_historia; 
+	private $cedula_historia;
 	private $apellido;
 	private $nombre;
 	private $fecha_nac;
