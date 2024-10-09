@@ -250,156 +250,6 @@ class historias extends datos{
 	
 	//Lo siguiente que demos hacer es crear los metodos para incluir, consultar y eliminar
 	
-	function incluir(){
-		$r = array();
-		if(!$this->existe($this->cedula_historia)){
-		  $co = $this->conecta();
-		  $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		  try {
-			  $co->query("Insert into historias(
-				cedula_historia,
-				apellido,
-				nombre,
-				fecha_nac,
-				edad,
-				telefono,
-				estadocivi,
-				direccion,
-				ocupacion,
-				hda,
-				habtoxico,
-				alergias,
-				quirurgico,
-				transsanguineo,
-				boca_abierta,
-				boca_cerrada,
-				oidos,
-				cabeza_craneo,
-				ojos,
-				nariz,
-				tiroides,
-				cardiovascular,
-				respiratorio,
-				abdomen,
-				extremidades,
-				neurologico
-				) 
-				Values(
-				'$this->cedula_historia',
-				'$this->apellido',
-				'$this->nombre',
-				'$this->fecha_nac',
-				'$this->edad',
-				'$this->telefono',
-				'$this->estadocivi',
-				'$this->direccion',
-				'$this->ocupacion',
-				'$this->hda',
-				'$this->habtoxico',
-				'$this->alergias',
-				'$this->quirurgico',
-				'$this->transsanguineo',
-				'$this->boca_abierta',
-				'$this->boca_cerrada',
-				'$this->oidos',
-				'$this->cabeza_craneo',
-				'$this->ojos',
-				'$this->nariz',
-				'$this->tiroides',
-				'$this->cardiovascular',
-				'$this->respiratorio',
-				'$this->abdomen',
-				'$this->extremidades',
-				'$this->neurologico'
-				)");
-				$r['resultado'] = 'incluir';
-				$r['mensaje'] =  'Paciente Registrado Exitosamente';
-		  } catch(Exception $e) {
-			$r['resultado'] = 'error';
-			$r['mensaje'] =  $e->getMessage();
-		  }
-		}
-		else{
-		  $r['resultado'] = 'incluir';
-		  $r['mensaje'] =  'Ya existe la cedula';
-		}
-		return $r;
-	  }
-	
-	function modificar(){
-		$co = $this->conecta();
-		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$r = array();
-		if($this->existe($this->cedula_historia)){
-			try {
-					$co->query("Update historias set 
-						cedula_historia = '$this->cedula_historia',
-						apellido = '$this->apellido',
-						nombre = '$this->nombre',
-						fecha_nac = '$this->fecha_nac',
-						edad = '$this->edad',
-						telefono = '$this->telefono',
-						estadocivi = '$this->estadocivi',
-						direccion = '$this->direccion',
-						ocupacion = '$this->ocupacion',
-						hda = '$this->hda',
-						habtoxico = '$this->habtoxico',
-						alergias = '$this->alergias',
-						quirurgico = '$this->quirurgico',
-						transsanguineo = '$this->transsanguineo',
-						boca_abierta = '$this->boca_abierta',
-						boca_cerrada = '$this->boca_cerrada',
-						oidos = '$this->oidos',
-						cabeza_craneo = '$this->cabeza_craneo',
-						ojos = '$this->ojos',
-						nariz = '$this->nariz',
-						tiroides = '$this->tiroides',
-						cardiovascular = '$this->cardiovascular',
-						respiratorio = '$this->respiratorio',
-						abdomen = '$this->abdomen',
-						extremidades = '$this->extremidades',
-						neurologico = '$this->neurologico'
-						where
-						cedula_historia = '$this->cedula_historia'
-						");
-						$r['resultado'] = 'modificar';
-			            $r['mensaje'] =  'Registro Modificado';
-			} catch(Exception $e) {
-				$r['resultado'] = 'error';
-			    $r['mensaje'] =  $e->getMessage();
-			}
-		}
-		else{
-			$r['resultado'] = 'modificar';
-			$r['mensaje'] =  'Cedula no registrada';
-		}
-		return $r;
-	}
-	
-	function eliminar(){
-		$co = $this->conecta();
-		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$r = array();
-		if($this->existe($this->cedula_historia)){
-			try {
-					$co->query("delete from historias 
-						where
-						cedula_historia = '$this->cedula_historia'
-						");
-						$r['resultado'] = 'eliminar';
-			            $r['mensaje'] =  'Registro Eliminado';
-			} catch(Exception $e) {
-				$r['resultado'] = 'error';
-			    $r['mensaje'] =  $e->getMessage();
-			}
-		}
-		else{
-			$r['resultado'] = 'eliminar';
-			$r['mensaje'] =  'No existe la cedula';
-		}
-		return $r;
-	}
-	
 	
 	function consultar(){
 		$co = $this->conecta();
@@ -418,9 +268,9 @@ class historias extends datos{
 
 						$respuesta = $respuesta."<div class='button-container' style='display: flex; justify-content: center; gap: 10px; margin-top: 10px'>
                         
-                            <button type='button' class='btn btn-danger' onclick='pone(this,0)'>
-                                <img src='img/lapiz.svg' style='width: 20px'>
-                            </button>
+                            <a type='button' class='btn btn-danger' href='?pagina=modificarhistoria&&cedula_historia=" . $r['cedula_historia'] . " target='_blank'>
+								<img src='img/lapiz.svg' style='width: 20px'>
+							</a>
 
                             <a class='btn btn-success' href='vista/fpdf/historia.php' target='_blank'>
                                 <img src='img/descarga.svg' style='width: 20px;'>
