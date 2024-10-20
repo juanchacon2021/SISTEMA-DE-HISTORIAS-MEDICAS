@@ -4,7 +4,7 @@ require_once('modelo/datos.php');
 
 
 class emergencias extends datos{
-
+	
 	
 	private $cod_emergencia; 
 	private $horaingreso;
@@ -83,44 +83,136 @@ class emergencias extends datos{
 		return $this->cedula_h;
 	}
 
+	function listadopersonal(){
+		$co = $this->conecta();
+		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$r = array(); // en este arreglo
+			// se enviara la respuesta a la solicitud y el
+			// contenido de la respuesta
+		try{
+			$resultado = $co->query("Select * from personal");
+			$respuesta = '';
+			if($resultado){
+				foreach($resultado as $r){
+					$respuesta = $respuesta."<tr style='cursor:pointer' onclick='colocapersonal(this);'>";
+					$respuesta = $respuesta."<td style='display:none'>";
+						$respuesta = $respuesta.$r['cedula_personal'];
+					$respuesta = $respuesta."</td>";
+					$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['cedula_personal'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['nombre'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['apellido'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['cargo'];
+						$respuesta = $respuesta."</td>";
+					$respuesta = $respuesta."</tr>";
+				}
+			}
+				$r['resultado'] = 'listadopersonal';
+			    $r['mensaje'] =  $respuesta;
+			    
+			
+			
+		}catch(Exception $e){
+			$r['resultado'] = 'error';
+			$r['mensaje'] =  $e->getMessage();
+		}
+			return $r;
+	}
+
+	function listadopacientes(){
+		$co = $this->conecta();
+		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$r = array(); // en este arreglo
+			// se enviara la respuesta a la solicitud y el
+			// contenido de la respuesta
+		try{
+			$resultado = $co->query("Select * from historias");
+			$respuesta = '';
+			if($resultado){
+				foreach($resultado as $r){
+					$respuesta = $respuesta."<tr style='cursor:pointer' onclick='colocapacientes(this);'>";
+					$respuesta = $respuesta."<td style='display:none'>";
+						$respuesta = $respuesta.$r['cedula_historia'];
+					$respuesta = $respuesta."</td>";
+					$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['cedula_historia'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['nombre'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['apellido'];
+						$respuesta = $respuesta."</td>";
+					$respuesta = $respuesta."</tr>";
+				}
+			}
+				$r['resultado'] = 'listadopacientes';
+			    $r['mensaje'] =  $respuesta;
+			    
+			
+			
+		}catch(Exception $e){
+			$r['resultado'] = 'error';
+			$r['mensaje'] =  $e->getMessage();
+		}
+			return $r;
+	}
+
+
+
 	function incluir(){
 		
 		$r = array();
 		if(!$this->existe($this->cod_emergencia)){
+			
+				
+						
+					$co = $this->conecta();
+					$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+				
+					try {
+							$co->query("Insert into emergencias(
+								horaingreso,
+								fechaingreso,
+								motingreso,
+								diagnostico_e,
+								tratamientos,
+								cedula_p,
+								cedula_h
+								) 
+								Values(
+								'$this->horaingreso',
+								'$this->fechaingreso',
+								'$this->motingreso',
+								'$this->diagnostico_e',
+								'$this->tratamientos',
+								'$this->cedula_p',
+								'$this->cedula_h'
+								)");
+								$r['resultado'] = 'incluir';
+								$r['mensaje'] =  'Registro Inluido';
+					} catch(Exception $e) {
+						$r['resultado'] = 'error';
+						$r['mensaje'] =  'Un error en alguna de las cedulas';
+					}
+				
+					
+				}								
+				else{
+					$r['resultado'] = 'incluir';
+					$r['mensaje'] =  'Ya existe el Cod de Consulta';
+				}
 		
-			$co = $this->conecta();
-			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+				
 		
-			try {
-					$co->query("Insert into emergencias(
-						horaingreso,
-						fechaingreso,
-						motingreso,
-						diagnostico_e,
-						tratamientos,
-						cedula_p,
-						cedula_h
-						) 
-						Values(
-						'$this->horaingreso',
-						'$this->fechaingreso',
-						'$this->motingreso',
-						'$this->diagnostico_e',
-						'$this->tratamientos',
-						'$this->cedula_p',
-						'$this->cedula_h'
-						)");
-						$r['resultado'] = 'incluir';
-			            $r['mensaje'] =  'Registro Inluido';
-			} catch(Exception $e) {
-				$r['resultado'] = 'error';
-			    $r['mensaje'] =  $e->getMessage();
-			}
-		}
-		else{
-			$r['resultado'] = 'incluir';
-			$r['mensaje'] =  'Ya existe el Cod de Consulta';
-		}
+
 		return $r;
 		
 	}
@@ -188,7 +280,10 @@ class emergencias extends datos{
 		$r = array();
 		try{
 			
-			$resultado = $co->query("Select * from emergencias");
+			$resultado = $co->query("Select *, h.nombre as nombre_h, h.apellido as apellido_h  
+										from emergencias e 
+										inner join historias h on e.cedula_h = h.cedula_historia
+										inner join personal p on e.cedula_p = p.cedula_personal");
 			
 			if($resultado){
 				
@@ -196,17 +291,51 @@ class emergencias extends datos{
 				foreach($resultado as $r){
 					    $respuesta = $respuesta."<tr>";
 					    $respuesta = $respuesta."<td>";
-							$respuesta = $respuesta."<button type='button'
-							class='btn botonverde1 w-100 small-width mb-3' 
+						
+							$respuesta = $respuesta."<div lass='button-container' style='display: flex; justify-content: center; gap: 10px; margin-top: 10px'>
+							<button type='button'
+							class='btn botonverde w-100 small-width mt-2' 
 							onclick='pone(this,0)'
-						    >Modificar</button><br/>";
-							$respuesta = $respuesta."<button type='button'
+												' horaingreso='".$r['horaingreso']."'
+												' fechaingreso='".$r['fechaingreso']."'
+												' motingreso='".$r['motingreso']."'
+												' diagnostico_e='".$r['diagnostico_e']."'
+												' tratamientos='".$r['tratamientos']."'
+												' cedula_p='".$r['cedula_p']."'
+												' cedula_h='".$r['cedula_h']."'
+						    ><img src='img/lapiz.svg' style='width: 40px'></button>
+							<button type='button'
 							class='btn boton w-100 small-width mt-2' 
 							onclick='pone(this,1)'
-						    >Eliminar</button><br/>";
+												' horaingreso='".$r['horaingreso']."'
+												' fechaingreso='".$r['fechaingreso']."'
+												' motingreso='".$r['motingreso']."'
+												' diagnostico_e='".$r['diagnostico_e']."'
+												' tratamientos='".$r['tratamientos']."'
+												' cedula_p='".$r['cedula_p']."'
+												' cedula_h='".$r['cedula_h']."'
+						    ><img src='img/basura.svg' style='width: 40px'></button>
+							
+							<button type='button'
+							class='btn botonazul w-100 small-width mt-2' 
+							onclick='pone(this,2)'
+												' horaingreso='".$r['horaingreso']."'
+												' fechaingreso='".$r['fechaingreso']."'
+												' motingreso='".$r['motingreso']."'
+												' diagnostico_e='".$r['diagnostico_e']."'
+												' tratamientos='".$r['tratamientos']."'
+												' cedula_p='".$r['cedula_p']."'
+												' cedula_h='".$r['cedula_h']."'
+						    ><img src='img/ojo.svg' style='width: 40px'></button></div><br/>";
 							$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td style='display:none;'>";
 							$respuesta = $respuesta.$r['cod_emergencia'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+						$respuesta = $respuesta.$r['nombre_h'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+						$respuesta = $respuesta.$r['apellido_h'];
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td>";
 							$respuesta = $respuesta.$r['horaingreso'];
@@ -215,19 +344,18 @@ class emergencias extends datos{
 							$respuesta = $respuesta.$r['fechaingreso'];
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td>";
-						$respuesta = $respuesta.$r['motingreso'];
+						$respuesta = $respuesta.$r['cedula_h'];
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td>";
-						$respuesta = $respuesta.$r['diagnostico_e'];
+						$respuesta = $respuesta.$r['nombre'];
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td>";
-						$respuesta = $respuesta.$r['tratamientos'];
+						$respuesta = $respuesta.$r['apellido'];
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td>";
-						$respuesta = $respuesta.$r['cedula_p'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['cedula_h'];
+						
+						
+							$respuesta = $respuesta.$r['cedula_p'];
 							
                         
 				}
@@ -253,7 +381,7 @@ class emergencias extends datos{
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		try{
 			
-			$resultado = $co->query("Select * from emergencias where cod_emergencia ='$cod_emergencia'");
+			$resultado = $co->query("SELECT * FROM emergencias e WHERE e.cod_emergencia = '$cod_emergencia'");
 			
 			
 			$fila = $resultado->fetchAll(PDO::FETCH_BOTH);
