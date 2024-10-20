@@ -46,7 +46,7 @@
                     <div class="col-md-3">
                         <label for="edad" class="texto-inicio font-medium">Edad</label>
                         <input class="form-control bg-gray-200 rounded-lg border-white" type="number" id="edad"
-                                name="edad"/>
+                                name="edad" readonly/>
                         <span id="sedad"></span>
                     </div>
                     <div class="col-md-3">
