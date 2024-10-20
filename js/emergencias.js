@@ -31,8 +31,72 @@ function crearDT(){
     }         
 }
 $(document).ready(function(){
+
 	
 	consultar();
+	carga_personal();
+	carga_pacientes();
+
+	$("#listadodepersonal").on("click",function(){
+		$("#modalpersonal").modal("show");
+	});
+
+	$("#listadodepacientes").on("click",function(){
+		$("#modalpacientes").modal("show");
+	});
+
+	//Validar
+	$("#cedula_h").on("keypress",function(e){
+		validarkeypress(/^[0-9-\b]*$/,e);
+	});
+	
+	$("#cedula_h").on("keyup",function(){
+		validarkeyup(/^[0-9]{7,8}$/,$(this),
+		$("#scedula_h"),"El formato debe ser 12345678 ");
+	});
+
+	$("#cedula_p").on("keypress",function(e){
+		validarkeypress(/^[0-9-\b]*$/,e);
+	});
+	
+	$("#cedula_p").on("keyup",function(){
+		validarkeyup(/^[0-9]{7,8}$/,$(this),
+		$("#scedula_p"),"El formato debe ser 12345678 ");
+	});
+
+	
+	//validar
+
+	$("#cedula_p").on("keyup",function(){
+		var cedula = $(this).val();
+		var encontro = false;
+		$("#listadopersonal tr").each(function(){
+			if(cedula == $(this).find("td:eq(1)").text()){
+				colocapersonal($(this));
+				encontro = true;
+			} 
+		});
+		if(!encontro){
+			$("#datosdelpersonal").html("");
+		}
+	});
+
+	$("#cedula_h").on("keyup",function(){
+		var cedula = $(this).val();
+		var encontro = false;
+		$("#listadopacientes tr").each(function(){
+			if(cedula == $(this).find("td:eq(1)").text()){
+				colocapacientes($(this));
+				encontro = true;
+			} 
+		});
+		if(!encontro){
+			$("#datosdelpacientes").html("");
+		}
+	});
+
+
+
 
 $("#proceso").on("click",function(){
 	if($(this).text()=="INCLUIR"){
@@ -65,6 +129,10 @@ $("#proceso").on("click",function(){
 			enviaAjax(datos);
 		}
 	}
+	else if($(this).text()=="CERRAR"){
+	
+		$("#modal1").modal("hide");
+	}
 
 	else{
 		    var datos = new FormData();
@@ -88,8 +156,40 @@ $("#incluir").on("click",function(){
 	
 });
 
+function carga_personal(){
+
+	var datos = new FormData();
+
+	datos.append('accion','listadopersonal'); 
+
+	enviaAjax(datos);
+}
+function carga_pacientes(){
+	
+	var datos = new FormData();
+
+	datos.append('accion','listadopacientes'); 
+
+	enviaAjax(datos);
+}
+
 
 function validarenvio(){
+
+	if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula_h"),
+		$("#scedula_h"),"El formato debe ser 12345678")==0){
+	    muestraMensaje("La cedula del paciente debe coincidir con el formato <br/>"+ 
+						"12345678");	
+		return false;					
+	}
+
+	else if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula_p"),
+	$("#scedula_p"),"El formato debe ser 12345678")==0){
+	muestraMensaje("La cedula del personal debe coincidir con el formato <br/>"+ 
+					"12345678");	
+	return false;					
+}
+
 	
 	return true;
 }
@@ -137,29 +237,72 @@ mensaje){
 		return 0;
 	}
 }
+function colocapersonal(linea){
+	$("#cedula_p").val($(linea).find("td:eq(1)").text());
+	$("#cedula_personal").val($(linea).find("td:eq(0)").text());
+	$("#datosdelpersonal").html("Nombre: "+$(linea).find("td:eq(2)").text()+
+	" / Apellido: "+$(linea).find("td:eq(3)").text()+" / Cargo: "+
+	$(linea).find("td:eq(4)").text());
+}
+function colocapacientes(linea){
+	$("#cedula_h").val($(linea).find("td:eq(1)").text());
+	$("#cedula_historia").val($(linea).find("td:eq(0)").text());
+	$("#datosdelpacientes").html("Nombre: "+$(linea).find("td:eq(2)").text()+
+	" / Apellido: "+$(linea).find("td:eq(3)").text());
+}
 
 function pone(pos,accion){
+	$("#horaingreso").prop("readonly",false);
+	$("#fechaingreso").prop("readonly",false);
+	$("#motingreso").prop("readonly",false);
+	$("#diagnostico_e").prop("readonly",false);
+	$("#tratamientos").prop("readonly",false);
+	$("#cedula_p").prop("readonly",false);
+	$("#cedula_h").prop("readonly",false);
+	$("#proceso1").prop("cerrar",false); 
 	
 	linea=$(pos).closest('tr');
 
 
 	if(accion==0){
+
 		$("#proceso").text("MODIFICAR");
 	}
 	else if (accion==1){
+		$("#horaingreso").prop("readonly",true);
+		$("#fechaingreso").prop("readonly",true);
+		$("#motingreso").prop("readonly",true);
+		$("#diagnostico_e").prop("readonly",true);
+		$("#tratamientos").prop("readonly",true);
+		$("#cedula_p").prop("readonly",true);
+		$("#cedula_h").prop("readonly",true);
 		$("#proceso").text("ELIMINAR");
+	}
+	else if (accion==2){
+		$("#horaingreso").prop("readonly",true);
+		$("#fechaingreso").prop("readonly",true);
+		$("#motingreso").prop("readonly",true);
+		$("#diagnostico_e").prop("readonly",true);
+		$("#tratamientos").prop("readonly",true);
+		$("#cedula_p").prop("readonly",true);
+		$("#cedula_h").prop("readonly",true);
+		$("#proceso").text("CERRAR");
 	}
 	else{
 		$("#proceso").text("INCLUIR");
+		
 	}
 	$("#cod_emergencia").val($(linea).find("td:eq(1)").text());
-	$("#horaingreso").val($(linea).find("td:eq(2)").text());
-	$("#fechaingreso").val($(linea).find("td:eq(3)").text());
-	$("#motingreso").val($(linea).find("td:eq(4)").text());
-	$("#diagnostico_e").val($(linea).find("td:eq(5)").text());
-	$("#tratamientos").val($(linea).find("td:eq(6)").text());
-	$("#cedula_p").val($(linea).find("td:eq(7)").text());
-	$("#cedula_h").val($(linea).find("td:eq(8)").text());
+	$("#horaingreso").val( $(pos).attr('horaingreso') );
+	$("#fechaingreso").val( $(pos).attr('fechaingreso') );
+	$("#motingreso").val( $(pos).attr('motingreso') );
+	$("#diagnostico_e").val( $(pos).attr('diagnostico_e') );
+	$("#tratamientos").val( $(pos).attr('tratamientos') );
+	$("#cedula_p").val( $(pos).attr('cedula_p') );
+	$("#cedula_h").val( $(pos).attr('cedula_h') );
+
+
+	
 	$("#modal1").modal("show");
 }
 
@@ -177,7 +320,7 @@ function enviaAjax(datos) {
     beforeSend: function () {},
     timeout: 10000, 
     success: function (respuesta) {
-    console.log(respuesta);
+     console.log(respuesta);
       try {
         var lee = JSON.parse(respuesta);
         if (lee.resultado == "consultar") {
@@ -185,6 +328,18 @@ function enviaAjax(datos) {
            $("#resultadoconsulta").html(lee.mensaje);
 		   crearDT();
         }
+		else if(lee.resultado=='listadopersonal'){
+					
+			//si el servidor retorno como
+			// resultado listadoclientes significa
+			// que se obtuvieron datos del json
+			// y se colocan esos resultados en la vista
+			$('#listadopersonal').html(lee.mensaje);
+		}
+		else if(lee.resultado=='listadopacientes'){
+
+			$('#listadopacientes').html(lee.mensaje);
+		}
 		else if (lee.resultado == "incluir") {
            muestraMensaje(lee.mensaje);
 		   if(lee.mensaje=='Registro Inluido'){
@@ -238,4 +393,3 @@ function limpia(){
 	$("#cedula_h").val("");
 
 }
-

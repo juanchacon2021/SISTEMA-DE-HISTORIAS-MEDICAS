@@ -72,9 +72,9 @@
 
 .botonazul {
     font-family: 'Sora';
-    background-color: rgb(0 0 255);
+    background-color: #0054d1;
     border-radius: 0.5rem;
-    border: 0.5rem solid rgb(0 0 255);
+    border: 0.5rem solid #0051ca;
     color: white;
     width: auto;
 }
@@ -99,8 +99,8 @@
 }
 
 .botonazul:hover {
-    background-color: rgb(0, 0, 255);
-    border: 0.5rem solid rgb(0 0 255);
+    background-color: rgb(0, 0, 146);
+    border: 0.5rem solid rgb(0, 0, 146);
 }
 .botonverde1 {
     font-family: 'Sora';
@@ -110,9 +110,9 @@
     color: white;
     width: auto;
 }
-.botonverde1:hover {
+.botonverde:hover {
     background-color: rgb(0, 95, 5);
-    border: 0.5rem solid rgba(0, 102, 5, 0.925);
+    border: 0.5rem solid rgba(0, 95, 5);
 }
 
 .gradiente{
