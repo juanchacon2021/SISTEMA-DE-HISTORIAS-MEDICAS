@@ -188,6 +188,7 @@ function validarenvio(){
 	return true;
 }
 
+
 //Funcion que muestra el modal con un mensaje
 function muestraMensaje(mensaje){
 	
@@ -195,8 +196,7 @@ function muestraMensaje(mensaje){
 			$("#mostrarmodal").modal("show");
 			setTimeout(function() {
 					$("#mostrarmodal").modal("hide");
-					window.location.href = '?pagina=pacientes';
-			},2000);
+			},5000);
 }
 
 
