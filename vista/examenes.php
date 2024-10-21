@@ -76,15 +76,15 @@ Examenes
 					</div>
 
 					<div class="col-md-5">
-					   <label class="texto-inicio font-medium" for="tipo_examen">Nombre del Examen</label>
-					   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="tipo_examen" />
-					   <span id="stipo_examen"></span>
+					   <label class="texto-inicio font-medium" for="nombre_examen">Nombre del Examen</label>
+					   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="nombre_examen" />
+					   <span id="snombre_examen"></span>
 					</div>
 
 					<div class="col-md-7">
-					   <label class="texto-inicio font-medium" for="observacion_medica">Descripción</label>
-					   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="observacion_medica"  />
-					   <span id="sobservacion_medica"></span>
+					   <label class="texto-inicio font-medium" for="descripcion_examen">Descripción</label>
+					   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="descripcion_examen"  />
+					   <span id="sdescripcion_examen"></span>
 					</div>
                     
 				</div>
