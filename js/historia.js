@@ -195,8 +195,9 @@ function muestraMensaje(mensaje){
 	$("#contenidodemodal").html(mensaje);
 			$("#mostrarmodal").modal("show");
 			setTimeout(function() {
-					$("#mostrarmodal").modal("hide");
-			},5000);
+				$("#mostrarmodal").modal("hide");
+				window.location.href = '?pagina=pacientes';
+			}, 1000);
 }
 
 

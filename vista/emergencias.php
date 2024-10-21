@@ -66,20 +66,20 @@ Emergencias
 				<div class="row mb-3">
 				
 				<div class="col-md-4" style="display: none;">
-					   <label for="cod_emergencia">Cod. de Emergencia</label>
-					   <input class="form-control" type="text" id="cod_emergencia" />
+					   <label class="texto-inicio font-medium" for="cod_emergencia">Cod. de Emergencia</label>
+					   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cod_emergencia" />
 					   <span id="scod_emergencia"></span>
 					</div>
 					
 					<div class="col-md-4">
-					   <label for="horaingreso">Hora de Ingreso</label>
-					   <input class="form-control" type="time" id="horaingreso" />
+					   <label class="texto-inicio font-medium" for="horaingreso">Hora de Ingreso</label>
+					   <input class="form-control bg-gray-200 rounded-lg border-white" type="time" id="horaingreso" />
 					   <span id="shoraingreso"></span>
 					</div>
 
                     <div class="col-md-4">
-					   <label for="fechaingreso">Fecha de Ingreso</label>
-					   <input class="form-control" type="date" id="fechaingreso" />
+					   <label class="texto-inicio font-medium" for="fechaingreso">Fecha de Ingreso</label>
+					   <input class="form-control bg-gray-200 rounded-lg border-white" type="date" id="fechaingreso" />
 					   <span id="fechaingreso"></span>
 					</div>
 
@@ -89,16 +89,16 @@ Emergencias
 
                 <div class="row mb-3">
 				    <div class="col-md-12" >
-					   <label class="mt-[-20px]" for="motingreso">Motivo de Ingreso</label>
-					   <textarea rows="2" cols="25" class="form-control" type="text" id="motingreso"></textarea>
+					   <label class="mt-[-20px] texto-inicio font-medium" for="motingreso">Motivo de Ingreso</label>
+					   <textarea rows="2" cols="25" class="form-control bg-gray-200 rounded-lg border-white" type="text" id="motingreso"></textarea>
 					   <span id="smotingreso"></span>
 					</div>
 			    </div>   
 				<div class="row mb-3">
 
 					<div class="col-md-12">
-					   <label for="diagnostico_e">Diagnostico</label>
-					   <textarea rows="2" cols="25" class="form-control" type="text" id="diagnostico_e"></textarea>
+					   <label class="texto-inicio font-medium" for="diagnostico_e">Diagnostico</label>
+					   <textarea rows="2" cols="25" class="form-control bg-gray-200 rounded-lg border-white" type="text" id="diagnostico_e"></textarea>
 					   <span id="sdiagnostico_e"></span>
 					</div>
                     
@@ -106,18 +106,18 @@ Emergencias
 				<div class="row mb-3">
 
 					<div class="col-md-12">
-					   <label for="tratamientos">Tratamientos</label>
-					   <textarea rows="2" cols="25" class="form-control" type="text" id="tratamientos"></textarea>
+					   <label class="texto-inicio font-medium" for="tratamientos">Tratamientos</label>
+					   <textarea rows="2" cols="25" class="form-control bg-gray-200 rounded-lg border-white" type="text" id="tratamientos"></textarea>
 					   <span id="stratamientos"></span>
 					</div>
                     
 				</div>
 
 				<div class="row mb-3">
-						<label for="cedula_p">Cedula del Personal</label>
+						<label class="texto-inicio font-medium" for="cedula_p">Cedula del Personal</label>
 						<div class="col-md-8 input-group">
-							<input class="form-control" type="text" id="cedula_p" name="cedula_p" />				
-							<input class="form-control" type="text" id="cedula_personal" name="cedula_personal" style="display:none"/>
+							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_p" name="cedula_p" />				
+							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_personal" name="cedula_personal" style="display:none"/>
 							<button type="button" class="btn btn-primary" id="listadodepersonal" name="listadodepersonal">LISTADO DE PERSONAL</button>
 						</div>
 						<span id="scedula_p"></span>
@@ -136,10 +136,10 @@ Emergencias
 					   <span id="scedula_h"></span>
 					</div> -->
 
-					<label for="cedula_h">Cedula del Paciente</label>
+					<label class="texto-inicio font-medium" for="cedula_h">Cedula del Paciente</label>
 						<div class="col-md-8 input-group">
-							<input class="form-control" type="text" id="cedula_h" name="cedula_h" />				
-							<input class="form-control" type="text" id="cedula_historia" name="cedula_historia" style="display:none"/>
+							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_h" name="cedula_h" />				
+							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_historia" name="cedula_historia" style="display:none"/>
 							<button type="button" class="btn btn-primary" id="listadodepacientes" name="listadodepacientes">LISTADO DE PACIENTES</button>
 						</div>
 						<span id="scedula_h"></span>
