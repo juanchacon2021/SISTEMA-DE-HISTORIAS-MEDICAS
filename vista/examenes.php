@@ -14,8 +14,8 @@ Examenes
 		<div class="row mt-3 justify-content-between">
 			
 			<hr class="mb-12 text-gray-600">
-		    <div class="col-md-2 botonverde">
-				<div class="col-md-2 botonverde" onclick='pone(this,3)' style="cursor: pointer;" >
+		    <div class="botonverde">
+				<div class="botonverde" onclick='pone(this,3)' style="cursor: pointer;" >
 					Registrar Tipo de Examen
 				</div>
 			</div>
@@ -28,16 +28,22 @@ Examenes
 
 	<hr class="mt-12 text-gray-600">
 
+	<div class="botonverde w-[16.5rem] mt-12">
+		<div class="botonverde" style="cursor: pointer;" >
+			Registrar Examen a Paciente
+		</div>
+	</div>
+
 	<div class="container">
-	   <!-- <div class="table-responsive">
+	   <div class="table-responsive">
 		<table class="table table-striped table-hover" id="tablapersonal">
 			<thead>
 			  <tr>
 				<th>Acciones</th>
-				<th>Codigo Examenes</th>
-				<th>Tipo</th>
-				<th>Observacion</th>
-				<th>Cedula H</th>
+				<th>Cedula</th>
+				<th>Apellido</th>
+				<th>Nombre</th>
+				<th>Tipo de Examen</th>
 			  </tr>
 			</thead>
 			<tbody id="resultadoconsulta">
@@ -45,7 +51,7 @@ Examenes
 			  
 			</tbody>
 	   </table>
-	  </div> -->
+	  </div>
   </div>
 </div> <!-- fin de container -->
 
