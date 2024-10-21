@@ -52,8 +52,8 @@ $("#proceso").on("click",function(){
 			var datos = new FormData();
 			datos.append('accion','incluir');
 			datos.append('cod_examenes',$("#cod_examenes").val());
-			datos.append('tipo_examen',$("#tipo_examen").val());
-			datos.append('observacion_medica',$("#observacion_medica").val());
+			datos.append('nombre_examen',$("#nombre_examen").val());
+			datos.append('descripcion_examen',$("#descripcion_examen").val());
 			datos.append('cedula_h',$("#cedula_h").val());
 			enviaAjax(datos);
 		}
@@ -63,8 +63,8 @@ $("#proceso").on("click",function(){
 			var datos = new FormData();
 			datos.append('accion','modificar');
 			datos.append('cod_examenes',$("#cod_examenes").val());
-			datos.append('tipo_examen',$("#tipo_examen").val());
-			datos.append('observacion_medica',$("#observacion_medica").val());
+			datos.append('nombre_examen',$("#nombre_examen").val());
+			datos.append('descripcion_examen',$("#descripcion_examen").val());
 			datos.append('cedula_h',$("#cedula_h").val());
 			enviaAjax(datos);
 		}
@@ -158,8 +158,8 @@ function pone(pos,accion){
 		$("#proceso").text("INCLUIR");
 	}
 	$("#cod_examenes").val($(linea).find("td:eq(1)").text());
-	$("#tipo_examen").val($(linea).find("td:eq(2)").text());
-	$("#observacion_medica").val($(linea).find("td:eq(3)").text());
+	$("#nombre_examen").val($(linea).find("td:eq(2)").text());
+	$("#descripcion_examen").val($(linea).find("td:eq(3)").text());
 	$("#cedula_h").val($(linea).find("td:eq(4)").text());
 	$("#modal1").modal("show");
 }
@@ -232,7 +232,7 @@ function enviaAjax(datos) {
 
 function limpia(){
 	$("#cod_examenes").val("");
-	$("#tipo_examen").val("");
-	$("#observacion_medica").val("");
+	$("#nombre_examen").val("");
+	$("#descripcion_examen").val("");
 	$("#cedula_h").val("");
 }
