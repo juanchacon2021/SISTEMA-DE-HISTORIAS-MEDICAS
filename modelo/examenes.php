@@ -18,8 +18,8 @@ class examenes extends datos{
 	//misma clase, la forma de colcoarlo privado es usando la palabra private
 	
 	private $cod_examenes; //recuerden que en php, las variables no tienen tipo predefinido
-	private $tipo_examen;
-	private $observacion_medica;
+	private $nombre_examen;
+	private $descripcion_examen;
 	private $cedula_h;
 
 	
@@ -35,12 +35,12 @@ class examenes extends datos{
 	}
 	
 	
-	function set_tipo_examen($valor){
-		$this->tipo_examen = $valor;
+	function set_nombre_examen($valor){
+		$this->nombre_examen = $valor;
 	}
 	
-	function set_observacion_medica($valor){
-		$this->observacion_medica = $valor;
+	function set_descripcion_examen($valor){
+		$this->descripcion_examen = $valor;
 	}
 	
 	function set_cedula_h($valor){
@@ -53,12 +53,12 @@ class examenes extends datos{
 		return $this->cod_examenes;
 	}
 	
-	function get_tipo_examen(){
-		return $this->tipo_examen;
+	function get_nombre_examen(){
+		return $this->nombre_examen;
 	}
 	
-	function get_observacion_medica(){
-		return $this->observacion_medica;
+	function get_descripcion_examen(){
+		return $this->descripcion_examen;
 	}
 	
 	function get_cedula_h(){
@@ -85,15 +85,13 @@ class examenes extends datos{
 			try {
 					$co->query("Insert into examenes(
 						
-						tipo_examen,
-						observacion_medica,
-						cedula_h
+						nombre_examen,
+						descripcion_examen
 						) 
 						Values(
 						
-						'$this->tipo_examen',
-						'$this->observacion_medica',
-						'$this->cedula_h'
+						'$this->nombre_examen',
+						'$this->descripcion_examen'
 						)");
 						$r['resultado'] = 'incluir';
 			            $r['mensaje'] =  'Registro Inluido';
@@ -120,8 +118,8 @@ class examenes extends datos{
 			try {
 					$co->query("Update examenes set 
 					    cod_examenes = '$this->cod_examenes',
-						tipo_examen = '$this->tipo_examen',
-						observacion_medica = '$this->observacion_medica',
+						nombre_examen = '$this->nombre_examen',
+						descripcion_examen = '$this->descripcion_examen',
 						cedula_h = '$this->cedula_h'
 						where
 						cod_examenes = '$this->cod_examenes'
@@ -192,10 +190,10 @@ class examenes extends datos{
 							$respuesta = $respuesta.$r['cod_examenes'];
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['tipo_examen'];
+							$respuesta = $respuesta.$r['nombre_examen'];
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['observacion_medica'];
+							$respuesta = $respuesta.$r['descripcion_examen'];
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td>";
 							$respuesta = $respuesta.$r['cedula_h'];

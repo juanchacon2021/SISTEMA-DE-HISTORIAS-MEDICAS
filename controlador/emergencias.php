@@ -18,6 +18,14 @@ require_once("modelo/".$pagina.".php");
 		  if($accion=='consultar'){
 			 echo  json_encode($o->consultar());  
 		  }
+		  elseif($accion=='listadopersonal'){
+			$respuesta = $o->listadopersonal();
+			echo json_encode($respuesta);
+		}
+		elseif($accion=='listadopacientes'){
+			$respuesta = $o->listadopacientes();
+			echo json_encode($respuesta);
+		}
 		  elseif($accion=='eliminar'){
 			 $o->set_cod_emergencia($_POST['cod_emergencia']);
 			 echo  json_encode($o->eliminar());
@@ -34,6 +42,7 @@ require_once("modelo/".$pagina.".php");
 			  $o->set_cedula_h($_POST['cedula_h']);
 			  if($accion=='incluir'){
 				echo  json_encode($o->incluir());
+				
 			  }
 			  elseif($accion=='modificar'){
 				echo  json_encode($o->modificar());

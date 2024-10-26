@@ -5,10 +5,13 @@
 ?>
 <body >
 
+
 <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800">
 Emergencias
 </div>
 <div class="container pl-64">
+	
+   
 	<div class="container">
 		<div class="row mt-3 justify-content-between">
 		    <div class="col-md-2 botonverde" style="cursor: pointer;" onclick='pone(this,3)' >
@@ -23,13 +26,16 @@ Emergencias
 			  <tr>
 				<th>Acciones</th>
 			    <th style="display:none;">Cod. de emergencia</th> 
+				<th>Nombre</th>
+				<th>Apellido</th>
 				<th>Hora de Ingreso</th>
-				<th>Fecha de Ingreso</th>
-				<th>Motivo de Ingrso</th>				
-				<th>Diagnostico</th>
-				<th>Tratamientos</th>
-				<th>Cedula del Personal</th>
+				<th>Fecha de Ingreso</th>				
 				<th>Cedula del Paciente</th>
+				<th>Nombre del Doctor</th>
+				<th>Apellido del Doctor</th>
+				<th>Cedula del Doctor</th>
+
+
 			  </tr>
 			</thead>
 			<tbody id="resultadoconsulta">
@@ -60,37 +66,39 @@ Emergencias
 				<div class="row mb-3">
 				
 				<div class="col-md-4" style="display: none;">
-					   <label for="cod_emergencia">Cod. de Emergencia</label>
-					   <input class="form-control" type="text" id="cod_emergencia" />
+					   <label class="texto-inicio font-medium" for="cod_emergencia">Cod. de Emergencia</label>
+					   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cod_emergencia" />
 					   <span id="scod_emergencia"></span>
 					</div>
 					
 					<div class="col-md-4">
-					   <label for="horaingreso">Hora de Ingreso</label>
-					   <input class="form-control" type="time" id="horaingreso" />
+					   <label class="texto-inicio font-medium" for="horaingreso">Hora de Ingreso</label>
+					   <input class="form-control bg-gray-200 rounded-lg border-white" type="time" id="horaingreso" />
 					   <span id="shoraingreso"></span>
 					</div>
 
                     <div class="col-md-4">
-					   <label for="fechaingreso">Fecha de Ingreso</label>
-					   <input class="form-control" type="date" id="fechaingreso" />
+					   <label class="texto-inicio font-medium" for="fechaingreso">Fecha de Ingreso</label>
+					   <input class="form-control bg-gray-200 rounded-lg border-white" type="date" id="fechaingreso" />
 					   <span id="fechaingreso"></span>
 					</div>
 
 					
 				</div>
-				
-				<div class="col-md-4">
-					   <label for="motingreso">Motivo de Ingreso</label>
-					   <input class="form-control" type="text" id="motingreso" />
+ <br>
+
+                <div class="row mb-3">
+				    <div class="col-md-12" >
+					   <label class="mt-[-20px] texto-inicio font-medium" for="motingreso">Motivo de Ingreso</label>
+					   <textarea rows="2" cols="25" class="form-control bg-gray-200 rounded-lg border-white" type="text" id="motingreso"></textarea>
 					   <span id="smotingreso"></span>
 					</div>
-
+			    </div>   
 				<div class="row mb-3">
 
 					<div class="col-md-12">
-					   <label for="diagnostico_e">Diagnostico</label>
-					   <input class="form-control" type="text" id="diagnostico_e"  />
+					   <label class="texto-inicio font-medium" for="diagnostico_e">Diagnostico</label>
+					   <textarea rows="2" cols="25" class="form-control bg-gray-200 rounded-lg border-white" type="text" id="diagnostico_e"></textarea>
 					   <span id="sdiagnostico_e"></span>
 					</div>
                     
@@ -98,40 +106,70 @@ Emergencias
 				<div class="row mb-3">
 
 					<div class="col-md-12">
-					   <label for="tratamientos">Tratamientos</label>
-					   <input class="form-control" type="text" id="tratamientos"/>
+					   <label class="texto-inicio font-medium" for="tratamientos">Tratamientos</label>
+					   <textarea rows="2" cols="25" class="form-control bg-gray-200 rounded-lg border-white" type="text" id="tratamientos"></textarea>
 					   <span id="stratamientos"></span>
 					</div>
                     
 				</div>
 
-
 				<div class="row mb-3">
-
-					<div class="col-md-12">
-					   <label for="cedula_p">Cedula del Personal</label>
-					   <input class="form-control" type="text" id="cedula_p"  />
-					   <span id="scedula_p"></span>
+						<label class="texto-inicio font-medium" for="cedula_p">Cedula del Personal</label>
+						<div class="col-md-8 input-group">
+							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_p" name="cedula_p" />				
+							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_personal" name="cedula_personal" style="display:none"/>
+							<button type="button" class="btn btn-primary" id="listadodepersonal" name="listadodepersonal">LISTADO DE PERSONAL</button>
+						</div>
+						<span id="scedula_p"></span>
 					</div>
+					<div class="row">
+						<div class="col-md-12" id="datosdelpersonal">
+						
+						</div>
+					</div>
+					<br>
+
+				 <!-- <div class="row mb-3">
 					<div class="col-md-12">
 					   <label for="cedula_h">Cedula del Paciente</label>
-					   <input class="form-control" type="text" id="cedula_h"  />
+					   <input  class="form-control" type="text" id="cedula_h"  />
 					   <span id="scedula_h"></span>
+					</div> -->
+
+					<label class="texto-inicio font-medium" for="cedula_h">Cedula del Paciente</label>
+						<div class="col-md-8 input-group">
+							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_h" name="cedula_h" />				
+							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_historia" name="cedula_historia" style="display:none"/>
+							<button type="button" class="btn btn-primary" id="listadodepacientes" name="listadodepacientes">LISTADO DE PACIENTES</button>
+						</div>
+						<span id="scedula_h"></span>
 					</div>
-                    
+					<br>
+					<div class="row">
+						<div class="col-md-12" id="datosdelpacientes">
+						
+						</div>
+					</div>
+					<br>
+					
+				                  
 				</div>
+
 				<div class="row">
 					<div class="col-md-12">
 						<hr/>
 					</div>
 				</div>
 
+
 				<div class="row mt-3 justify-content-center">
 					<div class="col-md-2">
 						   <button type="button" class="btn botonverde" 
 						   id="proceso" ></button>
 					</div>
+
 				</div>
+				
 			</div>	
 			</form>
 		</div> 
@@ -140,6 +178,72 @@ Emergencias
 	
   </div>
 </div>
+
+<!-- seccion del modal personal -->
+<div class="modal fade" tabindex="-1" role="dialog"  id="modalpersonal">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-header text-light bg-info">
+        <h5 class="modal-title">Listado de Personal</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-content">
+		<table class="table table-striped table-hover">
+		<thead>
+		  <tr>
+		    <th style="display:none">Id</th>
+			<th>Cedula</th>
+			<th>Nombre</th>
+			<th>Apellido</th>
+			<th>Cargo</th>
+		  </tr>
+		</thead>
+		<tbody id="listadopersonal">
+		 
+		</tbody>
+		</table>
+    </div>
+	<div class="modal-footer bg-light">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+    </div>
+  </div>
+</div>
+<!--fin de seccion modal-->
+
+
+<!-- seccion del modal historias -->
+<div class="modal fade" tabindex="-1" role="dialog"  id="modalpacientes">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-header text-light bg-info">
+        <h5 class="modal-title">Listado de Pacientes</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-content">
+		<table class="table table-striped table-hover">
+		<thead>
+		  <tr>
+		    <th style="display:none">Id</th>
+			<th>Cedula</th>
+			<th>Nombre</th>
+			<th>Apellido</th>
+		  </tr>
+		</thead>
+		<tbody id="listadopacientes">
+		 
+		</tbody>
+		</table>
+    </div>
+	<div class="modal-footer bg-light">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+    </div>
+  </div>
+</div>
+<!--fin de seccion modal-->
+
+
 
 <?php require_once("comunes/modal.php"); ?>
 <script type="text/javascript" src="js/emergencias.js"></script> 

@@ -46,13 +46,13 @@
                     <div class="col-md-3">
                         <label for="edad" class="texto-inicio font-medium">Edad</label>
                         <input class="form-control bg-gray-200 rounded-lg border-white" type="number" id="edad"
-                                name="edad"/>
+                                name="edad" readonly/>
                         <span id="sedad"></span>
                     </div>
                     <div class="col-md-3">
-                        <label for="estadocivi" class="texto-inicio font-medium">Estado Civil</label>
-                        <select class="form-control bg-gray-200 rounded-lg border-white" id="estadocivi" 
-                                name = "estadocivi">
+                        <label for="estadocivil" class="texto-inicio font-medium">Estado Civil</label>
+                        <select class="form-control bg-gray-200 rounded-lg border-white" id="estadocivil" 
+                                name = "estadocivil">
                             <option value="" selected>-- Seleccione --</option>
                             <option value="SOLTERO">Soltero</option>
                             <option value="CASADO">Casado</option>
@@ -122,18 +122,18 @@
                     </div>
                         
                     <div class="col-md-3">
-                        <label for="boca_abierta" class="texto-inicio font-medium">Boca Abierta</label>
-                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="boca_abierta"
-                                name="boca_abierta"/>
-                        <span id="sboca_abierta"></span>
+                        <label for="alergias_med" class="texto-inicio font-medium">Alergias Medicas</label>
+                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="alergias_med"
+                                name="alergias_med"/>
+                        <span id="salergias_med"></span>
                     </div>
                 </div>
                 <div class="row mb-3 mx-1">
                     <div class="col-md-3">
-                        <label for="boca_cerrada" class="texto-inicio font-medium">Boca Cerrada</label>
-                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="boca_cerrada"
-                                name="boca_cerrada"/>
-                        <span id="sboca_cerrada"></span>
+                        <label for="psicosocial" class="texto-inicio font-medium">Psicosocial</label>
+                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="psicosocial"
+                                name="psicosocial"/>
+                        <span id="spsicosocial"></span>
                     </div>
                     <div class="col-md-3">
                         <label for="oidos" class="texto-inicio font-medium">Oidos</label>
@@ -174,8 +174,20 @@
                                 name="tiroides"/>
                         <span id="stiroides"></span>
                     </div>
-                        
                     <div class="col-md-3">
+                        <label for="boca_abierta" class="texto-inicio font-medium">Boca Abierta</label>
+                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="boca_abierta"
+                                name="boca_abierta"/>
+                        <span id="sboca_abierta"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="boca_cerrada" class="texto-inicio font-medium">Boca Cerrada</label>
+                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="boca_cerrada"
+                                name="boca_cerrada"/>
+                        <span id="sboca_cerrada"></span>
+                    </div>
+                         
+                     <div class="col-md-3">
                         <label for="cardiovascular" class="texto-inicio font-medium">Cardiovascular</label>
                         <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cardiovascular"
                                 name="cardiovascular"/>
@@ -188,27 +200,27 @@
                                 name="respiratorio"/>
                         <span id="srespiratorio"></span>
                     </div>
-                </div>
-                <div class="row mb-3 mx-1">
                     <div class="col-md-3">
                         <label for="abdomen" class="texto-inicio font-medium">Abdomen</label>
                         <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="abdomen"
                                 name="abdomen"/>
                         <span id="sabdomen"></span>
                     </div>
+                </div>
+                <div class="row mb-3 mx-1">
                     <div class="col-md-3">
                         <label for="extremidades" class="texto-inicio font-medium">Extremidades</label>
                         <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="extremidades"
                                 name="extremidades"/>
                         <span id="sextremidades"></span>
                     </div>
-                    
+                     
                     <div class="col-md-3">
-                        <label for="neurologico" class="texto-inicio font-medium">Neurologico</label>
-                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="neurologico"
-                                name="neurologico"/>
-                        <span id="sneurologico"></span>
-                    </div>
+                        <label for="neurologicos" class="texto-inicio font-medium">Neurologico</label>
+                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="neurologicos"
+                                name="neurologicos"/>
+                        <span id="sneurologicos"></span>
+                    </div>  
                 </div>
                 <div class="row py-4">
                     <div class="col-md-12">
@@ -216,29 +228,42 @@
                     </div>
                 </div>
                 <div class="row mb-3 mx-1">
+
                     <div class="col-md-6">
-                        <label for="nariz" class="texto-inicio font-medium">Antecedentes Personales</label>
-                        <textarea class="form-control bg-gray-200 rounded-lg border-white" name="anteecpersonal" id=""></textarea>
-                        <span id="santecpersonal"></span>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="tiroides" class="texto-inicio font-medium">Antecedentes Maternos</label>
-                        <textarea class="form-control bg-gray-200 rounded-lg border-white" name="antecmadre" id=""></textarea>
-                        <span id="santecmadre"></span>
+                        <label for="antec_madre" class="texto-inicio font-medium">Antecedentes Maternos</label>
+                        <textarea class="form-control bg-gray-200 rounded-lg border-white" id="antec_madre" name="antec_madre"></textarea>
+                        <span id="santec_madre"></span>
                     </div>
                     
                     <div class="col-md-6">
-                        <label for="cardiovascular" class="texto-inicio font-medium">Antecedentes Paternos</label>
-                        <textarea class="form-control bg-gray-200 rounded-lg border-white" name="antecpadre" id=""></textarea>
-                        <span id="santecpadre"></span>
+                        <label for="antec_padre" class="texto-inicio font-medium">Antecedentes Paternos</label>
+                        <textarea class="form-control bg-gray-200 rounded-lg border-white" id="antec_padre" name="antec_padre"></textarea>
+                        <span id="santec_padre"></span>
                     </div>
                     
                     <div class="col-md-6">
-                        <label for="respiratorio" class="texto-inicio font-medium">Antecedentes Hermanos</label>
-                        <textarea class="form-control bg-gray-200 rounded-lg border-white" name="antechermano" id=""></textarea>
-                        <span id="santechermano"></span>
+                        <label for="antec_hermano" class="texto-inicio font-medium">Antecedentes Hermanos</label>
+                        <textarea class="form-control bg-gray-200 rounded-lg border-white" id="antec_hermano" name="antec_hermano"></textarea>
+                        <span id="santec_hermano"></span>
                     </div>
                 </div>
+
+                <div class="row py-4">
+                    <div class="col-md-12">
+                        <hr/>
+                    </div>
+                </div>
+
+                <div class="row mb-3 mx-1">
+
+                    <div class="col-md-6">
+                        <label for="general" class="texto-inicio font-medium">Examen Fisico General</label>
+                        <textarea class="form-control bg-gray-200 rounded-lg border-white"   id="general" name="general"></textarea>
+                        <span id="sgeneral"></span>
+                    </div>
+
+                </div>
+
                 <div class="row mt-3 justify-content-center">
                     <div class="col-md-2">
                         <button type="button" class="btn botonverde" id="proceso">INCLUIR</button>
@@ -249,7 +274,7 @@
     </div>
 
     <?php require_once("comunes/modal.php"); ?>
-    <script type="text/javascript" src="js/pacientes.js"></script>
+    <script type="text/javascript" src="js/historia.js"></script>
 
     </body>
 </html>

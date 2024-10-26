@@ -8,37 +8,40 @@ class historias extends datos{
 	private $fecha_nac;
 	private $edad;
 	private $telefono;
-	private $estadocivi;
+	private $estadocivil;
 	private $direccion;
 	private $ocupacion;
 	private $hda;
 	private $habtoxico;
 	private $alergias;
+	private $alergias_med;
 	private $quirurgico;
 	private $transsanguineo;
-	private $boca_abierta;
-	private $boca_cerrada;
-	private $oidos;
-	private $cabeza_craneo;
-	private $ojos;
-	private $nariz;
-	private $tiroides;
-	private $cardiovascular;
-	private $respiratorio;
-	private $abdomen;
-	private $extremidades;
-	private $neurologico;
-	//Ok ya tenemos los atributos, pero como son privados no podemos acceder a ellos desde fueran
-	//por lo que debemos colcoar metodos (funciones) que me permitan leer (get) y colocar (set)
-	//valores en ello, esto es  muy mal llamado geters y seters por si alguien se los pregunta
-	
+	private $psicosocial;
+
+	// ANTECEDENTES
+	private $antec_madre;
+	private $antec_padre;
+	private $antec_hermano;
+	private $cedula_h;
+
+	 private $boca_abierta;
+	 private $boca_cerrada;
+	 private $oidos;
+	 private $cabeza_craneo;
+	 private $ojos;
+	 private $nariz;
+	 private $tiroides;
+	 private $cardiovascular;
+	 private $respiratorio;
+	 private $abdomen;
+	 private $extremidades;
+	 private $extremidades_s;
+	 private $neurologicos;
+	 private $general;
 	function set_cedula_historia($valor){
-		$this->cedula_historia = $valor; //fijencen como se accede a los elementos dentro de una clase
-		//this que singnifica esto es decir esta clase luego -> simbolo que indica que apunte
-		//a un elemento de this, es decir esta clase
-		//luego el nombre del elemento sin el $
+		$this->cedula_historia = $valor; 
 	}
-	//lo mismo que se hizo para cedula se hace para usuario y clave
 	
 	function set_apellido($valor){
 		$this->apellido = $valor;
@@ -64,8 +67,8 @@ class historias extends datos{
 		$this->direccion = $valor;
 	}
 	
-	function set_estadocivi($valor){
-		$this->estadocivi = $valor;
+	function set_estadocivil($valor){
+		$this->estadocivil = $valor;
 	}
 	
 	function set_ocupacion($valor){
@@ -84,6 +87,10 @@ class historias extends datos{
 		$this->alergias = $valor;
 	}
 	
+	function set_alergias_med($valor){
+		$this->alergias_med = $valor;
+	}
+	
 	function set_quirurgico($valor){
 		$this->quirurgico = $valor;
 	}
@@ -92,53 +99,83 @@ class historias extends datos{
 		$this->transsanguineo = $valor;
 	}
 	
-	function set_boca_abierta($valor){
-		$this->boca_abierta = $valor;
+	function set_psicosocial($valor){
+		$this->psicosocial = $valor;
 	}
 	
-	function set_boca_cerrada($valor){
-		$this->boca_cerrada = $valor;
+	// ANTECEDENTES
+
+	function set_antec_madre($valor){
+		$this->antec_madre = $valor;
 	}
 	
-	function set_oidos($valor){
-		$this->oidos = $valor;
+	function set_antec_padre($valor){
+		$this->antec_padre = $valor;
 	}
 	
-	function set_cabeza_craneo($valor){
-		$this->cabeza_craneo = $valor;
+	function set_antec_hermano($valor){
+		$this->antec_hermano = $valor;
 	}
 	
-	function set_ojos($valor){
-		$this->ojos = $valor;
+	function set_cedula_h($valor){
+		$this->cedula_h = $valor;
 	}
 	
-	function set_nariz($valor){
-		$this->nariz = $valor;
-	}
+	 function set_boca_abierta($valor){
+	 	$this->boca_abierta = $valor;
+	 }
 	
-	function set_tiroides($valor){
-		$this->tiroides = $valor;
-	}
+	 function set_boca_cerrada($valor){
+	 	$this->boca_cerrada = $valor;
+	 }
 	
-	function set_cardiovascular($valor){
-		$this->cardiovascular = $valor;
-	}
+	 function set_oidos($valor){
+	 	$this->oidos = $valor;
+	 }
 	
-	function set_respiratorio($valor){
-		$this->respiratorio = $valor;
-	}
+	 function set_cabeza_craneo($valor){
+	 	$this->cabeza_craneo = $valor;
+	 }
 	
-	function set_abdomen($valor){
-		$this->abdomen = $valor;
-	}
+	 function set_ojos($valor){
+	 	$this->ojos = $valor;
+	 }
 	
-	function set_extremidades($valor){
-		$this->extremidades = $valor;
-	}
+	 function set_nariz($valor){
+	 	$this->nariz = $valor;
+	 }
 	
-	function set_neurologico($valor){
-		$this->neurologico = $valor;
-	}
+	 function set_tiroides($valor){
+	 	$this->tiroides = $valor;
+	 }
+	
+	 function set_cardiovascular($valor){
+	 	$this->cardiovascular = $valor;
+	 }
+	
+	 function set_respiratorio($valor){
+	 	$this->respiratorio = $valor;
+	 }
+	
+	 function set_abdomen($valor){
+	 	$this->abdomen = $valor;
+	 }
+	
+	 function set_extremidades($valor){
+	 	$this->extremidades = $valor;
+	 }
+	
+	 function set_extremidades_s($valor){
+	 	$this->extremidades_s = $valor;
+	 }
+	
+	 function set_neurologicos($valor){
+	 	$this->neurologicos = $valor;
+	 }
+	
+	 function set_general($valor){
+	 	$this->general = $valor;
+	 }
 	
 	//ahora la misma cosa pero para leer, es decir get
 	
@@ -166,8 +203,8 @@ class historias extends datos{
 		return $this->telefono;
 	}
 	
-	function get_estadocivi(){
-		return $this->estadocivi;
+	function get_estadocivil(){
+		return $this->estadocivil;
 	}
 	
 	function get_direccion(){
@@ -190,140 +227,209 @@ class historias extends datos{
 		return $this->alergias;
 	}
 	
-	function get_quirurgico(){
-		return $this->quirurgico;
+	function get_alergias_med($valor){
+		$this->alergias_med = $valor;
 	}
 	
-	function get_transsanguineo(){
-		return $this->transsanguineo;
+	function get_quirurgico($valor){
+		$this->quirurgico = $valor;
 	}
 	
-	function get_boca_abierta(){
-		return $this->boca_abierta;
+	function get_transsanguineo($valor){
+		$this->transsanguineo = $valor;
 	}
 	
-	function get_boca_cerrada(){
-		return $this->boca_cerrada;
+	function get_psicosocial($valor){
+		$this->psicosocial = $valor;
+	}
+
+	// ANTECEDENTES	
+	
+	function get_antec_madre($valor){
+		$this->antec_madre = $valor;
 	}
 	
-	function get_oidos(){
-		return $this->oidos;
+	function get_antec_padre($valor){
+		$this->antec_padre = $valor;
 	}
 	
-	function get_cabeza_craneo(){
-		return $this->cabeza_craneo;
+	function get_antec_hermano($valor){
+		$this->antec_hermano = $valor;
 	}
 	
-	function get_ojos(){
-		return $this->ojos;
+	function get_cedula_h($valor){
+		$this->cedula_h = $valor;
 	}
 	
-	function get_nariz(){
-		return $this->nariz;
-	}
+	 function get_boca_abierta(){
+	 	return $this->boca_abierta;
+	 }
 	
-	function get_tiroides(){
-		return $this->tiroides;
-	}
+	 function get_boca_cerrada(){
+	 	return $this->boca_cerrada;
+	 }
 	
-	function get_cardiovascular(){
-		return $this->cardiovascular;
-	}
+	 function get_oidos(){
+	 	return $this->oidos;
+	 }
 	
-	function get_respiratorio(){
-		return $this->respiratorio;
-	}
+	 function get_cabeza_craneo(){
+	 	return $this->cabeza_craneo;
+	 }
 	
-	function get_abdomen(){
-		return $this->abdomen;
-	}
+	 function get_ojos(){
+	 	return $this->ojos;
+	 }
 	
-	function get_extremidades(){
-		return $this->extremidades;
-	}
+	 function get_nariz(){
+	 	return $this->nariz;
+	 }
 	
-	function get_neurologico(){
-		return $this->neurologico;
-	}
+	 function get_tiroides(){
+	 	return $this->tiroides;
+	 }
+	
+	 function get_cardiovascular(){
+	 	return $this->cardiovascular;
+	 }
+	
+	 function get_respiratorio(){
+	 	return $this->respiratorio;
+	 }
+	
+	 function get_abdomen(){
+	 	return $this->abdomen;
+	 }
+	
+	 function get_extremidades(){
+	 	return $this->extremidades;
+	 }
+	
+	 function get_extremidades_s(){
+	 	return $this->extremidades_s;
+	 }
+	
+	 function get_neurologicos(){
+	 	return $this->neurologicos;
+	 }
+	
+	 function get_general(){
+	 	return $this->general;
+	 }
 	
 	
-	
-	//Lo siguiente que demos hacer es crear los metodos para incluir, consultar y eliminar
 	
 	function incluir(){
 		$r = array();
 		if(!$this->existe($this->cedula_historia)){
-		  $co = $this->conecta();
-		  $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		  try {
-			  $co->query("Insert into historias(
-				cedula_historia,
-				apellido,
-				nombre,
-				fecha_nac,
-				edad,
-				telefono,
-				estadocivi,
-				direccion,
-				ocupacion,
-				hda,
-				habtoxico,
-				alergias,
-				quirurgico,
-				transsanguineo,
-				boca_abierta,
-				boca_cerrada,
-				oidos,
-				cabeza_craneo,
-				ojos,
-				nariz,
-				tiroides,
-				cardiovascular,
-				respiratorio,
-				abdomen,
-				extremidades,
-				neurologico
-				) 
-				Values(
-				'$this->cedula_historia',
-				'$this->apellido',
-				'$this->nombre',
-				'$this->fecha_nac',
-				'$this->edad',
-				'$this->telefono',
-				'$this->estadocivi',
-				'$this->direccion',
-				'$this->ocupacion',
-				'$this->hda',
-				'$this->habtoxico',
-				'$this->alergias',
-				'$this->quirurgico',
-				'$this->transsanguineo',
-				'$this->boca_abierta',
-				'$this->boca_cerrada',
-				'$this->oidos',
-				'$this->cabeza_craneo',
-				'$this->ojos',
-				'$this->nariz',
-				'$this->tiroides',
-				'$this->cardiovascular',
-				'$this->respiratorio',
-				'$this->abdomen',
-				'$this->extremidades',
-				'$this->neurologico'
+		  	$co = $this->conecta();
+		  	$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		  	try {
+				// Aqui inicia la transaccion
+				$co->beginTransaction();
+			
+				// Aqui hice la primera consulta INSERT
+				$stmt1 = $co->prepare("INSERT INTO historias(
+					cedula_historia, apellido, nombre, fecha_nac, edad, telefono, estadocivil, direccion, ocupacion, hda, habtoxico,
+					alergias, quirurgico, transsanguineo, alergias_med, psicosocial
+				) VALUES (
+					:cedula_historia, :apellido, :nombre, :fecha_nac, :edad, :telefono, :estadocivil, :direccion, :ocupacion,
+					:hda, :habtoxico, :alergias, :quirurgico, :transsanguineo, :alergias_med, :psicosocial
 				)");
+			
+				$stmt1->execute([
+					':cedula_historia' => $this->cedula_historia,
+					':apellido' => $this->apellido,
+					':nombre' => $this->nombre,
+					':fecha_nac' => $this->fecha_nac,
+					':edad' => $this->edad,
+					':telefono' => $this->telefono,
+					':estadocivil' => $this->estadocivil,
+					':direccion' => $this->direccion,
+					':ocupacion' => $this->ocupacion,
+					':hda' => $this->hda,
+					':habtoxico' => $this->habtoxico,
+					':alergias' => $this->alergias,
+					':quirurgico' => $this->quirurgico,
+					':transsanguineo' => $this->transsanguineo,
+					':alergias_med' => $this->alergias_med,
+					':psicosocial' => $this->psicosocial
+				]);
+			
+				// Aqui hice la segunda consulta INSERT	
+				$stmt2 = $co->prepare("INSERT INTO antecedentes(
+					cedula_h, antec_madre, antec_padre, antec_hermano
+				) VALUES (
+					:cedula_h, :antec_madre, :antec_padre, :antec_hermano
+				)");
+			
+				$stmt2->execute([
+					':cedula_h' => $this->cedula_historia,
+					':antec_madre' => $this->antec_madre,
+					':antec_padre' => $this->antec_padre,
+					':antec_hermano' => $this->antec_hermano
+				]);
+
+				// Aqui hice la tercera consulta INSERT	
+				$stmt3 = $co->prepare("INSERT INTO examenes_r(
+					cedula_h, cabeza_craneo, ojos, nariz, tiroides, extremidades, boca_abierta, boca_cerrada, oidos
+				) VALUES (
+					:cedula_h, :cabeza_craneo, :ojos, :nariz, :tiroides, :extremidades, :boca_abierta, :boca_cerrada, :oidos
+				)");
+			
+				$stmt3->execute([
+					':cedula_h' => $this->cedula_historia,
+					':cabeza_craneo' => $this->cabeza_craneo,
+					':ojos' => $this->ojos,
+					':nariz' => $this->nariz,
+					':tiroides' => $this->tiroides,
+					':extremidades' => $this->extremidades,
+					':boca_abierta' => $this->boca_abierta,
+					':boca_cerrada' => $this->boca_cerrada,
+					':oidos' => $this->oidos
+				]);
+
+				// Aqui hice la cuarta consulta INSERT	
+				$stmt4 = $co->prepare("INSERT INTO examenes_s(
+					cedula_h, respiratorio, cardiovascular, abdomen, neurologicos, extremidades_s
+				) VALUES (
+					:cedula_h, :respiratorio, :cardiovascular, :abdomen, :neurologicos, :extremidades_s
+				)");
+				$stmt4->execute([
+					':cedula_h' => $this->cedula_historia,
+					':respiratorio' => $this->respiratorio,
+					':cardiovascular' => $this->cardiovascular,
+					':abdomen' => $this->abdomen,
+					':neurologicos' => $this->neurologicos,
+					':extremidades_s' => $this->extremidades
+				]);
+
+				// Aqui hice la quinta consulta INSERT	
+				$stmt4 = $co->prepare("INSERT INTO examenes_f(
+					cedula_h, general
+				) VALUES (
+					:cedula_h, :general
+				)");
+				$stmt4->execute([
+					':cedula_h' => $this->cedula_historia,
+					':general' => $this->general
+				]);
+			
+				// esto es para confirmar la transaccion
+				$co->commit();
+
 				$r['resultado'] = 'incluir';
 				$r['mensaje'] =  'Paciente Registrado Exitosamente';
-		  } catch(Exception $e) {
-			$r['resultado'] = 'error';
-			$r['mensaje'] =  $e->getMessage();
+		  	} catch(Exception $e) {
+				$r['resultado'] = 'error';
+				$r['mensaje'] =  'Ha ocurrido un error, por favor revisar los datos ingresados';
 		  }
 		}
 		else{
 		  $r['resultado'] = 'incluir';
 		  $r['mensaje'] =  'Ya existe la cedula';
 		}
-		return $r;
+		return $r; 
 	  }
 	
 	function modificar(){
@@ -339,7 +445,7 @@ class historias extends datos{
 						fecha_nac = '$this->fecha_nac',
 						edad = '$this->edad',
 						telefono = '$this->telefono',
-						estadocivi = '$this->estadocivi',
+						estadocivil = '$this->estadocivil',
 						direccion = '$this->direccion',
 						ocupacion = '$this->ocupacion',
 						hda = '$this->hda',
@@ -347,18 +453,9 @@ class historias extends datos{
 						alergias = '$this->alergias',
 						quirurgico = '$this->quirurgico',
 						transsanguineo = '$this->transsanguineo',
-						boca_abierta = '$this->boca_abierta',
-						boca_cerrada = '$this->boca_cerrada',
-						oidos = '$this->oidos',
-						cabeza_craneo = '$this->cabeza_craneo',
-						ojos = '$this->ojos',
-						nariz = '$this->nariz',
-						tiroides = '$this->tiroides',
-						cardiovascular = '$this->cardiovascular',
-						respiratorio = '$this->respiratorio',
-						abdomen = '$this->abdomen',
-						extremidades = '$this->extremidades',
-						neurologico = '$this->neurologico'
+						alergias_med = '$this->alergias_med',
+						psicosocial = '$this->psicosocial',
+
 						where
 						cedula_historia = '$this->cedula_historia'
 						");

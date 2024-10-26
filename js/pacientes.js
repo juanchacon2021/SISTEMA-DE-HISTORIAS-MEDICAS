@@ -214,6 +214,7 @@ mensaje){
 	}
 }
 
+
 //funcion para pasar de la lista a el formulario
 function pone(pos,accion){ 
 	linea=$(pos).closest('tr');
