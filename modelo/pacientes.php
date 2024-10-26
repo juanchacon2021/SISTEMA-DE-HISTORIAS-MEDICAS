@@ -268,11 +268,11 @@ class historias extends datos{
 
 						$respuesta = $respuesta."<div class='button-container' style='display: flex; justify-content: center; gap: 10px; margin-top: 10px'>
                         
-                            <a type='button' class='btn btn-danger' href='?pagina=modificarhistoria&&cedula_historia=" . $r['cedula_historia'] . " target='_blank'>
+                            <a type='button' class='btn btn-success' href='?pagina=modificarhistoria&&cedula_historia=" . $r['cedula_historia'] . " target='_blank'>
 								<img src='img/lapiz.svg' style='width: 20px'>
 							</a>
 
-                            <a class='btn btn-success' href='vista/fpdf/historia.php' target='_blank'>
+                            <a class='btn btn-danger' href='vista/fpdf/historia.php' target='_blank'>
                                 <img src='img/descarga.svg' style='width: 20px;'>
                             </a>
 

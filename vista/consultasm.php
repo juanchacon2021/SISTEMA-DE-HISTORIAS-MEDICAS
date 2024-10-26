@@ -6,16 +6,20 @@
 <body >
 
 
-<div class="container texto-bienvenida h2 text-center py-8 text-zinc-800">
+<div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
 Consultas
 </div>
-<div class="container pl-64">
+<div class="container espacio">
 	
    
 	<div class="container">
-		<div class="row mt-3 justify-content-between">
+		<div class="row mt-3 botones">
 		    <div class="col-md-2 botonverde" style="cursor: pointer;" onclick='pone(this,3)' >
 				Registrar Consultas
+			</div>
+					
+			<div class="col-md-2 recortar">	
+				<a href="?pagina=principal" class="boton">Volver</a>
 			</div>
 		</div>
 	</div>
@@ -65,52 +69,46 @@ Consultas
 				<div class="row mb-3">
 				
 				<div class="col-md-4" style="display: none;">
-					   <label for="cod_consulta">Cod. de Consulta</label>
-					   <input class="form-control" type="text" id="cod_consulta" />
+					   <label class="texto-inicio font-medium" for="cod_consulta">Cod. de Consulta</label>
+					   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cod_consulta" />
 					   <span id="scod_consulta"></span>
 					</div>					
 
-                    <div class="col-md-4">
-					   <label for="fechaconsulta">Fecha de Consulta</label>
-					   <input class="form-control" type="date" id="fechaconsulta" />
+                    <div class="col-md-6">
+					   <label class="texto-inicio font-medium" for="fechaconsulta">Fecha de Consulta</label>
+					   <input class="form-control bg-gray-200 rounded-lg border-white" type="date" id="fechaconsulta" />
 					   <span id="sfechaconsulta"></span>
 					</div>
-
-					
 				</div>
- <br>
+ 
 
                 <div class="row mb-3">
-				    <div class="col-md-12" >
-					   <label class="mt-[-20px]" for="consulta">Consulta</label>
-					   <textarea rows="2" cols="25" class="form-control" type="text" id="consulta"></textarea>
+				    <div class="col-md-6" >
+					   <label class="texto-inicio font-medium" class="mt-[-20px]" for="consulta">Consulta</label>
+					   <textarea rows="2" cols="25" class="form-control bg-gray-200 rounded-lg border-white" type="text" id="consulta"></textarea>
 					   <span id="sconsulta"></span>
+					</div>   
+					<div class="col-md-6">
+						<label class="texto-inicio font-medium" for="diagnostico">Diagnostico</label>
+						<textarea rows="2" cols="25" class="form-control bg-gray-200 rounded-lg border-white" type="text" id="diagnostico"></textarea>
+						<span id="sdiagnostico"></span>
 					</div>
-			    </div>   
-				<div class="row mb-3">
-
-					<div class="col-md-12">
-					   <label for="diagnostico">Diagnostico</label>
-					   <textarea rows="2" cols="25" class="form-control" type="text" id="diagnostico"></textarea>
-					   <span id="sdiagnostico"></span>
-					</div>
-                    
 				</div>
 				<div class="row mb-3">
 
 					<div class="col-md-12">
-					   <label for="tratamientos">Tratamientos</label>
-					   <textarea rows="2" cols="25" class="form-control" type="text" id="tratamientos"></textarea>
+					   <label class="texto-inicio font-medium" for="tratamientos">Tratamientos</label>
+					   <textarea rows="2" cols="25" class="form-control bg-gray-200 rounded-lg border-white" type="text" id="tratamientos"></textarea>
 					   <span id="stratamientos"></span>
 					</div>
                     
 				</div>
 
 				<div class="row mb-3">
-						<label for="cedula_p">Cedula del Personal</label>
+						<label class="texto-inicio font-medium" for="cedula_p">Cedula del Personal</label>
 						<div class="col-md-8 input-group">
-							<input class="form-control" type="text" id="cedula_p" name="cedula_p" />				
-							<input class="form-control" type="text" id="cedula_personal" name="cedula_personal" style="display:none"/>
+							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_p" name="cedula_p" />				
+							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_personal" name="cedula_personal" style="display:none"/>
 							<button type="button" class="btn btn-primary" id="listadodepersonal" name="listadodepersonal">LISTADO DE PERSONAL</button>
 						</div>
 						<span id="scedula_p"></span>
@@ -122,10 +120,10 @@ Consultas
 					</div>
 					<br>
 
-					<label for="cedula_h">Cedula del Paciente</label>
+					<label class="texto-inicio font-medium" for="cedula_h">Cedula del Paciente</label>
 						<div class="col-md-8 input-group">
-							<input class="form-control" type="text" id="cedula_h" name="cedula_h" />				
-							<input class="form-control" type="text" id="cedula_historia" name="cedula_historia" style="display:none"/>
+							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_h" name="cedula_h" />				
+							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_historia" name="cedula_historia" style="display:none"/>
 							<button type="button" class="btn btn-primary" id="listadodepacientes" name="listadodepacientes">LISTADO DE PACIENTES</button>
 						</div>
 						<span id="scedula_h"></span>

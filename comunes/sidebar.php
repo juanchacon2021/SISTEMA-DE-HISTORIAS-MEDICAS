@@ -12,7 +12,7 @@
                 </span>
                 <a href="?pagina=principal"><i class="fa-solid fa-house px-2 py-2 bg-red-800 rounded-md text-white hover:text-white"></i></a>
                 <a href="?pagina=principal" class="text-[18px] ml-3 text-stone-600 font-bold cursor-pointer text-stone-500 hover:text-stone-800">CDI - Carmen Estella Mendoza de Flores</a>
-                <a href="?pagina=principal"><i class="bi bi-x cursor-pointer lg:hidden cursor-pointer hover:text-white" onclick="Openbar()"></i></a>
+                <a href="#" class="ml-8"><i class="bi bi-x cursor-pointer lg:hidden cursor-pointer hover:text-white" onclick="Openbar()"></i></a>
             </div>
             <hr class="my-2 text-gray-600">
 

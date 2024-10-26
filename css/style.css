@@ -154,4 +154,9 @@ background: linear-gradient(90deg, #ff0000,#ff8080);/* W3C, IE 10+/ Edge, Firefo
         justify-content: space-between;
         width: 20%;
     }
+
+    label {
+        padding-top: 20px;
+    }
+
 }

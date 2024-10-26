@@ -80,7 +80,7 @@
                         <hr/>
                     </div>
                 </div>
-                <div class="row mb-3 mx-1">
+                <div class="row mb-3 mx-1 gap-y-2">
                     <div class="col-md-3">
                         <label for="ocupacion" class="texto-inicio font-medium">Ocupacion</label>
                         <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="ocupacion"
@@ -99,8 +99,6 @@
                                 name="habtoxico"/>
                         <span id="shabtoxico"></span>
                     </div>
-                </div>
-                <div class="row mb-3 mx-1">
                     <div class="col-md-3">
                         <label for="alergias" class="texto-inicio font-medium">Alergias</label>
                         <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="alergias"
@@ -206,8 +204,6 @@
                                 name="abdomen"/>
                         <span id="sabdomen"></span>
                     </div>
-                </div>
-                <div class="row mb-3 mx-1">
                     <div class="col-md-3">
                         <label for="extremidades" class="texto-inicio font-medium">Extremidades</label>
                         <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="extremidades"

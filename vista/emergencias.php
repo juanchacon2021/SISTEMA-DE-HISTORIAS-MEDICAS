@@ -6,16 +6,18 @@
 <body >
 
 
-<div class="container texto-bienvenida h2 text-center py-8 text-zinc-800">
+<div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
 Emergencias
 </div>
-<div class="container pl-64">
-	
-   
+<div class="container espacio">
 	<div class="container">
-		<div class="row mt-3 justify-content-between">
+		<div class="row mt-3 botones">
 		    <div class="col-md-2 botonverde" style="cursor: pointer;" onclick='pone(this,3)' >
 				Registrar Emergencias
+			</div>
+
+			<div class="col-md-2 recortar">	
+                <a href="?pagina=principal" class="boton">Volver</a>
 			</div>
 		</div>
 	</div>
@@ -65,38 +67,35 @@ Emergencias
 			<div class="container">	
 				<div class="row mb-3">
 				
-				<div class="col-md-4" style="display: none;">
+					<div class="col-md-6" style="display: none;">
 					   <label class="texto-inicio font-medium" for="cod_emergencia">Cod. de Emergencia</label>
 					   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cod_emergencia" />
 					   <span id="scod_emergencia"></span>
 					</div>
 					
-					<div class="col-md-4">
+					<div class="col-md-6">
 					   <label class="texto-inicio font-medium" for="horaingreso">Hora de Ingreso</label>
 					   <input class="form-control bg-gray-200 rounded-lg border-white" type="time" id="horaingreso" />
 					   <span id="shoraingreso"></span>
 					</div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-6">
 					   <label class="texto-inicio font-medium" for="fechaingreso">Fecha de Ingreso</label>
 					   <input class="form-control bg-gray-200 rounded-lg border-white" type="date" id="fechaingreso" />
 					   <span id="fechaingreso"></span>
 					</div>
-
-					
 				</div>
- <br>
+
+				<br>
 
                 <div class="row mb-3">
-				    <div class="col-md-12" >
-					   <label class="mt-[-20px] texto-inicio font-medium" for="motingreso">Motivo de Ingreso</label>
+				    <div class="col-md-6" >
+					   <label class="texto-inicio font-medium" for="motingreso">Motivo de Ingreso</label>
 					   <textarea rows="2" cols="25" class="form-control bg-gray-200 rounded-lg border-white" type="text" id="motingreso"></textarea>
 					   <span id="smotingreso"></span>
 					</div>
-			    </div>   
-				<div class="row mb-3">
 
-					<div class="col-md-12">
+					<div class="col-md-6">
 					   <label class="texto-inicio font-medium" for="diagnostico_e">Diagnostico</label>
 					   <textarea rows="2" cols="25" class="form-control bg-gray-200 rounded-lg border-white" type="text" id="diagnostico_e"></textarea>
 					   <span id="sdiagnostico_e"></span>
@@ -110,10 +109,9 @@ Emergencias
 					   <textarea rows="2" cols="25" class="form-control bg-gray-200 rounded-lg border-white" type="text" id="tratamientos"></textarea>
 					   <span id="stratamientos"></span>
 					</div>
-                    
 				</div>
 
-				<div class="row mb-3">
+					<div class="col-md-12">
 						<label class="texto-inicio font-medium" for="cedula_p">Cedula del Personal</label>
 						<div class="col-md-8 input-group">
 							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_p" name="cedula_p" />				
@@ -162,12 +160,10 @@ Emergencias
 				</div>
 
 
-				<div class="row mt-3 justify-content-center">
+				<div class="row mt-3 justify-content-center mb-4">
 					<div class="col-md-2">
-						   <button type="button" class="btn botonverde" 
-						   id="proceso" ></button>
+						   <button type="button" class="btn botonverde" id="proceso"></button>
 					</div>
-
 				</div>
 				
 			</div>	

@@ -281,9 +281,11 @@ class emergencias extends datos{
 					    $respuesta = $respuesta."<tr>";
 					    $respuesta = $respuesta."<td>";
 						
-							$respuesta = $respuesta."<div lass='button-container' style='display: flex; justify-content: center; gap: 10px; margin-top: 10px'>
+							$respuesta = $respuesta."
+							<div class='button-container' style='display: flex; justify-content: center; gap: 10px; margin-top: 10px'>
+							
 							<button type='button'
-							class='btn botonverde w-100 small-width mt-2' 
+							class='btn btn-success' 
 							onclick='pone(this,0)'
 												' fechaconsulta='".$r['fechaconsulta']."'
 												' consulta='".$r['consulta']."'
@@ -291,9 +293,9 @@ class emergencias extends datos{
 												' tratamientos='".$r['tratamientos']."'
 												' cedula_p='".$r['cedula_p']."'
 												' cedula_h='".$r['cedula_h']."'
-						    ><img src='img/lapiz.svg' style='width: 40px'></button>
+						    ><img src='img/lapiz.svg' style='width: 20px'></button>
 							<button type='button'
-							class='btn boton w-100 small-width mt-2' 
+							class='btn btn-danger' 
 							onclick='pone(this,1)'
 												' fechaconsulta='".$r['fechaconsulta']."'
 												' consulta='".$r['consulta']."'
@@ -301,10 +303,10 @@ class emergencias extends datos{
 												' tratamientos='".$r['tratamientos']."'
 												' cedula_p='".$r['cedula_p']."'
 												' cedula_h='".$r['cedula_h']."'
-						    ><img src='img/basura.svg' style='width: 40px'></button>
+						    ><img src='img/basura.svg' style='width: 20px'></button>
 							
 							<button type='button'
-							class='btn botonazul w-100 small-width mt-2' 
+							class='btn btn-primary' 
 							onclick='pone(this,2)'
 												' fechaconsulta='".$r['fechaconsulta']."'
 												' consulta='".$r['consulta']."'
@@ -312,7 +314,7 @@ class emergencias extends datos{
 												' tratamientos='".$r['tratamientos']."'
 												' cedula_p='".$r['cedula_p']."'
 												' cedula_h='".$r['cedula_h']."'
-						    ><img src='img/ojo.svg' style='width: 40px'></button></div><br/>";
+						    ><img src='img/ojo.svg' style='width: 20px'></button></div><br/>";
 							$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td style='display:none;'>";
 							$respuesta = $respuesta.$r['cod_consulta'];
