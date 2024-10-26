@@ -178,14 +178,14 @@ class personal extends datos{
 				foreach($resultado as $r){
 					$respuesta = $respuesta."<tr>";
 					    $respuesta = $respuesta."<td>";
-							$respuesta = $respuesta."<button type='button'
-							class='btn botonazul w-100 small-width mb-3' 
-							onclick='pone(this,0)'
-						    >Modificar</button><br/>";
-							$respuesta = $respuesta."<button type='button'
-							class='btn boton w-100 small-width mt-2' 
-							onclick='pone(this,1)'
-						    >Eliminar</button><br/>";
+							$respuesta = $respuesta."<div class='button-container' style='display: flex; justify-content: center; gap: 10px; margin-top: 10px'>
+                        
+                            <button type='button' class='btn btn-success' onclick='pone(this,0)'>
+                                <img src='img/lapiz.svg' style='width: 20px'>
+                            </button>";
+							$respuesta = $respuesta."<a class='btn btn-danger' onclick='pone(this,1)'>
+                                <img src='img/trash-can-solid.svg' style='width: 20px;'>
+                            </a>";
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td>";
 							$respuesta = $respuesta.$r['cedula_personal'];
