@@ -1,5 +1,5 @@
 <header class="sidebarr">
-        <span class="absolute text-white text-4xl top-5 left-4 cursor-pointer" onclick="Openbar()">
+        <span class="absolute text-white text-2xl top-7 left-4 cursor-pointer" onclick="Openbar()">
             <i class="fa-solid fa-bars py-2 px-2 bg-red-600 rounded-md" style="color: #ffffff;"></i>
         </span>
         <div class="sidebar fixed top-0 bottom-0 lg:left-0 left-[-300px] duration-1000 

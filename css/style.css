@@ -2,6 +2,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
 
+
+
 .inicio {
     display: flex;
     justify-content: center;
@@ -31,6 +33,12 @@
 .texto-bienvenida {
     float: right;
     font-size: 30px;
+    font-weight: 600;
+}
+
+.texto-inicio {
+    float: right;
+    font-size: 20px;
     font-weight: 600;
 }
 
@@ -134,14 +142,31 @@ background: linear-gradient(90deg, #ff0000,#ff8080);/* W3C, IE 10+/ Edge, Firefo
 }
 
 @media (max-width: 768px) {
+
+    .sidebarr {
+        font-size: 10px;
+    }
+    
+    .texto-bienvenida {
+        float: right;
+        font-size: 30px;
+        font-weight: 600;
+        position: fixed;
+        z-index: 2;
+        top: 0;
+    }
+
     .espacio {
         padding-left: 0px;
     }
 
     .botones {
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         width: 100%;
+        padding-top: 80px;
+        margin-left: 10px;
+        font-size: 10px;
     }
 
     .button-container {
@@ -157,6 +182,17 @@ background: linear-gradient(90deg, #ff0000,#ff8080);/* W3C, IE 10+/ Edge, Firefo
 
     label {
         padding-top: 20px;
+    }
+
+    
+    .texto-bienvenida {
+        float: right;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    table {
+        font-size: 10px;
     }
 
 }
