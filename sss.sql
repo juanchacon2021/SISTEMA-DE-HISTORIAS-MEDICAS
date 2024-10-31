@@ -120,10 +120,10 @@ DROP TABLE IF EXISTS `examenes`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `examenes` (
   `cod_examenes` int NOT NULL AUTO_INCREMENT,
-  `nombre_examen` varchar(20),
-  `descripcion_examen` varchar(300),
+  `nombre_examen` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `descripcion_examen` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`cod_examenes`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -206,16 +206,16 @@ DROP TABLE IF EXISTS `examenes_s`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `examenes_s` (
   `cod_examen_s` int NOT NULL AUTO_INCREMENT,
-  `respiratorio` varchar(300),
-  `cardiovascular` varchar(300),
-  `abdomen` varchar(300),
-  `extremidades_s` varchar(300),
-  `neurologicos` varchar(300),
+  `respiratorio` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `cardiovascular` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `abdomen` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `extremidades_s` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `neurologicos` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `cedula_h` int NOT NULL,
   PRIMARY KEY (`cod_examen_s`),
   KEY `cedula_h` (`cedula_h`),
   CONSTRAINT `examenes_s_ibfk_1` FOREIGN KEY (`cedula_h`) REFERENCES `historias` (`cedula_historia`)
-) ENGINE=InnoDB AUTO_INCREMENT=16;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -331,4 +331,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-26 11:04:39
+-- Dump completed on 2024-10-28 21:34:55
