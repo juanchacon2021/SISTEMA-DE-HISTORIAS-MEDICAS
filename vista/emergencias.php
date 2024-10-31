@@ -48,9 +48,6 @@ Emergencias
 
 	  </div>
   </div>
-  <div class="col-md-2" style="margin-left: 1100px;" >	
-        <a href="?pagina=principal" class="boton">Volver</a>
-	</div>
 </div> 
 
 

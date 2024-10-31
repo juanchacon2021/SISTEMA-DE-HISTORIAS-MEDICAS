@@ -142,13 +142,17 @@ background: linear-gradient(90deg, #ff0000,#ff8080);/* W3C, IE 10+/ Edge, Firefo
 
 @media (max-width: 768px) {
 
+    html {
+        margin-bottom: 0;
+    }
+
     .sidebarr {
         font-size: 10px;
     }
     
     .texto-bienvenida {
         float: right;
-        font-size: 30px;
+        font-size: 20px;
         font-weight: 600;
         position: fixed;
         z-index: 2;
@@ -157,6 +161,7 @@ background: linear-gradient(90deg, #ff0000,#ff8080);/* W3C, IE 10+/ Edge, Firefo
 
     .espacio {
         padding-left: 0px;
+        margin-top: 40px;
     }
 
     .botones {
@@ -179,16 +184,15 @@ background: linear-gradient(90deg, #ff0000,#ff8080);/* W3C, IE 10+/ Edge, Firefo
         width: 20%;
     }
 
+    .texto-inicio {
+        font-size: 15px;
+    }
+
+
     label {
         padding-top: 20px;
     }
 
-    
-    .texto-bienvenida {
-        float: right;
-        font-size: 20px;
-        font-weight: 600;
-    }
 
     table {
         font-size: 10px;

@@ -262,7 +262,7 @@
 
                 <div class="row mt-3 justify-content-center">
                     <div class="col-md-2">
-                        <button type="button" class="btn botonverde" id="proceso">INCLUIR</button>
+                        <center><button type="button" class="btn botonverde" id="proceso">INCLUIR</button></center>
                     </div>
                 </div>
             </div>	
