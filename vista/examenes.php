@@ -55,6 +55,37 @@ Examenes
 	  </div>
   </div>
 </div> <!-- fin de container -->
+
+<!-- seccion del modal historias -->
+<div class="modal fade" tabindex="-1" role="dialog"  id="modalpacientes">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-header text-light bg-info">
+        <h5 class="modal-title">Listado de Pacientes</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-content">
+		<table class="table table-striped table-hover">
+		<thead>
+		  <tr>
+		    <th style="display:none">Id</th>
+			<th>Cedula</th>
+			<th>Nombre</th>
+			<th>Apellido</th>
+		  </tr>
+		</thead>
+		<tbody id="listadopacientes">
+		 
+		</tbody>
+		</table>
+    </div>
+	<div class="modal-footer bg-light">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+    </div>
+  </div>
+</div>
+<!--fin de seccion modal-->
  
 
 <!-- seccion del modal -->
@@ -124,46 +155,51 @@ Examenes
 		   <form method="post" id="f" autocomplete="off">
 			<input autocomplete="off" type="text" class="form-control" name="accion" id="accion" style="display: none;">
 			<div class="container">	
-				
-			<div class="col-md-4" >
-					   <label class="texto-inicio font-medium" for="cod_registro">Cod. de Registro</label>
-					   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cod_registro" />
-					   <span id="scod_registro"></span>
-					</div>	
-					
+				<div class="row mb-3">
+
 					<div class="col-md-6">
 					   <label class="texto-inicio font-medium" for="fecha_r">Fecha</label>
 					   <input class="form-control bg-gray-200 rounded-lg border-white" type="date" id="fecha_r" />
 					   <span id="sfecha_r"></span>
-					</div>
-				</div>
-				
-				<div class="row mb-3">
+					</div>	
+
 					<div class="col-md-6">
-					   <label class="texto-inicio font-medium" for="observacion_examen">Observación</label>
-					   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="observacion_examen"  />
-					   <span id="sobservacion_examen"></span>
+					   <label class="texto-inicio font-medium" for="cod_registro">Cod. de Registro</label>
+					   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cod_registro" />
+					   <span id="scod_registro"></span>
 					</div>
-					<div class="col-md-6">
-					   <label class="texto-inicio font-medium" for="cedula_h">Cedula del Paciente</label>
-					   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_h" name="cedula_h" />
-					   <span id="scedula_h"></span>
-					</div>
+
 				</div>
-				
+
 				<div class="row mb-3">
+
 					<div class="col-md-6">
 					   <label class="texto-inicio font-medium" for="cod_examenes1">Tipo de Examen</label>
 					   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cod_examenes1"  />
 					   <span id="scod_examenes1"></span>
 					</div>
 
-					
-				
-				
-				
-				
+					<label class="texto-inicio font-medium" for="cedula_h">Cedula del Paciente</label>
+						<div class="col-md-6 input-group">
+							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_h" name="cedula_h" />				
+							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_historia" name="cedula_historia" style="display:none"/>
+							<button type="button" class="btn btn-primary" id="listadodepacientes" name="listadodepacientes">LISTADO DE PACIENTES</button>
+						</div>
+				    <span id="scedula_h"></span>
 
+
+				</div>
+
+				<div class="row mb-3">
+
+					<div class="col-md-12">
+					   <label class="texto-inicio font-medium" for="observacion_examen">Observación</label>
+					   <textarea rows="2" cols="25" class="form-control bg-gray-200 rounded-lg border-white" type="text" id="observacion_examen"></textarea>
+					   <span id="sobservacion_examen"></span>
+					</div>
+					
+				</div>
+											
 				<div class="row mt-3 justify-content-center">
                     <div class="col-md-2">
                         <button type="button" class="btn botonverde" id="proceso1"></button>

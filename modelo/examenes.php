@@ -75,6 +75,46 @@ class examenes extends datos{
 		return $this->observacion_examen;
 	}
 	
+
+	function listadopacientes(){
+		$co = $this->conecta();
+		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$r = array(); // en este arreglo
+			// se enviara la respuesta a la solicitud y el
+			// contenido de la respuesta
+		try{
+			$resultado = $co->query("Select * from historias");
+			$respuesta = '';
+			if($resultado){
+				foreach($resultado as $r){
+					$respuesta = $respuesta."<tr style='cursor:pointer' onclick='colocapacientes(this);'>";
+					$respuesta = $respuesta."<td style='display:none'>";
+						$respuesta = $respuesta.$r['cedula_historia'];
+					$respuesta = $respuesta."</td>";
+					$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['cedula_historia'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['nombre'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['apellido'];
+						$respuesta = $respuesta."</td>";
+					$respuesta = $respuesta."</tr>";
+				}
+			}
+				$r['resultado'] = 'listadopacientes';
+			    $r['mensaje'] =  $respuesta;
+			    
+			
+			
+		}catch(Exception $e){
+			$r['resultado'] = 'error';
+			$r['mensaje'] =  $e->getMessage();
+		}
+			return $r;
+	}
+
 	
 	function incluir(){
 		
