@@ -272,9 +272,9 @@ class historias extends datos{
 								<img src='img/lapiz.svg' style='width: 20px'>
 							</a>
 
-                            <a class='btn btn-danger' href='vista/fpdf/historia.php' target='_blank'>
-                                <img src='img/descarga.svg' style='width: 20px;'>
-                            </a>
+                            <a class='btn btn-danger' href='vista/fpdf/historia.php?cedula_historia=" . $r['cedula_historia'] . "' target='_blank'>
+								<img src='img/descarga.svg' style='width: 20px;'>
+							</a>
 
                         </div><br/>";
 

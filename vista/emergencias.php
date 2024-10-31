@@ -127,13 +127,6 @@ Emergencias
 					</div>
 					<br>
 
-				 <!-- <div class="row mb-3">
-					<div class="col-md-12">
-					   <label for="cedula_h">Cedula del Paciente</label>
-					   <input  class="form-control" type="text" id="cedula_h"  />
-					   <span id="scedula_h"></span>
-					</div> -->
-
 					<label class="texto-inicio font-medium" for="cedula_h">Cedula del Paciente</label>
 						<div class="col-md-8 input-group">
 							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_h" name="cedula_h" />				

@@ -3,9 +3,10 @@
 	require_once("comunes/encabezado.php"); 
 	require_once("comunes/sidebar.php");	
 ?>
-<body >
 
-<div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
+<body>
+
+<div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100">
 Pacientes
 </div>
 <div class="container espacio">
