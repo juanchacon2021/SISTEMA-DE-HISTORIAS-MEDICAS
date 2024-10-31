@@ -146,7 +146,7 @@ Consultas
 				</div>
 
 
-				<div class="row mt-3 justify-content-center">
+				<div class="row mt-3 justify-content-center mb-4">
 					<div class="col-md-2">
 						   <button type="button" class="btn botonverde" 
 						   id="proceso" ></button>
