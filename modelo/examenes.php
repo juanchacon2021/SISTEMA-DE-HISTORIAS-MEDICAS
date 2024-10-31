@@ -1,39 +1,28 @@
 <?php
-//llamda al archivo que contiene la clase
-//datos, en ella posteriormente se colcora el codigo
-//para enlazar a su base de datos
+
 require_once('modelo/datos.php');
 
-//declaracion de la clase usuarios que hereda de la clase datos
-//la herencia se declara con la palabra extends y no es mas 
-//que decirle a esta clase que puede usar los mismos metodos
-//que estan en la clase de dodne hereda (La padre) como sir fueran de el
+
 
 class examenes extends datos{
-	//el primer paso dentro de la clase
-	//sera declarar los atributos (variables) que describen la clase
-	//para nostros no es mas que colcoar los inputs (controles) de
-	//la vista como variables aca
-	//cada atributo debe ser privado, es decir, ser visible solo dentro de la
-	//misma clase, la forma de colcoarlo privado es usando la palabra private
 	
-	private $cod_examenes; //recuerden que en php, las variables no tienen tipo predefinido
+	
+	private $cod_examenes;
+	private $cod_examenes1; 
 	private $nombre_examen;
 	private $descripcion_examen;
 	private $cedula_h;
-
+    private $cod_registro;
+	private $fecha_r;
+	private $observacion_examen;
 	
-	//Ok ya tenemos los atributos, pero como son privados no podemos acceder a ellos desde fueran
-	//por lo que debemos colcoar metodos (funciones) que me permitan leer (get) y colocar (set)
-	//valores en ello, esto es  muy mal llamado geters y seters por si alguien se los pregunta
 	
 	function set_cod_examenes($valor){
-		$this->cod_examenes = $valor; //fijencen como se accede a los elementos dentro de una clase
-		//this que singnifica esto es decir esta clase luego -> simbolo que indica que apunte
-		//a un elemento de this, es decir esta clase
-		//luego el nombre del elemento sin el $
+		$this->cod_examenes = $valor; 
 	}
-	
+	function set_cod_examenes1($valor){
+		$this->cod_examenes1 = $valor; 
+	}
 	
 	function set_nombre_examen($valor){
 		$this->nombre_examen = $valor;
@@ -46,11 +35,22 @@ class examenes extends datos{
 	function set_cedula_h($valor){
 		$this->cedula_h = $valor;
 	}
+	function set_cod_registro($valor){
+		$this->cod_registro = $valor; 
+	}
+	function set_fecha_r($valor){
+		$this->fecha_r = $valor; 
+	}
+	function set_observacion_examen($valor){
+		$this->observacion_examen = $valor; 
+	}
 	
-	//ahora la misma cosa pero para leer, es decir get
 	
 	function get_cod_examenes(){
 		return $this->cod_examenes;
+	}
+	function get_cod_examenes1(){
+		return $this->cod_examenes1;
 	}
 	
 	function get_nombre_examen(){
@@ -65,20 +65,22 @@ class examenes extends datos{
 		return $this->cedula_h;
 	}
 
-	//Lo siguiente que demos hacer es crear los metodos para incluir, consultar y eliminar
+	function get_cod_registro(){
+		return $this->cod_registro;
+	}
+	function get_fecha_r(){
+		return $this->fecha_r;
+	}
+	function get_observacion_examenes(){
+		return $this->observacion_examen;
+	}
+	
 	
 	function incluir(){
-		//Ok ya tenemos la base de datos y la funcion conecta dentro de la clase
-		//datos, ahora debemos ejecutar las operaciones para realizar las consultas 
 		
-		//Lo primero que debemos hacer es consultar por el campo clave
-		//en este caso la cedula, para ello se creo la funcion existe
-		//que retorna true en caso de exitir el registro
 		$r = array();
 		if(!$this->existe($this->cod_examenes)){
-			//si estamos aca es porque la cedula no existe es decir se puede incluir
-			//los pasos a seguir son
-			//1 Se llama a la funcion conecta 
+			 
 			$co = $this->conecta();
 			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			//2 Se ejecuta el sql
@@ -105,24 +107,61 @@ class examenes extends datos{
 			$r['mensaje'] =  'Ya existe el COD de Examen';
 		}
 		return $r;
-		//Listo eso es todo y es igual para el resto de las operaciones
-		//incluir, modificar y eliminar
-		//solo cambia para buscar 
+		
+	}
+	function incluir1(){
+		
+		$r = array();
+		if(!$this->existe1($this->cod_registro)){
+			 
+			$co = $this->conecta();
+			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			
+			try {
+					$co->query("Insert into registro(
+						
+						fecha_r,
+						cedula_h,
+						cod_examenes,
+						observacion_examen
+
+						) 
+						Values(
+						
+						'$this->fecha_r',
+						'$this->cedula_h',
+						'$this->cod_examenes1',
+						'$this->observacion_examen'
+						)");
+						$r['resultado'] = 'incluir';
+			            $r['mensaje'] =  'Registro Inluido';
+			} catch(Exception $e) {
+				$r['resultado'] = 'error';
+			    $r['mensaje'] =  $e->getMessage();
+			}
+		}
+		else{
+			$r['resultado'] = 'incluir';
+			$r['mensaje'] =  'Ya existe el COD de Registro';
+		}
+		return $r;
+		
 	}
 	
 	function modificar(){
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$r = array();
-		if($this->existe($this->cod_examenes)){
+		if($this->existe1($this->cod_registro)){
 			try {
-					$co->query("Update examenes set 
-					    cod_examenes = '$this->cod_examenes',
-						nombre_examen = '$this->nombre_examen',
-						descripcion_examen = '$this->descripcion_examen',
-						cedula_h = '$this->cedula_h'
+					$co->query("Update registro set 
+					    cod_registro = '$this->cod_registro',
+						fecha_r = '$this->fecha_r',					
+						cedula_h = '$this->cedula_h',
+						cod_examenes = '$this->cod_examenes1',
+						observacion_examen = '$this->observacion_examen'
 						where
-						cod_examenes = '$this->cod_examenes'
+						cod_registro = '$this->cod_registro'
 						");
 						$r['resultado'] = 'modificar';
 			            $r['mensaje'] =  'Registro Modificado';
@@ -133,7 +172,7 @@ class examenes extends datos{
 		}
 		else{
 			$r['resultado'] = 'modificar';
-			$r['mensaje'] =  'Cedula no registrada';
+			$r['mensaje'] =  'Examen no registrado';
 		}
 		return $r;
 	}
@@ -142,11 +181,11 @@ class examenes extends datos{
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$r = array();
-		if($this->existe($this->cod_examenes)){
+		if($this->existe1($this->cod_registro)){
 			try {
-					$co->query("delete from examenes 
+					$co->query("delete from registro 
 						where
-						cod_examenes = '$this->cod_examenes'
+						cod_registro = '$this->cod_registro'
 						");
 						$r['resultado'] = 'eliminar';
 			            $r['mensaje'] =  'Registro Eliminado';
@@ -157,7 +196,8 @@ class examenes extends datos{
 		}
 		else{
 			$r['resultado'] = 'eliminar';
-			$r['mensaje'] =  'No existe la cedula';
+			$r['mensaje'] =  'No existe el registro';
+			
 		}
 		return $r;
 	}
@@ -169,7 +209,7 @@ class examenes extends datos{
 		$r = array();
 		try{
 			
-			$resultado = $co->query("Select * from examenes");
+			$resultado = $co->query("Select * from registro");
 			
 			if($resultado){
 				
@@ -177,26 +217,30 @@ class examenes extends datos{
 				foreach($resultado as $r){
 					    $respuesta = $respuesta."<tr>";
 					    $respuesta = $respuesta."<td>";
-							$respuesta = $respuesta."<button type='button'
-							class='btn botonazul w-100 small-width mb-3' 
-							onclick='pone(this,0)'
-						    >Modificar</button><br/>";
-							$respuesta = $respuesta."<button type='button'
-							class='btn boton w-100 small-width mt-2' 
-							onclick='pone(this,1)'
-						    >Eliminar</button><br/>";
+						$respuesta = $respuesta."<div class='button-container' style='display: flex; justify-content: center; gap: 10px; margin-top: 10px'>
+                        
+						<button type='button' class='btn btn-success' onclick='pone(this,0)'>
+							<img src='img/lapiz.svg' style='width: 20px'>
+						</button>";
+						$respuesta = $respuesta."<a class='btn btn-danger' onclick='pone(this,1)'>
+							<img src='img/trash-can-solid.svg' style='width: 20px;'>
+						</a>";
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['cod_examenes'];
+							$respuesta = $respuesta.$r['cod_registro'];
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['nombre_examen'];
+							$respuesta = $respuesta.$r['fecha_r'];
+						
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['descripcion_examen'];
+							$respuesta = $respuesta.$r['observacion_examen'];
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['cedula_h'];
+								$respuesta = $respuesta.$r['cedula_h'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+								$respuesta = $respuesta.$r['cod_examenes'];
                         
 				}
 				
@@ -222,6 +266,30 @@ class examenes extends datos{
 		try{
 			
 			$resultado = $co->query("Select * from examenes where cod_examenes ='$cod_examenes'");
+			
+			
+			$fila = $resultado->fetchAll(PDO::FETCH_BOTH);
+			if($fila){
+
+				return true;
+			    
+			}
+			else{
+				
+				return false;;
+			}
+			
+		}catch(Exception $e){
+			return false;
+		}
+	}
+
+	private function existe1($cod_registro){
+		$co = $this->conecta();
+		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		try{
+			
+			$resultado = $co->query("Select * from registro where cod_registro ='$cod_registro'");
 			
 			
 			$fila = $resultado->fetchAll(PDO::FETCH_BOTH);
