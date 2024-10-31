@@ -58,14 +58,32 @@ $("#proceso").on("click",function(){
 			enviaAjax(datos);
 		}
 	}
+	
+	
+});
+$("#proceso1").on("click",function(){
+	
+	if($(this).text()=="INCLUIR REGISTRO"){
+		if(validarenvio()){
+			var datos = new FormData();
+			datos.append('accion','incluir1');
+			datos.append('cod_registro',$("#cod_registro").val());
+			datos.append('fecha_r',$("#fecha_r").val());
+			datos.append('cedula_h',$("#cedula_h").val());
+			datos.append('cod_examenes1',$("#cod_examenes1").val());
+			datos.append('observacion_examen',$("#observacion_examen").val());
+			enviaAjax(datos);
+		}
+	}	
 	else if($(this).text()=="MODIFICAR"){
 		if(validarenvio()){
 			var datos = new FormData();
 			datos.append('accion','modificar');
-			datos.append('cod_examenes',$("#cod_examenes").val());
-			datos.append('nombre_examen',$("#nombre_examen").val());
-			datos.append('descripcion_examen',$("#descripcion_examen").val());
+			datos.append('cod_registro',$("#cod_registro").val());
+			datos.append('fecha_r',$("#fecha_r").val());
 			datos.append('cedula_h',$("#cedula_h").val());
+			datos.append('cod_examenes1',$("#cod_examenes1").val());
+			datos.append('observacion_examen',$("#observacion_examen").val());
 			enviaAjax(datos);
 		}
 	}
@@ -73,7 +91,7 @@ $("#proceso").on("click",function(){
 	else{
 		    var datos = new FormData();
 			datos.append('accion','eliminar');
-			datos.append('cod_examenes',$("#cod_examenes").val());
+			datos.append('cod_registro',$("#cod_registro").val());
 			enviaAjax(datos);
 		}
 	
@@ -82,6 +100,11 @@ $("#incluir").on("click",function(){
 	limpia();
 	$("#proceso").text("INCLUIR");
 	$("#modal1").modal("show");
+});
+$("#incluir1").on("click",function(){
+	limpia1();
+	$("#proceso1").text("INCLUIR REGISTRO");
+	$("#modal2").modal("show");
 });
 
 
@@ -149,19 +172,43 @@ function pone(pos,accion){
 
 
 	if(accion==0){
-		$("#proceso").text("MODIFICAR");
+		$("#proceso1").text("MODIFICAR");
+	
+		$("#cod_registro").val($(linea).find("td:eq(1)").text());
+		$("#fecha_r").val($(linea).find("td:eq(2)").text());
+		$("#observacion_examen").val($(linea).find("td:eq(3)").text());
+		$("#cedula_h").val($(linea).find("td:eq(4)").text());
+		$("#cod_examenes1").val($(linea).find("td:eq(5)").text());
+		$("#modal2").modal("show");
 	}
 	else if(accion==1){
-		$("#proceso").text("ELIMINAR");
+		$("#proceso1").text("ELIMINAR");
+		
+		$("#cod_registro").val($(linea).find("td:eq(1)").text());
+		$("#fecha_r").val($(linea).find("td:eq(2)").text());
+		$("#observacion_examen").val($(linea).find("td:eq(3)").text());
+		$("#cedula_h").val($(linea).find("td:eq(4)").text());
+		$("#cod_examenes1").val($(linea).find("td:eq(5)").text());
+		$("#modal2").modal("show");
 	}
-	else{
+	else if(accion==3){
 		$("#proceso").text("INCLUIR");
-	}
-	$("#cod_examenes").val($(linea).find("td:eq(1)").text());
+		$("#cod_examenes").val($(linea).find("td:eq(1)").text());
 	$("#nombre_examen").val($(linea).find("td:eq(2)").text());
 	$("#descripcion_examen").val($(linea).find("td:eq(3)").text());
 	$("#cedula_h").val($(linea).find("td:eq(4)").text());
 	$("#modal1").modal("show");
+	}
+	else {
+		$("#proceso1").text("INCLUIR REGISTRO");
+		$("#cod_registro").val($(linea).find("td:eq(1)").text());
+		$("#fecha_r").val($(linea).find("td:eq(2)").text());
+		$("#observacion_examen").val($(linea).find("td:eq(3)").text());
+		$("#cedula_h").val($(linea).find("td:eq(4)").text());
+		$("#cod_examenes1").val($(linea).find("td:eq(5)").text());
+		$("#modal2").modal("show");
+	}
+	
 }
 
 
@@ -193,17 +240,24 @@ function enviaAjax(datos) {
 			   consultar();
 		   }
         }
+		else if (lee.resultado == "incluir1") {
+			muestraMensaje(lee.mensaje);
+			if(lee.mensaje=='Registro Inluido'){
+				$("#modal2").modal("hide");
+				consultar();
+			}
+		 }
 		else if (lee.resultado == "modificar") {
            muestraMensaje(lee.mensaje);
 		   if(lee.mensaje=='Registro Modificado'){
-			   $("#modal1").modal("hide");
+			   $("#modal2").modal("hide");
 			   consultar();
 		   }
         }
 		else if (lee.resultado == "eliminar") {
            muestraMensaje(lee.mensaje);
 		   if(lee.mensaje=='Registro Eliminado'){
-			   $("#modal1").modal("hide");
+			   $("#modal2").modal("hide");
 			   consultar();
 		   }
         }
@@ -235,4 +289,11 @@ function limpia(){
 	$("#nombre_examen").val("");
 	$("#descripcion_examen").val("");
 	$("#cedula_h").val("");
+}
+function limpia1(){
+	$("#cod_registro").val("");
+	$("#fecha_r").val("");
+	$("#cedula_h").val("");
+	$("#cod_examenes1").val("");
+	$("#observacion_examen").val("");
 }

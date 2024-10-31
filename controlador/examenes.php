@@ -14,19 +14,30 @@ require_once("modelo/".$pagina.".php");
 			 echo  json_encode($o->consultar());  
 		  }
 		  elseif($accion=='eliminar'){
-			 $o->set_cod_examenes($_POST['cod_examenes']);
+			 $o->set_cod_registro($_POST['cod_registro']);
 			 echo  json_encode($o->eliminar());
 		  }
-		  else{		  
-			  $o->set_nombre_examen($_POST['nombre_examen']);
+		  elseif($accion=='incluir'){
+				$o->set_nombre_examen($_POST['nombre_examen']);
 			  $o->set_descripcion_examen($_POST['descripcion_examen']);
-			  if($accion=='incluir'){
 				echo  json_encode($o->incluir());
 			  }
+		  elseif($accion=='incluir1'){
+				$o->set_cedula_h($_POST['cedula_h']);
+				$o->set_cod_examenes1($_POST['cod_examenes1']);
+				$o->set_fecha_r($_POST['fecha_r']);
+				$o->set_observacion_examen($_POST['observacion_examen']);
+				echo  json_encode($o->incluir1());
+			  }
 			  elseif($accion=='modificar'){
+				$o->set_cod_registro($_POST['cod_registro']);
+				$o->set_cedula_h($_POST['cedula_h']);
+				$o->set_cod_examenes1($_POST['cod_examenes1']);
+				$o->set_fecha_r($_POST['fecha_r']);
+				$o->set_observacion_examen($_POST['observacion_examen']);
 				echo  json_encode($o->modificar());
 			  }
-		  }
+		  
 		  exit;
 	  }
 	  
