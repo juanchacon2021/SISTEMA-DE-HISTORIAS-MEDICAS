@@ -38,14 +38,16 @@ $(document).ready(function(){
 	//ejecuta una consulta a la base de datos para llenar la tabla
 	consultar();
 	carga_pacientes();
+	carga_examenes();
 
 	
 $("#listadodepacientes").on("click",function(){
 		$("#modalpacientes").modal("show");
 	});
 
-
-
+$("#listadodeexamenes").on("click",function(){
+		$("#modalexamenes").modal("show");
+	});
 
 
 
@@ -60,6 +62,22 @@ $("#listadodepacientes").on("click",function(){
 		});
 		if(!encontro){
 			$("#datosdelpacientes").html("");
+		}
+	});
+
+
+
+	$("#cod_examenes1").on("keyup",function(){
+		var cedula = $(this).val();
+		var encontro = false;
+		$("#listadoexamenes tr").each(function(){
+			if(cedula == $(this).find("td:eq(1)").text()){
+				colocaexamen($(this));
+				encontro = true;
+			} 
+		});
+		if(!encontro){
+			$("#datosdeexamen").html("");
 		}
 	});
 
@@ -140,6 +158,14 @@ function carga_pacientes(){
 
 	enviaAjax(datos);
 }
+function carga_examenes(){
+	
+	var datos = new FormData();
+
+	datos.append('accion','listadoexamenes'); 
+
+	enviaAjax(datos);
+}
 
 
 //Validación de todos los campos antes del envio
@@ -197,6 +223,12 @@ function colocapacientes(linea){
 	$("#cedula_historia").val($(linea).find("td:eq(0)").text());
 	$("#datosdelpacientes").html("Nombre: "+$(linea).find("td:eq(2)").text()+
 	" / Apellido: "+$(linea).find("td:eq(3)").text());
+}
+
+function colocaexamen(linea){
+	$("#cod_examenes1").val($(linea).find("td:eq(1)").text());
+	$("#codigo_examenes").val($(linea).find("td:eq(0)").text());
+	$("#datosdeexamen").html("Nombre del examen: "+$(linea).find("td:eq(2)").text());
 }
 //funcion para pasar de la lista a el formulario
 function pone(pos,accion){
@@ -269,6 +301,10 @@ function enviaAjax(datos) {
 		else if(lee.resultado=='listadopacientes'){
 
 			$('#listadopacientes').html(lee.mensaje);
+		}
+		else if(lee.resultado=='listadoexamenes'){
+
+			$('#listadoexamenes').html(lee.mensaje);
 		}
 		else if (lee.resultado == "incluir") {
            muestraMensaje(lee.mensaje);

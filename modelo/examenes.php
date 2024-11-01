@@ -114,6 +114,45 @@ class examenes extends datos{
 		}
 			return $r;
 	}
+
+	function listadoexamenes(){
+		$co = $this->conecta();
+		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$r = array(); // en este arreglo
+			// se enviara la respuesta a la solicitud y el
+			// contenido de la respuesta
+		try{
+			$resultado = $co->query("Select * from examenes");
+			$respuesta = '';
+			if($resultado){
+				foreach($resultado as $r){
+					$respuesta = $respuesta."<tr style='cursor:pointer' onclick='colocaexamen(this);'>";
+					$respuesta = $respuesta."<td style='display:none'>";
+						$respuesta = $respuesta.$r['cod_examenes'];
+					$respuesta = $respuesta."</td>";
+					$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['cod_examenes'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['nombre_examen'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td>";
+							$respuesta = $respuesta.$r['descripcion_examen'];
+						$respuesta = $respuesta."</td>";
+					$respuesta = $respuesta."</tr>";
+				}
+			}
+				$r['resultado'] = 'listadoexamenes';
+			    $r['mensaje'] =  $respuesta;
+			    
+			
+			
+		}catch(Exception $e){
+			$r['resultado'] = 'error';
+			$r['mensaje'] =  $e->getMessage();
+		}
+			return $r;
+	}
 	 
 	
 	function incluir(){
@@ -348,22 +387,7 @@ class examenes extends datos{
 		}
 	}
 	
-	
-	
-	/*	function obtienefecha(){
-		$r = array();
-		
-			  $f = date('Y-m-d');
-		      $f1 = strtotime ('-18 year' , strtotime($f)); 
-		      $f1 = date ('Y-m-d',$f1);
-			  $r['resultado'] = 'obtienefecha';
-			  $r['mensaje'] =  $f1;
-		
-		return $r;
-	}*/
 
-	
-	
 	
 }
 ?>

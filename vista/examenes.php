@@ -204,7 +204,7 @@ Examenes
 				<label class="texto-inicio font-medium" for="cod_examenes1">Tipo de Examen</label>
 					<div class="col-md-6 input-group">
 						<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cod_examenes1" name="cod_examenes1"  />				  
-						<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="codigo_examene" name="codigo_examenes" style="display:none"/>
+						<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="codigo_examenes" name="codigo_examenes" style="display:none"/>
 						<button type="button" class="btn btn-primary" id="listadodeexamenes" name="listadodeexamenes">LISTADO DE EXAMENES</button>
 						<span id="scod_examenes1"></span>
 					</div>
@@ -221,8 +221,9 @@ Examenes
 							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_h" name="cedula_h" />				
 							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_historia" name="cedula_historia" style="display:none"/>
 							<button type="button" class="btn btn-primary" id="listadodepacientes" name="listadodepacientes">LISTADO DE PACIENTES</button>
+							<span id="scedula_h"></span>
 						</div>
-				    <span id="scedula_h"></span>
+				    
 					<br>
 					<div class="row">
 						<div class="col-md-12" id="datosdelpacientes">
