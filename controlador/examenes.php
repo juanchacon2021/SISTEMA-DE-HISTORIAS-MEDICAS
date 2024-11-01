@@ -13,6 +13,10 @@ require_once("modelo/".$pagina.".php");
 		  if($accion=='consultar'){
 			 echo  json_encode($o->consultar());  
 		  }
+		  elseif($accion=='listadopacientes'){
+			$respuesta = $o->listadopacientes();
+			echo json_encode($respuesta);
+		}
 		  elseif($accion=='eliminar'){
 			 $o->set_cod_registro($_POST['cod_registro']);
 			 echo  json_encode($o->eliminar());

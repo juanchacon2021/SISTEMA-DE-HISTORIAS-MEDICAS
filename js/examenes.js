@@ -37,15 +37,12 @@ $(document).ready(function(){
 	
 	//ejecuta una consulta a la base de datos para llenar la tabla
 	consultar();
-	
-//VALIDACION DE DATOS	
-	
-	
-//FIN DE VALIDACION DE DATOS
+	carga_pacientes();
 
-
-
-//CONTROL DE BOTONES
+	
+$("#listadodepacientes").on("click",function(){
+		$("#modalpacientes").modal("show");
+	});
 $("#proceso").on("click",function(){
 	if($(this).text()=="INCLUIR"){
 		if(validarenvio()){
@@ -115,6 +112,21 @@ $("#incluir1").on("click",function(){
 	
 });
 
+$("#cedula_h").on("keyup",function(){
+	var cedula = $(this).val();
+	var encontro = false;
+	$("#listadopacientes tr").each(function(){
+		if(cedula == $(this).find("td:eq(1)").text()){
+			colocapacientes($(this));
+			encontro = true;
+		} 
+	});
+	if(!encontro){
+		$("#datosdelpacientes").html("");
+	}
+});
+
+
 //Validación de todos los campos antes del envio
 function validarenvio(){
 	
@@ -130,6 +142,15 @@ function muestraMensaje(mensaje){
 			setTimeout(function() {
 					$("#mostrarmodal").modal("hide");
 			},5000);
+}
+
+function carga_pacientes(){
+	
+	var datos = new FormData();
+
+	datos.append('accion','listadopacientes'); 
+
+	enviaAjax(datos);
 }
 
 
@@ -165,6 +186,13 @@ mensaje){
 	}
 }
 
+
+function colocapacientes(linea){
+	$("#cedula_h").val($(linea).find("td:eq(1)").text());
+	$("#cedula_historia").val($(linea).find("td:eq(0)").text());
+	$("#datosdelpacientes").html("Nombre: "+$(linea).find("td:eq(2)").text()+
+	" / Apellido: "+$(linea).find("td:eq(3)").text());
+}
 //funcion para pasar de la lista a el formulario
 function pone(pos,accion){
 	
@@ -233,6 +261,10 @@ function enviaAjax(datos) {
            $("#resultadoconsulta").html(lee.mensaje);
 		   crearDT();
         }
+		else if(lee.resultado=='listadopacientes'){
+
+			$('#listadopacientes').html(lee.mensaje);
+		}
 		else if (lee.resultado == "incluir") {
            muestraMensaje(lee.mensaje);
 		   if(lee.mensaje=='Registro Inluido'){
