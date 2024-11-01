@@ -185,8 +185,8 @@ Examenes
 			<input autocomplete="off" type="text" class="form-control" name="accion" id="accion" style="display: none;">
 			<div class="container">	
 				
-			<div class="col-md-4" >
-					   <label class="texto-inicio font-medium" for="cod_registro">Cod. de Registro</label>
+			<div class="col-md-4" style="display: none;" >
+					   <label class="texto-inicio font-medium" for="cod_registro">Cod. de Registro</label >
 					   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cod_registro" />
 					   <span id="scod_registro"></span>
 					</div>	
@@ -197,18 +197,12 @@ Examenes
 					   <span id="sfecha_r"></span>
 					</div>	
 
-					<div class="col-md-6">
-					   <label class="texto-inicio font-medium" for="cod_registro">Cod. de Registro</label>
-					   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cod_registro" />
-					   <span id="scod_registro"></span>
-					</div>
-
 				</div>
 
 				<div class="row mb-3">
 
 				<label class="texto-inicio font-medium" for="cod_examenes1">Tipo de Examen</label>
-					<div class="col-md-6">
+					<div class="col-md-6 input-group">
 						<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cod_examenes1" name="cod_examenes1"  />				  
 						<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="codigo_examene" name="codigo_examenes" style="display:none"/>
 						<button type="button" class="btn btn-primary" id="listadodeexamenes" name="listadodeexamenes">LISTADO DE EXAMENES</button>
@@ -229,6 +223,12 @@ Examenes
 							<button type="button" class="btn btn-primary" id="listadodepacientes" name="listadodepacientes">LISTADO DE PACIENTES</button>
 						</div>
 				    <span id="scedula_h"></span>
+					<br>
+					<div class="row">
+						<div class="col-md-12" id="datosdelpacientes">
+						
+						</div>
+					</div>
 
 
 				</div>
