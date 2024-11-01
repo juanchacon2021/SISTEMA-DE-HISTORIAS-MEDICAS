@@ -1,7 +1,7 @@
 <?php
 class datos{
 	private $ip = "localhost";
-    private $bd = "shm-cdi";
+    private $bd = "sss";
     private $usuario = "root";
     private $contrasena = "123456";
    

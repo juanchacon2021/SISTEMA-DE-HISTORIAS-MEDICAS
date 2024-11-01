@@ -77,6 +77,13 @@
     justify-content: space-between;
 }
 
+
+.botonesdos {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
 .botonazul {
     font-family: 'Sora';
     background-color: #0054d1;
@@ -171,6 +178,16 @@ background: linear-gradient(90deg, #ff0000,#ff8080);/* W3C, IE 10+/ Edge, Firefo
         padding-top: 80px;
         margin-left: 10px;
         font-size: 10px;
+    }
+
+    .botonesdos {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        padding-top: 30px;
+        margin-left: 10px;
+        font-size: 10px;
+        margin-top: 0px;
     }
 
     .button-container {
