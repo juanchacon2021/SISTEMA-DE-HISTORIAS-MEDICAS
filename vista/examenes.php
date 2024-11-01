@@ -5,32 +5,31 @@
 ?>
 <body >
 
-<div class="container texto-bienvenida h2 text-center py-8 text-zinc-800">
+<div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
 Examenes
 </div>
 
-<div class="container pl-64"> <!-- todo el contenido ira dentro de esta etiqueta-->
+<div class="container espacio"> <!-- todo el contenido ira dentro de esta etiqueta-->
 	<div class="container">
-		<div class="row mt-3 justify-content-between">
-			
+		<div class="row mt-3 botones">
 			<hr class="mb-12 text-gray-600">
-		    <div class="botonverde">
 				<div class="botonverde" onclick='pone(this,3)' style="cursor: pointer;" >
 					Registrar Tipo de Examen
 				</div>
-			</div>
 					
-			<div class="col-md-2 mt-3">	
+			<div class="col-md-2 recortar">	
                 <a href="?pagina=principal" class="boton">Volver</a>
 			</div>
+
+			<hr class="mt-12 text-gray-600">
 		</div>
 	</div>
 
-	<hr class="mt-12 text-gray-600">
-
-	<div class="botonverde w-[16.5rem] mt-12">
-		<div class="botonverde" onclick="pone(this,4)" style="cursor: pointer;" >
-			Registrar Examen a Paciente
+	<div class="container">
+		<div class="row mt-3 botonesdos">
+			<div class="botonverde" onclick="pone(this,4)" style="cursor: pointer;" >
+				Registrar Examen a Paciente
+			</div>
 		</div>
 	</div>
 
@@ -185,15 +184,20 @@ Examenes
 		   <form method="post" id="f" autocomplete="off">
 			<input autocomplete="off" type="text" class="form-control" name="accion" id="accion" style="display: none;">
 			<div class="container">	
-				<div class="row mb-3">
-
+				
+			<div class="col-md-4" >
+					   <label class="texto-inicio font-medium" for="cod_registro">Cod. de Registro</label>
+					   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cod_registro" />
+					   <span id="scod_registro"></span>
+					</div>	
+					
 					<div class="col-md-6">
 					   <label class="texto-inicio font-medium" for="fecha_r">Fecha</label>
 					   <input class="form-control bg-gray-200 rounded-lg border-white" type="date" id="fecha_r" />
 					   <span id="sfecha_r"></span>
 					</div>	
 
-					<div class="col-md-6" style="display: none;">
+					<div class="col-md-6">
 					   <label class="texto-inicio font-medium" for="cod_registro">Cod. de Registro</label>
 					   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cod_registro" />
 					   <span id="scod_registro"></span>
@@ -225,14 +229,6 @@ Examenes
 							<button type="button" class="btn btn-primary" id="listadodepacientes" name="listadodepacientes">LISTADO DE PACIENTES</button>
 						</div>
 				    <span id="scedula_h"></span>
-					<br>
-					<div class="row">
-						<div class="col-md-12" id="datosdelpacientes">
-						
-						</div>
-					</div>
-					<br>
-					
 
 
 				</div>
@@ -256,9 +252,6 @@ Examenes
 			</form>
 		</div> <!-- fin de container -->
 	 
-    </div>
-	<div class="modal-footer bg-light">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
     </div>
   </div>
 </div>
