@@ -43,6 +43,26 @@ $(document).ready(function(){
 $("#listadodepacientes").on("click",function(){
 		$("#modalpacientes").modal("show");
 	});
+
+
+
+
+
+
+	$("#cedula_h").on("keyup",function(){
+		var cedula = $(this).val();
+		var encontro = false;
+		$("#listadopacientes tr").each(function(){
+			if(cedula == $(this).find("td:eq(1)").text()){
+				colocapacientes($(this));
+				encontro = true;
+			} 
+		});
+		if(!encontro){
+			$("#datosdelpacientes").html("");
+		}
+	});
+
 $("#proceso").on("click",function(){
 	if($(this).text()=="INCLUIR"){
 		if(validarenvio()){
@@ -93,6 +113,8 @@ $("#proceso1").on("click",function(){
 		}
 	
 });
+
+
 $("#incluir").on("click",function(){
 	limpia();
 	$("#proceso").text("INCLUIR");
@@ -105,26 +127,19 @@ $("#incluir1").on("click",function(){
 });
 
 
-
-
-
 	
 	
 });
 
-$("#cedula_h").on("keyup",function(){
-	var cedula = $(this).val();
-	var encontro = false;
-	$("#listadopacientes tr").each(function(){
-		if(cedula == $(this).find("td:eq(1)").text()){
-			colocapacientes($(this));
-			encontro = true;
-		} 
-	});
-	if(!encontro){
-		$("#datosdelpacientes").html("");
-	}
-});
+
+function carga_pacientes(){
+	
+	var datos = new FormData();
+
+	datos.append('accion','listadopacientes'); 
+
+	enviaAjax(datos);
+}
 
 
 //Validación de todos los campos antes del envio
@@ -142,15 +157,6 @@ function muestraMensaje(mensaje){
 			setTimeout(function() {
 					$("#mostrarmodal").modal("hide");
 			},5000);
-}
-
-function carga_pacientes(){
-	
-	var datos = new FormData();
-
-	datos.append('accion','listadopacientes'); 
-
-	enviaAjax(datos);
 }
 
 
@@ -185,7 +191,6 @@ mensaje){
 		return 0;
 	}
 }
-
 
 function colocapacientes(linea){
 	$("#cedula_h").val($(linea).find("td:eq(1)").text());

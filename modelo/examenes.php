@@ -114,7 +114,7 @@ class examenes extends datos{
 		}
 			return $r;
 	}
-
+	 
 	
 	function incluir(){
 		

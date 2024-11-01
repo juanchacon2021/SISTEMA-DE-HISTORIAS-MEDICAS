@@ -57,7 +57,7 @@ Examenes
 </div> <!-- fin de container -->
 
 <!-- seccion del modal historias -->
-<div class="modal fade" tabindex="-1" role="dialog"  id="modalpacientes">
+<div class="modal fade" tabindex="-1" role="dialog"  id="modalpacientes" style="z-index:1500">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-header text-light bg-info">
         <h5 class="modal-title">Listado de Pacientes</h5>
@@ -76,6 +76,36 @@ Examenes
 		  </tr>
 		</thead>
 		<tbody id="listadopacientes">
+		 
+		</tbody>
+		</table>
+    </div>
+	<div class="modal-footer bg-light">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+    </div>
+  </div>
+</div>
+<!--fin de seccion modal-->
+
+<!-- seccion del modal examenes -->
+<div class="modal fade" tabindex="-1" role="dialog"  id="modalexamenes" style="z-index:1500">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-header text-light bg-info">
+        <h5 class="modal-title">Listado de Examenes</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-content">
+		<table class="table table-striped table-hover">
+		<thead>
+		  <tr>
+		    <th style="display:none">cod_examenes</th>
+			<th>Tipos de examen</th>
+			<th>Descripcion</th>
+		  </tr>
+		</thead>
+		<tbody id="listadoexamenes">
 		 
 		</tbody>
 		</table>
@@ -163,7 +193,7 @@ Examenes
 					   <span id="sfecha_r"></span>
 					</div>	
 
-					<div class="col-md-6">
+					<div class="col-md-6" style="display: none;">
 					   <label class="texto-inicio font-medium" for="cod_registro">Cod. de Registro</label>
 					   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cod_registro" />
 					   <span id="scod_registro"></span>
@@ -173,11 +203,20 @@ Examenes
 
 				<div class="row mb-3">
 
+				<label class="texto-inicio font-medium" for="cod_examenes1">Tipo de Examen</label>
 					<div class="col-md-6">
-					   <label class="texto-inicio font-medium" for="cod_examenes1">Tipo de Examen</label>
-					   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cod_examenes1"  />
-					   <span id="scod_examenes1"></span>
+						<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cod_examenes1" name="cod_examenes1"  />				  
+						<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="codigo_examene" name="codigo_examenes" style="display:none"/>
+						<button type="button" class="btn btn-primary" id="listadodeexamenes" name="listadodeexamenes">LISTADO DE EXAMENES</button>
+						<span id="scod_examenes1"></span>
 					</div>
+					<br>
+					<div class="row">
+						<div class="col-md-12" id="datosdeexamen">
+						
+						</div>
+					</div>
+					<br>
 
 					<label class="texto-inicio font-medium" for="cedula_h">Cedula del Paciente</label>
 						<div class="col-md-6 input-group">
@@ -186,6 +225,14 @@ Examenes
 							<button type="button" class="btn btn-primary" id="listadodepacientes" name="listadodepacientes">LISTADO DE PACIENTES</button>
 						</div>
 				    <span id="scedula_h"></span>
+					<br>
+					<div class="row">
+						<div class="col-md-12" id="datosdelpacientes">
+						
+						</div>
+					</div>
+					<br>
+					
 
 
 				</div>
