@@ -31,4 +31,5 @@
     <script type="text/javascript" src="datatables/datatables.min.js"></script>
     <!--linea para enlazar con las fuentes-->
     <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
 </head>

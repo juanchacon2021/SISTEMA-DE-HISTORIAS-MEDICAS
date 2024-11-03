@@ -135,6 +135,13 @@ background: linear-gradient(90deg, #ff0000,#ff8080);/* W3C, IE 10+/ Edge, Firefo
 
 }
 
+.button-containerotro {
+    display: flex;
+    justify-content: center;
+    gap: 0px;
+    margin-top: 0px;
+}
+
 .button-container {
     display: flex;
     justify-content: center;

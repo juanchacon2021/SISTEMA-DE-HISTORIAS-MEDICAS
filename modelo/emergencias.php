@@ -291,13 +291,9 @@ class emergencias extends datos{
 				foreach($resultado as $r){
 					    $respuesta = $respuesta."<tr>";
 					    $respuesta = $respuesta."<td>";
-						
-							$respuesta = $respuesta."
-							<div class='button-container' style='display: flex; justify-content: center; gap: 10px; margin-top: 10px'>
+							$respuesta = $respuesta."<div class='button-containerotro' style='display: flex; justify-content: center; gap: 10px; margin-top: 10px'>
 							
-							<button type='button'
-							class='btn btn-success' 
-							onclick='pone(this,0)'
+							<button type='button' class='btn btn-success' onclick='pone(this,0)'
 												' horaingreso='".$r['horaingreso']."'
 												' fechaingreso='".$r['fechaingreso']."'
 												' motingreso='".$r['motingreso']."'
@@ -305,8 +301,11 @@ class emergencias extends datos{
 												' tratamientos='".$r['tratamientos']."'
 												' cedula_p='".$r['cedula_p']."'
 												' cedula_h='".$r['cedula_h']."'
-						    ><img src='img/lapiz.svg' style='width: 20px'></button>
-							<button type='button'
+							>
+                                <img src='img/lapiz.svg' style='width: 20px'>
+                            </button>";
+
+							$respuesta = $respuesta."<button type='button'
 							class='btn btn-danger' 
 							onclick='pone(this,1)'
 												' horaingreso='".$r['horaingreso']."'
@@ -316,9 +315,11 @@ class emergencias extends datos{
 												' tratamientos='".$r['tratamientos']."'
 												' cedula_p='".$r['cedula_p']."'
 												' cedula_h='".$r['cedula_h']."'
-						    ><img src='img/basura.svg' style='width: 20px'></button>
+						    >
+								<img src='img/basura.svg' style='width: 20px'>
+							</button>";
 							
-							<button type='button'
+							$respuesta = $respuesta."<button type='button'
 							class='btn btn-primary' 
 							onclick='pone(this,2)'
 												' horaingreso='".$r['horaingreso']."'
@@ -328,7 +329,9 @@ class emergencias extends datos{
 												' tratamientos='".$r['tratamientos']."'
 												' cedula_p='".$r['cedula_p']."'
 												' cedula_h='".$r['cedula_h']."'
-						    ><img src='img/ojo.svg' style='width: 20px'></button></div><br/>";
+						    >
+								<img src='img/ojo.svg' style='width: 20px'>
+							</button></div><br/>";
 							$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td style='display:none;'>";
 							$respuesta = $respuesta.$r['cod_emergencia'];

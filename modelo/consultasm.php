@@ -3,7 +3,7 @@
 require_once('modelo/datos.php');
 
 
-class emergencias extends datos{
+class consultasm extends datos{
 	
 	
 	private $cod_consulta; 
@@ -213,7 +213,7 @@ class emergencias extends datos{
 		$r = array();
 		if($this->existe($this->cod_consulta)){
 			try {
-					$co->query("Update emergencias set 
+					$co->query("Update consultas set 
 					    cod_consulta = '$this->cod_consulta',
 						fechaconsulta = '$this->fechaconsulta',
 						consulta = '$this->consulta',
@@ -244,7 +244,7 @@ class emergencias extends datos{
 		$r = array();
 		if($this->existe($this->cod_consulta)){
 			try {
-					$co->query("delete from emergencias 
+					$co->query("delete from consultas
 						where
 						cod_consulta = '$this->cod_consulta'
 						");

@@ -11,7 +11,7 @@ require_once("modelo/".$pagina.".php");
 
 	  
 	  if(!empty($_POST)){
-		$o = new emergencias();   
+		$o = new consultasm();   
 
 		  $accion = $_POST['accion'];
 		  
