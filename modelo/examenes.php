@@ -288,7 +288,8 @@ class examenes extends datos{
 		$r = array();
 		try{
 			
-			$resultado = $co->query("Select * from registro");
+			$resultado = $co->query("Select r.*, e.nombre_examen from registro r, examenes e
+									where r.cod_examenes = e.cod_examenes");
 			
 			if($resultado){
 				
@@ -305,7 +306,7 @@ class examenes extends datos{
 							<img src='img/trash-can-solid.svg' style='width: 20px;'>
 						</a>";
 						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
+						$respuesta = $respuesta."<td style='display:none;'>";
 							$respuesta = $respuesta.$r['cod_registro'];
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td>";
@@ -319,6 +320,9 @@ class examenes extends datos{
 								$respuesta = $respuesta.$r['cedula_h'];
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td>";
+								$respuesta = $respuesta.$r['nombre_examen'];
+						$respuesta = $respuesta."</td>";
+						$respuesta = $respuesta."<td style='display:none;'>";
 								$respuesta = $respuesta.$r['cod_examenes'];
                         
 				}
