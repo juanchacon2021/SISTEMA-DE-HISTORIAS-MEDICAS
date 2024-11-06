@@ -90,6 +90,7 @@ $("#proceso").on("click",function(){
 			datos.append('correo',$("#correo").val());
 			datos.append('telefono',$("#telefono").val());
 			datos.append('cargo',$("#cargo").val());
+			datos.append('clave',$("#clave").val());
 			enviaAjax(datos);
 		}
 	}
@@ -103,6 +104,7 @@ $("#proceso").on("click",function(){
 			datos.append('correo',$("#correo").val());
 			datos.append('telefono',$("#telefono").val());
 			datos.append('cargo',$("#cargo").val());
+			datos.append('clave',$("#clave").val());
 			enviaAjax(datos);
 		}
 	}
@@ -288,4 +290,5 @@ function limpia(){
 	$("#correo").val("");
 	$("#telefono").val("");
 	$("#cargo").prop("selectedIndex",0);
+	$("#clave").val("");
 }

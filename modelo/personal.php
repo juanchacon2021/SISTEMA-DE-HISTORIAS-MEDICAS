@@ -13,6 +13,7 @@ class personal extends datos{
 	private $correo;
 	private $telefono;
 	private $cargo;
+	private $clave;
 	
 	
 	
@@ -41,6 +42,10 @@ class personal extends datos{
 	function set_cargo($valor){
 		$this->cargo = $valor;
 	}
+
+	function set_clave($valor){
+		$this->clave = $valor;
+	}
 	
 	
 	function get_cedula_personal(){
@@ -66,6 +71,10 @@ class personal extends datos{
 	function get_cargo(){
 		return $this->cargo;
 	}
+
+	function get_clave(){
+		return $this->clave;
+	}
 	
 	
 	
@@ -84,7 +93,8 @@ class personal extends datos{
 						nombre,
 						correo,
 						telefono,
-						cargo
+						cargo,
+						clave
 						)
 						Values(
 						'$this->cedula_personal',
@@ -92,7 +102,8 @@ class personal extends datos{
 						'$this->nombre',
 						'$this->correo',
 						'$this->telefono',
-						'$this->cargo'
+						'$this->cargo',
+						'$this->clave'
 						)");
 						$r['resultado'] = 'incluir';
 			            $r['mensaje'] =  'Registro Inluido';
@@ -121,7 +132,8 @@ class personal extends datos{
 						nombre = '$this->nombre',
 						correo = '$this->correo',
 						telefono = '$this->telefono',
-						cargo = '$this->cargo'
+						cargo = '$this->cargo',
+						clave = '$this->clave'
 						where
 						cedula_personal = '$this->cedula_personal'
 						");

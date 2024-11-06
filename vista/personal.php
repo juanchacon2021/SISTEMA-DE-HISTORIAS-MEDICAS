@@ -99,6 +99,11 @@ Personal
 					   </select>
 					</div>
 				</div>
+				<div class=" col-md-6 mx-auto">
+					   <label class="texto-inicio font-medium" for="clave">Clave</label>
+					   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="clave"  />
+					   <span id="sclave"></span>
+					</div>
 				
 				
 				
