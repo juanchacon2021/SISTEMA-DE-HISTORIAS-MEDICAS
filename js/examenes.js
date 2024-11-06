@@ -223,12 +223,14 @@ function colocapacientes(linea){
 	$("#cedula_historia").val($(linea).find("td:eq(0)").text());
 	$("#datosdelpacientes").html("Nombre: "+$(linea).find("td:eq(2)").text()+
 	" / Apellido: "+$(linea).find("td:eq(3)").text());
+	$("#modalpacientes").modal("hide");
 }
 
 function colocaexamen(linea){
 	$("#cod_examenes1").val($(linea).find("td:eq(1)").text());
 	$("#codigo_examenes").val($(linea).find("td:eq(0)").text());
 	$("#datosdeexamen").html("Nombre del examen: "+$(linea).find("td:eq(2)").text());
+	$("#modalexamenes").modal("hide");
 }
 //funcion para pasar de la lista a el formulario
 function pone(pos,accion){

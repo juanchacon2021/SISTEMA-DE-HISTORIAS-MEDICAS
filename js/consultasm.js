@@ -241,12 +241,14 @@ function colocapersonal(linea){
 	$("#datosdelpersonal").html("Nombre: "+$(linea).find("td:eq(2)").text()+
 	" / Apellido: "+$(linea).find("td:eq(3)").text()+" / Cargo: "+
 	$(linea).find("td:eq(4)").text());
+	$("#modalpersonal").modal("hide");
 }
 function colocapacientes(linea){
 	$("#cedula_h").val($(linea).find("td:eq(1)").text());
 	$("#cedula_historia").val($(linea).find("td:eq(0)").text());
 	$("#datosdelpacientes").html("Nombre: "+$(linea).find("td:eq(2)").text()+
 	" / Apellido: "+$(linea).find("td:eq(3)").text());
+	$("#modalpacientes").modal("hide");
 }
 
 function pone(pos,accion){
