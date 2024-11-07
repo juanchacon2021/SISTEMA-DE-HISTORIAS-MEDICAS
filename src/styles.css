@@ -1,0 +1,234 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: 'Sora';
+  
+    src: url('../Sora.ttf');
+  }
+
+
+.inicio {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.superponer {
+    z-index: 99;
+}
+
+.sidebarr {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Asegúrate de que el z-index del sidebar sea mayor */
+}
+
+.table-responsive {
+    position: relative;
+    z-index: 1; /* Asegúrate de que el z-index del contenedor de la tabla sea menor */
+}
+
+.texto-inicio {
+    font-family: 'Sora';
+}
+
+.texto-bienvenida {
+    float: right;
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.texto-inicio {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.espacio {
+    padding-left: 256px;
+}
+
+.fondo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 80px;
+}
+
+.fondo img {
+    width: 200px;
+    height: 170px;
+}
+
+.pacientes {
+    width: 80%;
+    float: right;
+    padding: 20px;
+}
+
+.boton {
+    font-family: 'Sora';
+    background-color: rgb(220 38 38);
+    border-radius: 0.5rem;
+    border: 0.5rem solid rgb(220 38 38);
+    color: white;
+    width: auto;
+}
+
+.botones {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.botonesdos {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.botonazul {
+    font-family: 'Sora';
+    background-color: #0054d1;
+    border-radius: 0.5rem;
+    border: 0.5rem solid #0051ca;
+    color: white;
+    width: auto;
+}
+
+.botonverde {
+    font-family: 'Sora';
+    background-color: rgb(47, 148, 52);
+    border-radius: 0.5rem;
+    border: 0.5rem solid rgb(47, 148, 52);
+    width: auto;
+  }
+  
+  .botonverde a {
+    text-decoration: none;
+    color: white;
+  }
+
+.boton:hover {
+    background-color: rgb(153, 27, 27);
+    border: 0.5rem solid rgb(153, 27, 27);
+}
+
+.botonverde:hover {
+    background-color: rgb(47, 148, 52);
+    border: 0.5rem solid rgb(47, 148, 52);
+}
+
+.botonazul:hover {
+    background-color: rgb(0, 0, 146);
+    border: 0.5rem solid rgb(0, 0, 146);
+}
+.botonverde1 {
+    font-family: 'Sora';
+    background-color: rgb(0, 161, 0);
+    border-radius: 0.5rem;
+    border: 0.5rem solid rgb(0, 161, 0);
+    color: white;
+    width: auto;
+}
+.botonverde:hover {
+    background-color: rgb(0, 95, 5);
+    border: 0.5rem solid rgba(0, 95, 5);
+}
+
+.gradiente{
+background: -webkit-linear-gradient(90deg, #ff0000,#ff8080);/* Chrome 10-25, Safari 5.1-6 */ 
+background: linear-gradient(90deg, #ff0000,#ff8080);/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+.button-containerotro {
+    display: flex;
+    justify-content: center;
+    gap: 0px;
+    margin-top: 0px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.table td, .table th {
+    text-align: center; /* Centra el texto horizontalmente */
+    vertical-align: middle; /* Centra el texto verticalmente */
+}
+
+@media (max-width: 768px) {
+
+    html {
+        margin-bottom: 0;
+    }
+
+    .sidebarr {
+        font-size: 10px;
+    }
+    
+    .texto-bienvenida {
+        float: right;
+        font-size: 20px;
+        font-weight: 600;
+        position: fixed;
+        z-index: 2;
+        top: 0;
+    }
+
+    .espacio {
+        padding-left: 0px;
+        margin-top: 40px;
+    }
+
+    .botones {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        padding-top: 80px;
+        margin-left: 10px;
+        font-size: 10px;
+    }
+
+    .botonesdos {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        padding-top: 30px;
+        margin-left: 10px;
+        font-size: 10px;
+        margin-top: 0px;
+    }
+
+    .button-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .recortar {
+        display: flex;
+        justify-content: space-between;
+        width: 20%;
+    }
+
+    .texto-inicio {
+        font-size: 15px;
+    }
+
+
+    label {
+        padding-top: 20px;
+    }
+
+
+    table {
+        font-size: 10px;
+    }
+
+}
