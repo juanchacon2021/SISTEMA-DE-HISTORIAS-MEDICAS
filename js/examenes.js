@@ -253,8 +253,8 @@ function pone(pos,accion){
 		$("#fecha_r").val($(linea).find("td:eq(2)").text());
 		$("#observacion_examen").val($(linea).find("td:eq(3)").text());
 		$("#cedula_h").val($(linea).find("td:eq(4)").text());
-		$("#cod_examenes1").val($(linea).find("td:eq(5)").text());
-		$("#imagen").prop("src","img/usuarios/"+$(linea).find("td:eq(4)").text()+".png");
+		$("#cod_examenes1").val($(linea).find("td:eq(6)").text());
+		$("#imagen").prop("src","img/usuarios/"+$(linea).find("td:eq(4)").text()+"-"+$(linea).find("td:eq(2)").text()+"-"+$(linea).find("td:eq(6)").text()+".png");
 		$("#modal2").modal("show");
 	}
 	else if(accion==1){
@@ -264,8 +264,8 @@ function pone(pos,accion){
 		$("#fecha_r").val($(linea).find("td:eq(2)").text());
 		$("#observacion_examen").val($(linea).find("td:eq(3)").text());
 		$("#cedula_h").val($(linea).find("td:eq(4)").text());
-		$("#cod_examenes1").val($(linea).find("td:eq(5)").text());
-		$("#imagen").prop("src","img/usuarios/"+$(linea).find("td:eq(4)").text()+".png");
+		$("#cod_examenes1").val($(linea).find("td:eq(6)").text());
+		$("#imagen").prop("src","img/usuarios/"+$(linea).find("td:eq(4)").text()+"-"+$(linea).find("td:eq(2)").text()+"-"+$(linea).find("td:eq(6)").text()+".png");
 		$("#modal2").modal("show");
 	}
 	else if(accion==3){
@@ -282,7 +282,7 @@ function pone(pos,accion){
 		$("#fecha_r").val($(linea).find("td:eq(2)").text());
 		$("#observacion_examen").val($(linea).find("td:eq(3)").text());
 		$("#cedula_h").val($(linea).find("td:eq(4)").text());
-		$("#cod_examenes1").val($(linea).find("td:eq(5)").text());
+		$("#cod_examenes1").val($(linea).find("td:eq(6)").text());
 		$("#modal2").modal("show");
 	}
 	
@@ -392,6 +392,7 @@ function limpia(){
 	$("#nombre_examen").val("");
 	$("#descripcion_examen").val("");
 	$("#cedula_h").val("");
+	
 }
 function limpia1(){
 	$("#cod_registro").val("");
@@ -399,4 +400,5 @@ function limpia1(){
 	$("#cedula_h").val("");
 	$("#cod_examenes1").val("");
 	$("#observacion_examen").val("");
+	$('#imagen').prop("src","img/logo.png");
 }

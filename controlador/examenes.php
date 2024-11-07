@@ -40,7 +40,7 @@ require_once("modelo/".$pagina.".php");
 					if (($_FILES['imagenarchivo']['size'] / 1024) < 1024) {
 						
 						  move_uploaded_file($_FILES['imagenarchivo']['tmp_name'], 
-						  'img/usuarios/'.$_POST['cedula_h'].'.png');
+						  'img/usuarios/'.$_POST['cedula_h'].'-'.$_POST['fecha_r'].'-'.$_POST['cod_examenes1'].'.png');
 						  
 					} 
 				}
@@ -57,7 +57,7 @@ require_once("modelo/".$pagina.".php");
 					if (($_FILES['imagenarchivo']['size'] / 1024) < 1024) {
 						
 						  move_uploaded_file($_FILES['imagenarchivo']['tmp_name'], 
-						  'img/usuarios/'.$_POST['cedula_h'].'.png');
+						  'img/usuarios/'.$_POST['cedula_h'].'-'.$_POST['fecha_r'].'-'.$_POST['cod_examenes1'].'.png');
 						  
 					} 
 				}
