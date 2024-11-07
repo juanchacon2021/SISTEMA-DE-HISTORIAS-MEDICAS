@@ -39,11 +39,12 @@ Examenes
 			<thead>
 			  <tr>
 				<th>Acciones</th>
-				<th>Codigo del Registro</th>
+				<th style="display:none;">Codigo del Registro</th>
 				<th>Fecha</th>				
 				<th>Observaciones</th>
 				<th>Cedula del Paciente</th>
-				<th>Tipo de Examen</th>
+				<th>Nombre de Examen</th>
+				<th style="display:none;">Tipo de Examen</th>
 			  </tr>
 			</thead>
 			<tbody id="resultadoconsulta">
