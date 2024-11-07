@@ -12,7 +12,7 @@ Emergencias
 <div class="container espacio">
 	<div class="container">
 		<div class="row mt-3 botones">
-		    <div class="col-md-2 botonverde" style="cursor: pointer;" onclick='pone(this,3)' >
+		    <div class="col-md-2 botonverde" style="cursor: pointer;" onclick='pone(this,3), limpiarm()' >
 				Registrar Emergencias
 			</div>
 
@@ -168,14 +168,12 @@ Emergencias
 <!-- seccion del modal personal -->
 <div class="modal fade" tabindex="-1" role="dialog"  id="modalpersonal">
   <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-header text-light bg-info">
+    <div class="modal-header text-light bg-info gradiente">
         <h5 class="modal-title">Listado de Personal</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-          <span aria-hidden="true">&times;</span>
-        </button>
+		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-content">
-		<table class="table table-striped table-hover">
+		<table class="table table-striped table-hover" id="tabladelpersonal">
 		<thead>
 		  <tr>
 		    <th style="display:none">Id</th>
@@ -190,9 +188,6 @@ Emergencias
 		</tbody>
 		</table>
     </div>
-	<div class="modal-footer bg-light">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-    </div>
   </div>
 </div>
 <!--fin de seccion modal-->
@@ -201,14 +196,12 @@ Emergencias
 <!-- seccion del modal historias -->
 <div class="modal fade" tabindex="-1" role="dialog"  id="modalpacientes">
   <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-header text-light bg-info">
+    <div class="modal-header text-light bg-info gradiente">
         <h5 class="modal-title">Listado de Pacientes</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-content">
-		<table class="table table-striped table-hover">
+		<table class="table table-striped table-hover" id="tablahistorias">
 		<thead>
 		  <tr>
 		    <th style="display:none">Id</th>
@@ -221,9 +214,6 @@ Emergencias
 		 
 		</tbody>
 		</table>
-    </div>
-	<div class="modal-footer bg-light">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
     </div>
   </div>
 </div>

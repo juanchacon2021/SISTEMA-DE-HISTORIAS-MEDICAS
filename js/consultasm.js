@@ -30,6 +30,82 @@ function crearDT(){
             });
     }         
 }
+
+function destruyeDT1(){
+	if ($.fn.DataTable.isDataTable("#tablahistorias")) {
+            $("#tablahistorias").DataTable().destroy();
+    }
+	console.log('listo');
+	// crearDT1()
+}
+
+function crearDT1(){
+	console.log('listo1');
+    if (!$.fn.DataTable.isDataTable("#tablahistorias")) {
+            $("#tablahistorias").DataTable({
+              language: {
+                lengthMenu: "Mostrar _MENU_ por página",
+                zeroRecords: "No se encontró ninguna Emergencia",
+                info: "Mostrando página _PAGE_ de _PAGES_",
+                infoEmpty: "No hay emergencias registradas",
+                infoFiltered: "(filtrado de _MAX_ registros totales)",
+                search: "Buscar:",
+                paginate: {
+                  first: "Primera",
+                  last: "Última",
+                  next: "Siguiente",
+                  previous: "Anterior",
+                },
+              },
+              autoWidth: false,
+              order: [[1, "asc"]],
+            });
+    }         
+}
+//77
+function destruyeDT2(){
+	if ($.fn.DataTable.isDataTable("#tablahistorias")) {
+            $("#tablahistorias").DataTable().destroy();
+    }
+	console.log('listo');
+	// crearDT1()
+}
+function crearDT2(){
+	console.log('listo1');
+    if (!$.fn.DataTable.isDataTable("#tabladelpersonal")) {
+            $("#tabladelpersonal").DataTable({
+              language: {
+                lengthMenu: "Mostrar _MENU_ por página",
+                zeroRecords: "No se encontró ninguna Emergencia",
+                info: "Mostrando página _PAGE_ de _PAGES_",
+                infoEmpty: "No hay emergencias registradas",
+                infoFiltered: "(filtrado de _MAX_ registros totales)",
+                search: "Buscar:",
+                paginate: {
+                  first: "Primera",
+                  last: "Última",
+                  next: "Siguiente",
+                  previous: "Anterior",
+                },
+              },
+              autoWidth: false,
+              order: [[1, "asc"]],
+            });
+    }         
+}
+
+function limpiarm(){
+
+	const limpia = document.querySelector('#datosdelpacientes');
+	const limpia1 = document.querySelector('#datosdelpersonal');
+	limpia.textContent = "";
+	limpia1.textContent = "";
+	
+
+
+}
+
+
 $(document).ready(function(){
 
 	
@@ -111,6 +187,7 @@ $("#proceso").on("click",function(){
 			datos.append('cedula_p',$("#cedula_p").val());
 			datos.append('cedula_h',$("#cedula_h").val());
 			enviaAjax(datos);
+			
 		}
 	}
 	else if($(this).text()=="MODIFICAR"){
@@ -251,6 +328,16 @@ function colocapacientes(linea){
 	$("#modalpacientes").modal("hide");
 }
 
+function colocapersonal_ver(linea, cargo, nombre, apellido){
+
+	$("#cedula_p").val($(linea).find("td:eq(1)").text());
+	$("#cedula_personal").val($(linea).find("td:eq(0)").text());
+	$("#datosdelpersonal").html("Nombre: "+nombre+
+	" / Apellido: "+apellido+" / Cargo: "+
+	cargo);
+	$("#modalpersonal").modal("hide");
+}
+
 function pone(pos,accion){
 	$("#fechaconsulta").prop("readonly",false);
 	$("#consulta").prop("readonly",false);
@@ -259,6 +346,8 @@ function pone(pos,accion){
 	$("#cedula_p").prop("readonly",false);
 	$("#cedula_h").prop("readonly",false);
 	$("#proceso1").prop("cerrar",false); 
+	const boton_h = document.querySelector('#listadodepacientes');
+	const boton_p = document.querySelector('#listadodepersonal');
 	
 	linea=$(pos).closest('tr');
 
@@ -266,6 +355,12 @@ function pone(pos,accion){
 	if(accion==0){
 
 		$("#proceso").text("MODIFICAR");
+		boton_h.style.display = '';
+		boton_p.style.display = '';
+
+		limpiarm();
+		colocapacientes(linea);
+		colocapersonal_ver(linea, $(pos).attr('cargo'),  $(pos).attr('nombre'),  $(pos).attr('apellido'));
 	}
 	else if (accion==1){
 		$("#fechaconsulta").prop("readonly",true);
@@ -275,6 +370,12 @@ function pone(pos,accion){
 		$("#cedula_p").prop("readonly",true);
 		$("#cedula_h").prop("readonly",true);
 		$("#proceso").text("ELIMINAR");
+		boton_h.style.display = 'none';
+		boton_p.style.display = 'none';
+
+		limpiarm();
+		colocapacientes(linea);
+		colocapersonal_ver(linea, $(pos).attr('cargo'),  $(pos).attr('nombre'),  $(pos).attr('apellido'));
 	}
 	else if (accion==2){
 		$("#fechaconsulta").prop("readonly",true);
@@ -284,9 +385,21 @@ function pone(pos,accion){
 		$("#cedula_p").prop("readonly",true);
 		$("#cedula_h").prop("readonly",true);
 		$("#proceso").text("CERRAR");
+
+		boton_h.style.display = 'none';
+		boton_p.style.display = 'none';
+
+		limpiarm();
+		colocapacientes(linea);
+		colocapersonal_ver(linea, $(pos).attr('cargo'),  $(pos).attr('nombre'),  $(pos).attr('apellido'));
+		
 	}
 	else{
 		$("#proceso").text("INCLUIR");
+		boton_h.style.display = '';
+		boton_p.style.display = '';
+
+		limpiarm();
 		
 	}
 	$("#cod_consulta").val($(linea).find("td:eq(1)").text());
@@ -325,16 +438,18 @@ function enviaAjax(datos) {
 		   crearDT();
         }
 		else if(lee.resultado=='listadopersonal'){
+			destruyeDT2();
 					
-			//si el servidor retorno como
-			// resultado listadoclientes significa
-			// que se obtuvieron datos del json
-			// y se colocan esos resultados en la vista
+
 			$('#listadopersonal').html(lee.mensaje);
+			crearDT2();
 		}
 		else if(lee.resultado=='listadopacientes'){
+			destruyeDT1();
 
 			$('#listadopacientes').html(lee.mensaje);
+			crearDT1();
+		
 		}
 		else if (lee.resultado == "incluir") {
            muestraMensaje(lee.mensaje);

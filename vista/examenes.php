@@ -126,7 +126,7 @@ Examenes
     </div>
     <div class="modal-content">
 		<div class="container"> <!-- todo el contenido ira dentro de esta etiqueta-->
-		   <form method="post" id="f" autocomplete="off">
+		   <form method="post" id="f1" autocomplete="off">
 			<input autocomplete="off" type="text" class="form-control" name="accion" id="accion" style="display: none;">
 			<div class="container mt-2">	
 				<div class="row mb-3">
@@ -182,7 +182,7 @@ Examenes
     </div>
     <div class="modal-content">
 		<div class="container"> <!-- contenido -->
-		   <form method="post" id="f" autocomplete="off">
+		   <form method="post" id="f" autocomplete="off" enctype='multipart/form-data'>
 			<input autocomplete="off" type="text" class="form-control" name="accion" id="accion" style="display: none;">
 			<div class="container">	
 				
@@ -244,7 +244,23 @@ Examenes
 					</div>
 					
 				</div>
-											
+				<div class="col-md-12">
+					<hr/>
+					<center>
+						<label for="archivo"  style="cursor:pointer">
+						   
+							<img src="img/logo.png" id="imagen" 
+							 class="img-fluid rounded-circle w-25 mb-3 centered"
+							 style="object-fit:scale-down">
+							Click aqui para subir foto	
+					    </label>
+						<input id="archivo"  
+						type="file" 
+						style="display:none" 
+						accept=".png,.jpg,.jpeg"
+						name="imagenarchivo"/>
+					</center>
+					</div>						
 				<div class="row mt-3 justify-content-center">
                     <div class="col-md-2">
                         <button type="button" class="btn botonverde" id="proceso1"></button>
