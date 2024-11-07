@@ -242,7 +242,7 @@ function limpiarm(){
 	const limpia1 = document.querySelector('#datosdelpersonal');
 	limpia.textContent = "";
 	limpia1.textContent = "";
-	console.log('limpi');
+
 
 
 }
@@ -375,8 +375,7 @@ function pone(pos,accion){
 		$("#cedula_h").prop("readonly",true);
 		$("#proceso").text("ELIMINAR");
 
-		const boton_h = document.querySelector('#listadodepacientes');
-		const boton_p = document.querySelector('#listadodepersonal');
+		
 		boton_h.style.display = 'none';
 		boton_p.style.display = 'none';
 

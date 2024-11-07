@@ -14,7 +14,7 @@ Consultas
    
 	<div class="container">
 		<div class="row mt-3 botones">
-		    <div class="col-md-2 botonverde" style="cursor: pointer;" onclick='pone(this,3)' >
+		    <div class="col-md-2 botonverde" style="cursor: pointer;" onclick='pone(this,3), limpiarm()' >
 				Registrar Consultas
 			</div>
 					
@@ -170,7 +170,7 @@ Consultas
         </button>
     </div>
     <div class="modal-content">
-		<table class="table table-striped table-hover">
+		<table class="table table-striped table-hover" id="tabladelpersonal">
 		<thead>
 		  <tr>
 		    <th style="display:none">Id</th>
@@ -203,7 +203,7 @@ Consultas
         </button>
     </div>
     <div class="modal-content">
-		<table class="table table-striped table-hover">
+		<table class="table table-striped table-hover" id="tablahistorias">
 		<thead>
 		  <tr>
 		    <th style="display:none">Id</th>
