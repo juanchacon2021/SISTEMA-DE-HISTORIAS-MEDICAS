@@ -30,6 +30,68 @@ function crearDT(){
             });
     }         
 }
+//tt
+function destruyeDT1(){
+	if ($.fn.DataTable.isDataTable("#tablahistorias")) {
+            $("#tablahistorias").DataTable().destroy();
+    }
+	console.log('listo');
+	// crearDT1()
+}
+function crearDT1(){
+	console.log('listo1');
+    if (!$.fn.DataTable.isDataTable("#tablahistorias")) {
+            $("#tablahistorias").DataTable({
+              language: {
+                lengthMenu: "Mostrar _MENU_ por página",
+                zeroRecords: "No se encontró ninguna Emergencia",
+                info: "Mostrando página _PAGE_ de _PAGES_",
+                infoEmpty: "No hay emergencias registradas",
+                infoFiltered: "(filtrado de _MAX_ registros totales)",
+                search: "Buscar:",
+                paginate: {
+                  first: "Primera",
+                  last: "Última",
+                  next: "Siguiente",
+                  previous: "Anterior",
+                },
+              },
+              autoWidth: false,
+              order: [[1, "asc"]],
+            });
+    }         
+}
+//77
+function destruyeDT2(){
+	if ($.fn.DataTable.isDataTable("#tablahistorias")) {
+            $("#tablahistorias").DataTable().destroy();
+    }
+	console.log('listo');
+	// crearDT1()
+}
+function crearDT2(){
+	console.log('listo1');
+    if (!$.fn.DataTable.isDataTable("#tabladelpersonal")) {
+            $("#tabladelpersonal").DataTable({
+              language: {
+                lengthMenu: "Mostrar _MENU_ por página",
+                zeroRecords: "No se encontró ninguna Emergencia",
+                info: "Mostrando página _PAGE_ de _PAGES_",
+                infoEmpty: "No hay emergencias registradas",
+                infoFiltered: "(filtrado de _MAX_ registros totales)",
+                search: "Buscar:",
+                paginate: {
+                  first: "Primera",
+                  last: "Última",
+                  next: "Siguiente",
+                  previous: "Anterior",
+                },
+              },
+              autoWidth: false,
+              order: [[1, "asc"]],
+            });
+    }         
+}
 $(document).ready(function(){
 
 	
@@ -161,6 +223,8 @@ function carga_personal(){
 	var datos = new FormData();
 
 	datos.append('accion','listadopersonal'); 
+	// destruyeDT1();
+	// crearDT1();
 
 	enviaAjax(datos);
 }
@@ -171,6 +235,16 @@ function carga_pacientes(){
 	datos.append('accion','listadopacientes'); 
 
 	enviaAjax(datos);
+}
+function limpiarm(){
+
+	const limpia = document.querySelector('#datosdelpacientes');
+	const limpia1 = document.querySelector('#datosdelpersonal');
+	limpia.textContent = "";
+	limpia1.textContent = "";
+	console.log('limpi');
+
+
 }
 
 
@@ -245,6 +319,17 @@ function colocapersonal(linea){
 	$(linea).find("td:eq(4)").text());
 	$("#modalpersonal").modal("hide");
 }
+
+function colocapersonal_ver(linea, cargo, nombre, apellido){
+
+	$("#cedula_p").val($(linea).find("td:eq(1)").text());
+	$("#cedula_personal").val($(linea).find("td:eq(0)").text());
+	$("#datosdelpersonal").html("Nombre: "+nombre+
+	" / Apellido: "+apellido+" / Cargo: "+
+	cargo);
+	$("#modalpersonal").modal("hide");
+}
+
 function colocapacientes(linea){
 	$("#cedula_h").val($(linea).find("td:eq(1)").text());
 	$("#cedula_historia").val($(linea).find("td:eq(0)").text());
@@ -252,6 +337,9 @@ function colocapacientes(linea){
 	" / Apellido: "+$(linea).find("td:eq(3)").text());
 	$("#modalpacientes").modal("hide");
 }
+
+
+
 
 function pone(pos,accion){
 	$("#horaingreso").prop("readonly",false);
@@ -262,6 +350,8 @@ function pone(pos,accion){
 	$("#cedula_p").prop("readonly",false);
 	$("#cedula_h").prop("readonly",false);
 	$("#proceso1").prop("cerrar",false); 
+	const boton_h = document.querySelector('#listadodepacientes');
+	const boton_p = document.querySelector('#listadodepersonal');
 	
 	linea=$(pos).closest('tr');
 
@@ -269,6 +359,11 @@ function pone(pos,accion){
 	if(accion==0){
 
 		$("#proceso").text("MODIFICAR");
+		boton_h.style.display = '';
+		boton_p.style.display = '';
+		limpiarm();
+		colocapacientes(linea)
+		colocapersonal_ver(linea, $(pos).attr('cargo'),  $(pos).attr('nombre'),  $(pos).attr('apellido'))
 	}
 	else if (accion==1){
 		$("#horaingreso").prop("readonly",true);
@@ -279,6 +374,18 @@ function pone(pos,accion){
 		$("#cedula_p").prop("readonly",true);
 		$("#cedula_h").prop("readonly",true);
 		$("#proceso").text("ELIMINAR");
+
+		const boton_h = document.querySelector('#listadodepacientes');
+		const boton_p = document.querySelector('#listadodepersonal');
+		boton_h.style.display = 'none';
+		boton_p.style.display = 'none';
+
+		limpiarm();
+		colocapacientes(linea)
+		colocapersonal_ver(linea, $(pos).attr('cargo'),  $(pos).attr('nombre'),  $(pos).attr('apellido'))
+		console.log($(pos).attr('cargo'))
+
+		
 	}
 	else if (accion==2){
 		$("#horaingreso").prop("readonly",true);
@@ -289,9 +396,21 @@ function pone(pos,accion){
 		$("#cedula_p").prop("readonly",true);
 		$("#cedula_h").prop("readonly",true);
 		$("#proceso").text("CERRAR");
+
+		
+		boton_h.style.display = 'none';
+		boton_p.style.display = 'none';
+
+
+		limpiarm();
+		colocapacientes(linea)
+		colocapersonal_ver(linea, $(pos).attr('cargo'),  $(pos).attr('nombre'),  $(pos).attr('apellido'))
+		
 	}
 	else{
 		$("#proceso").text("INCLUIR");
+		boton_h.style.display = '';
+		boton_p.style.display = '';
 		
 	}
 	$("#cod_emergencia").val($(linea).find("td:eq(1)").text());
@@ -322,7 +441,7 @@ function enviaAjax(datos) {
     beforeSend: function () {},
     timeout: 10000, 
     success: function (respuesta) {
-     console.log(respuesta);
+     //console.log(respuesta);
       try {
         var lee = JSON.parse(respuesta);
         if (lee.resultado == "consultar") {
@@ -330,17 +449,19 @@ function enviaAjax(datos) {
            $("#resultadoconsulta").html(lee.mensaje);
 		   crearDT();
         }
+		
 		else if(lee.resultado=='listadopersonal'){
-					
-			//si el servidor retorno como
-			// resultado listadoclientes significa
-			// que se obtuvieron datos del json
-			// y se colocan esos resultados en la vista
+			destruyeDT2();
+			
 			$('#listadopersonal').html(lee.mensaje);
+			crearDT2();
+			
 		}
 		else if(lee.resultado=='listadopacientes'){
+			destruyeDT1();
 
 			$('#listadopacientes').html(lee.mensaje);
+			crearDT1();
 		}
 		else if (lee.resultado == "incluir") {
            muestraMensaje(lee.mensaje);

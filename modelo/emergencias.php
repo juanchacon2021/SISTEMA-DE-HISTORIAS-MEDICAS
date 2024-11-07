@@ -301,6 +301,9 @@ class emergencias extends datos{
 												' tratamientos='".$r['tratamientos']."'
 												' cedula_p='".$r['cedula_p']."'
 												' cedula_h='".$r['cedula_h']."'
+												' cargo='".$r['cargo']."'
+												' nombre='".$r['nombre']."'
+												' apellido='".$r['apellido']."'
 							>
                                 <img src='img/lapiz.svg' style='width: 20px'>
                             </button>";
@@ -315,6 +318,9 @@ class emergencias extends datos{
 												' tratamientos='".$r['tratamientos']."'
 												' cedula_p='".$r['cedula_p']."'
 												' cedula_h='".$r['cedula_h']."'
+												' cargo='".$r['cargo']."'
+												' nombre='".$r['nombre']."'
+												' apellido='".$r['apellido']."'
 						    >
 								<img src='img/basura.svg' style='width: 20px'>
 							</button>";
@@ -329,6 +335,9 @@ class emergencias extends datos{
 												' tratamientos='".$r['tratamientos']."'
 												' cedula_p='".$r['cedula_p']."'
 												' cedula_h='".$r['cedula_h']."'
+												' cargo='".$r['cargo']."'
+												' nombre='".$r['nombre']."'
+												' apellido='".$r['apellido']."'
 						    >
 								<img src='img/ojo.svg' style='width: 20px'>
 							</button></div><br/>";
