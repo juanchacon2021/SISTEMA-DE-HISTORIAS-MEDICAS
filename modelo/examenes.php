@@ -197,7 +197,7 @@ class examenes extends datos{
 			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			
 			try {
-					$co->query("Insert into registro(
+					$x=$co->prepare("Insert into registro(
 						
 						fecha_r,
 						cedula_h,
@@ -207,11 +207,16 @@ class examenes extends datos{
 						) 
 						Values(
 						
-						'$this->fecha_r',
-						'$this->cedula_h',
-						'$this->cod_examenes1',
-						'$this->observacion_examen'
+						:fecha_r,
+						:cedula_h,
+						:cod_examenes,
+						:observacion_examen
 						)");
+					$x->bindParam(':fecha_r',$this->fecha_r);
+					$x->bindParam(':cedula_h',$this->cedula_h);
+					$x->bindParam(':cod_examenes',$this->cod_examenes1);
+					$x->bindParam(':observacion_examen',$this->observacion_examen);
+					$x->execute();	
 						$r['resultado'] = 'incluir';
 			            $r['mensaje'] =  'Registro Inluido';
 			} catch(Exception $e) {
@@ -233,15 +238,21 @@ class examenes extends datos{
 		$r = array();
 		if($this->existe1($this->cod_registro)){
 			try {
-					$co->query("Update registro set 
-					    cod_registro = '$this->cod_registro',
-						fecha_r = '$this->fecha_r',					
-						cedula_h = '$this->cedula_h',
-						cod_examenes = '$this->cod_examenes1',
-						observacion_examen = '$this->observacion_examen'
+					$m=$co->prepare("Update registro set 
+					    cod_registro = :cod_registro,
+						fecha_r = :fecha_r,					
+						cedula_h = :cedula_h,
+						cod_examenes = :cod_examenes,
+						observacion_examen = :observacion_examen
 						where
-						cod_registro = '$this->cod_registro'
+						cod_registro = :cod_registro
 						");
+						$m->bindParam(':cod_registro',$this->cod_registro);
+						$m->bindParam(':fecha_r',$this->fecha_r);
+						$m->bindParam(':cedula_h',$this->cedula_h);
+						$m->bindParam(':cod_examenes',$this->cod_examenes1);
+						$m->bindParam(':observacion_examen',$this->observacion_examen);
+						$m->execute();	
 						$r['resultado'] = 'modificar';
 			            $r['mensaje'] =  'Registro Modificado';
 			} catch(Exception $e) {
