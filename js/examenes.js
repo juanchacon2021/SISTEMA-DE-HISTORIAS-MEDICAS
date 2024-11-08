@@ -33,6 +33,74 @@ function crearDT(){
             });
     }         
 }
+
+function destruyeDT1(){
+	if ($.fn.DataTable.isDataTable("#tablahistorias")) {
+            $("#tablahistorias").DataTable().destroy();
+    }
+	console.log('listo');
+	// crearDT1()
+}
+function crearDT1(){
+	console.log('listo1');
+    if (!$.fn.DataTable.isDataTable("#tablahistorias")) {
+            $("#tablahistorias").DataTable({
+              language: {
+                lengthMenu: "Mostrar _MENU_ por página",
+                zeroRecords: "No se encontró ninguna Emergencia",
+                info: "Mostrando página _PAGE_ de _PAGES_",
+                infoEmpty: "No hay emergencias registradas",
+                infoFiltered: "(filtrado de _MAX_ registros totales)",
+                search: "Buscar:",
+                paginate: {
+                  first: "Primera",
+                  last: "Última",
+                  next: "Siguiente",
+                  previous: "Anterior",
+                },
+              },
+              autoWidth: false,
+              order: [[1, "asc"]],
+            });
+    }         
+}
+
+
+
+
+function destruyeDT2(){
+	if ($.fn.DataTable.isDataTable("#tabladeexamenes")) {
+            $("#tabladeexamenes").DataTable().destroy();
+    }
+	
+	// crearDT1()
+}
+
+function crearDT2(){
+	console.log('listor');
+    if (!$.fn.DataTable.isDataTable("#tabladeexamenes")) {
+            $("#tabladeexamenes").DataTable({
+              language: {
+                lengthMenu: "Mostrar _MENU_ por página",
+                zeroRecords: "No se encontró ninguna Emergencia",
+                info: "Mostrando página _PAGE_ de _PAGES_",
+                infoEmpty: "No hay emergencias registradas",
+                infoFiltered: "(filtrado de _MAX_ registros totales)",
+                search: "Buscar:",
+                paginate: {
+                  first: "Primera",
+                  last: "Última",
+                  next: "Siguiente",
+                  previous: "Anterior",
+                },
+              },
+              autoWidth: false,
+              order: [[1, "asc"]],
+            });
+    }         
+}
+
+
 $(document).ready(function(){
 	
 	//ejecuta una consulta a la base de datos para llenar la tabla
@@ -174,6 +242,16 @@ function carga_examenes(){
 
 	enviaAjax(datos);
 }
+function limpiarm(){
+
+	const limpia = document.querySelector('#datosdelpacientes');
+	const limpia1 = document.querySelector('#datosdeexamen');
+	limpia.textContent = "";
+	limpia1.textContent = "";
+
+
+
+}
 
 
 //Validación de todos los campos antes del envio
@@ -234,11 +312,27 @@ function colocapacientes(linea){
 	$("#modalpacientes").modal("hide");
 }
 
+function colocapacientes_ver(linea, nombre, apellido){
+	$("#cedula_h").val($(linea).find("td:eq(1)").text());
+	$("#cedula_historia").val($(linea).find("td:eq(0)").text());
+	$("#datosdelpacientes").html("Nombre: "+nombre+
+	" / Apellido: "+apellido);
+	$("#modalpacientes").modal("hide");
+}
+
 function colocaexamen(linea){
 	$("#cod_examenes1").val($(linea).find("td:eq(1)").text());
 	$("#codigo_examenes").val($(linea).find("td:eq(0)").text());
 	$("#datosdeexamen").html("Nombre del examen: "+$(linea).find("td:eq(2)").text());
 	$("#modalexamenes").modal("hide");
+}
+function colocaexamen_ver(linea, nombre_x){
+
+	$("#cod_examenes1").val($(linea).find("td:eq(1)").text());
+	$("#codigo_examenes").val($(linea).find("td:eq(0)").text());
+	$("#datosdeexamen").html("Nombre del examen: "+nombre_x);
+	$("#modalexamenes").modal("hide");
+	
 }
 //funcion para pasar de la lista a el formulario
 function pone(pos,accion){
@@ -256,6 +350,10 @@ function pone(pos,accion){
 		$("#cod_examenes1").val($(linea).find("td:eq(6)").text());
 		$("#imagen").prop("src","img/usuarios/"+$(linea).find("td:eq(4)").text()+"-"+$(linea).find("td:eq(2)").text()+"-"+$(linea).find("td:eq(6)").text()+".png");
 		$("#modal2").modal("show");
+		limpiarm();
+		colocapacientes_ver(linea, $(pos).attr('nombre'),  $(pos).attr('apellido'));
+		colocaexamen_ver(linea, $(pos).attr('nombre_examen'));
+		
 	}
 	else if(accion==1){
 		$("#proceso1").text("ELIMINAR");
@@ -267,6 +365,10 @@ function pone(pos,accion){
 		$("#cod_examenes1").val($(linea).find("td:eq(6)").text());
 		$("#imagen").prop("src","img/usuarios/"+$(linea).find("td:eq(4)").text()+"-"+$(linea).find("td:eq(2)").text()+"-"+$(linea).find("td:eq(6)").text()+".png");
 		$("#modal2").modal("show");
+		limpiarm();
+		colocapacientes_ver(linea, $(pos).attr('nombre'),  $(pos).attr('apellido'));
+		colocaexamen_ver(linea, $(pos).attr('nombre_examen'));
+
 	}
 	else if(accion==3){
 		$("#proceso").text("INCLUIR");
@@ -275,6 +377,9 @@ function pone(pos,accion){
 	$("#descripcion_examen").val($(linea).find("td:eq(3)").text());
 	$("#cedula_h").val($(linea).find("td:eq(4)").text());
 	$("#modal1").modal("show");
+	limpiarm();
+
+	
 	}
 	else {
 		$("#proceso1").text("INCLUIR REGISTRO");
@@ -284,6 +389,8 @@ function pone(pos,accion){
 		$("#cedula_h").val($(linea).find("td:eq(4)").text());
 		$("#cod_examenes1").val($(linea).find("td:eq(6)").text());
 		$("#modal2").modal("show");
+		limpiarm();
+		
 	}
 	
 }
@@ -329,12 +436,18 @@ function enviaAjax(datos) {
 		   crearDT();
         }
 		else if(lee.resultado=='listadopacientes'){
+			destruyeDT1();
 
 			$('#listadopacientes').html(lee.mensaje);
+			crearDT1();
 		}
 		else if(lee.resultado=='listadoexamenes'){
 
+			destruyeDT2();
+			
 			$('#listadoexamenes').html(lee.mensaje);
+			crearDT2();
+
 		}
 		else if (lee.resultado == "incluir") {
            muestraMensaje(lee.mensaje);

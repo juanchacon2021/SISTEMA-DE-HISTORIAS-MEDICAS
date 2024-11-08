@@ -63,8 +63,8 @@ function crearDT1(){
 }
 //77
 function destruyeDT2(){
-	if ($.fn.DataTable.isDataTable("#tablahistorias")) {
-            $("#tablahistorias").DataTable().destroy();
+	if ($.fn.DataTable.isDataTable("#tabladelpersonal")) {
+            $("#tabladelpersonal").DataTable().destroy();
     }
 	console.log('listo');
 	// crearDT1()

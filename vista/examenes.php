@@ -100,7 +100,8 @@ Examenes
 		<table class="table table-striped table-hover" id="tabladeexamenes">
 		<thead>
 		  <tr>
-		    <th style="display:none">cod_examenes</th>
+		    <th style="display:none">cod</th>
+		    <th >cod_examenes</th>
 			<th>Tipos de examen</th>
 			<th>Descripcion</th>
 		  </tr>

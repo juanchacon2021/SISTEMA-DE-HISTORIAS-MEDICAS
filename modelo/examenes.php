@@ -115,6 +115,7 @@ class examenes extends datos{
 			return $r;
 	}
 
+
 	function listadoexamenes(){
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -153,6 +154,7 @@ class examenes extends datos{
 		}
 			return $r;
 	}
+
 	 
 	
 	function incluir(){
@@ -299,8 +301,9 @@ class examenes extends datos{
 		$r = array();
 		try{
 			
-			$resultado = $co->query("Select r.*, e.nombre_examen from registro r, examenes e
-									where r.cod_examenes = e.cod_examenes");
+			$resultado = $co->query("Select r.*, e.nombre_examen, h.nombre, h.apellido from examenes e
+									inner join registro r on e.cod_examenes = r.cod_examenes
+									inner join historias h on r.cedula_h = h.cedula_historia");
 			
 			if($resultado){
 				
@@ -310,19 +313,26 @@ class examenes extends datos{
 					    $respuesta = $respuesta."<td>";
 						$respuesta = $respuesta."<div class='button-container' style='display: flex; justify-content: center; gap: 10px; margin-top: 10px'>
                         
-						<button type='button' class='btn btn-success' onclick='pone(this,0)'>
+						<button type='button' class='btn btn-success' onclick='pone(this,0)'
+																						' nombre='".$r['nombre']."'
+																						' apellido='".$r['apellido']."'
+																						' nombre_examen='".$r['nombre_examen']."'																								
+						>
 							<img src='img/lapiz.svg' style='width: 20px'>
 						</button>";
-						$respuesta = $respuesta."<a class='btn btn-danger' onclick='pone(this,1)'>
+						$respuesta = $respuesta."<a class='btn btn-danger' onclick='pone(this,1)'' nombre='".$r['nombre']."'
+																								' apellido='".$r['apellido']."'
+																								' nombre_examen='".$r['nombre_examen']."'	
+						
+						>
 							<img src='img/trash-can-solid.svg' style='width: 20px;'>
 						</a>";
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td style='display:none;'>";
 							$respuesta = $respuesta.$r['cod_registro'];
 						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['fecha_r'];
-						
+						$respuesta = $respuesta."<td>";						
+							$respuesta = $respuesta.$r['fecha_r'];				
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td>";
 							$respuesta = $respuesta.$r['observacion_examen'];
