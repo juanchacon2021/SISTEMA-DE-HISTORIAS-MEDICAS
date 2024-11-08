@@ -1,65 +1,45 @@
-
-
 <!DOCTYPE html>
 <?php 
         require_once("comunes/encabezado.php"); 
 ?>
 <head>
-   <meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-   <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
-
-   <link href="https://tresplazas.com/web/img/big_punto_de_venta.png" rel="shortcut icon">
-   <title>Inicio de sesión</title>
 </head>
 
-<body>
-   <img class="wave" src="img/wave.png">
-   <div class="container">
-      <div class="img">
-         <img src="img/bg.svg">
-      </div>
-      <div class="login-content">
-         <form method="post" action="">
-            <img src="img/avatar.svg">
+<body id="fond">
+    <img class="wave" src="img/wave.png">
+    <div class="container-login">
+        <div class="img">
+        <img src="img/bg.svg">
+    </div>
+    <div class="login-content">
+        <form method="POST" action="" class="formulario-login">
+            <center><img src="img/logo.png" alt="logo"></center>
             <h2 class="title">BIENVENIDO</h2>
+
             <div class="input-div one">
-               <div class="i">
-                  <i class="fas fa-user"></i>
-               </div>
-               <div class="div">
-                  <h5>Usuario</h5>
-                  <input id="usuario" type="text" class="input" name="usuario">
-               </div>
+                <div class="i">
+                    <img src="img/user.svg" alt="">
+                </div>
+                <div class="div">
+                    <input id="usuario" type="text" class="input border-0" name="usuario" placeholder="Usuario">
+                </div>
             </div>
             <div class="input-div pass">
-               <div class="i">
-                  <i class="fas fa-lock"></i>
-               </div>
-               <div class="div">
-                  <h5>Contraseña</h5>
-                  <input type="password" id="input" class="input" name="password">
-               </div>
-            </div>
-            <div class="view">
-               <div class="fas fa-eye verPassword" onclick="vista()" id="verPassword"></div>
+                <div class="i">
+                    <img src="img/lock.svg" alt="">
+                </div>
+                <div class="div">
+                    <input type="password" id="input" class="input" name="clave" placeholder="Contraseña">
+                </div>
             </div>
 
             <div class="text-center">
-               <a class="font-italic isai5" href="">Olvidé mi contraseña</a>
-               <a class="font-italic isai5" href="">Registrarse</a>
+                <a class="enlace font-italic isai5" href="?pagina=principal">saltar</a>
             </div>
-            <input name="btningresar" class="btn" type="submit" value="INICIAR SESION">
+            <input name="btningresar" class="btn botoncito" type="submit" value="INICIAR SESION">
          </form>
       </div>
    </div>
-   <script src="js/fontawesome.js"></script>
-   <script src="js/main.js"></script>
-   <script src="js/main2.js"></script>
-   <script src="js/jquery.min.js"></script>
-   <script src="js/bootstrap.js"></script>
-   <script src="js/bootstrap.bundle.js"></script>
 
 </body>
 
