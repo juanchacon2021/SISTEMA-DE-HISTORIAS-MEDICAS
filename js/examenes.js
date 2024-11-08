@@ -339,6 +339,9 @@ function pone(pos,accion){
 	
 	linea=$(pos).closest('tr');
 
+	const boton_h = document.querySelector('#listadodepacientes');
+	const boton_e = document.querySelector('#listadodeexamenes');
+
 
 	if(accion==0){
 		$("#proceso1").text("MODIFICAR");
@@ -353,6 +356,8 @@ function pone(pos,accion){
 		limpiarm();
 		colocapacientes_ver(linea, $(pos).attr('nombre'),  $(pos).attr('apellido'));
 		colocaexamen_ver(linea, $(pos).attr('nombre_examen'));
+		boton_h.style.display = '';
+		boton_e.style.display = '';
 		
 	}
 	else if(accion==1){
@@ -368,6 +373,8 @@ function pone(pos,accion){
 		limpiarm();
 		colocapacientes_ver(linea, $(pos).attr('nombre'),  $(pos).attr('apellido'));
 		colocaexamen_ver(linea, $(pos).attr('nombre_examen'));
+		boton_h.style.display = 'none';
+		boton_e.style.display = 'none';
 
 	}
 	else if(accion==3){
