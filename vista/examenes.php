@@ -66,7 +66,7 @@ Examenes
         </button>
     </div>
     <div class="modal-content">
-		<table class="table table-striped table-hover">
+		<table class="table table-striped table-hover" id="tablahistorias">
 		<thead>
 		  <tr>
 		    <th style="display:none">Id</th>
@@ -97,7 +97,7 @@ Examenes
         </button>
     </div>
     <div class="modal-content">
-		<table class="table table-striped table-hover">
+		<table class="table table-striped table-hover" id="tabladeexamenes">
 		<thead>
 		  <tr>
 		    <th style="display:none">cod_examenes</th>
