@@ -99,17 +99,17 @@
 }
 
 .botonverde {
-  font-family: 'Sora';
-  background-color: rgb(47, 148, 52);
-  border-radius: 0.5rem;
-  border: 0.5rem solid rgb(47, 148, 52);
-  width: auto;
-}
+    font-family: 'Sora';
+    background-color: rgb(47, 148, 52);
+    border-radius: 0.5rem;
+    border: 0.5rem solid rgb(47, 148, 52);
+    width: auto;
+  }
   
-.botonverde a {
-  text-decoration: none;
-  color: white;
-}
+  .botonverde a {
+    text-decoration: none;
+    color: white;
+  }
 
 .boton:hover {
     background-color: rgb(153, 27, 27);
