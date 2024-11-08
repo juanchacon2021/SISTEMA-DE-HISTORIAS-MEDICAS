@@ -13,7 +13,7 @@ Examenes
 	<div class="container">
 		<div class="row mt-3 botones">
 			<hr class="mb-12 text-gray-600">
-				<div class="botonverde" onclick='pone(this,3)' style="cursor: pointer;" >
+				<div style="color: white;" class="botonverde" onclick='pone(this,3)' style="cursor: pointer;" >
 					Registrar Tipo de Examen
 				</div>
 					
@@ -27,7 +27,7 @@ Examenes
 
 	<div class="container">
 		<div class="row mt-3 botonesdos">
-			<div class="botonverde" onclick="pone(this,4)" style="cursor: pointer;" >
+			<div style="color: white;" class="botonverde" onclick="pone(this,4)" style="cursor: pointer;" >
 				Registrar Examen a Paciente
 			</div>
 		</div>
@@ -160,7 +160,7 @@ Examenes
 				
                 <div class="row mt-3 justify-content-center">
                     <div class="col-md-2">
-                        <button type="button" class="btn botonverde" id="proceso">INCLUIR</button>
+                        <button style="color: white;" type="button" class="btn botonverde" id="proceso">INCLUIR</button>
                     </div>
                 </div>
 			</div>	
@@ -263,7 +263,7 @@ Examenes
 					</div>						
 				<div class="row mt-3 justify-content-center">
                     <div class="col-md-2">
-                        <button type="button" class="btn botonverde" id="proceso1"></button>
+                        <button style="color: white;" type="button" class="btn botonverde" id="proceso1"></button>
                     </div>
                 </div>
 			</div>	

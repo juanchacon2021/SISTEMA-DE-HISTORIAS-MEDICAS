@@ -13,7 +13,7 @@ Pacientes
 	<div class="container">
 		<div class="row mt-3 botones">
 			<div class="col-md-2 botonverde" style="cursor: pointer;" >
-				<a href="?pagina=historia" class="">Registrar Paciente</a>
+				<a href="?pagina=historia" style="color: white;">Registrar Paciente</a>
 			</div>
 					
 			<div class="col-md-2 recortar">	
