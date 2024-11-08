@@ -1159,6 +1159,8 @@ video {
   /* Centra el texto verticalmente */
 }
 
+
+
 @media (max-width: 768px) {
   html {
     margin-bottom: 0;

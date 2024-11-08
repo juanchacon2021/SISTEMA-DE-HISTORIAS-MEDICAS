@@ -163,6 +163,8 @@ background: linear-gradient(90deg, #ff0000,#ff8080);/* W3C, IE 10+/ Edge, Firefo
     vertical-align: middle; /* Centra el texto verticalmente */
 }
 
+
+
 @media (max-width: 768px) {
 
     html {
