@@ -1,7 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,100..900;1,100..900&family=Marcellus&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+@font-face {
+    font-family: 'Sora';
+  
+    src: url('../Sora.ttf');
+  }
 
 
 .inicio {
@@ -98,9 +103,13 @@
     background-color: rgb(47, 148, 52);
     border-radius: 0.5rem;
     border: 0.5rem solid rgb(47, 148, 52);
-    color: white;
     width: auto;
-}
+  }
+  
+  .botonverde a {
+    text-decoration: none;
+    color: white;
+  }
 
 .boton:hover {
     background-color: rgb(153, 27, 27);

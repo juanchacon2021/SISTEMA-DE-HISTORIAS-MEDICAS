@@ -11,7 +11,7 @@ Personal
 <div class="container espacio"> <!-- container-->
 	<div class="container">
 		<div class="row mt-3 botones">
-		    <div class="col-md-2 botonverde" onclick='pone(this,3)' style="cursor: pointer;" >
+		    <div style="color: white;" class="col-md-2 botonverde" onclick='pone(this,3)' style="cursor: pointer;" >
 				Registrar Personal
 			</div>
 					
@@ -115,7 +115,7 @@ Personal
 
 				<div class="row mt-3 justify-content-center">
 					<div class="col-md-2">
-						   <button type="button" class="btn botonverde" 
+						   <button style="color: white;" type="button" class="btn botonverde" 
 						   id="proceso"></button>
 					</div>
 				</div>

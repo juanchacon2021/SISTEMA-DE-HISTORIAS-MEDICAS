@@ -12,7 +12,7 @@ Emergencias
 <div class="container espacio">
 	<div class="container">
 		<div class="row mt-3 botones">
-		    <div class="col-md-2 botonverde" style="cursor: pointer;" onclick='pone(this,3), limpiarm()' >
+		    <div style="color: white;" class="col-md-2 botonverde" style="cursor: pointer;" onclick='pone(this,3), limpiarm()' >
 				Registrar Emergencias
 			</div>
 
@@ -152,7 +152,7 @@ Emergencias
 
 				<div class="row mt-3 justify-content-center mb-4">
 					<div class="col-md-2">
-						   <button type="button" class="btn botonverde" id="proceso"></button>
+						   <button style="color: white;" type="button" class="btn botonverde" id="proceso"></button>
 					</div>
 				</div>
 				
