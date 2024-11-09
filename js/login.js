@@ -17,7 +17,7 @@ $(document).ready(function(){
         
         $("#cedula").on("keyup",function(){
             validarkeyup(/^[0-9]{7,8}$/,$(this),
-            $("#scedula"),"El formato debe ser 9999999 ");
+            $("#scedula"),"INGRESA UNA CEDULA");
         });
         
         $("#clave").on("keypress",function(e){
@@ -58,7 +58,7 @@ $(document).ready(function(){
     //Validación de todos los campos antes del envio
     function validarenvio(){
         if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula"),
-            $("#scedula"),"El formato debe ser 9999999")==0){
+            $("#scedula"),"INGRESA UNA CEDULA")==0){
             muestraMensaje("La cedula debe coincidir con el formato <br/>"+ 
                             "99999999");	
             return false;					

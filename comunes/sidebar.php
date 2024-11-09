@@ -33,28 +33,23 @@
 					?>
 
                 <hr class="my-4 text-gray-600">
-
-                <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white">
-                    <img class="w-6 h-8" src="img/hospital.svg" alt="">
-                <div class="flex justify-between w-full items-center hover:text-white text-stone-600" onclick="dropDown1()">
-                    <span class="text-[15px] ml-4 text-lg">Centro Medico</span>
-                    <span class="text-sm rotate-180" id="arrow1">
-                        <img class="w-6 h-8 hover:text-white" src="img/flecha.svg" alt="">
-                    </span>
-                </div>
-                </div>
-                <div class=" leading-7 text-left text-sm font-thin mt-2 w-4/5 mx-auto" id="submenu">
                 <?php
 					  if($nivel=='Doctor'){
 					?>
-                    <a href="?pagina=personal"><h1 class="cursor-pointer p-2 hover:bg-red-800 rounded-md mt-1 text-lg hover:text-white">Personal</h1></a>
+                    <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:text-white hover:bg-red-800 text-stone-600">
+                        <img class="w-6 h-8" src="img/personal.svg" alt="">
+                        <a href="?pagina=personal" ><span class="text-[15px] ml-4 text-lg hover:text-white">Personal</span></a>
+                    </div>
                     <?php
 					  }
 					?>
                     <?php
 					  if($nivel=='Doctor' or $nivel=='Enfermera'){
 					?>
-                    <a href="?pagina=examenes"><h1 class="cursor-pointer p-2 hover:bg-red-800 rounded-md mt-1 text-lg hover:text-white">Examenes</h1></a>
+                    <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:text-white hover:bg-red-800 text-stone-600">
+                        <img class="w-6 h-8" src="img/examen.svg" alt="">
+                        <a href="?pagina=examenes" ><span class="text-[15px] ml-4 text-lg hover:text-white">Examenes</span></a>
+                    </div>
                 </div>
 
                 <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:text-white hover:bg-red-800 text-stone-600">
@@ -90,7 +85,7 @@
 		 ?>
                
                 <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
-                    <img class="w-6 h-8" src="" alt="">
+                    <img class="w-6 h-8" src="img/user.svg" alt="">
                     <a href="?pagina=login" class="text-[15px] ml-4 text-lg">Iniciar Sesión</a>
                 </div>
                 <?php 		 

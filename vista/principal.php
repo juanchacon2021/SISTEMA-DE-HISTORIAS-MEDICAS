@@ -30,7 +30,7 @@
 
 
     <article class="inicio bg-white py-8 px-4">
-        <h1 class="texto-inicio">Hola, Bienvenido</h1>
+        <!-- <h1 class="texto-inicio">Hola, Bienvenido</h1> -->
     </article>
 
     <div class="fondo">
