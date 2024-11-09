@@ -546,4 +546,15 @@ background: linear-gradient(90deg, #ff0000,#ff8080);/* W3C, IE 10+/ Edge, Firefo
         font-size: 10px;
     }
 
+    .wave {
+        display: none;
+    }
+
+    .img{
+        display: none;
+    }
+    
+    .login-content{
+        margin-left: 23%;
+    }
 }

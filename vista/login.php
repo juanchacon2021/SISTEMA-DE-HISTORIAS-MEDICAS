@@ -18,8 +18,8 @@
     <img class="wave" src="img/wave.png">
     <div class="container-login">
         <div class="img">
-        <img src="img/bg.svg">
-    </div>
+            <img src="img/bg.svg">
+        </div>
     <div class="login-content">
         <form method="POST" action="" id="f" class="formulario-login">
         <input type="text" name="accion" id="accion" style="display:none"/>
