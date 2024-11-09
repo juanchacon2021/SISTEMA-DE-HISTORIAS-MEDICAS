@@ -15,12 +15,22 @@
                 <a href="#" class="ml-8"><i class="bi bi-x cursor-pointer lg:hidden cursor-pointer hover:text-white" onclick="Openbar()"></i></a>
             </div>
             <hr class="my-2 text-gray-600">
-
+            <?php
+		   //verificamos que exista la variable nivel
+		   //que es la que contiene el valor de la sesion
+		   if(!empty($nivel)){
+		 ?>
+         <?php
+					  if($nivel=='Doctor'){
+					?>
             <div>
                 <div class="iconos p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
                     <img class="w-6 h-8" src="img/usuario.svg" alt="">
                 <a href="?pagina=pacientes"><span class="text-[15px] ml-4 text-lg hover:text-white">Pacientes</span></a>
                 </div>
+                <?php
+					  }
+					?>
 
                 <hr class="my-4 text-gray-600">
 
@@ -34,9 +44,16 @@
                 </div>
                 </div>
                 <div class=" leading-7 text-left text-sm font-thin mt-2 w-4/5 mx-auto" id="submenu">
-
+                <?php
+					  if($nivel=='Doctor'){
+					?>
                     <a href="?pagina=personal"><h1 class="cursor-pointer p-2 hover:bg-red-800 rounded-md mt-1 text-lg hover:text-white">Personal</h1></a>
-
+                    <?php
+					  }
+					?>
+                    <?php
+					  if($nivel=='Doctor' or $nivel=='Enfermera'){
+					?>
                     <a href="?pagina=examenes"><h1 class="cursor-pointer p-2 hover:bg-red-800 rounded-md mt-1 text-lg hover:text-white">Examenes</h1></a>
                 </div>
 
@@ -53,12 +70,32 @@
                         
                     </div>
                 </div>
-
-                <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
+                <?php 		 
+				}
+		 ?>
+           <?php 		 
+				}
+		 ?>
+         <?php
+		        
+				if(!empty($nivel) and $nivel!=""){
+		 ?>
+              <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
                     <img class="w-6 h-8" src="img/bracket.svg" alt="">
-                    <span class="text-[15px] ml-4 text-lg">Cerrar Sesión</span>
+                    <a href="?pagina=salida" class="text-[15px] ml-4 text-lg">Cerrar Sesión</a>
                 </div>
-
+                <?php	
+				}
+				else{
+		 ?>
+               
+                <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
+                    <img class="w-6 h-8" src="" alt="">
+                    <a href="?pagina=login" class="text-[15px] ml-4 text-lg">Iniciar Sesión</a>
+                </div>
+                <?php 		 
+				}
+		 ?>
                 </div>
             </div>
         </div>

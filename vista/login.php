@@ -2,6 +2,15 @@
 <?php 
         require_once("comunes/encabezado.php"); 
 ?>
+<?php require_once("comunes/modal.php"); ?>
+<!--Div oculta para colocar el mensaje a mostrar-->
+<div id="mensajes" style="display:none">
+<?php
+	if(!empty($mensaje)){
+		echo $mensaje;
+	}
+?>	
+</div>
 <head>
 </head>
 
@@ -12,8 +21,9 @@
         <img src="img/bg.svg">
     </div>
     <div class="login-content">
-        <form method="POST" action="" class="formulario-login">
-            <center><img src="img/logo.png" alt="logo"></center>
+        <form method="POST" action="" id="f" class="formulario-login">
+        <input type="text" name="accion" id="accion" style="display:none"/>
+        <center><img src="img/logo.png" alt="logo"></center>
             <h2 class="title">BIENVENIDO</h2>
 
             <div class="input-div one">
@@ -21,7 +31,8 @@
                     <img src="img/user.svg" alt="">
                 </div>
                 <div class="div">
-                    <input id="usuario" type="text" class="input border-0" name="usuario" placeholder="Usuario">
+                    <input id="cedula" type="text" class="input border-0 form-control" name="cedula" placeholder="Cedula">
+                    <span id="scedula"></span>
                 </div>
             </div>
             <div class="input-div pass">
@@ -29,18 +40,17 @@
                     <img src="img/lock.svg" alt="">
                 </div>
                 <div class="div">
-                    <input type="password" id="input" class="input" name="clave" placeholder="Contraseña">
+                    <input type="password" id="clave" class="input form-control" name="clave" placeholder="Contraseña">
+                    <span id="sclave"></span>
                 </div>
             </div>
 
-            <div class="text-center">
-                <a class="enlace font-italic isai5" href="?pagina=principal">saltar</a>
-            </div>
-            <input name="btningresar" class="btn botoncito" type="submit" value="INICIAR SESION">
+            
+            <input id="entrar" name="btningresar" class="btn botoncito" type="submit" value="INICIAR SESION">
          </form>
       </div>
    </div>
-
+   <script type="text/javascript" src="js/login.js"></script>
 </body>
 
 </html>
