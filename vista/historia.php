@@ -113,7 +113,7 @@
                     </div>
                         
                     <div class="col-md-3">
-                        <label for="transsanguineo" class="texto-inicio font-medium">Trans Sanguineos</label>
+                        <label for="transsanguineo" class="texto-inicio font-medium">Transfuciones Sanguineas</label>
                         <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="transsanguineo"
                                 name="transsanguineo"/>
                         <span id="stranssanguineo"></span>
