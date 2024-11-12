@@ -47,24 +47,17 @@ class PDF extends FPDF
       $this->Cell(100, 10, utf8_decode("REPORTE DE EMERGENCIA"), 0, 1, 'C', 0);
       $this->Ln(7);
 
-      /* inf_p */
-      $this->SetTextColor(0, 0, 0);
-      $this->Cell(1);  // mover a la derecha
-      $this->SetFont('Arial', 'B', 10);
-      $this->Cell(96, 10, utf8_decode("Informacion del paciente :"), 0, 0, '', 0);
-      $this->Ln(8);
-
       /* CAMPOS DE LA TABLA */
       //color
       $this->SetFillColor(226 ,37 , 53); //colorFondo
       $this->SetTextColor(255, 255, 255); //colorTexto
       $this->SetDrawColor(0, 0, 0); //colorBorde
       $this->SetFont('Arial', 'B', 7);
-      $this->Cell(35, 7, utf8_decode('NOMBRE'), 1, 0, 'C', 1);
-      $this->Cell(35, 7, utf8_decode('APELLIDO'), 1, 0, 'C', 1);
-      $this->Cell(35, 7, utf8_decode('CEDULA'), 1, 0, 'C', 1);
-      $this->Cell(30, 7, utf8_decode('FECHA DE INGRESO'), 1, 0, 'C', 1);
-      $this->Cell(30, 7, utf8_decode('HORA DE INGRESO'), 1, 1, 'C', 1);
+      $this->Cell(38, 7, utf8_decode('NOMBRE'), 1, 0, 'C', 1);
+      $this->Cell(38, 7, utf8_decode('APELLIDO'), 1, 0, 'C', 1);
+      $this->Cell(38, 7, utf8_decode('CEDULA'), 1, 0, 'C', 1);
+      $this->Cell(38, 7, utf8_decode('FECHA DE INGRESO'), 1, 0, 'C', 1);
+      $this->Cell(38, 7, utf8_decode('HORA DE INGRESO'), 1, 1, 'C', 1);
 
       
       
@@ -129,11 +122,11 @@ if ($datos_reporte) {
 
     /* TABLA */
     
-    $pdf->Cell(35, 8, utf8_decode($datos_reporte->nombre_h), 1, 0, 'C', 0);
-    $pdf->Cell(35, 8, utf8_decode($datos_reporte->apellido_h), 1, 0, 'C', 0);
-    $pdf->Cell(35, 8, utf8_decode($datos_reporte->cedula_h), 1, 0, 'C', 0);
-    $pdf->Cell(30, 8, utf8_decode($datos_reporte->fechaingreso), 1, 0, 'C', 0);
-    $pdf->Cell(30, 8, utf8_decode($datos_reporte->horaingreso), 1, 1, 'C', 0);
+    $pdf->Cell(38, 8, utf8_decode($datos_reporte->nombre_h), 1, 0, 'C', 0);
+    $pdf->Cell(38, 8, utf8_decode($datos_reporte->apellido_h), 1, 0, 'C', 0);
+    $pdf->Cell(38, 8, utf8_decode($datos_reporte->cedula_h), 1, 0, 'C', 0);
+    $pdf->Cell(38, 8, utf8_decode($datos_reporte->fechaingreso), 1, 0, 'C', 0);
+    $pdf->Cell(38, 8, utf8_decode($datos_reporte->horaingreso), 1, 1, 'C', 0);
    
     $pdf->Ln(10);
 
@@ -160,17 +153,17 @@ if ($datos_reporte) {
     $pdf->SetTextColor(255, 255, 255); // colorTexto
     $pdf->SetDrawColor(0, 0, 0); // colorBorde
     $pdf->SetFont('Arial', 'B', 7);
-    $pdf->Cell(30, 7, utf8_decode('CARGO'), 1, 0, 'C', 1);
-    $pdf->Cell(30, 7, utf8_decode('NOMBRE'), 1, 0, 'C', 1);
-    $pdf->Cell(30, 7, utf8_decode('APELLIDO'), 1, 0, 'C', 1);
-    $pdf->Cell(30, 7, utf8_decode('CEDULA'), 1, 1, 'C', 1);
+    $pdf->Cell(47, 7, utf8_decode('CARGO'), 1, 0, 'C', 1);
+    $pdf->Cell(47, 7, utf8_decode('NOMBRE'), 1, 0, 'C', 1);
+    $pdf->Cell(47, 7, utf8_decode('APELLIDO'), 1, 0, 'C', 1);
+    $pdf->Cell(47, 7, utf8_decode('CEDULA'), 1, 1, 'C', 1);
 
     $pdf->SetTextColor(0, 0, 0); // colorTexto
     $pdf->SetFont('Arial', '', 8);
-    $pdf->Cell(30, 8, utf8_decode($datos_reporte->cargo), 1, 0, 'C', 0);
-    $pdf->Cell(30, 8, utf8_decode($datos_reporte->nombre), 1, 0, 'C', 0);
-    $pdf->Cell(30, 8, utf8_decode($datos_reporte->apellido), 1, 0, 'C', 0);
-    $pdf->Cell(30, 8, utf8_decode($datos_reporte->cedula_p), 1, 1, 'C', 0);
+    $pdf->Cell(47, 8, utf8_decode($datos_reporte->cargo), 1, 0, 'C', 0);
+    $pdf->Cell(47, 8, utf8_decode($datos_reporte->nombre), 1, 0, 'C', 0);
+    $pdf->Cell(47, 8, utf8_decode($datos_reporte->apellido), 1, 0, 'C', 0);
+    $pdf->Cell(47, 8, utf8_decode($datos_reporte->cedula_p), 1, 1, 'C', 0);
     
 
 
