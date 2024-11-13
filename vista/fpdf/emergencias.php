@@ -49,15 +49,7 @@ class PDF extends FPDF
 
       /* CAMPOS DE LA TABLA */
       //color
-      $this->SetFillColor(226 ,37 , 53); //colorFondo
-      $this->SetTextColor(255, 255, 255); //colorTexto
-      $this->SetDrawColor(0, 0, 0); //colorBorde
-      $this->SetFont('Arial', 'B', 7);
-      $this->Cell(38, 7, utf8_decode('NOMBRE'), 1, 0, 'C', 1);
-      $this->Cell(38, 7, utf8_decode('APELLIDO'), 1, 0, 'C', 1);
-      $this->Cell(38, 7, utf8_decode('CEDULA'), 1, 0, 'C', 1);
-      $this->Cell(38, 7, utf8_decode('FECHA DE INGRESO'), 1, 0, 'C', 1);
-      $this->Cell(38, 7, utf8_decode('HORA DE INGRESO'), 1, 1, 'C', 1);
+
 
       
       
@@ -85,7 +77,7 @@ class PDF extends FPDF
 include '../../modelo/datos.php'; 
 
 function conexion() {
-    return new PDO('mysql:host=localhost;dbname=sss', 'root', '123456');
+    return new PDO('mysql:host=localhost;dbname=shm-cdi', 'root', '123456');
 }
 
 $pdf = new PDF();
@@ -114,14 +106,26 @@ $consulta_reporte_emergencia->execute();
 $datos_reporte = $consulta_reporte_emergencia->fetch(PDO::FETCH_OBJ);
 
 
-
 if ($datos_reporte) {
+
+     $pdf->SetFillColor(226 ,37 , 53); //colorFondo
+     $pdf->SetTextColor(255, 255, 255); //colorTexto
+     $pdf->SetDrawColor(0, 0, 0); //colorBorde
+     $pdf->SetFont('Arial', 'B', 7);
+     $pdf->Cell(38, 7, utf8_decode('NOMBRE'), 1, 0, 'C', 1);
+     $pdf->Cell(38, 7, utf8_decode('APELLIDO'), 1, 0, 'C', 1);
+     $pdf->Cell(38, 7, utf8_decode('CEDULA'), 1, 0, 'C', 1);
+     $pdf->Cell(38, 7, utf8_decode('FECHA DE INGRESO'), 1, 0, 'C', 1);
+     $pdf->Cell(38, 7, utf8_decode('HORA DE INGRESO'), 1, 1, 'C', 1);
+
+
     
-    
+
 
 
     /* TABLA */
-    
+     $pdf->SetTextColor(0, 0, 0); // colorTexto
+    $pdf->SetFont('Arial', '', 8);
     $pdf->Cell(38, 8, utf8_decode($datos_reporte->nombre_h), 1, 0, 'C', 0);
     $pdf->Cell(38, 8, utf8_decode($datos_reporte->apellido_h), 1, 0, 'C', 0);
     $pdf->Cell(38, 8, utf8_decode($datos_reporte->cedula_h), 1, 0, 'C', 0);
@@ -142,9 +146,11 @@ if ($datos_reporte) {
 
     $pdf->SetTextColor(0, 0, 0); // colorTexto
     $pdf->SetFont('Arial', '', 8);
-    $pdf->Cell(63, 8, utf8_decode($datos_reporte->motingreso), 1, 0, 'C', 0);
-    $pdf->Cell(63, 8, utf8_decode($datos_reporte->diagnostico_e), 1, 0, 'C', 0);
-    $pdf->Cell(63, 8, utf8_decode($datos_reporte->tratamientos), 1, 1, 'C', 0);
+    
+
+    $pdf->Cell(63, 5, utf8_decode($datos_reporte->motingreso), 1, 0, 'C',0);
+    $pdf->Cell(63, 5, utf8_decode($datos_reporte->diagnostico_e), 1, 0, 'C',0);
+    $pdf->MultiCell(63, 5, utf8_decode($datos_reporte->tratamientos), 1,'C',0);
 
     $pdf->Ln(10);
     
