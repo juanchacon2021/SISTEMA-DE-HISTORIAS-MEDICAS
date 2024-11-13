@@ -133,36 +133,55 @@ if ($datos_reporte) {
     $pdf->SetTextColor(255, 255, 255); // colorTexto
     $pdf->SetDrawColor(0, 0, 0); // colorBorde
     $pdf->SetFont('Arial', 'B', 7);
-    $pdf->Cell(63, 7, utf8_decode('MOTIVO DE INGRESO'), 1, 0, 'C', 1);
-    $pdf->Cell(63, 7, utf8_decode('DIAGNOSTICO'), 1, 0, 'C', 1);
-    $pdf->Cell(63, 7, utf8_decode('TRATAMIENTOS'), 1, 1, 'C', 1);
+    $pdf->Cell(190, 7, utf8_decode('MOTIVO DE INGRESO'), 1, 1, 'C', 1);
 
     $pdf->SetTextColor(0, 0, 0); // colorTexto
     $pdf->SetFont('Arial', '', 8);
-    
-
-    $pdf->Cell(63, 5, utf8_decode($datos_reporte->motingreso), 1, 0, 'C',0);
-    $pdf->Cell(63, 5, utf8_decode($datos_reporte->diagnostico_e), 1, 0, 'C',0);
-    $pdf->MultiCell(63, 5, utf8_decode($datos_reporte->tratamientos), 1,'C',0);
+    $pdf->MultiCell(190, 5, utf8_decode($datos_reporte->motingreso), 1, 'C',0);
 
     $pdf->Ln(10);
+
+    $pdf->SetFillColor(226, 37, 53); // colorFondo
+    $pdf->SetTextColor(255, 255, 255); // colorTexto
+    $pdf->SetDrawColor(0, 0, 0); // colorBorde
+    $pdf->SetFont('Arial', 'B', 7);
+    $pdf->Cell(190, 7, utf8_decode('DIAGNOSTICO'), 1, 1, 'C', 1);
+
+    $pdf->SetTextColor(0, 0, 0); // colorTexto
+    $pdf->SetFont('Arial', '', 8);
+    $pdf->MultiCell(190, 5, utf8_decode($datos_reporte->diagnostico_e), 1, 'C',0);
+
+    $pdf->Ln(10);
+
+    $pdf->SetFillColor(226, 37, 53); // colorFondo
+    $pdf->SetTextColor(255, 255, 255); // colorTexto
+    $pdf->SetDrawColor(0, 0, 0); // colorBorde
+    $pdf->SetFont('Arial', 'B', 7);
+    $pdf->Cell(190, 7, utf8_decode('TRATAMIENTOS'), 1, 1, 'C', 1);
+
+    $pdf->SetTextColor(0, 0, 0); // colorTexto
+    $pdf->SetFont('Arial', '', 8);
+    $pdf->MultiCell(190, 5, utf8_decode($datos_reporte->tratamientos), 1,'C',0);
+
+    $pdf->Ln(10);
+
     
 
     $pdf->SetFillColor(226, 37, 53); // colorFondo
     $pdf->SetTextColor(255, 255, 255); // colorTexto
     $pdf->SetDrawColor(0, 0, 0); // colorBorde
     $pdf->SetFont('Arial', 'B', 7);
-    $pdf->Cell(47, 7, utf8_decode('CARGO'), 1, 0, 'C', 1);
-    $pdf->Cell(47, 7, utf8_decode('NOMBRE'), 1, 0, 'C', 1);
-    $pdf->Cell(47, 7, utf8_decode('APELLIDO'), 1, 0, 'C', 1);
-    $pdf->Cell(47, 7, utf8_decode('CEDULA'), 1, 1, 'C', 1);
+    $pdf->Cell(40, 7, utf8_decode('CARGO'), 1, 0, 'C', 1);
+    $pdf->Cell(50, 7, utf8_decode('NOMBRE'), 1, 0, 'C', 1);
+    $pdf->Cell(50, 7, utf8_decode('APELLIDO'), 1, 0, 'C', 1);
+    $pdf->Cell(50, 7, utf8_decode('CEDULA'), 1, 1, 'C', 1);
 
     $pdf->SetTextColor(0, 0, 0); // colorTexto
     $pdf->SetFont('Arial', '', 8);
-    $pdf->Cell(47, 8, utf8_decode($datos_reporte->cargo), 1, 0, 'C', 0);
-    $pdf->Cell(47, 8, utf8_decode($datos_reporte->nombre), 1, 0, 'C', 0);
-    $pdf->Cell(47, 8, utf8_decode($datos_reporte->apellido), 1, 0, 'C', 0);
-    $pdf->Cell(47, 8, utf8_decode($datos_reporte->cedula_p), 1, 1, 'C', 0);
+    $pdf->Cell(40, 8, utf8_decode($datos_reporte->cargo), 1, 0, 'C', 0);
+    $pdf->Cell(50, 8, utf8_decode($datos_reporte->nombre), 1, 0, 'C', 0);
+    $pdf->Cell(50, 8, utf8_decode($datos_reporte->apellido), 1, 0, 'C', 0);
+    $pdf->Cell(50, 8, utf8_decode($datos_reporte->cedula_p), 1, 1, 'C', 0);
     
 
     ob_end_clean();
