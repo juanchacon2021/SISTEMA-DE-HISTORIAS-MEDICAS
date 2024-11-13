@@ -32,9 +32,10 @@ Personal
 				<th>Cedula</th>
 				<th>Apellidos</th>
 				<th>Nombres</th>
-				<th>Correo</th>
+				<th style="text-align: center;">Correo</th>
 				<th>Telefono</th>
 				<th>Cargo</th>
+				<th style="display: none;">Clave</th>
 			  </tr>
 			</thead>
 			<tbody id="resultadoconsulta">
