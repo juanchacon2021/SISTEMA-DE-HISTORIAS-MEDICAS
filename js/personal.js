@@ -73,6 +73,23 @@ $(document).ready(function(){
 		$(this),$("#scorreo"),"Formato incorrecto");
 	});
 	
+	// Validación para el teléfono (ejemplo con formato 04124578987)
+$("#telefono").on("keypress", function(e) {
+    validarkeypress(/^\d{11}$/);
+});
+
+$("#telefono").on("keyup", function() {
+    validarkeyup(/^\d{11}$/, $(this), $("#stelefono"), "Formato del teléfono incorrecto");
+});
+
+// Validación para la clave (ejemplo con al menos 8 caracteres, una mayúscula, una minúscula y un número)
+$("#clave").on("keypress", function(e) {
+    validarkeypress(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/);
+});
+
+$("#clave").on("keyup", function() {
+    validarkeyup(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, $(this), $("#sclave"), "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número");
+});
 	
 	
 //FIN DE VALIDACION DE DATOS
@@ -154,6 +171,11 @@ function validarenvio(){
 		muestraMensaje("nombre <br/>Solo letras  entre 3 y 30 caracteres");
 		return false;
 	}
+	else if(validarkeyup(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+		$("#clave"),$("#sclave"),"La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número")==0){
+		muestraMensaje("La clave no cumple con el formato");
+		return false;
+	}
 	
 	return true;
 }
@@ -219,6 +241,7 @@ function pone(pos,accion){
 	$("#correo").val($(linea).find("td:eq(4)").text());
 	$("#telefono").val($(linea).find("td:eq(5)").text());
 	$("#cargo").val($(linea).find("td:eq(6)").text());
+	$("#clave").val(accion === 0 || accion === 1 ? '**********' : $(linea).find("td:eq(7)").text());
 	
 	$("#modal1").modal("show");
 }

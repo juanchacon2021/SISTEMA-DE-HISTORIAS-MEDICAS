@@ -14,7 +14,10 @@ Personal
 		    <div style="color: white;" class="col-md-2 botonverde" onclick='pone(this,3)' style="cursor: pointer;" >
 				Registrar Personal
 			</div>
-					
+			<div class="col-md-3 botones">
+			<a class='btn btn-success' href='vista/fpdf/personal.php' target='_blank'>
+                                Generar Reporte
+                            </a></div>
 			<div class="col-md-2 recortar">	
                 <a href="?pagina=principal" class="boton">Volver</a>
 			</div>
@@ -29,9 +32,10 @@ Personal
 				<th>Cedula</th>
 				<th>Apellidos</th>
 				<th>Nombres</th>
-				<th>Correo</th>
+				<th style="text-align: center;">Correo</th>
 				<th>Telefono</th>
 				<th>Cargo</th>
+				<th style="display: none;">Clave</th>
 			  </tr>
 			</thead>
 			<tbody id="resultadoconsulta">
