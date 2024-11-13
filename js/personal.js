@@ -73,6 +73,23 @@ $(document).ready(function(){
 		$(this),$("#scorreo"),"Formato incorrecto");
 	});
 	
+	// Validación para el teléfono (ejemplo con formato 04124578987)
+$("#telefono").on("keypress", function(e) {
+    validarkeypress(/^\d{11}$/);
+});
+
+$("#telefono").on("keyup", function() {
+    validarkeyup(/^\d{11}$/, $(this), $("#stelefono"), "Formato del teléfono incorrecto");
+});
+
+// Validación para la clave (ejemplo con al menos 8 caracteres, una mayúscula, una minúscula y un número)
+$("#clave").on("keypress", function(e) {
+    validarkeypress(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/);
+});
+
+$("#clave").on("keyup", function() {
+    validarkeyup(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, $(this), $("#sclave"), "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número");
+});
 	
 	
 //FIN DE VALIDACION DE DATOS
