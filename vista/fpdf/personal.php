@@ -100,9 +100,9 @@ $bd = conexion();
 $consulta_personal = $bd->prepare("SELECT * FROM personal");
 $consulta_personal->execute();
 
-$personas = $consulta_personal->fetchAll(PDO::FETCH_OBJ); // Fetch all results as objects
+$personas = $consulta_personal->fetchAll(PDO::FETCH_OBJ); 
 
-// Consulta para la tabla examenes_r
+
 if ($personas) {
     
     foreach ($personas as $persona) {
@@ -112,10 +112,10 @@ if ($personas) {
         $pdf->Cell(55, 5, utf8_decode($persona->correo), 1, 0, 'C', 0);
         $pdf->Cell(22, 5, utf8_decode($persona->telefono), 1, 0, 'C', 0);
         $pdf->Cell(20, 5, utf8_decode($persona->cargo), 1, 0, 'C', 0);
-        $pdf->Ln(5); // Add line break after each record
+        $pdf->Ln(5); 
     }
 } else {
-    die('No se encontraron datos en la tabla personal.'); // Display message if no data found
+    die('No se encontraron datos en la tabla personal.'); 
 }
 
 $pdf->Output();
