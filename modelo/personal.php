@@ -217,7 +217,10 @@ class personal extends datos{
 						$respuesta = $respuesta."<td>";
 							$respuesta = $respuesta.$r['cargo'];
 						$respuesta = $respuesta."</td>";
-					$respuesta = $respuesta."</tr>";
+					$respuesta = $respuesta."<td style= display:none;>";
+					$respuesta = $respuesta.$r['clave'];
+					$respuesta = $respuesta."</td>";
+				$respuesta = $respuesta."</tr>";
 				}
 				
 			    $r['resultado'] = 'consultar';

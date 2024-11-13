@@ -51,14 +51,7 @@ class PDF extends FPDF
       //color
 
 
-      
-      
-      
    }
-
-
-   
-   
 
    // Pie de página
    function Footer()
@@ -94,11 +87,11 @@ $cod_emergencia = isset($_GET['cod_emergencia']) ? $_GET['cod_emergencia'] : '';
 if (empty($cod_emergencia)) {
     die('No se proporcionó una emergencia');
 }
-
-$consulta_reporte_emergencia = $bd->prepare("Select *, h.nombre as nombre_h, h.apellido as apellido_h  
-                                            from emergencias e 
-                                            inner join historias h on e.cedula_h = h.cedula_historia
-                                            inner join personal p on e.cedula_p = p.cedula_personal
+echo "Valor de cod_emergencia: " . $cod_emergencia;
+$consulta_reporte_emergencia = $bd->prepare("SELECT *, h.nombre AS nombre_h, h.apellido AS apellido_h  
+                                            FROM emergencias e 
+                                            INNER JOIN historias h ON e.cedula_h = h.cedula_historia
+                                            INNER JOIN personal p ON e.cedula_p = p.cedula_personal
                                             WHERE cod_emergencia = :cod_emergencia");
 $consulta_reporte_emergencia->bindParam(':cod_emergencia', $cod_emergencia, PDO::PARAM_STR);
 $consulta_reporte_emergencia->execute();
@@ -172,7 +165,7 @@ if ($datos_reporte) {
     $pdf->Cell(47, 8, utf8_decode($datos_reporte->cedula_p), 1, 1, 'C', 0);
     
 
-
+    ob_end_clean();
     
 
 

@@ -171,6 +171,11 @@ function validarenvio(){
 		muestraMensaje("nombre <br/>Solo letras  entre 3 y 30 caracteres");
 		return false;
 	}
+	else if(validarkeyup(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+		$("#clave"),$("#sclave"),"La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número")==0){
+		muestraMensaje("La clave no cumple con el formato");
+		return false;
+	}
 	
 	return true;
 }
@@ -236,6 +241,7 @@ function pone(pos,accion){
 	$("#correo").val($(linea).find("td:eq(4)").text());
 	$("#telefono").val($(linea).find("td:eq(5)").text());
 	$("#cargo").val($(linea).find("td:eq(6)").text());
+	$("#clave").val(accion === 0 || accion === 1 ? '**********' : $(linea).find("td:eq(7)").text());
 	
 	$("#modal1").modal("show");
 }
