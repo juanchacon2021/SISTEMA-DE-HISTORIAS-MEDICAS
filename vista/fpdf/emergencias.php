@@ -59,14 +59,7 @@ class PDF extends FPDF
       $this->Cell(38, 7, utf8_decode('FECHA DE INGRESO'), 1, 0, 'C', 1);
       $this->Cell(38, 7, utf8_decode('HORA DE INGRESO'), 1, 1, 'C', 1);
 
-      
-      
-      
    }
-
-
-   
-   
 
    // Pie de página
    function Footer()
@@ -85,7 +78,7 @@ class PDF extends FPDF
 include '../../modelo/datos.php'; 
 
 function conexion() {
-    return new PDO('mysql:host=localhost;dbname=sss', 'root', '123456');
+    return new PDO('mysql:host=localhost;dbname=shm-cdi', 'root', '123456');
 }
 
 $pdf = new PDF();
@@ -102,11 +95,11 @@ $cod_emergencia = isset($_GET['cod_emergencia']) ? $_GET['cod_emergencia'] : '';
 if (empty($cod_emergencia)) {
     die('No se proporcionó una emergencia');
 }
-
-$consulta_reporte_emergencia = $bd->prepare("Select *, h.nombre as nombre_h, h.apellido as apellido_h  
-                                            from emergencias e 
-                                            inner join historias h on e.cedula_h = h.cedula_historia
-                                            inner join personal p on e.cedula_p = p.cedula_personal
+echo "Valor de cod_emergencia: " . $cod_emergencia;
+$consulta_reporte_emergencia = $bd->prepare("SELECT *, h.nombre AS nombre_h, h.apellido AS apellido_h  
+                                            FROM emergencias e 
+                                            INNER JOIN historias h ON e.cedula_h = h.cedula_historia
+                                            INNER JOIN personal p ON e.cedula_p = p.cedula_personal
                                             WHERE cod_emergencia = :cod_emergencia");
 $consulta_reporte_emergencia->bindParam(':cod_emergencia', $cod_emergencia, PDO::PARAM_STR);
 $consulta_reporte_emergencia->execute();
@@ -116,10 +109,6 @@ $datos_reporte = $consulta_reporte_emergencia->fetch(PDO::FETCH_OBJ);
 
 
 if ($datos_reporte) {
-    
-    
-
-
     /* TABLA */
     
     $pdf->Cell(38, 8, utf8_decode($datos_reporte->nombre_h), 1, 0, 'C', 0);
@@ -166,7 +155,7 @@ if ($datos_reporte) {
     $pdf->Cell(47, 8, utf8_decode($datos_reporte->cedula_p), 1, 1, 'C', 0);
     
 
-
+    ob_end_clean();
     
 
 
