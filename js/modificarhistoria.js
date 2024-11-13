@@ -58,6 +58,230 @@ $(document).ready(function(){
 		$(this),$("#snombre"),"Solo letras  entre 3 y 30 caracteres");
 	});
 
+	$("#telefono").on("keypress",function(e){
+		validarkeypress(/^[0-9-\b]*$/,e);
+	});
+	
+	$("#telefono").on("keyup",function(){
+		validarkeyup(/^[0-9]{7,8}$/,$(this),
+		$("#stelefono"),"El formato debe ser de 11 numeros");
+	});
+
+	$("#ocupacion").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+	
+	$("#ocupacion").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#socupacion"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#hda").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+	
+	$("#hda").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#shda"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#habtoxico").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+	
+	$("#habtoxico").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#shabtoxico"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#alergias").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+	
+	$("#alergias").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#salergias"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#quirurgico").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+	
+	$("#quirurgico").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#squirurgico"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#transsanguineo").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+	
+	$("#transsanguineo").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#stranssanguineo"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#alergias_med").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+	
+	$("#alergias_med").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#salergias_med"),"Solo letras  entre 3 y 300 caracteres");
+	});
+	
+	$("#psicosocial").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+	
+	$("#psicosocial").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#spsicosocial"),"Solo letras  entre 3 y 300 caracteres");
+	});
+	
+	$("#oidos").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+	
+	$("#oidos").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#soidos"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#cabeza_craneo").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+	
+	$("#cabeza_craneo").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#scabeza_craneo"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#ojos").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+	
+	$("#ojos").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#sojos"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#nariz").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+	
+	$("#nariz").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#snariz"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#tiroides").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+	
+	$("#tiroides").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#stiroides"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#boca_abierta").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+	
+	$("#boca_abierta").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#sboca_abierta"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#boca_cerrada").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+	
+	$("#boca_cerrada").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#sboca_cerrada"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#cardiovascular").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+	
+	$("#cardiovascular").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#scardiovascular"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#respiratorio").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+	
+	$("#respiratorio").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#srespiratorio"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#abdomen").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+	
+	$("#abdomen").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#sabdomen"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#extremidades").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+	
+	$("#extremidades").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#sextremidades"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#neurologico").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+	
+	$("#neurologico").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#sneurologico"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#antec_madre").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+	
+	$("#antec_madre").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#santec_madre"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#antec_padre").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+	
+	$("#antec_padre").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#santec_padre"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#antec_hermano").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+	
+	$("#antec_hermano").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#santec_hermano"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#general").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+	
+	$("#general").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#sgeneral"),"Solo letras  entre 3 y 300 caracteres");
+	});
 
 
 
