@@ -99,7 +99,7 @@
                                 name="habtoxico"/>
                         <span id="shabtoxico"></span>
                     </div>
-                    <div class="col-md-3">
+                    <!-- <div class="col-md-3">
                         <label for="alergias" class="texto-inicio font-medium">Alergias</label>
                         <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="alergias"
                                 name="alergias"/>
@@ -217,13 +217,13 @@
                                 name="neurologicos"/>
                         <span id="sneurologicos"></span>
                     </div>  
-                </div>
+                </div> -->
                 <div class="row py-4">
                     <div class="col-md-12">
                         <hr/>
                     </div>
                 </div>
-                <div class="row mb-3 mx-1">
+                <div class="row mb-3 mx-1 gap-y-2">
 
                     <div class="col-md-6">
                         <label for="antec_madre" class="texto-inicio font-medium">Antecedentes Maternos</label>
@@ -250,7 +250,7 @@
                     </div>
                 </div>
 
-                <div class="row mb-3 mx-1">
+                <!-- <div class="row mb-3 mx-1">
 
                     <div class="col-md-6">
                         <label for="general" class="texto-inicio font-medium">Examen Fisico General</label>
@@ -258,7 +258,7 @@
                         <span id="sgeneral"></span>
                     </div>
 
-                </div>
+                </div> -->
 
                 <div class="row mt-3 justify-content-center">
                     <div class="col-md-2">
