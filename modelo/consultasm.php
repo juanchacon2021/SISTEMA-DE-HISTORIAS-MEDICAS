@@ -282,9 +282,9 @@ class consultasm extends datos{
 					    $respuesta = $respuesta."<td>";
 						
 							$respuesta = $respuesta."
-							<div class='button-container' style='display: flex; justify-content: center; gap: 10px; margin-top: 10px'>
+							<div class='button-container' style='display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px'>
 							
-							<button type='button'
+							<a type='button'
 							class='btn btn-success' 
 							onclick='pone(this,0)'
 												' fechaconsulta='".$r['fechaconsulta']."'
@@ -296,8 +296,8 @@ class consultasm extends datos{
 												' cargo='".$r['cargo']."'
 												' nombre='".$r['nombre']."'
 												' apellido='".$r['apellido']."'
-						    ><img src='img/lapiz.svg' style='width: 20px'></button>
-							<button type='button'
+						    ><img src='img/lapiz.svg' style='width: 20px'></a>
+							<a type='button'
 							class='btn btn-danger' 
 							onclick='pone(this,1)'
 												' fechaconsulta='".$r['fechaconsulta']."'
@@ -309,9 +309,9 @@ class consultasm extends datos{
 												' cargo='".$r['cargo']."'
 												' nombre='".$r['nombre']."'
 												' apellido='".$r['apellido']."'
-						    ><img src='img/basura.svg' style='width: 20px'></button>
+						    ><img src='img/basura.svg' style='width: 20px'></a>
 							
-							<button type='button'
+							<a type='button'
 							class='btn btn-primary' 
 							onclick='pone(this,2)'
 												' fechaconsulta='".$r['fechaconsulta']."'
@@ -323,7 +323,16 @@ class consultasm extends datos{
 												' cargo='".$r['cargo']."'
 												' nombre='".$r['nombre']."'
 												' apellido='".$r['apellido']."'
-						    ><img src='img/ojo.svg' style='width: 20px'></button></div><br/>";
+						    ><img src='img/ojo.svg' style='width: 20px'></a>
+
+							<a class='btn btn-danger' href='vista/fpdf/consultasm.php?cod_consulta=" . $r['cod_consulta'] . "' target='_blank'>
+								<img src='img/descarga.svg' style='width: 20px;'>
+							</a>
+							
+							
+							</div><br/>";
+
+
 							$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td style='display:none;'>";
 							$respuesta = $respuesta.$r['cod_consulta'];

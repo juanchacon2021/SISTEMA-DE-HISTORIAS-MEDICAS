@@ -82,18 +82,18 @@ $pdf->SetFont('Arial', '', 9);
 $pdf->SetDrawColor(163, 163, 163); // colorBorde
 
 $bd = conexion();
-$cod_emergencia = isset($_GET['cod_emergencia']) ? $_GET['cod_emergencia'] : '';
+$cod_consulta = isset($_GET['cod_consulta']) ? $_GET['cod_consulta'] : '';
 
-if (empty($cod_emergencia)) {
+if (empty($cod_consulta)) {
     die('No se proporcionó una emergencia');
 }
-echo "Valor de cod_emergencia: " . $cod_emergencia;
+echo "Valor de cod_consulta: " . $cod_consulta;
 $consulta_reporte_emergencia = $bd->prepare("SELECT *, h.nombre AS nombre_h, h.apellido AS apellido_h  
-                                            FROM emergencias e 
-                                            INNER JOIN historias h ON e.cedula_h = h.cedula_historia
-                                            INNER JOIN personal p ON e.cedula_p = p.cedula_personal
-                                            WHERE cod_emergencia = :cod_emergencia");
-$consulta_reporte_emergencia->bindParam(':cod_emergencia', $cod_emergencia, PDO::PARAM_STR);
+                                            FROM consultas c 
+                                            INNER JOIN historias h ON c.cedula_h = h.cedula_historia
+                                            INNER JOIN personal p ON c.cedula_p = p.cedula_personal
+                                            WHERE cod_consulta = :cod_consulta");
+$consulta_reporte_emergencia->bindParam(':cod_consulta', $cod_consulta, PDO::PARAM_STR);
 $consulta_reporte_emergencia->execute();
 
 $datos_reporte = $consulta_reporte_emergencia->fetch(PDO::FETCH_OBJ);
@@ -108,8 +108,8 @@ if ($datos_reporte) {
      $pdf->Cell(38, 7, utf8_decode('NOMBRE'), 1, 0, 'C', 1);
      $pdf->Cell(38, 7, utf8_decode('APELLIDO'), 1, 0, 'C', 1);
      $pdf->Cell(38, 7, utf8_decode('CEDULA'), 1, 0, 'C', 1);
-     $pdf->Cell(38, 7, utf8_decode('FECHA DE INGRESO'), 1, 0, 'C', 1);
-     $pdf->Cell(38, 7, utf8_decode('HORA DE INGRESO'), 1, 1, 'C', 1);
+     $pdf->Cell(38, 7, utf8_decode('FECHA DE CONSULTA'), 1, 1, 'C', 1);
+     
 
 
     
@@ -122,9 +122,7 @@ if ($datos_reporte) {
     $pdf->Cell(38, 8, utf8_decode($datos_reporte->nombre_h), 1, 0, 'C', 0);
     $pdf->Cell(38, 8, utf8_decode($datos_reporte->apellido_h), 1, 0, 'C', 0);
     $pdf->Cell(38, 8, utf8_decode($datos_reporte->cedula_h), 1, 0, 'C', 0);
-    $pdf->Cell(38, 8, utf8_decode($datos_reporte->fechaingreso), 1, 0, 'C', 0);
-    $pdf->Cell(38, 8, utf8_decode($datos_reporte->horaingreso), 1, 1, 'C', 0);
-   
+    $pdf->Cell(38, 8, utf8_decode($datos_reporte->fechaconsulta), 1, 1, 'C', 0);
     $pdf->Ln(10);
 
     
@@ -133,11 +131,11 @@ if ($datos_reporte) {
     $pdf->SetTextColor(255, 255, 255); // colorTexto
     $pdf->SetDrawColor(0, 0, 0); // colorBorde
     $pdf->SetFont('Arial', 'B', 7);
-    $pdf->Cell(190, 7, utf8_decode('MOTIVO DE INGRESO'), 1, 1, 'C', 1);
+    $pdf->Cell(190, 7, utf8_decode('CONSULTA'), 1, 1, 'C', 1);
 
     $pdf->SetTextColor(0, 0, 0); // colorTexto
     $pdf->SetFont('Arial', '', 8);
-    $pdf->MultiCell(190, 5, utf8_decode($datos_reporte->motingreso), 1, 'C',0);
+    $pdf->MultiCell(190, 5, utf8_decode($datos_reporte->consulta), 1, 'C',0);
 
     $pdf->Ln(10);
 
@@ -149,7 +147,7 @@ if ($datos_reporte) {
 
     $pdf->SetTextColor(0, 0, 0); // colorTexto
     $pdf->SetFont('Arial', '', 8);
-    $pdf->MultiCell(190, 5, utf8_decode($datos_reporte->diagnostico_e), 1, 'C',0);
+    $pdf->MultiCell(190, 5, utf8_decode($datos_reporte->diagnostico), 1, 'C',0);
 
     $pdf->Ln(10);
 
