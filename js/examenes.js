@@ -313,7 +313,7 @@ function colocapacientes(linea){
 }
 
 function colocapacientes_ver(linea, nombre, apellido){
-	$("#cedula_h").val($(linea).find("td:eq(1)").text());
+	$("#cedula_h").val($(linea).find("td:eq(4)").text());
 	$("#cedula_historia").val($(linea).find("td:eq(0)").text());
 	$("#datosdelpacientes").html("Nombre: "+nombre+
 	" / Apellido: "+apellido);
@@ -351,7 +351,7 @@ function pone(pos,accion){
 		$("#observacion_examen").val($(linea).find("td:eq(3)").text());
 		$("#cedula_h").val($(linea).find("td:eq(4)").text());
 		$("#cod_examenes1").val($(linea).find("td:eq(6)").text());
-		$("#imagen").prop("src","img/usuarios/"+$(linea).find("td:eq(4)").text()+"-"+$(linea).find("td:eq(2)").text()+"-"+$(linea).find("td:eq(6)").text()+".png");
+		$("#imagen").prop("src","vista/fpdf/usuarios/"+$(linea).find("td:eq(4)").text()+"-"+$(linea).find("td:eq(2)").text()+"-"+$(linea).find("td:eq(6)").text()+".png");
 		$("#modal2").modal("show");
 		limpiarm();
 		colocapacientes_ver(linea, $(pos).attr('nombre'),  $(pos).attr('apellido'));
@@ -368,7 +368,7 @@ function pone(pos,accion){
 		$("#observacion_examen").val($(linea).find("td:eq(3)").text());
 		$("#cedula_h").val($(linea).find("td:eq(4)").text());
 		$("#cod_examenes1").val($(linea).find("td:eq(6)").text());
-		$("#imagen").prop("src","img/usuarios/"+$(linea).find("td:eq(4)").text()+"-"+$(linea).find("td:eq(2)").text()+"-"+$(linea).find("td:eq(6)").text()+".png");
+		$("#imagen").prop("src","vista/fpdf/usuarios/"+$(linea).find("td:eq(4)").text()+"-"+$(linea).find("td:eq(2)").text()+"-"+$(linea).find("td:eq(6)").text()+".png");
 		$("#modal2").modal("show");
 		limpiarm();
 		colocapacientes_ver(linea, $(pos).attr('nombre'),  $(pos).attr('apellido'));
