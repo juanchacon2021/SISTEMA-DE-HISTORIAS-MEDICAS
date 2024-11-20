@@ -251,31 +251,31 @@ $(document).ready(function(){
 		$(this),$("#sneurologico"),"Solo letras  entre 3 y 300 caracteres");
 	});
 
-	$("#antec_madre").on("keypress",function(e){
+	$("#antc_madre").on("keypress",function(e){
 		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
 	});
 	
-	$("#antec_madre").on("keyup",function(){
+	$("#antc_madre").on("keyup",function(){
 		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#santec_madre"),"Solo letras  entre 3 y 300 caracteres");
+		$(this),$("#santc_madre"),"Solo letras  entre 3 y 300 caracteres");
 	});
 
-	$("#antec_padre").on("keypress",function(e){
+	$("#antc_padre").on("keypress",function(e){
 		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
 	});
 	
-	$("#antec_padre").on("keyup",function(){
+	$("#antc_padre").on("keyup",function(){
 		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#santec_padre"),"Solo letras  entre 3 y 300 caracteres");
+		$(this),$("#santc_padre"),"Solo letras  entre 3 y 300 caracteres");
 	});
 
-	$("#antec_hermano").on("keypress",function(e){
+	$("#antc_hermano").on("keypress",function(e){
 		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
 	});
 	
-	$("#antec_hermano").on("keyup",function(){
+	$("#antc_hermano").on("keyup",function(){
 		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#santec_hermano"),"Solo letras  entre 3 y 300 caracteres");
+		$(this),$("#santc_hermano"),"Solo letras  entre 3 y 300 caracteres");
 	});
 
 	$("#general").on("keypress",function(e){
@@ -314,9 +314,9 @@ $("#proceso").on("click",function(){
 			datos.append('transsanguineo',$("#transsanguineo").val());
 			datos.append('alergias_med',$("#alergias_med").val());
 			datos.append('psicosocial',$("#psicosocial").val());
-			datos.append('antec_madre',$("#antec_madre").val());
-			datos.append('antec_padre',$("#antec_padre").val());
-			datos.append('antec_hermano',$("#antec_hermano").val());
+			datos.append('antc_madre',$("#antc_madre").val());
+			datos.append('antc_padre',$("#antc_padre").val());
+			datos.append('antc_hermano',$("#antc_hermano").val());
 			datos.append('cedula_h',$("#cedula_h").val());
 			 datos.append('boca_abierta',$("#boca_abierta").val());
 			 datos.append('boca_cerrada',$("#boca_cerrada").val());
@@ -483,9 +483,9 @@ function pone(pos,accion){
 	$("#transsanguineo").val($(linea).find("td:eq(14)").text());
 	$("#alergias_med").val($(linea).find("td:eq(15)").text());
 	$("#psicosocial").val($(linea).find("td:eq(16)").text());
-	$("#antec_madre").val($(linea).find("td:eq(17)").text());
-	$("#antec_padre").val($(linea).find("td:eq(18)").text());
-	$("#antec_hermano").val($(linea).find("td:eq(19)").text());
+	$("#antc_madre").val($(linea).find("td:eq(17)").text());
+	$("#antc_padre").val($(linea).find("td:eq(18)").text());
+	$("#antc_hermano").val($(linea).find("td:eq(19)").text());
 	$("#cedula_h").val($(linea).find("td:eq(20)").text());
 	 $("#boca_abierta").val($(linea).find("td:eq(15)").text());
 	 $("#boca_cerrada").val($(linea).find("td:eq(16)").text());
