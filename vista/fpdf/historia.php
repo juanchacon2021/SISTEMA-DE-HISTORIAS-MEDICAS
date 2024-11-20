@@ -8,10 +8,7 @@ class PDF extends FPDF
    // Cabecera de página
    function Header()
    {
-      //include '../../recursos/Recurso_conexion_bd.php';//llamamos a la conexion BD
 
-      //$consulta_info = $conexion->query(" select *from hotel ");//traemos datos de la empresa desde BD
-      //$dato_info = $consulta_info->fetch_object();
       $this->Image('logo.png', 180, 5, 20); //logo de la empresa,moverDerecha,moverAbajo,tamañoIMG
       $this->SetFont('Arial', 'B', 19); //tipo fuente, negrita(B-I-U-BIU), tamañoTexto
       $this->Cell(45); // Movernos a la derecha
@@ -104,6 +101,10 @@ if (empty($cedula_historia)) {
 $consulta_reporte_historia = $bd->prepare("SELECT * FROM historias WHERE cedula_historia = :cedula_historia");
 $consulta_reporte_historia->bindParam(':cedula_historia', $cedula_historia, PDO::PARAM_STR);
 $consulta_reporte_historia->execute();
+
+$consulta_reporte = $bd->prepare("SELECT * FROM consultas WHERE cedula_h = :cedula_historia");
+$consulta_reporte->bindParam(':cedula_historia', $cedula_historia, PDO::PARAM_STR);
+$consulta_reporte->execute();
 
 $datos_reporte = $consulta_reporte_historia->fetch(PDO::FETCH_OBJ);
 
