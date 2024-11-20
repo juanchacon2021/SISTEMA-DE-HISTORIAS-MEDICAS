@@ -326,7 +326,10 @@ class examenes extends datos{
 						
 						>
 							<img src='img/trash-can-solid.svg' style='width: 20px;'>
-						</a>";
+						</a>
+						<a class='btn btn-danger' href='vista/fpdf/examenes.php?cod_registro=" . $r['cod_registro'] . "' target='_blank'>
+								<img src='img/descarga.svg' style='width: 20px;'>
+							</a>";
 						$respuesta = $respuesta."</td>";
 						$respuesta = $respuesta."<td style='display:none;'>";
 							$respuesta = $respuesta.$r['cod_registro'];

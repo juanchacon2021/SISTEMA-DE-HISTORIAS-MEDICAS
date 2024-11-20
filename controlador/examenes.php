@@ -36,11 +36,10 @@ require_once("modelo/".$pagina.".php");
 				$o->set_fecha_r($_POST['fecha_r']);
 				$o->set_observacion_examen($_POST['observacion_examen']);
 				if(isset($_FILES['imagenarchivo'])){	
-					     
 					if (($_FILES['imagenarchivo']['size'] / 1024) < 1024) {
 						
 						  move_uploaded_file($_FILES['imagenarchivo']['tmp_name'], 
-						  'img/usuarios/'.$_POST['cedula_h'].'-'.$_POST['fecha_r'].'-'.$_POST['cod_examenes1'].'.png');
+						  'vista/fpdf/usuarios/'.$_POST['cedula_h'].'-'.$_POST['fecha_r'].'-'.$_POST['cod_examenes1'].'.png');
 						  
 					} 
 				}
@@ -57,7 +56,7 @@ require_once("modelo/".$pagina.".php");
 					if (($_FILES['imagenarchivo']['size'] / 1024) < 1024) {
 						
 						  move_uploaded_file($_FILES['imagenarchivo']['tmp_name'], 
-						  'img/usuarios/'.$_POST['cedula_h'].'-'.$_POST['fecha_r'].'-'.$_POST['cod_examenes1'].'.png');
+						  'vista/fpdf/usuarios/'.$_POST['cedula_h'].'-'.$_POST['fecha_r'].'-'.$_POST['cod_examenes1'].'.png');
 						  
 					} 
 				}
