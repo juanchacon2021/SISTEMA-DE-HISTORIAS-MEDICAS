@@ -139,7 +139,158 @@ $(document).ready(function(){
 		validarkeyup(/^[0-9]{7,8}$/,$(this),
 		$("#scedula_p"),"El formato debe ser 12345678 ");
 	});
+	
+	$("#psicosocial").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+   
+	$("#psicosocial").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#spsicosocial"),"Solo letras  entre 3 y 300 caracteres");
+	});
+   
+	$("#oidos").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+   
+	$("#oidos").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#soidos"),"Solo letras  entre 3 y 300 caracteres");
+	});
 
+	$("#cabeza_craneo").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+   
+	$("#cabeza_craneo").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#scabeza_craneo"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#ojos").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+   
+	$("#ojos").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#sojos"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#nariz").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+   
+	$("#nariz").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#snariz"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#boca_abierta").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+   
+	$("#boca_abierta").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#sboca_abierta"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#boca_cerrada").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+   
+	$("#boca_cerrada").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#sboca_cerrada"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#cardiovascular").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+   
+	$("#cardiovascular").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#scardiovascular"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#respiratorio").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+   
+	$("#respiratorio").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#srespiratorio"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#abdomen").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+   
+	$("#abdomen").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#sabdomen"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#extremidades_s").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+   
+	$("#extremidades_s").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#sextremidades_s"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#extremidades_r").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+   
+	$("#extremidades_r").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#sextremidades_r"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#neurologicos").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+   
+	$("#neurologicos").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#sneurologicos"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#general").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+   
+	$("#general").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#sgeneral"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#consulta").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+   
+	$("#consulta").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#sconsulta"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#diagnostico").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+   
+	$("#diagnostico").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#sdiagnostico"),"Solo letras  entre 3 y 300 caracteres");
+	});
+	$("#tratamientos").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+   
+	$("#tratamientos").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#stratamientos"),"Solo letras  entre 3 y 300 caracteres");
+	});
 	
 	//validar
 
@@ -186,6 +337,19 @@ $("#proceso").on("click",function(){
 			datos.append('tratamientos',$("#tratamientos").val());
 			datos.append('cedula_p',$("#cedula_p").val());
 			datos.append('cedula_h',$("#cedula_h").val());
+			datos.append('boca_abierta',$("#boca_abierta").val());
+			datos.append('boca_cerrada',$("#boca_cerrada").val());
+			datos.append('oidos',$("#oidos").val());
+			datos.append('cabeza_craneo',$("#cabeza_craneo").val());
+			datos.append('ojos',$("#ojos").val());
+			datos.append('nariz',$("#nariz").val());
+			datos.append('respiratorio',$("#respiratorio").val());
+			datos.append('abdomen',$("#abdomen").val());
+			datos.append('extremidades_s',$("#extremidades_s").val());
+			datos.append('extremidades_r',$("#extremidades_r").val());
+			datos.append('neurologicos',$("#neurologicos").val());
+			datos.append('general',$("#general").val());
+			datos.append('cardiovascular',$("#cardiovascular").val());
 			enviaAjax(datos);
 			
 		}
@@ -201,6 +365,19 @@ $("#proceso").on("click",function(){
 			datos.append('tratamientos',$("#tratamientos").val());
 			datos.append('cedula_p',$("#cedula_p").val());
 			datos.append('cedula_h',$("#cedula_h").val());
+			datos.append('boca_abierta',$("#boca_abierta").val());
+			datos.append('boca_cerrada',$("#boca_cerrada").val());
+			datos.append('oidos',$("#oidos").val());
+			datos.append('cabeza_craneo',$("#cabeza_craneo").val());
+			datos.append('ojos',$("#ojos").val());
+			datos.append('nariz',$("#nariz").val());
+			datos.append('respiratorio',$("#respiratorio").val());
+			datos.append('abdomen',$("#abdomen").val());
+			datos.append('extremidades_s',$("#extremidades_s").val());
+			datos.append('extremidades_r',$("#extremidades_r").val());
+			datos.append('neurologicos',$("#neurologicos").val());
+			datos.append('general',$("#general").val());
+			datos.append('cardiovascular',$("#cardiovascular").val());
 			enviaAjax(datos);
 		}
 	}
@@ -345,6 +522,19 @@ function pone(pos,accion){
 	$("#tratamientos").prop("readonly",false);
 	$("#cedula_p").prop("readonly",false);
 	$("#cedula_h").prop("readonly",false);
+	$("#boca_abierta").prop("readonly",false);
+	$("#boca_cerrada").prop("readonly",false);
+	$("#oidos").prop("readonly",false);
+	$("#cabeza_craneo").prop("readonly",false);
+	$("#ojos").prop("readonly",false);
+	$("#nariz").prop("readonly",false);
+	$("#respiratorio").prop("readonly",false);
+	$("#abdomen").prop("readonly",false);
+	$("#extremidades_r").prop("readonly",false);
+	$("#extremidades_s").prop("readonly",false);
+	$("#neurologicos").prop("readonly",false);
+	$("#general").prop("readonly",false);
+	$("#cardiovascular").prop("readonly",false);
 	$("#proceso1").prop("cerrar",false); 
 	const boton_h = document.querySelector('#listadodepacientes');
 	const boton_p = document.querySelector('#listadodepersonal');
@@ -369,6 +559,19 @@ function pone(pos,accion){
 		$("#tratamientos").prop("readonly",true);
 		$("#cedula_p").prop("readonly",true);
 		$("#cedula_h").prop("readonly",true);
+		$("#boca_abierta").prop("readonly",true);
+		$("#boca_cerrada").prop("readonly",true);
+		$("#oidos").prop("readonly",true);
+		$("#cabeza_craneo").prop("readonly",true);
+		$("#ojos").prop("readonly",true);
+		$("#nariz").prop("readonly",true);
+		$("#respiratorio").prop("readonly",true);
+		$("#abdomen").prop("readonly",true);
+		$("#extremidades_r").prop("readonly",true);
+		$("#extremidades_s").prop("readonly",true);
+		$("#neurologicos").prop("readonly",true);
+		$("#general").prop("readonly",true);
+		$("#cardiovascular").prop("readonly",true);
 		$("#proceso").text("ELIMINAR");
 		boton_h.style.display = 'none';
 		boton_p.style.display = 'none';
@@ -384,6 +587,19 @@ function pone(pos,accion){
 		$("#tratamientos").prop("readonly",true);
 		$("#cedula_p").prop("readonly",true);
 		$("#cedula_h").prop("readonly",true);
+		$("#boca_abierta").prop("readonly",true);
+		$("#boca_cerrada").prop("readonly",true);
+		$("#oidos").prop("readonly",true);
+		$("#cabeza_craneo").prop("readonly",true);
+		$("#ojos").prop("readonly",true);
+		$("#nariz").prop("readonly",true);
+		$("#respiratorio").prop("readonly",true);
+		$("#abdomen").prop("readonly",true);
+		$("#extremidades_r").prop("readonly",true);
+		$("#extremidades_s").prop("readonly",true);
+		$("#neurologicos").prop("readonly",true);
+		$("#general").prop("readonly",true);
+		$("#cardiovascular").prop("readonly",true);
 		$("#proceso").text("CERRAR");
 
 		boton_h.style.display = 'none';
@@ -409,6 +625,21 @@ function pone(pos,accion){
 	$("#tratamientos").val( $(pos).attr('tratamientos') );
 	$("#cedula_p").val( $(pos).attr('cedula_p') );
 	$("#cedula_h").val( $(pos).attr('cedula_h') );
+	$("#boca_abierta").val( $(pos).attr('boca_abierta') );
+	$("#boca_cerrada").val( $(pos).attr('boca_cerrada') );
+	$("#oidos").val( $(pos).attr('oidos') );
+	$("#cabeza_craneo").val( $(pos).attr('cabeza_craneo') );
+	$("#ojos").val( $(pos).attr('ojos') );
+	$("#nariz").val( $(pos).attr('nariz') );
+	$("#respiratorio").val( $(pos).attr('respiratorio') );
+	$("#abdomen").val( $(pos).attr('abdomen') );
+	$("#extremidades_r").val( $(pos).attr('extremidades_r') );
+	$("#extremidades_s").val( $(pos).attr('extremidades_s') );
+	$("#neurologicos").val( $(pos).attr('neurologicos') );
+	$("#general").val( $(pos).attr('general') );
+	$("#cardiovascular").val( $(pos).attr('cardiovascular') );
+
+
 
 
 	
@@ -501,6 +732,19 @@ function limpia(){
 	$("#tratamientos").val("");
 	$("#cedula_p").val("");
 	$("#cedula_h").val("");
+	$("#boca_abierta").val("");
+	$("#boca_cerrada").val("");
+	$("#oidos").val("");
+	$("#cabeza_craneo").val("");
+	$("#ojos").val("");
+	$("#nariz").val("");
+	$("#respiratorio").val("");
+	$("#abdomen").val("");
+	$("#extremidades_r").val("");
+	$("#extremidades_s").val("");
+	$("#neurologicos").val("");
+	$("#general").val("");
+	$("#cardiovascular").val("");
 
 }
 

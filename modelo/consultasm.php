@@ -13,6 +13,19 @@ class consultasm extends datos{
 	private $tratamientos;
 	private $cedula_p;
 	private $cedula_h;
+	private $boca_abierta;
+	private $boca_cerrada;
+	private $oidos;
+	private $cabeza_craneo;
+	private $ojos;
+	private $nariz;
+	private $respiratorio;
+	private $abdomen;
+	private $extremidades_r;
+	private $extremidades_s;
+	private $neurologicos;
+	private $general;
+	private $cardiovascular;
 
 	
 	function set_cod_consulta($valor){
@@ -44,6 +57,59 @@ class consultasm extends datos{
 	function set_cedula_h($valor){
 		$this->cedula_h = $valor;
 	}
+	function set_boca_abierta($valor){
+		$this->boca_abierta = $valor;
+	}
+   
+	function set_boca_cerrada($valor){
+		$this->boca_cerrada = $valor;
+	}
+   
+	function set_oidos($valor){
+		$this->oidos = $valor;
+	}
+   
+	function set_cabeza_craneo($valor){
+		$this->cabeza_craneo = $valor;
+	}
+   
+	function set_ojos($valor){
+		$this->ojos = $valor;
+	}
+   
+	function set_nariz($valor){
+		$this->nariz = $valor;
+	}
+   
+   
+	function set_respiratorio($valor){
+		$this->respiratorio = $valor;
+	}
+   
+	function set_abdomen($valor){
+		$this->abdomen = $valor;
+	}
+   
+	function set_extremidades_s($valor){
+		$this->extremidades_s = $valor;
+	}
+	
+	function set_extremidades_r($valor){
+	   $this->extremidades_r = $valor;
+   }
+   
+	function set_neurologicos($valor){
+		$this->neurologicos = $valor;
+	}
+   
+	function set_general($valor){
+		$this->general = $valor;
+	}
+	function set_cardiovascular($valor){
+	   $this->cardiovascular = $valor;
+   }
+
+	//sssssssssss
 	
 	
 	function get_cod_consulta(){
@@ -74,6 +140,55 @@ class consultasm extends datos{
 	function get_cedula_h(){
 		return $this->cedula_h;
 	}
+	function get_boca_abierta(){
+		return $this->boca_abierta;
+	}
+   
+	function get_boca_cerrada(){
+		return $this->boca_cerrada;
+	}
+   
+	function get_oidos(){
+		return $this->oidos;
+	}
+   
+	function get_cabeza_craneo(){
+		return $this->cabeza_craneo;
+	}
+   
+	function get_ojos(){
+		return $this->ojos;
+	}
+   
+	function get_nariz(){
+		return $this->nariz;
+	}
+
+	function get_respiratorio(){
+		return $this->respiratorio;
+	}
+   
+	function get_abdomen(){
+		return $this->abdomen;
+	}
+   
+	function get_extremidades_s(){
+		return $this->extremidades_s;
+	}
+	function get_extremidades_r(){
+	   return $this->extremidades_r;
+   }
+   
+	function get_neurologicos(){
+		return $this->neurologicos;
+	}
+   
+	function get_general(){
+		return $this->general;
+	}
+	function get_cardiovascular(){
+	   return $this->cardiovascular;
+   }
 
 	function listadopersonal(){
 		$co = $this->conecta();
@@ -176,7 +291,21 @@ class consultasm extends datos{
 								diagnostico,
 								tratamientos,
 								cedula_p,
-								cedula_h
+								cedula_h,
+								boca_abierta,
+								boca_cerrada,
+								oidos,
+								cabeza_craneo,
+								ojos,
+								nariz,
+								respiratorio,
+								abdomen,
+								extremidades_r,
+								extremidades_s,
+								neurologicos,
+								general,
+								cardiovascular
+
 								) 
 								Values(					
 								'$this->fechaconsulta',
@@ -184,13 +313,26 @@ class consultasm extends datos{
 								'$this->diagnostico',
 								'$this->tratamientos',
 								'$this->cedula_p',
-								'$this->cedula_h'
+								'$this->cedula_h',
+								'$this->boca_abierta',
+								'$this->boca_cerrada',
+								'$this->oidos',
+								'$this->cabeza_craneo',
+								'$this->ojos',
+								'$this->nariz',						
+								'$this->respiratorio',
+								'$this->abdomen',
+								'$this->extremidades_r',
+								'$this->extremidades_s',
+								'$this->neurologicos',
+								'$this->general',
+								'$this->cardiovascular'
 								)");
 								$r['resultado'] = 'incluir';
 								$r['mensaje'] =  'Registro Inluido';
 					} catch(Exception $e) {
 						$r['resultado'] = 'error';
-						$r['mensaje'] =  'Un error en alguna de las cedulas';
+						$r['mensaje'] =  $e->getMessage();
 					}
 				
 					
@@ -220,7 +362,20 @@ class consultasm extends datos{
 						diagnostico = '$this->diagnostico',
 						tratamientos= '$this->tratamientos',
 						cedula_p = '$this->cedula_p',
-						cedula_h = '$this->cedula_h'
+						cedula_h = '$this->cedula_h',
+						boca_abierta = '$this->boca_abierta',
+						boca_cerrada = '$this->boca_cerrada',
+						oidos = '$this->oidos',
+						cabeza_craneo = '$this->cabeza_craneo',
+						ojos = '$this->ojos',
+						nariz = '$this->nariz',
+						respiratorio = '$this->respiratorio',
+						abdomen = '$this->abdomen',
+						extremidades_r = '$this->extremidades_r',
+						extremidades_s = '$this->extremidades_s',
+						neurologicos = '$this->neurologicos',
+						general = '$this->general',
+						cardiovascular = '$this->cardiovascular'
 						where
 						cod_consulta = '$this->cod_consulta'
 						");
@@ -296,6 +451,19 @@ class consultasm extends datos{
 												' cargo='".$r['cargo']."'
 												' nombre='".$r['nombre']."'
 												' apellido='".$r['apellido']."'
+												' boca_abierta='".$r['boca_abierta']."'
+												' boca_cerrada='".$r['boca_cerrada']."'
+												' oidos='".$r['oidos']."'
+												' cabeza_craneo='".$r['cabeza_craneo']."'
+												' ojos='".$r['ojos']."'
+												' nariz='".$r['nariz']."'
+												' respiratorio='".$r['respiratorio']."'
+												' abdomen='".$r['abdomen']."'
+												' extremidades_r='".$r['extremidades_r']."'
+												' extremidades_s='".$r['extremidades_s']."'
+												' neurologicos='".$r['neurologicos']."'
+												' general='".$r['general']."'
+												' cardiovascular='".$r['cardiovascular']."'
 						    ><img src='img/lapiz.svg' style='width: 20px'></a>
 							<a type='button'
 							class='btn btn-danger' 
@@ -309,6 +477,20 @@ class consultasm extends datos{
 												' cargo='".$r['cargo']."'
 												' nombre='".$r['nombre']."'
 												' apellido='".$r['apellido']."'
+												' boca_abierta='".$r['boca_abierta']."'
+												' boca_cerrada='".$r['boca_cerrada']."'
+												' oidos='".$r['oidos']."'
+												' cabeza_craneo='".$r['cabeza_craneo']."'
+												' ojos='".$r['ojos']."'
+												' nariz='".$r['nariz']."'
+												' respiratorio='".$r['respiratorio']."'
+												' abdomen='".$r['abdomen']."'
+												' extremidades_r='".$r['extremidades_r']."'
+												' extremidades_s='".$r['extremidades_s']."'
+												' neurologicos='".$r['neurologicos']."'
+												' general='".$r['general']."'
+												' cardiovascular='".$r['cardiovascular']."'
+												
 						    ><img src='img/basura.svg' style='width: 20px'></a>
 							
 							<a type='button'
@@ -323,6 +505,19 @@ class consultasm extends datos{
 												' cargo='".$r['cargo']."'
 												' nombre='".$r['nombre']."'
 												' apellido='".$r['apellido']."'
+												' boca_abierta='".$r['boca_abierta']."'
+												' boca_cerrada='".$r['boca_cerrada']."'
+												' oidos='".$r['oidos']."'
+												' cabeza_craneo='".$r['cabeza_craneo']."'
+												' ojos='".$r['ojos']."'
+												' nariz='".$r['nariz']."'
+												' respiratorio='".$r['respiratorio']."'
+												' abdomen='".$r['abdomen']."'
+												' extremidades_r='".$r['extremidades_r']."'
+												' extremidades_s='".$r['extremidades_s']."'
+												' neurologicos='".$r['neurologicos']."'
+												' general='".$r['general']."'
+												' cardiovascular='".$r['cardiovascular']."'
 						    ><img src='img/ojo.svg' style='width: 20px'></a>
 
 							<a class='btn btn-danger' href='vista/fpdf/consultasm.php?cod_consulta=" . $r['cod_consulta'] . "' target='_blank'>
