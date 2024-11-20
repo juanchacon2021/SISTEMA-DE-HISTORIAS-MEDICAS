@@ -67,7 +67,7 @@ class PDF extends FPDF
  
 
 function conexion() {
-    return new PDO('mysql:host=localhost;dbname=shm-cdi', 'root', '123456');
+    return new PDO('mysql:host=localhost;dbname=shm-cdi.2', 'root', '123456');
 }
 
 $pdf = new PDF();

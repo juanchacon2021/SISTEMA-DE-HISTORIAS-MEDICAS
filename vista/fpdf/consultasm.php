@@ -67,10 +67,10 @@ class PDF extends FPDF
    }
 }
 
-include '../../modelo/datos.php'; 
+
 
 function conexion() {
-    return new PDO('mysql:host=localhost;dbname=shm-cdi', 'root', '123456');
+    return new PDO('mysql:host=localhost;dbname=shm-cdi.2', 'root', '123456');
 }
 
 $pdf = new PDF();
@@ -162,8 +162,13 @@ if ($datos_reporte) {
     $pdf->MultiCell(190, 5, utf8_decode($datos_reporte->tratamientos), 1,'C',0);
 
     $pdf->Ln(10);
-
     
+
+    $pdf->SetTextColor(226 ,37 , 53);
+      $pdf->Cell(45); // mover a la derecha
+      $pdf->SetFont('Arial', 'B', 15);
+      $pdf->Cell(100, 10, utf8_decode("DATOS DEL DOCTOR"), 0, 1, 'C', 0);
+      $pdf->Ln(7);
 
     $pdf->SetFillColor(226, 37, 53); // colorFondo
     $pdf->SetTextColor(255, 255, 255); // colorTexto
