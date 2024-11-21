@@ -34,9 +34,9 @@ Consultas
 				<th>Apellido</th>
 				<th>Cedula del Paciente</th>
 				<th>Fecha de Consulta</th>				
-				<th>Nombre del Doctor</th>
-				<th>Apellido del Doctor</th>
-				<th>Cedula del Doctor</th>
+				<th>Nombre del Personal</th>
+				<th>Apellido del Personal</th>
+				<th>Cedula del Personal</th>
 
 
 			  </tr>
