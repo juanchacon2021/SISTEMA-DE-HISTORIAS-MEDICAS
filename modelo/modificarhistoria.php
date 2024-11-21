@@ -19,26 +19,11 @@ class historias extends datos{
 	private $transsanguineo;
 	private $psicosocial;
 
-	// ANTECEDENTES
-	private $antec_madre;
-	private $antec_padre;
-	private $antec_hermano;
-	private $cedula_h;
+	// antcEDENTES
+	private $antc_madre;
+	private $antc_padre;
+	private $antc_hermano;
 
-	 private $boca_abierta;
-	 private $boca_cerrada;
-	 private $oidos;
-	 private $cabeza_craneo;
-	 private $ojos;
-	 private $nariz;
-	 private $tiroides;
-	 private $cardiovascular;
-	 private $respiratorio;
-	 private $abdomen;
-	 private $extremidades;
-	 private $extremidades_s;
-	 private $neurologicos;
-	 private $general;
 	function set_cedula_historia($valor){
 		$this->cedula_historia = $valor; 
 	}
@@ -103,80 +88,20 @@ class historias extends datos{
 		$this->psicosocial = $valor;
 	}
 	
-	// ANTECEDENTES
+	// antcEDENTES
 
-	function set_antec_madre($valor){
-		$this->antec_madre = $valor;
+	function set_antc_madre($valor){
+		$this->antc_madre = $valor;
 	}
 	
-	function set_antec_padre($valor){
-		$this->antec_padre = $valor;
+	function set_antc_padre($valor){
+		$this->antc_padre = $valor;
 	}
 	
-	function set_antec_hermano($valor){
-		$this->antec_hermano = $valor;
+	function set_antc_hermano($valor){
+		$this->antc_hermano = $valor;
 	}
-	
-	function set_cedula_h($valor){
-		$this->cedula_h = $valor;
-	}
-	
-	 function set_boca_abierta($valor){
-	 	$this->boca_abierta = $valor;
-	 }
-	
-	 function set_boca_cerrada($valor){
-	 	$this->boca_cerrada = $valor;
-	 }
-	
-	 function set_oidos($valor){
-	 	$this->oidos = $valor;
-	 }
-	
-	 function set_cabeza_craneo($valor){
-	 	$this->cabeza_craneo = $valor;
-	 }
-	
-	 function set_ojos($valor){
-	 	$this->ojos = $valor;
-	 }
-	
-	 function set_nariz($valor){
-	 	$this->nariz = $valor;
-	 }
-	
-	 function set_tiroides($valor){
-	 	$this->tiroides = $valor;
-	 }
-	
-	 function set_cardiovascular($valor){
-	 	$this->cardiovascular = $valor;
-	 }
-	
-	 function set_respiratorio($valor){
-	 	$this->respiratorio = $valor;
-	 }
-	
-	 function set_abdomen($valor){
-	 	$this->abdomen = $valor;
-	 }
-	
-	 function set_extremidades($valor){
-	 	$this->extremidades = $valor;
-	 }
-	
-	 function set_extremidades_s($valor){
-	 	$this->extremidades_s = $valor;
-	 }
-	
-	 function set_neurologicos($valor){
-	 	$this->neurologicos = $valor;
-	 }
-	
-	 function set_general($valor){
-	 	$this->general = $valor;
-	 }
-	
+
 	//ahora la misma cosa pero para leer, es decir get
 	
 	function get_cedula_historia(){
@@ -243,81 +168,19 @@ class historias extends datos{
 		$this->psicosocial = $valor;
 	}
 
-	// ANTECEDENTES	
+	// antcEDENTES	
 	
-	function get_antec_madre($valor){
-		$this->antec_madre = $valor;
+	function get_antc_madre($valor){
+		$this->antc_madre = $valor;
 	}
 	
-	function get_antec_padre($valor){
-		$this->antec_padre = $valor;
+	function get_antc_padre($valor){
+		$this->antc_padre = $valor;
 	}
 	
-	function get_antec_hermano($valor){
-		$this->antec_hermano = $valor;
+	function get_antc_hermano($valor){
+		$this->antc_hermano = $valor;
 	}
-	
-	function get_cedula_h($valor){
-		$this->cedula_h = $valor;
-	}
-	
-	 function get_boca_abierta(){
-	 	return $this->boca_abierta;
-	 }
-	
-	 function get_boca_cerrada(){
-	 	return $this->boca_cerrada;
-	 }
-	
-	 function get_oidos(){
-	 	return $this->oidos;
-	 }
-	
-	 function get_cabeza_craneo(){
-	 	return $this->cabeza_craneo;
-	 }
-	
-	 function get_ojos(){
-	 	return $this->ojos;
-	 }
-	
-	 function get_nariz(){
-	 	return $this->nariz;
-	 }
-	
-	 function get_tiroides(){
-	 	return $this->tiroides;
-	 }
-	
-	 function get_cardiovascular(){
-	 	return $this->cardiovascular;
-	 }
-	
-	 function get_respiratorio(){
-	 	return $this->respiratorio;
-	 }
-	
-	 function get_abdomen(){
-	 	return $this->abdomen;
-	 }
-	
-	 function get_extremidades(){
-	 	return $this->extremidades;
-	 }
-	
-	 function get_extremidades_s(){
-	 	return $this->extremidades_s;
-	 }
-	
-	 function get_neurologicos(){
-	 	return $this->neurologicos;
-	 }
-	
-	 function get_general(){
-	 	return $this->general;
-	 }
-	
-	
 	
 	function modificar(){
 		$r = array();
@@ -345,7 +208,10 @@ class historias extends datos{
 								quirurgico = :quirurgico,
 								transsanguineo = :transsanguineo,
 								alergias_med = :alergias_med,
-								psicosocial = :psicosocial
+								psicosocial = :psicosocial,
+								antc_madre = :antc_madre,
+								antc_padre = :antc_padre,
+								antc_hermano = :antc_hermano
 						WHERE cedula_historia = :cedula_historia");
 			
 				$stmt1->execute(params:[
@@ -364,72 +230,10 @@ class historias extends datos{
 					':quirurgico' => $_POST['quirurgico'],
 					':transsanguineo' => $_POST['transsanguineo'],
 					':alergias_med' =>$_POST['alergias_med'],
-					':psicosocial' => $_POST['psicosocial']
-				]);
-			
-				// Aqui hice la segunda consulta INSERT	
-				$stmt2 = $co->prepare(query:"UPDATE antecedentes SET
-									antec_madre = :antec_madre,
-									antec_padre = :antec_padre,
-									antec_hermano = :antec_hermano
-								WHERE cedula_h = :cedula_h");
-			
-				$stmt2->execute(params:[
-					':cedula_h' => $_POST['cedula_historia'],
-					':antec_madre' => $_POST['antec_madre'],
-					':antec_padre' => $_POST['antec_padre'],
-					':antec_hermano' => $_POST['antec_hermano']
-				]);
-
-				// Aqui hice la tercera consulta INSERT	
-				$stmt3 = $co->prepare(query:"UPDATE examenes_r SET
-									cabeza_craneo = :cabeza_craneo,
-									ojos = :ojos,
-									nariz = :nariz,
-									tiroides = :tiroides,
-									extremidades = :extremidades,
-									boca_abierta = :boca_abierta,
-									boca_cerrada = :boca_cerrada,
-									oidos = :oidos
-								WHERE cedula_h = :cedula_h");
-			
-				$stmt3->execute(params:[
-					':cedula_h' => $_POST['cedula_historia'],
-					':cabeza_craneo' => $_POST['cabeza_craneo'],
-					':ojos' => $_POST['ojos'],
-					':nariz' => $_POST['nariz'],
-					':tiroides' => $_POST['tiroides'],
-					':extremidades' => $_POST['extremidades'],
-					':boca_abierta' => $_POST['boca_abierta'],
-					':boca_cerrada' => $_POST['boca_cerrada'],
-					':oidos' => $_POST['oidos']
-				]);
-
-				// Aqui hice la cuarta consulta INSERT	
-				$stmt4 = $co->prepare(query:"UPDATE examenes_s SET
-									respiratorio = :respiratorio,
-									cardiovascular = :cardiovascular,
-									abdomen = :abdomen,
-									neurologicos = :neurologicos,
-									extremidades_s = :extremidades_s
-									WHERE cedula_h = :cedula_h");
-				$stmt4->execute(params:[
-					':cedula_h' => $_POST['cedula_historia'],	
-					':respiratorio' => $_POST['respiratorio'],
-					':cardiovascular' => $_POST['cardiovascular'],
-					':abdomen' => $_POST['abdomen'],
-					':neurologicos' => $_POST['neurologicos'],
-					':extremidades_s' => $_POST['extremidades_s']
-				]);
-
-				// Aqui hice la quinta consulta INSERT	
-				$stmt4 = $co->prepare(query:"UPDATE examenes_f SET
-											general = :general
-										WHERE cedula_h = :cedula_h");
-				
-				$stmt4->execute(params:[
-					':cedula_h' => $_POST['cedula_historia'],	
-					':general' => $_POST['general']
+					':psicosocial' => $_POST['psicosocial'],
+					':antc_madre' => $_POST['antc_madre'],
+					':antc_padre' => $_POST['antc_padre'],
+					':antc_hermano' => $_POST['antc_hermano']
 				]);
 			
 				// esto es para confirmar la transaccion
@@ -517,60 +321,31 @@ class historias extends datos{
 			return false;
 		}
 	}
-	
-	
-	
-	// function obtienefecha(){
-	// 	$r = array();
-		
-	// 		  $f = date('Y-m-d');
-	// 	      $f1 = strtotime ('-18 year' , strtotime($f)); 
-	// 	      $f1 = date ('Y-m-d',$f1);
-	// 		  $r['resultado'] = 'obtienefecha';
-	// 		  $r['mensaje'] =  $f1;
-		
-	// 	return $r;
-	// }
 
-	
-	
-	
 }
 
 class PacienteModel {
     private $db;
 
     public function __construct() {
-        $this->db = new PDO('mysql:host=localhost;dbname=sss', 'root', '123456');
+        $this->db = new PDO('mysql:host=localhost;dbname=shm-cdi.2', 'root', '123456');
     }
 
     public function getPacienteByCedula($cedula_historia) {
 		$stmt = $this->db->prepare("
 			SELECT 
-				h.*, 
-				t2.*, 
-				t3.*, 
-				t4.*,
-				t5.*
+				* 
 			FROM 
-				historias h
-			JOIN 
-				antecedentes t2 ON h.cedula_historia = t2.cedula_h
-			JOIN 
-				examenes_f t3 ON h.cedula_historia = t3.cedula_h
-			JOIN 
-				examenes_s t4 ON h.cedula_historia = t4.cedula_h
-			JOIN 
-				examenes_r t5 ON h.cedula_historia = t5.cedula_h
+				historias
 			WHERE 
-				h.cedula_historia = :cedula_historia
+				cedula_historia = :cedula_historia
 		");
-		$stmt->execute([':cedula_historia' => $cedula_historia]);
+		$stmt->execute(['cedula_historia' => $cedula_historia]);
 		return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
 
 
-    public function actualizarPaciente($id, $cedula_historia, $nombre, $apellido, $fecha_nac, $edad, $telefono, $estadocivil, $direccion, $ocupacion, $hda, $habtoxico, $alergias, $quirurgico, $transsanguineo, $alergias_med, $psicosocial) {
+    public function actualizarPaciente($id, $cedula_historia, $nombre, $apellido, $fecha_nac, $edad, $telefono, $estadocivil, $direccion, $ocupacion, $hda, $habtoxico, $alergias, $quirurgico, $transsanguineo, $alergias_med, $psicosocial, $antc_madre, $antc_padre, $antc_hermano) {
         $sql = "UPDATE historias SET 
 				cedula_historia = :cedula_historia, 
 				nombre = :nombre, 
@@ -587,7 +362,10 @@ class PacienteModel {
 				quirurgico = :quirurgico,
 				transsanguineo = :transsanguineo,
 				alergias_med = :alergias_med,
-				psicosocial = :psicosocial
+				psicosocial = :psicosocial,
+				antc_madre = :antc_madre,
+				antc_padre = :antc_padre,
+				antc_hermano = :antc_hermano
 				
 				WHERE cedula_historia = :cedula_historia";
 
@@ -608,6 +386,9 @@ class PacienteModel {
 		$stmt->bindParam(':transsanguineo', $transsanguineo);
 		$stmt->bindParam(':alergias_med', $alergias_med);
 		$stmt->bindParam(':psicosocial', $psicosocial);
+		$stmt->bindParam(':antc_madre', $antc_madre);
+		$stmt->bindParam(':antc_padre', $antc_padre);
+		$stmt->bindParam(':antc_hermano', $antc_hermano);
 
         return $stmt->execute();
     }

@@ -99,7 +99,7 @@
                                 name="habtoxico"/>
                         <span id="shabtoxico"></span>
                     </div>
-                    <!-- <div class="col-md-3">
+                    <div class="col-md-6">
                         <label for="alergias" class="texto-inicio font-medium">Alergias</label>
                         <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="alergias"
                                 name="alergias"/>
@@ -111,113 +111,29 @@
                                 name="quirurgico"/>
                         <span id="squirurgico"></span>
                     </div>
-                        
-                    <div class="col-md-3">
-                        <label for="transsanguineo" class="texto-inicio font-medium">Transfuciones Sanguineas</label>
-                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="transsanguineo"
-                                name="transsanguineo"/>
-                        <span id="stranssanguineo"></span>
-                    </div>
-                        
-                    <div class="col-md-3">
-                        <label for="alergias_med" class="texto-inicio font-medium">Alergias Medicas</label>
-                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="alergias_med"
-                                name="alergias_med"/>
-                        <span id="salergias_med"></span>
-                    </div>
-                </div>
-                <div class="row mb-3 mx-1">
+
                     <div class="col-md-3">
                         <label for="psicosocial" class="texto-inicio font-medium">Psicosocial</label>
                         <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="psicosocial"
                                 name="psicosocial"/>
                         <span id="spsicosocial"></span>
                     </div>
-                    <div class="col-md-3">
-                        <label for="oidos" class="texto-inicio font-medium">Oidos</label>
-                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="oidos"
-                                name="oidos"/>
-                        <span id="soidos"></span>
+                        
+                    <div class="col-md-6">
+                        <label for="transsanguineo" class="texto-inicio font-medium">Transfuciones Sanguineas</label>
+                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="transsanguineo"
+                                name="transsanguineo"/>
+                        <span id="stranssanguineo"></span>
                     </div>
                         
-                    <div class="col-md-3">
-                        <label for="cabeza_craneo" class="texto-inicio font-medium">Cabeza Craneo</label>
-                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cabeza_craneo"
-                                name="cabeza_craneo"/>
-                        <span id="scabeza_craneo"></span>
+                    <div class="col-md-6">
+                        <label for="alergias_med" class="texto-inicio font-medium">Alergias Medicas</label>
+                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="alergias_med"
+                                name="alergias_med"/>
+                        <span id="salergias_med"></span>
                     </div>
-                        
-                    <div class="col-md-3">
-                        <label for="ojos" class="texto-inicio font-medium">Ojos</label>
-                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="ojos"
-                                name="ojos"/>
-                        <span id="sojos"></span>
-                    </div>
-                </div>
-                <div class="row py-4">
-                    <div class="col-md-12">
-                        <hr/>
-                    </div>
-                </div>
-                <div class="row mb-3 mx-1">
-                    <div class="col-md-3">
-                        <label for="nariz" class="texto-inicio font-medium">Nariz</label>
-                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="nariz"
-                                name="nariz"/>
-                        <span id="snariz"></span>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="tiroides" class="texto-inicio font-medium">Tiroides</label>
-                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="tiroides"
-                                name="tiroides"/>
-                        <span id="stiroides"></span>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="boca_abierta" class="texto-inicio font-medium">Boca Abierta</label>
-                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="boca_abierta"
-                                name="boca_abierta"/>
-                        <span id="sboca_abierta"></span>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="boca_cerrada" class="texto-inicio font-medium">Boca Cerrada</label>
-                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="boca_cerrada"
-                                name="boca_cerrada"/>
-                        <span id="sboca_cerrada"></span>
-                    </div>
-                         
-                     <div class="col-md-3">
-                        <label for="cardiovascular" class="texto-inicio font-medium">Cardiovascular</label>
-                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cardiovascular"
-                                name="cardiovascular"/>
-                        <span id="scardiovascular"></span>
-                    </div>
+
                     
-                    <div class="col-md-3">
-                        <label for="respiratorio" class="texto-inicio font-medium">Respiratorio</label>
-                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="respiratorio"
-                                name="respiratorio"/>
-                        <span id="srespiratorio"></span>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="abdomen" class="texto-inicio font-medium">Abdomen</label>
-                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="abdomen"
-                                name="abdomen"/>
-                        <span id="sabdomen"></span>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="extremidades" class="texto-inicio font-medium">Extremidades</label>
-                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="extremidades"
-                                name="extremidades"/>
-                        <span id="sextremidades"></span>
-                    </div>
-                     
-                    <div class="col-md-3">
-                        <label for="neurologicos" class="texto-inicio font-medium">Neurologico</label>
-                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="neurologicos"
-                                name="neurologicos"/>
-                        <span id="sneurologicos"></span>
-                    </div>  
-                </div> -->
                 <div class="row py-4">
                     <div class="col-md-12">
                         <hr/>
@@ -226,21 +142,21 @@
                 <div class="row mb-3 mx-1 gap-y-2">
 
                     <div class="col-md-6">
-                        <label for="antec_madre" class="texto-inicio font-medium">Antecedentes Maternos</label>
-                        <textarea class="form-control bg-gray-200 rounded-lg border-white" id="antec_madre" name="antec_madre"></textarea>
-                        <span id="santec_madre"></span>
+                        <label for="antc_madre" class="texto-inicio font-medium">Antecedentes Maternos</label>
+                        <textarea class="form-control bg-gray-200 rounded-lg border-white" id="antc_madre" name="antc_madre"></textarea>
+                        <span id="santc_madre"></span>
                     </div>
                     
                     <div class="col-md-6">
-                        <label for="antec_padre" class="texto-inicio font-medium">Antecedentes Paternos</label>
-                        <textarea class="form-control bg-gray-200 rounded-lg border-white" id="antec_padre" name="antec_padre"></textarea>
-                        <span id="santec_padre"></span>
+                        <label for="antc_padre" class="texto-inicio font-medium">Antecedentes Paternos</label>
+                        <textarea class="form-control bg-gray-200 rounded-lg border-white" id="antc_padre" name="antc_padre"></textarea>
+                        <span id="santc_padre"></span>
                     </div>
                     
                     <div class="col-md-6">
-                        <label for="antec_hermano" class="texto-inicio font-medium">Antecedentes Hermanos</label>
-                        <textarea class="form-control bg-gray-200 rounded-lg border-white" id="antec_hermano" name="antec_hermano"></textarea>
-                        <span id="santec_hermano"></span>
+                        <label for="antc_hermano" class="texto-inicio font-medium">Antecedentes Hermanos</label>
+                        <textarea class="form-control bg-gray-200 rounded-lg border-white" id="antc_hermano" name="antc_hermano"></textarea>
+                        <span id="santc_hermano"></span>
                     </div>
                 </div>
 

@@ -8,10 +8,7 @@ class PDF extends FPDF
    // Cabecera de página
    function Header()
    {
-      //include '../../recursos/Recurso_conexion_bd.php';//llamamos a la conexion BD
 
-      //$consulta_info = $conexion->query(" select *from hotel ");//traemos datos de la empresa desde BD
-      //$dato_info = $consulta_info->fetch_object();
       $this->Image('logo.png', 180, 5, 20); //logo de la empresa,moverDerecha,moverAbajo,tamañoIMG
       $this->SetFont('Arial', 'B', 19); //tipo fuente, negrita(B-I-U-BIU), tamañoTexto
       $this->Cell(45); // Movernos a la derecha
@@ -83,7 +80,7 @@ class PDF extends FPDF
 include '../../modelo/datos.php'; 
 
 function conexion() {
-    return new PDO('mysql:host=localhost;dbname=shm-cdi', 'root', '123456');
+    return new PDO('mysql:host=localhost;dbname=shm-cdi.2', 'root', '123456');
 }
 
 $pdf = new PDF();
@@ -105,33 +102,13 @@ $consulta_reporte_historia = $bd->prepare("SELECT * FROM historias WHERE cedula_
 $consulta_reporte_historia->bindParam(':cedula_historia', $cedula_historia, PDO::PARAM_STR);
 $consulta_reporte_historia->execute();
 
+$consulta_reporte = $bd->prepare("SELECT * FROM consultas WHERE cedula_h = :cedula_historia");
+$consulta_reporte->bindParam(':cedula_historia', $cedula_historia, PDO::PARAM_STR);
+$consulta_reporte->execute();
+
 $datos_reporte = $consulta_reporte_historia->fetch(PDO::FETCH_OBJ);
 
-// Consulta para la tabla examenes_r
-$consulta_examenes_r = $bd->prepare("SELECT * FROM examenes_r WHERE cedula_h = :cedula_historia");
-$consulta_examenes_r->bindParam(':cedula_historia', $cedula_historia, PDO::PARAM_STR);
-$consulta_examenes_r->execute();
-$datos_examenes_r = $consulta_examenes_r->fetch(PDO::FETCH_OBJ);
-
-// Consulta para la tabla examenes_s
-$consulta_examenes_s = $bd->prepare("SELECT * FROM examenes_s WHERE cedula_h = :cedula_historia");
-$consulta_examenes_s->bindParam(':cedula_historia', $cedula_historia, PDO::PARAM_STR);
-$consulta_examenes_s->execute();
-$datos_examenes_s = $consulta_examenes_s->fetch(PDO::FETCH_OBJ);
-
-// Consulta para la tabla antecedentes
-$consulta_antecedentes = $bd->prepare("SELECT * FROM antecedentes WHERE cedula_h = :cedula_historia");
-$consulta_antecedentes->bindParam(':cedula_historia', $cedula_historia, PDO::PARAM_STR);
-$consulta_antecedentes->execute();
-$datos_antecedentes = $consulta_antecedentes->fetch(PDO::FETCH_OBJ);
-
-// Consulta para la tabla examenes_f
-$consulta_examenes_f = $bd->prepare("SELECT * FROM examenes_F WHERE cedula_h = :cedula_historia");
-$consulta_examenes_f->bindParam(':cedula_historia', $cedula_historia, PDO::PARAM_STR);
-$consulta_examenes_f->execute();
-$datos_examenes_f = $consulta_examenes_f->fetch(PDO::FETCH_OBJ);
-
-if ($datos_reporte && $datos_examenes_r && $datos_examenes_s && $datos_antecedentes && $datos_examenes_f) {
+if ($datos_reporte) {
     /* TABLA */
     $pdf->Cell(20, 8, utf8_decode($datos_reporte->cedula_historia), 1, 0, 'C', 0);
     $pdf->Cell(30, 8, utf8_decode($datos_reporte->nombre), 1, 0, 'C', 0);
@@ -189,58 +166,6 @@ if ($datos_reporte && $datos_examenes_r && $datos_examenes_s && $datos_anteceden
     $pdf->SetTextColor(255, 255, 255); // colorTexto
     $pdf->SetDrawColor(0, 0, 0); // colorBorde
     $pdf->SetFont('Arial', 'B', 7);
-    $pdf->Cell(32.5, 7, utf8_decode('CABEZA-CRANEO'), 1, 0, 'C', 1);
-    $pdf->Cell(32.5, 7, utf8_decode('OJOS'), 1, 0, 'C', 1);
-    $pdf->Cell(32.5, 7, utf8_decode('NARIZ'), 1, 0, 'C', 1);
-    $pdf->Cell(32.5, 7, utf8_decode('BOCA ABIERTA'), 1, 0, 'C', 1);
-    $pdf->Cell(32.5, 7, utf8_decode('BOCA CERRADA'), 1, 0, 'C', 1);
-    $pdf->Cell(32.5, 7, utf8_decode('TIROIDES'), 1, 1, 'C', 1);
-   //  
-
-
-
-    // Datos de la segunda tabla
-    $pdf->SetTextColor(0, 0, 0); // colorTexto
-    $pdf->SetFont('Arial', '', 8);
-    $pdf->Cell(32.5, 8, utf8_decode($datos_examenes_r->cabeza_craneo), 1, 0, 'C', 0);
-    $pdf->Cell(32.5, 8, utf8_decode($datos_examenes_r->ojos), 1, 0, 'C', 0);
-    $pdf->Cell(32.5, 8, utf8_decode($datos_examenes_r->nariz), 1, 0, 'C', 0);
-    $pdf->Cell(32.5, 8, utf8_decode($datos_examenes_r->boca_abierta), 1, 0, 'C', 0);
-    $pdf->Cell(32.5, 8, utf8_decode($datos_examenes_r->boca_cerrada), 1, 0, 'C', 0);
-    $pdf->Cell(32.5, 8, utf8_decode($datos_examenes_r->tiroides), 1, 1, 'C', 0);
-
-
-   $pdf->Ln(5);
-
-    $pdf->SetFillColor(226, 37, 53); // colorFondo
-    $pdf->SetTextColor(255, 255, 255); // colorTexto
-    $pdf->SetDrawColor(0, 0, 0); // colorBorde
-    $pdf->SetFont('Arial', 'B', 7);
-    $pdf->Cell(32.5, 7, utf8_decode('EXTREMIDADES'), 1, 0, 'C', 1);
-    $pdf->Cell(32.5, 7, utf8_decode('RESPIRATORIO'), 1, 0, 'C', 1);
-    $pdf->Cell(32.5, 7, utf8_decode('CARDIOVASCULAR'), 1, 0, 'C', 1);
-    $pdf->Cell(32.5, 7, utf8_decode('ABDOMEN'), 1, 0, 'C', 1);
-    $pdf->Cell(32.5, 7, utf8_decode('EXTREMIDADES S'), 1, 0, 'C', 1);
-    $pdf->Cell(32.5, 7, utf8_decode('NEUROLOGICOS'), 1, 1, 'C', 1);
-
-
-    // Datos de la tercera tabla
-    $pdf->SetTextColor(0, 0, 0); // colorTexto
-    $pdf->SetFont('Arial', '', 8);
-    $pdf->Cell(32.5, 8, utf8_decode($datos_examenes_r->extremidades), 1, 0, 'C', 0);
-    $pdf->Cell(32.5, 8, utf8_decode($datos_examenes_s->respiratorio), 1, 0, 'C', 0);
-    $pdf->Cell(32.5, 8, utf8_decode($datos_examenes_s->cardiovascular), 1, 0, 'C', 0);
-    $pdf->Cell(32.5, 8, utf8_decode($datos_examenes_s->abdomen), 1, 0, 'C', 0);
-    $pdf->Cell(32.5, 8, utf8_decode($datos_examenes_s->extremidades_s), 1, 0, 'C', 0);
-    $pdf->Cell(32.5, 8, utf8_decode($datos_examenes_s->neurologicos), 1, 1, 'C', 0);
-
-
-    $pdf->Ln(5);
-
-    $pdf->SetFillColor(226, 37, 53); // colorFondo
-    $pdf->SetTextColor(255, 255, 255); // colorTexto
-    $pdf->SetDrawColor(0, 0, 0); // colorBorde
-    $pdf->SetFont('Arial', 'B', 7);
     $pdf->Cell(65, 7, utf8_decode('ANTECEDENTES PATERNOS'), 1, 0, 'C', 1);
     $pdf->Cell(65, 7, utf8_decode('ANTECEDENTES MATERNOS'), 1, 0, 'C', 1);
     $pdf->Cell(65, 7, utf8_decode('ANTECEDENTES DE HERMANOS'), 1, 1, 'C', 1);
@@ -248,23 +173,11 @@ if ($datos_reporte && $datos_examenes_r && $datos_examenes_s && $datos_anteceden
     // Datos de la tercera tabla
     $pdf->SetTextColor(0, 0, 0); // colorTexto
     $pdf->SetFont('Arial', '', 8);
-    $pdf->Cell(65, 8, utf8_decode($datos_antecedentes->antec_padre), 1, 0, 'C', 0);
-    $pdf->Cell(65, 8, utf8_decode($datos_antecedentes->antec_madre), 1, 0, 'C', 0);
-    $pdf->Cell(65, 8, utf8_decode($datos_antecedentes->antec_hermano), 1, 1, 'C', 0);
+    $pdf->Cell(65, 8, utf8_decode($datos_reporte->antc_padre), 1, 0, 'C', 0);
+    $pdf->Cell(65, 8, utf8_decode($datos_reporte->antc_madre), 1, 0, 'C', 0);
+    $pdf->Cell(65, 8, utf8_decode($datos_reporte->antc_hermano), 1, 1, 'C', 0);
 
     $pdf->Ln(5);
-
-    $pdf->SetFillColor(226, 37, 53); // colorFondo
-    $pdf->SetTextColor(255, 255, 255); // colorTexto
-    $pdf->SetDrawColor(0, 0, 0); // colorBorde
-    $pdf->SetFont('Arial', 'B', 7);
-    $pdf->Cell(195, 7, utf8_decode('EXAMEN FISICO GENERAL'), 1, 1, 'C', 1);
-    // Datos de la tercera tabla
-    $pdf->SetTextColor(0, 0, 0); // colorTexto
-    $pdf->SetFont('Arial', '', 8);
-    $pdf->Cell(195, 8, utf8_decode($datos_examenes_f->general), 1, 1, 'C', 0);
-
-
 
 
    } else {
