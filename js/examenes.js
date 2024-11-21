@@ -328,7 +328,7 @@ function colocaexamen(linea){
 }
 function colocaexamen_ver(linea, nombre_x){
 
-	$("#cod_examenes1").val($(linea).find("td:eq(1)").text());
+	$("#cod_examenes1").val($(linea).find("td:eq(6)").text());
 	$("#codigo_examenes").val($(linea).find("td:eq(0)").text());
 	$("#datosdeexamen").html("Nombre del examen: "+nombre_x);
 	$("#modalexamenes").modal("hide");
