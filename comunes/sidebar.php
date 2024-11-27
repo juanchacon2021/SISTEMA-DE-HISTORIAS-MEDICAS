@@ -1,5 +1,5 @@
 <header class="sidebarr">
-        <span class="absolute text-white text-2xl top-5 left-4 cursor-pointer" onclick="Openbar()">
+        <span class="absolute text-white text-2xl top-4 left-4 cursor-pointer" onclick="Openbar()">
             <img class="w-12 h-10 mx-2 my-2 p-2 bg-red-800 rounded-md text-white hover:text-white" src="img/bars-solid.svg" alt="">
         </span>
         <div class="sidebar fixed top-0 bottom-0 lg:left-0 left-[-300px] duration-1000 

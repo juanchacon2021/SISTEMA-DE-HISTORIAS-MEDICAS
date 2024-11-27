@@ -5,16 +5,19 @@
 ?>
 <head>
 <title>Botón de Ayuda</title> 
-<style> #helpButton { 
+<style> 
+    #helpButton { 
     
     position: fixed; 
     top: 10px; right: 
     10px; padding: 
     10px 20px; 
-    background-color: #007BFF; 
-    color: white; border: none; 
-    border-radius: 5px; 
-    cursor: pointer; } 
+    color: rgb(220 38 38); } 
+
+    #helpButton:hover { 
+        color: rgb(153, 27, 27);
+        text-decoration: underline;
+        } 
     </style>
 
     <style>
@@ -41,7 +44,7 @@
     </style>
 </head>
 <body class="bg-stone-100">
-<a style="background-color:rgb(220 38 38);" href="MANUAL DE USUARIO.pdf" id="helpButton">Ayuda</a>
+<a href="MANUAL DE USUARIO.pdf" id="helpButton" target="blank">Ayuda</a>
 
     <article class="inicio bg-white py-8 px-4">
         <!-- <h1 class="texto-inicio">Hola, Bienvenido</h1> -->
