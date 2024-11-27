@@ -126,6 +126,32 @@ $(document).ready(function(){
 		$("#scedula_p"),"El formato debe ser 12345678 ");
 	});
 
+	$("#motingreso").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+   
+	$("#motingreso").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#smotingreso"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#diagnostico_e").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+   
+	$("#diagnostico_e").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#sdiagnostico_e"),"Solo letras  entre 3 y 300 caracteres");
+	});
+	$("#tratamientos").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+   
+	$("#tratamientos").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#stratamientos"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
 	
 	//validar
 
