@@ -4,11 +4,25 @@
 	require_once("comunes/sidebar.php");	
 ?>
 <head>
+<title>Botón de Ayuda</title> 
+<style> #helpButton { 
+    
+    position: fixed; 
+    top: 10px; right: 
+    10px; padding: 
+    10px 20px; 
+    background-color: #007BFF; 
+    color: white; border: none; 
+    border-radius: 5px; 
+    cursor: pointer; } 
+    </style>
+
     <style>
         body {
             position: relative;
             z-index: 0;
         }
+
 
         body::before {
             content: "";
@@ -27,7 +41,7 @@
     </style>
 </head>
 <body class="bg-stone-100">
-
+<a style="background-color:rgb(220 38 38);" href="MANUAL DE USUARIO.pdf" id="helpButton">Ayuda</a>
 
     <article class="inicio bg-white py-8 px-4">
         <!-- <h1 class="texto-inicio">Hola, Bienvenido</h1> -->

@@ -4,7 +4,9 @@
 	require_once("comunes/sidebar.php");	
 ?>
 <body >
-
+<?php
+					  if($nivel=='Doctor' or $nivel=='Enfermera'){
+					?>
 <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
 Examenes
 </div>
@@ -279,6 +281,7 @@ Examenes
 <!--Llamada a archivo modal.php, dentro de el hay una sección modal-->
 <?php require_once("comunes/modal.php"); ?>
 <script type="text/javascript" src="js/examenes.js"></script> 
-
+<?php
+}					?>
 </body>
 </html>

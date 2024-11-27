@@ -493,7 +493,32 @@ class consultasm extends datos{
 												
 						    ><img src='img/basura.svg' style='width: 20px'></a>
 							
-							
+							<a type='button'
+							class='btn btn-primary' 
+							onclick='pone(this,2)'
+												' fechaconsulta='".$r['fechaconsulta']."'
+												' consulta='".$r['consulta']."'
+												' diagnostico='".$r['diagnostico']."'
+												' tratamientos='".$r['tratamientos']."'
+												' cedula_p='".$r['cedula_p']."'
+												' cedula_h='".$r['cedula_h']."'
+												' cargo='".$r['cargo']."'
+												' nombre='".$r['nombre']."'
+												' apellido='".$r['apellido']."'
+												' boca_abierta='".$r['boca_abierta']."'
+												' boca_cerrada='".$r['boca_cerrada']."'
+												' oidos='".$r['oidos']."'
+												' cabeza_craneo='".$r['cabeza_craneo']."'
+												' ojos='".$r['ojos']."'
+												' nariz='".$r['nariz']."'
+												' respiratorio='".$r['respiratorio']."'
+												' abdomen='".$r['abdomen']."'
+												' extremidades_r='".$r['extremidades_r']."'
+												' extremidades_s='".$r['extremidades_s']."'
+												' neurologicos='".$r['neurologicos']."'
+												' general='".$r['general']."'
+												' cardiovascular='".$r['cardiovascular']."'
+						    ><img src='img/ojo.svg' style='width: 20px'></a>
 
 							<a class='btn btn-danger' href='vista/fpdf/consultasm.php?cod_consulta=" . $r['cod_consulta'] . "' target='_blank'>
 								<img src='img/descarga.svg' style='width: 20px;'>

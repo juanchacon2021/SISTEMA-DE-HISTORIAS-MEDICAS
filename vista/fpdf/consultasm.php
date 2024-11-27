@@ -44,7 +44,7 @@ class PDF extends FPDF
       $this->SetTextColor(226 ,37 , 53);
       $this->Cell(45); // mover a la derecha
       $this->SetFont('Arial', 'B', 15);
-      $this->Cell(100, 10, utf8_decode("REPORTE DE EMERGENCIA"), 0, 1, 'C', 0);
+      $this->Cell(100, 10, utf8_decode("REPORTE DE CONSULTA"), 0, 1, 'C', 0);
       $this->Ln(7);
 
       /* CAMPOS DE LA TABLA */
@@ -67,7 +67,7 @@ class PDF extends FPDF
    }
 }
 
-
+include '../../modelo/datos.php'; 
 
 function conexion() {
     return new PDO('mysql:host=localhost;dbname=shm-cdi.2', 'root', '123456');
@@ -163,8 +163,11 @@ if ($datos_reporte) {
 
     $pdf->Ln(10);
 
+    $pdf->SetTextColor(226, 37, 53);
+    $pdf->SetFont('Arial', 'B', 15);
+    $pdf->Cell(190, 10, utf8_decode('PERSONAL MEDICO'), 0, 1, 'C', 0);
+    $pdf->Ln(10);
     
-
     $pdf->SetFillColor(226, 37, 53); // colorFondo
     $pdf->SetTextColor(255, 255, 255); // colorTexto
     $pdf->SetDrawColor(0, 0, 0); // colorBorde

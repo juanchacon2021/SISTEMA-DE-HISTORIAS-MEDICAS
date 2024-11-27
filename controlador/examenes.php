@@ -53,7 +53,7 @@ require_once("modelo/".$pagina.".php");
 				$o->set_observacion_examen($_POST['observacion_examen']);
 				if(isset($_FILES['imagenarchivo'])){	
 					     
-					if (($_FILES['imagenarchivo']['size'] / 1024) < 1024) {
+					if (($_FILES['imagenarchivo']['size'] / 10240) < 10240) {
 						
 						  move_uploaded_file($_FILES['imagenarchivo']['tmp_name'], 
 						  'vista/fpdf/usuarios/'.$_POST['cedula_h'].'-'.$_POST['fecha_r'].'-'.$_POST['cod_examenes1'].'.jpeg');
