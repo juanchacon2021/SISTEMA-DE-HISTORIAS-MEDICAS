@@ -48,7 +48,7 @@ CREATE TABLE `consultas` (
   KEY `cedula_h` (`cedula_h`),
   CONSTRAINT `consultas_ibfk_1` FOREIGN KEY (`cedula_p`) REFERENCES `personal` (`cedula_personal`),
   CONSTRAINT `consultas_ibfk_2` FOREIGN KEY (`cedula_h`) REFERENCES `historias` (`cedula_historia`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -57,7 +57,7 @@ CREATE TABLE `consultas` (
 
 LOCK TABLES `consultas` WRITE;
 /*!40000 ALTER TABLE `consultas` DISABLE KEYS */;
-INSERT INTO `consultas` VALUES (2,'2024-10-01','Primera consulta','Diarrea','Resogal',31111553,30128924,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(3,NULL,NULL,NULL,NULL,31111553,85642892,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `consultas` VALUES (2,'2024-10-01','Primera consulta','Diarrea','Resogal',31111553,30128924,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `consultas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -231,4 +231,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-18  9:24:56
+-- Dump completed on 2024-11-17 16:14:39
