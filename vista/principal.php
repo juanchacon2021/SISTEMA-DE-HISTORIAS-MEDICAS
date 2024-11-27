@@ -12,13 +12,12 @@
     top: 10px; right: 
     10px; padding: 
     10px 20px; 
-    background-color: rgb(220 38 38); 
-    color: white; border: none; 
-    border-radius: 5px; 
-    cursor: pointer; } 
+    color: rgb(220 38 38); } 
 
     #helpButton:hover { 
-        background-color: rgb(153, 27, 27)} 
+        color: rgb(153, 27, 27);
+        text-decoration: underline;
+        } 
     </style>
 
     <style>
