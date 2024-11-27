@@ -105,10 +105,10 @@ if ($datos_reporte) {
      $pdf->SetTextColor(255, 255, 255); //colorTexto
      $pdf->SetDrawColor(0, 0, 0); //colorBorde
      $pdf->SetFont('Arial', 'B', 7);
-     $pdf->Cell(38, 7, utf8_decode('NOMBRE'), 1, 0, 'C', 1);
-     $pdf->Cell(38, 7, utf8_decode('APELLIDO'), 1, 0, 'C', 1);
-     $pdf->Cell(38, 7, utf8_decode('CEDULA'), 1, 0, 'C', 1);
-     $pdf->Cell(38, 7, utf8_decode('FECHA DE CONSULTA'), 1, 1, 'C', 1);
+     $pdf->Cell(47.5, 7, utf8_decode('NOMBRE'), 1, 0, 'C', 1);
+     $pdf->Cell(47.5, 7, utf8_decode('APELLIDO'), 1, 0, 'C', 1);
+     $pdf->Cell(47.5, 7, utf8_decode('CEDULA'), 1, 0, 'C', 1);
+     $pdf->Cell(47.5, 7, utf8_decode('FECHA DE CONSULTA'), 1, 1, 'C', 1);
      
 
 
@@ -119,10 +119,10 @@ if ($datos_reporte) {
     /* TABLA */
      $pdf->SetTextColor(0, 0, 0); // colorTexto
     $pdf->SetFont('Arial', '', 8);
-    $pdf->Cell(38, 8, utf8_decode($datos_reporte->nombre_h), 1, 0, 'C', 0);
-    $pdf->Cell(38, 8, utf8_decode($datos_reporte->apellido_h), 1, 0, 'C', 0);
-    $pdf->Cell(38, 8, utf8_decode($datos_reporte->cedula_h), 1, 0, 'C', 0);
-    $pdf->Cell(38, 8, utf8_decode($datos_reporte->fechaconsulta), 1, 1, 'C', 0);
+    $pdf->Cell(47.5, 8, utf8_decode($datos_reporte->nombre_h), 1, 0, 'C', 0);
+    $pdf->Cell(47.5, 8, utf8_decode($datos_reporte->apellido_h), 1, 0, 'C', 0);
+    $pdf->Cell(47.5, 8, utf8_decode($datos_reporte->cedula_h), 1, 0, 'C', 0);
+    $pdf->Cell(47.5, 8, utf8_decode($datos_reporte->fechaconsulta), 1, 1, 'C', 0);
     $pdf->Ln(10);
 
     
@@ -162,13 +162,8 @@ if ($datos_reporte) {
     $pdf->MultiCell(190, 5, utf8_decode($datos_reporte->tratamientos), 1,'C',0);
 
     $pdf->Ln(10);
-    
 
-    $pdf->SetTextColor(226 ,37 , 53);
-      $pdf->Cell(45); // mover a la derecha
-      $pdf->SetFont('Arial', 'B', 15);
-      $pdf->Cell(100, 10, utf8_decode("DATOS DEL DOCTOR"), 0, 1, 'C', 0);
-      $pdf->Ln(7);
+    
 
     $pdf->SetFillColor(226, 37, 53); // colorFondo
     $pdf->SetTextColor(255, 255, 255); // colorTexto

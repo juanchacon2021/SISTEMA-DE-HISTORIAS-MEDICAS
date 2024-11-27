@@ -301,7 +301,7 @@ class examenes extends datos{
 		$r = array();
 		try{
 			
-			$resultado = $co->query("Select r.*, e.nombre_examen, h.nombre, h.apellido from examenes e
+			$resultado = $co->query("SELECT r.*, e.nombre_examen, h.nombre, h.apellido from examenes e
 									inner join registro r on e.cod_examenes = r.cod_examenes
 									inner join historias h on r.cedula_h = h.cedula_historia");
 			

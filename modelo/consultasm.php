@@ -197,7 +197,7 @@ class consultasm extends datos{
 			// se enviara la respuesta a la solicitud y el
 			// contenido de la respuesta
 		try{
-			$resultado = $co->query("Select * from personal");
+			$resultado = $co->query("SELECT * FROM personal");
 			$respuesta = '';
 			if($resultado){
 				foreach($resultado as $r){
@@ -239,7 +239,7 @@ class consultasm extends datos{
 			// se enviara la respuesta a la solicitud y el
 			// contenido de la respuesta
 		try{
-			$resultado = $co->query("Select * from historias");
+			$resultado = $co->query("SELECT * FROM historias");
 			$respuesta = '';
 			if($resultado){
 				foreach($resultado as $r){

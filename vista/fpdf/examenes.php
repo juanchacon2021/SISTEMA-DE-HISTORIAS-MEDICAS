@@ -136,18 +136,16 @@ if ($datos_reporte) {
     $pdf->Ln(10);
     
    
-$imagepath='usuarios/'.$datos_reporte->cedula_h.'-'.$datos_reporte->fecha_r.'-'.$datos_reporte->cod_examen.'.png';
-$image='usuarios/logo.png';
-if(file_exists($imagepath)){
-   $pdf->Image($imagepath,75,120,50,50);
-}
-    ob_end_clean();
+    $imagepath = 'usuarios/' . $datos_reporte->cedula_h . '-' . $datos_reporte->fecha_r . '-' . $datos_reporte->cod_examenes . '.jpeg';
+    $image = 'usuarios/logo.png';
+
+    if (file_exists($imagepath)) {
+        $pdf->Image($imagepath,55.5, 120, 100, );
+    } else {
+        die('No se ha podido generar el reporte: la imagen no existe.');
+    }
     
-
-
-
-   } else {
-    die('No se a podido generar el reporte de la emergncia');
+    ob_end_clean();
 }
 
 $pdf->Output();

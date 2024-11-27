@@ -33,9 +33,9 @@ Emergencias
 				<th>Hora de Ingreso</th>
 				<th>Fecha de Ingreso</th>				
 				<th>Cedula del Paciente</th>
-				<th>Nombre del Doctor</th>
-				<th>Apellido del Doctor</th>
-				<th>Cedula del Doctor</th>
+				<th>Nombre del Personal</th>
+				<th>Apellido del Personal</th>
+				<th>Cedula del Personal</th>
 
 
 			  </tr>

@@ -8,6 +8,34 @@
     src: url('../Sora.ttf');
   }
 
+.primerafila {
+    display: flex;
+    margin: 1.5rem;
+}
+
+.boton-ced {
+    display: flex; 
+    width: 25rem;
+}
+
+.boton-lista {
+    min-width: 17rem;
+}
+
+.ced-paciente {
+    margin-left: 9rem;
+}
+
+.botonreporte {
+    font-family: 'Sora';
+    background-color: rgb(46, 99, 49);
+    border-radius: 0.5rem;
+    background-color: rgb(46, 99, 49);
+    color: white;
+    width: auto;
+    font-size: 15px;
+}
+
 
 .inicio {
     display: flex;
@@ -82,6 +110,10 @@
     justify-content: space-between;
 }
 
+.botoneseduin {
+    display: flex;
+    justify-content: space-between;
+}
 
 .botonesdos {
     display: flex;
@@ -119,6 +151,7 @@
 .botonverde:hover {
     background-color: rgb(47, 148, 52);
     border: 0.5rem solid rgb(47, 148, 52);
+    cursor: pointer;
 }
 
 .botonazul:hover {
@@ -136,6 +169,11 @@
 .botonverde:hover {
     background-color: rgb(0, 95, 5);
     border: 0.5rem solid rgba(0, 95, 5);
+}
+
+.botonreporte:hover {
+    background-color: rgb(0, 46, 3);
+    color: white;
 }
 
 .gradiente{
@@ -480,6 +518,29 @@ background: linear-gradient(90deg, #ff0000,#ff8080);/* W3C, IE 10+/ Edge, Firefo
 
 @media (max-width: 768px) {
 
+    .primerafila {
+        display: block;
+        margin: 0;
+    }
+
+    .ced-paciente {
+        margin-left: 0;
+    }
+
+    .boton-ced {
+        display: block; 
+        width: 17rem;
+    }
+
+    
+    .boton-lista {
+        width: 200rem;
+    }
+
+    .boton-ced button {
+        width: 2rem;
+    }
+
     html {
         margin-bottom: 0;
     }
@@ -502,12 +563,32 @@ background: linear-gradient(90deg, #ff0000,#ff8080);/* W3C, IE 10+/ Edge, Firefo
         margin-top: 40px;
     }
 
+    .boton {
+        width: 50px;
+        display: flex;
+        padding: 0;
+        text-align: center;
+    }
+
     .botones {
         display: flex;
         justify-content: space-between;
         width: 100%;
         padding-top: 80px;
         margin-left: 10px;
+        font-size: 10px;
+    }
+
+    .botoneseduin {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 80px;
+        margin-left: 0px;
+        font-size: 10px;
+        width: 100%;
+    }
+
+    .botonreporte a{
         font-size: 10px;
     }
 
@@ -524,12 +605,6 @@ background: linear-gradient(90deg, #ff0000,#ff8080);/* W3C, IE 10+/ Edge, Firefo
     .button-container {
         flex-direction: column;
         align-items: center;
-    }
-
-    .recortar {
-        display: flex;
-        justify-content: space-between;
-        width: 20%;
     }
 
     .texto-inicio {

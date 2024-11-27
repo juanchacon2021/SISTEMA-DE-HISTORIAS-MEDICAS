@@ -106,8 +106,41 @@
                                 name="habtoxico" value="<?php echo $paciente['habtoxico']; ?>" required/>
                         <span id="shabtoxico"></span>
                     </div>
-                </div>
 
+                    <div class="col-md-6">
+                        <label for="alergias" class="texto-inicio font-medium">Alergias</label>
+                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="alergias"
+                                name="alergias" value="<?php echo $paciente['alergias']; ?>" required/>
+                        <span id="salergias"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="quirurgico" class="texto-inicio font-medium">Quirurgico</label>
+                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="quirurgico"
+                                name="quirurgico" value="<?php echo $paciente['quirurgico']; ?>" required/>
+                        <span id="squirurgico"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="psicosocial" class="texto-inicio font-medium">Psicosocial</label>
+                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="psicosocial"
+                                name="psicosocial" value="<?php echo $paciente['psicosocial']; ?>" required/>
+                        <span id="spsicosocial"></span>
+                    </div>
+                        
+                    <div class="col-md-6">
+                        <label for="transsanguineo" class="texto-inicio font-medium">Transfuciones Sanguineas</label>
+                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="transsanguineo"
+                                name="transsanguineo" value="<?php echo $paciente['transsanguineo']; ?>" required/>
+                        <span id="stranssanguineo"></span>
+                    </div>
+                        
+                    <div class="col-md-6">
+                        <label for="alergias_med" class="texto-inicio font-medium">Alergias Medicas</label>
+                        <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="alergias_med"
+                                name="alergias_med" value="<?php echo $paciente['alergias_med']; ?>" required/>
+                        <span id="salergias_med"></span>
+                    </div>
+                </div>
                 <div class="row py-4">
                     <div class="col-md-12">
                         <hr/>
@@ -139,16 +172,6 @@
                         <hr/>
                     </div>
                 </div>
-
-                <!-- <div class="row mb-3 mx-1">
-
-                    <div class="col-md-6">
-                        <label for="general" class="texto-inicio font-medium">Examen Fisico General</label>
-                        <textarea class="form-control bg-gray-200 rounded-lg border-white"   id="general" name="general"><?php echo $paciente['general']; ?></textarea>
-                        <span id="sgeneral"></span>
-                    </div>
-
-                </div> -->
 
                 <div class="row mt-3 justify-content-center">
                     <div class="col-md-2">

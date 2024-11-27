@@ -251,9 +251,9 @@ Examenes
 						<label for="archivo"  style="cursor:pointer">
 						   
 							<img src="img/logo.png" id="imagen" 
-							 class="img-fluid rounded-circle w-25 mb-3 centered"
-							 style="object-fit:scale-down">
-							Click aqui para subir foto	
+							 class="img-fluid w-25 mt-3 mb-3 centered"
+							 style="object-fit:scale-down; border-radius: 20px;">
+							Subir foto del Examen
 					    </label>
 						<input id="archivo"  
 						type="file" 
