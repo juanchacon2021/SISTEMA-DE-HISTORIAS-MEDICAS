@@ -25,30 +25,30 @@ DROP TABLE IF EXISTS `consultas`;
 CREATE TABLE `consultas` (
   `cod_consulta` int NOT NULL AUTO_INCREMENT,
   `fechaconsulta` date DEFAULT NULL,
-  `consulta` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `diagnostico` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `tratamientos` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `consulta` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `diagnostico` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `tratamientos` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `cedula_p` int NOT NULL,
   `cedula_h` int NOT NULL,
-  `general` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `respiratorio` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `cardiovascular` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `abdomen` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `extremidades_s` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `neurologicos` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `cabeza_craneo` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `ojos` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `nariz` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `oidos` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `boca_abierta` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `boca_cerrada` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `extremidades_r` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `general` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `respiratorio` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `cardiovascular` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `abdomen` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `extremidades_s` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `neurologicos` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `cabeza_craneo` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `ojos` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `nariz` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `oidos` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `boca_abierta` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `boca_cerrada` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `extremidades_r` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`cod_consulta`),
   KEY `cedula_p` (`cedula_p`),
   KEY `cedula_h` (`cedula_h`),
   CONSTRAINT `consultas_ibfk_1` FOREIGN KEY (`cedula_p`) REFERENCES `personal` (`cedula_personal`),
   CONSTRAINT `consultas_ibfk_2` FOREIGN KEY (`cedula_h`) REFERENCES `historias` (`cedula_historia`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -57,7 +57,7 @@ CREATE TABLE `consultas` (
 
 LOCK TABLES `consultas` WRITE;
 /*!40000 ALTER TABLE `consultas` DISABLE KEYS */;
-INSERT INTO `consultas` VALUES (2,'2024-10-01','Primera consulta','Diarrea','Resogal',31111553,30128924,'AAA','AAA','AAA','AAA','AAA','AAA','AAA','AAA','AAA','AAA','AAA','AAA','AAA'),(3,'1992-05-01','AAAAAA','AAAAA','AAAAAAA',31111111,4655468,'AAAA','AAAAAAA','AAAAAA','AAAAAAA','AAAAAA','AAAAAA','AAAAAA','AAAA','AAAAA','AAAAAA','AAAAA','AAAAA','AAAA');
+INSERT INTO `consultas` VALUES (4,'2024-11-28','AAAA','AAAA','AAAA',31111111,12345678,'AAA','AAA','AAA','AAA','AAA','AAA','AAA','AAA','AAA','AAA','AAA','AAA','AAA');
 /*!40000 ALTER TABLE `consultas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -70,11 +70,11 @@ DROP TABLE IF EXISTS `emergencias`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `emergencias` (
   `cod_emergencia` int NOT NULL AUTO_INCREMENT,
-  `horaingreso` varchar(7) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `horaingreso` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `fechaingreso` date DEFAULT NULL,
-  `motingreso` varchar(3000) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `diagnostico_e` varchar(3000) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `tratamientos` varchar(3000) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `motingreso` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `diagnostico_e` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `tratamientos` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `cedula_p` int NOT NULL,
   `cedula_h` int NOT NULL,
   PRIMARY KEY (`cod_emergencia`),
@@ -82,7 +82,7 @@ CREATE TABLE `emergencias` (
   KEY `cedula_h` (`cedula_h`),
   CONSTRAINT `emergencias_ibfk_1` FOREIGN KEY (`cedula_p`) REFERENCES `personal` (`cedula_personal`),
   CONSTRAINT `emergencias_ibfk_2` FOREIGN KEY (`cedula_h`) REFERENCES `historias` (`cedula_historia`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -91,7 +91,7 @@ CREATE TABLE `emergencias` (
 
 LOCK TABLES `emergencias` WRITE;
 /*!40000 ALTER TABLE `emergencias` DISABLE KEYS */;
-INSERT INTO `emergencias` VALUES (22,'05:49','2024-11-12','llego con un dolor de cabesa','aaaaaaaaaaaa','aaaaaaaaaaaaaaa',31111553,7856209),(23,'05:49','2024-11-12','aaaaaaaaaaaaaaaaaaaaaaaaa','aaaaaaaaaaaaaaaaaaaaaaaa','aaaaaaaaaaaaaaaaaaaaaaaaaaaa',31111553,5465489),(24,'05:51','2024-11-12','Como modelo de lenguaje, no puedo proporcionarte un diagnóstico médico.\r\n\r\nDiagnosticar una enfermedad requiere de un profesional de la salud capacitado, quien evaluará tus síntomas, realizará un examen físico y, si es necesario, ordenará pruebas de laboratorio o de imagen.\r\n\r\n¿Por qué no puedo darte un diagnóstico?\r\n\r\nInformación limitada: A través de una conversación en línea, no tengo acceso a tu historial médico completo, resultados de exámenes o a una exploración física.\r\nComplejidad de las enfermedades: Muchas enfermedades comparten síntomas similares, lo que hace que un diagnóstico preciso requiera una evaluación exhaustiva por parte de un médico.\r\nResponsabilidad profesional: Proporcionar un diagnóstico médico es una responsabilidad seria que requiere de conocimientos y habilidades específicas.\r\n¿Qué puedo hacer si estoy enfermo?\r\n\r\nSi tienes alguna preocupación sobre tu salud, te recomiendo:\r\n\r\nConsulta a un médico: Es la persona más capacitada para evaluar tus síntomas y realizar un diagnóstico preciso.\r\nDescribe tus síntomas con claridad: Incluye cuándo comenzaron, con qué frecuencia ocurren y qué los empeora o mejora.\r\nSé honesto sobre tu historial médico: Informa a tu médico sobre cualquier enfermedad que hayas tenido, medicamentos que estés tomando y alergias.\r\nRecuerda:\r\n\r\nNo te automediques: Tomar medicamentos sin receta médica puede empeorar tu condición o interactuar negativamente con otros medicamentos.\r\nBusca información confiable: Si quieres investigar sobre alguna enfermedad, consulta fuentes confiables como la Organización Mundial de la Salud (OMS) o sitios web de instituciones médicas reconocidas.\r\n¿Te gustaría que te proporcione información sobre alguna enfermedad en particular?\r\n\r\nPuedo ofrecerte información general sobre diversas enfermedades, sus síntomas, causas y tratamientos. Sin embargo, esta información no debe reemplazar el consejo médico profesional.\r\n\r\nPor favor, ten en cuenta que mi función es proporcionar información y no reemplazar la atención médica.','aaaaaaaaaaaaa','aaaaaaaaaaaaaaaaaa',31111553,12345678),(25,'05:51','2024-11-12','Como modelo de lenguaje, no puedo proporcionarte un diagnóstico médico.\r\n\r\nDiagnosticar una enfermedad requiere de un profesional de la salud capacitado, quien evaluará tus síntomas, realizará un examen físico y, si es necesario, ordenará pruebas de laboratorio o de imagen.\r\n\r\n¿Por qué no puedo darte un diagnóstico?\r\n\r\nInformación limitada: A través de una conversación en línea, no tengo acceso a tu historial médico completo, resultados de exámenes o a una exploración física.\r\nComplejidad de las enfermedades: Muchas enfermedades comparten síntomas similares, lo que hace que un diagnóstico preciso requiera una evaluación exhaustiva por parte de un médico.\r\nResponsabilidad profesional: Proporcionar un diagnóstico médico es una responsabilidad seria que requiere de conocimientos y habilidades específicas.\r\n¿Qué puedo hacer si estoy enfermo?\r\n\r\nSi tienes alguna preocupación sobre tu salud, te recomiendo:\r\n\r\nConsulta a un médico: Es la persona más capacitada para evaluar tus síntomas y realizar un diagnóstico preciso.\r\nDescribe tus síntomas con claridad: Incluye cuándo comenzaron, con qué frecuencia ocurren y qué los empeora o mejora.\r\nSé honesto sobre tu historial médico: Informa a tu médico sobre cualquier enfermedad que hayas tenido, medicamentos que estés tomando y alergias.\r\nRecuerda:\r\n\r\nNo te automediques: Tomar medicamentos sin receta médica puede empeorar tu condición o interactuar negativamente con otros medicamentos.\r\nBusca información confiable: Si quieres investigar sobre alguna enfermedad, consulta fuentes confiables como la Organización Mundial de la Salud (OMS) o sitios web de instituciones médicas reconocidas.\r\n¿Te gustaría que te proporcione información sobre alguna enfermedad en particular?\r\n\r\nPuedo ofrecerte información general sobre diversas enfermedades, sus síntomas, causas y tratamientos. Sin embargo, esta información no debe reemplazar el consejo médico profesional.\r\n\r\nPor favor, ten en cuenta que mi función es proporcionar información y no reemplazar la atención médica.','Como modelo de lenguaje, no puedo proporcionarte un diagnóstico médico.\r\n\r\nDiagnosticar una enfermedad requiere de un profesional de la salud capacitado, quien evaluará tus síntomas, realizará un examen físico y, si es necesario, ordenará pruebas de laboratorio o de imagen.\r\n\r\n¿Por qué no puedo darte un diagnóstico?\r\n\r\nInformación limitada: A través de una conversación en línea, no tengo acceso a tu historial médico completo, resultados de exámenes o a una exploración física.\r\nComplejidad de las enfermedades: Muchas enfermedades comparten síntomas similares, lo que hace que un diagnóstico preciso requiera una evaluación exhaustiva por parte de un médico.\r\nResponsabilidad profesional: Proporcionar un diagnóstico médico es una responsabilidad seria que requiere de conocimientos y habilidades específicas.\r\n¿Qué puedo hacer si estoy enfermo?\r\n\r\nSi tienes alguna preocupación sobre tu salud, te recomiendo:\r\n\r\nConsulta a un médico: Es la persona más capacitada para evaluar tus síntomas y realizar un diagnóstico preciso.\r\nDescribe tus síntomas con claridad: Incluye cuándo comenzaron, con qué frecuencia ocurren y qué los empeora o mejora.\r\nSé honesto sobre tu historial médico: Informa a tu médico sobre cualquier enfermedad que hayas tenido, medicamentos que estés tomando y alergias.\r\nRecuerda:\r\n\r\nNo te automediques: Tomar medicamentos sin receta médica puede empeorar tu condición o interactuar negativamente con otros medicamentos.\r\nBusca información confiable: Si quieres investigar sobre alguna enfermedad, consulta fuentes confiables como la Organización Mundial de la Salud (OMS) o sitios web de instituciones médicas reconocidas.\r\n¿Te gustaría que te proporcione información sobre alguna enfermedad en particular?\r\n\r\nPuedo ofrecerte información general sobre diversas enfermedades, sus síntomas, causas y tratamientos. Sin embargo, esta información no debe reemplazar el consejo médico profesional.\r\n\r\nPor favor, ten en cuenta que mi función es proporcionar información y no reemplazar la atención médica.','Como modelo de lenguaje, no puedo proporcionarte un diagnóstico médico.\r\n\r\nDiagnosticar una enfermedad requiere de un profesional de la salud capacitado, quien evaluará tus síntomas, realizará un examen físico y, si es necesario, ordenará pruebas de laboratorio o de imagen.\r\n\r\n¿Por qué no puedo darte un diagnóstico?\r\n\r\nInformación limitada: A través de una conversación en línea, no tengo acceso a tu historial médico completo, resultados de exámenes o a una exploración física.\r\nComplejidad de las enfermedades: Muchas enfermedades comparten síntomas similares, lo que hace que un diagnóstico preciso requiera una evaluación exhaustiva por parte de un médico.\r\nResponsabilidad profesional: Proporcionar un diagnóstico médico es una responsabilidad seria que requiere de conocimientos y habilidades específicas.\r\n¿Qué puedo hacer si estoy enfermo?\r\n\r\nSi tienes alguna preocupación sobre tu salud, te recomiendo:\r\n\r\nConsulta a un médico: Es la persona más capacitada para evaluar tus síntomas y realizar un diagnóstico preciso.\r\nDescribe tus síntomas con claridad: Incluye cuándo comenzaron, con qué frecuencia ocurren y qué los empeora o mejora.\r\nSé honesto sobre tu historial médico: Informa a tu médico sobre cualquier enfermedad que hayas tenido, medicamentos que estés tomando y alergias.\r\nRecuerda:\r\n\r\nNo te automediques: Tomar medicamentos sin receta médica puede empeorar tu condición o interactuar negativamente con otros medicamentos.\r\nBusca información confiable: Si quieres investigar sobre alguna enfermedad, consulta fuentes confiables como la Organización Mundial de la Salud (OMS) o sitios web de instituciones médicas reconocidas.\r\n¿Te gustaría que te proporcione información sobre alguna enfermedad en particular?\r\n\r\nPuedo ofrecerte información general sobre diversas enfermedades, sus síntomas, causas y tratamientos. Sin embargo, esta información no debe reemplazar el consejo médico profesional.\r\n\r\nPor favor, ten en cuenta que mi función es proporcionar información y no reemplazar la atención médica.',31111553,5465489),(26,'05:00','2024-11-12','qaaaaaaaaaa','aaaaaaaaaaa','Como modelo de lenguaje, no puedo proporcionarte un diagnóstico médico.\r\n\r\nDiagnosticar una enfermedad requiere de un profesional de la salud capacitado, quien evaluará tus síntomas, realizará un examen físico y, si es necesario, ordenará pruebas de laboratorio o de imagen.\r\n\r\n¿Por qué no puedo darte un diagnóstico?\r\n\r\nInformación limitada: A través de una conversación en línea, no tengo acceso a tu historial médico completo, resultados de exámenes o a una exploración física.\r\nComplejidad de las enfermedades: Muchas enfermedades comparten síntomas similares, lo que hace que un diagnóstico preciso requiera una evaluación exhaustiva por parte de un médico.\r\nResponsabilidad profesional: Proporcionar un diagnóstico médico es una responsabilidad seria que requiere de conocimientos y habilidades específicas.\r\n¿Qué puedo hacer si estoy enfermo?\r\n\r\nSi tienes alguna preocupación sobre tu salud, te recomiendo:\r\n\r\nConsulta a un médico: Es la persona más capacitada para evaluar tus síntomas y realizar un diagnóstico preciso.\r\nDescribe tus síntomas con claridad: Incluye cuándo comenzaron, con qué frecuencia ocurren y qué los empeora o mejora.\r\nSé honesto sobre tu historial médico: Informa a tu médico sobre cualquier enfermedad que hayas tenido, medicamentos que estés tomando y alergias.\r\nRecuerda:\r\n\r\nNo te automediques: Tomar medicamentos sin receta médica puede empeorar tu condición o interactuar negativamente con otros medicamentos.\r\nBusca información confiable: Si quieres investigar sobre alguna enfermedad, consulta fuentes confiables como la Organización Mundial de la Salud (OMS) o sitios web de instituciones médicas reconocidas.\r\n¿Te gustaría que te proporcione información sobre alguna enfermedad en particular?\r\n\r\nPuedo ofrecerte información general sobre diversas enfermedades, sus síntomas, causas y tratamientos. Sin embargo, esta información no debe reemplazar el consejo médico profesional.\r\n\r\nPor favor, ten en cuenta que mi función es proporcionar información y no reemplazar la atención médica.',31111553,88888888),(27,'05:00','2024-10-29','aaaaaaaaaa','aaaaaaaaaaaaa','aaaaaaaaaaaaaaaa',31111111,85642892),(28,'19:02','2024-11-12','L','L','L',31111553,88888888),(30,'09:08','2024-11-12','L','L','L',31111111,88888888);
+INSERT INTO `emergencias` VALUES (31,'22:28','2024-11-27','PIERNA ROTA','FRACTURA','ACETAMINOFEN',31111111,30128924);
 /*!40000 ALTER TABLE `emergencias` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -104,8 +104,8 @@ DROP TABLE IF EXISTS `examenes`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `examenes` (
   `cod_examenes` int NOT NULL AUTO_INCREMENT,
-  `nombre_examen` varchar(20) CHARACTER SET utf8mb4 NOT NULL,
-  `descripcion_examen` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `nombre_examen` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `descripcion_examen` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`cod_examenes`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -129,24 +129,24 @@ DROP TABLE IF EXISTS `historias`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `historias` (
   `cedula_historia` int NOT NULL,
-  `nombre` varchar(15) CHARACTER SET utf8mb4 NOT NULL,
-  `apellido` varchar(15) CHARACTER SET utf8mb4 NOT NULL,
+  `nombre` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `apellido` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `fecha_nac` date DEFAULT NULL,
   `edad` int DEFAULT NULL,
-  `estadocivil` varchar(15) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `ocupacion` varchar(15) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `direccion` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `telefono` varchar(15) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `hda` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `alergias` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `alergias_med` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `quirurgico` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `transsanguineo` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `psicosocial` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `habtoxico` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `antc_padre` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `antc_hermano` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `antc_madre` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `estadocivil` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `ocupacion` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `direccion` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `telefono` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `hda` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `alergias` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `alergias_med` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `quirurgico` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `transsanguineo` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `psicosocial` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `habtoxico` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `antc_padre` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `antc_hermano` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `antc_madre` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`cedula_historia`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -157,7 +157,7 @@ CREATE TABLE `historias` (
 
 LOCK TABLES `historias` WRITE;
 /*!40000 ALTER TABLE `historias` DISABLE KEYS */;
-INSERT INTO `historias` VALUES (3513422,'MANUEL','PATIÑO','1993-02-25',31,'','AAAAAAA','AAAA','35135181','AAA','AAAAAAA','AAAAAA','AAAAAA','AAAAA','AAAAAAA','AAAA','AAAAAAA','AAAAAA','AAAAAAA'),(4655468,'MMMMMMMM','MMMMM','1995-03-05',29,'CASADO','MMMMMM','MMMM','3513511','MMMMMMMMM','AAA','AAA','AAA','AAA','AAA','MMMMM','MMMMMMM','MMMMMM','MMMMMMMMMM'),(5465489,'LUIS MIGUEL','GALLEGO BASTERI','1970-04-19',54,'DIVORCIADO','L','MEXICO','351351351','L','L','L','L','L','L','L',NULL,NULL,NULL),(7856209,'JOE ALEX','CHACON VARGAS','1966-04-28',58,'DIVORCIADO','LOCUTOR','CERRITOS BLANCO','4125105446','NO POSEE','SOL','NO POSEE','NO POSEE','NO POSEE','NO POSEE','NO POSEE',NULL,NULL,NULL),(8564289,'JURGEN','KLINSMANN','2024-10-01',21,'','PPPPP','asdadsasdads','351351351','PPPPP','P','P','P','P','P','P',NULL,NULL,NULL),(9999999,'ANTHOAN','PATINNO','2004-04-30',258,'DIVORCIADO','B','BBBBBBBBBB','352131','B','B','B','B','B','B','B',NULL,NULL,NULL),(12345678,'CRISTIANO ','RONALDO','2024-09-03',12,'','HOLA','HOLA','133513','HOLA','HOLA','HOLA','HOLA','HOLA','HOLA','HOLA',NULL,NULL,NULL),(30128924,'SALOMON','RONDON','2024-09-02',21,'','asdas','asdsda','35135153','asddd','adsadsadsads','dsaaa','adsdasas','das','ads','dasasas',NULL,NULL,NULL),(35135131,'MIGUEL','TORRES','2004-09-28',20,'CASADO','SDASAD','AAAAAA','3513511','ASDDASSAD','undefined','undefined','undefined','undefined','undefined','ADSADSD','DSAASD','DASASD','DASASD'),(85642892,'SHOHEI','OHTANI','2024-10-01',21,'','undefined','asdadsasdads','351351351','undefined','undefined','undefined','undefined','undefined','undefined','undefined',NULL,NULL,NULL),(88888888,'JUAN','CHACON','2024-09-03',21,'','A','AAAAAAAAA','35135131','A','A','A','A','A','A','A',NULL,NULL,NULL);
+INSERT INTO `historias` VALUES (5465489,'LUIS MIGUEL','GALLEGO BASTERI','1970-04-19',54,'DIVORCIADO','L','MEXICO','351351351','L','L','L','L','L','L','L',NULL,NULL,NULL),(12345678,'CRISTIANO ','RONALDO','2024-09-03',12,'CASADO','HOLA','HOLA','133513','HOLA','HOLA','HOLA','HOLA','HOLA','HOLA','HOLA',NULL,NULL,NULL),(30128924,'SALOMON','RONDON','2024-09-02',21,'SOLTERO','asdas','asdsda','35135153','asddd','adsadsadsads','dsaaa','adsdasas','das','ads','dasasas',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `historias` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -170,12 +170,12 @@ DROP TABLE IF EXISTS `personal`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `personal` (
   `cedula_personal` int NOT NULL,
-  `nombre` varchar(15) CHARACTER SET utf8mb4 NOT NULL,
-  `apellido` varchar(15) CHARACTER SET utf8mb4 NOT NULL,
-  `correo` varchar(30) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `telefono` varchar(15) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `cargo` varchar(15) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `clave` varchar(20) CHARACTER SET utf8mb4 NOT NULL,
+  `nombre` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `apellido` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `correo` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `telefono` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `cargo` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `clave` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`cedula_personal`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -202,14 +202,14 @@ CREATE TABLE `registro` (
   `fecha_r` date DEFAULT NULL,
   `cedula_h` int NOT NULL,
   `cod_examenes` int NOT NULL,
-  `observacion_examen` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL,
-  `ruta_imagen` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `observacion_examen` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `ruta_imagen` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`cod_registro`),
   KEY `cedula_h` (`cedula_h`),
   KEY `cod_examenes` (`cod_examenes`),
   CONSTRAINT `registro_ibfk_1` FOREIGN KEY (`cedula_h`) REFERENCES `historias` (`cedula_historia`),
   CONSTRAINT `registro_ibfk_2` FOREIGN KEY (`cod_examenes`) REFERENCES `examenes` (`cod_examenes`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -218,7 +218,7 @@ CREATE TABLE `registro` (
 
 LOCK TABLES `registro` WRITE;
 /*!40000 ALTER TABLE `registro` DISABLE KEYS */;
-INSERT INTO `registro` VALUES (20,'2024-11-12',30128924,4,'prueba',NULL),(21,'2024-11-19',4655468,1,'AAAAAAAAAAAA',NULL),(23,'2024-11-19',9999999,7,'BBBBB',NULL),(24,'2024-11-20',3513422,14,'AAAAAAAAAAAA',NULL);
+INSERT INTO `registro` VALUES (25,'2024-11-28',5465489,1,'NINGUNA',NULL);
 /*!40000 ALTER TABLE `registro` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -231,4 +231,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-27 12:13:04
+-- Dump completed on 2024-11-28 22:30:10
