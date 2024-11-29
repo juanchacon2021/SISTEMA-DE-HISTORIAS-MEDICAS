@@ -11,8 +11,8 @@
 ?>
     <body >
     <?php
-					  if($nivel=='Doctor'){
-					?>
+		if($nivel=='Doctor')
+	?>
 
     <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100">
     Pacientes
@@ -188,4 +188,5 @@
     <script type="text/javascript" src="js/modificarhistoria.js"></script>
 
     </body>
+                      
 </html>

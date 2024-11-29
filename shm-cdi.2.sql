@@ -25,30 +25,30 @@ DROP TABLE IF EXISTS `consultas`;
 CREATE TABLE `consultas` (
   `cod_consulta` int NOT NULL AUTO_INCREMENT,
   `fechaconsulta` date DEFAULT NULL,
-  `consulta` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `diagnostico` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `tratamientos` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `consulta` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `diagnostico` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `tratamientos` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL,
   `cedula_p` int NOT NULL,
   `cedula_h` int NOT NULL,
-  `general` varchar(300) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `respiratorio` varchar(300) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `cardivascular` varchar(300) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `abdomen` varchar(300) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `extremidades_s` varchar(300) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `neurologicos` varchar(300) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `cabeza_craneo` varchar(300) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `ojos` varchar(300) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `nariz` varchar(300) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `oidos` varchar(300) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `boca_abierta` varchar(300) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `boca_cerrada` varchar(300) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `extremidades_r` varchar(300) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `general` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `respiratorio` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `cardiovascular` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `abdomen` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `extremidades_s` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `neurologicos` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `cabeza_craneo` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `ojos` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `nariz` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `oidos` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `boca_abierta` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `boca_cerrada` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `extremidades_r` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
   PRIMARY KEY (`cod_consulta`),
   KEY `cedula_p` (`cedula_p`),
   KEY `cedula_h` (`cedula_h`),
   CONSTRAINT `consultas_ibfk_1` FOREIGN KEY (`cedula_p`) REFERENCES `personal` (`cedula_personal`),
   CONSTRAINT `consultas_ibfk_2` FOREIGN KEY (`cedula_h`) REFERENCES `historias` (`cedula_historia`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -57,7 +57,7 @@ CREATE TABLE `consultas` (
 
 LOCK TABLES `consultas` WRITE;
 /*!40000 ALTER TABLE `consultas` DISABLE KEYS */;
-INSERT INTO `consultas` VALUES (2,'2024-10-01','Primera consulta','Diarrea','Resogal',31111553,30128924,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `consultas` VALUES (2,'2024-10-01','Primera consulta','Diarrea','Resogal',31111553,30128924,'AAA','AAA','AAA','AAA','AAA','AAA','AAA','AAA','AAA','AAA','AAA','AAA','AAA'),(3,'1992-05-01','AAAAAA','AAAAA','AAAAAAA',31111111,4655468,'AAAA','AAAAAAA','AAAAAA','AAAAAAA','AAAAAA','AAAAAA','AAAAAA','AAAA','AAAAA','AAAAAA','AAAAA','AAAAA','AAAA');
 /*!40000 ALTER TABLE `consultas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -70,11 +70,11 @@ DROP TABLE IF EXISTS `emergencias`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `emergencias` (
   `cod_emergencia` int NOT NULL AUTO_INCREMENT,
-  `horaingreso` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `horaingreso` varchar(7) CHARACTER SET utf8mb4 DEFAULT NULL,
   `fechaingreso` date DEFAULT NULL,
-  `motingreso` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `diagnostico_e` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `tratamientos` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `motingreso` varchar(3000) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `diagnostico_e` varchar(3000) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `tratamientos` varchar(3000) CHARACTER SET utf8mb4 DEFAULT NULL,
   `cedula_p` int NOT NULL,
   `cedula_h` int NOT NULL,
   PRIMARY KEY (`cod_emergencia`),
@@ -104,8 +104,8 @@ DROP TABLE IF EXISTS `examenes`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `examenes` (
   `cod_examenes` int NOT NULL AUTO_INCREMENT,
-  `nombre_examen` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `descripcion_examen` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `nombre_examen` varchar(20) CHARACTER SET utf8mb4 NOT NULL,
+  `descripcion_examen` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
   PRIMARY KEY (`cod_examenes`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -129,24 +129,24 @@ DROP TABLE IF EXISTS `historias`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `historias` (
   `cedula_historia` int NOT NULL,
-  `nombre` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `apellido` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `nombre` varchar(15) CHARACTER SET utf8mb4 NOT NULL,
+  `apellido` varchar(15) CHARACTER SET utf8mb4 NOT NULL,
   `fecha_nac` date DEFAULT NULL,
   `edad` int DEFAULT NULL,
-  `estadocivil` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `ocupacion` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `direccion` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `telefono` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `hda` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `alergias` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `alergias_med` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `quirurgico` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `transsanguineo` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `psicosocial` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `habtoxico` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `antc_padre` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `antc_hermano` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `antc_madre` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `estadocivil` varchar(15) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `ocupacion` varchar(15) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `direccion` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `telefono` varchar(15) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `hda` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `alergias` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `alergias_med` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `quirurgico` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `transsanguineo` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `psicosocial` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `habtoxico` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `antc_padre` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `antc_hermano` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `antc_madre` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
   PRIMARY KEY (`cedula_historia`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -157,7 +157,7 @@ CREATE TABLE `historias` (
 
 LOCK TABLES `historias` WRITE;
 /*!40000 ALTER TABLE `historias` DISABLE KEYS */;
-INSERT INTO `historias` VALUES (5465489,'LUIS MIGUEL','GALLEGO BASTERI','1970-04-19',54,'DIVORCIADO','L','MEXICO','351351351','L','L','L','L','L','L','L',NULL,NULL,NULL),(7856209,'JOE ALEX','CHACON VARGAS','1966-04-28',58,'DIVORCIADO','LOCUTOR','CERRITOS BLANCO','4125105446','NO POSEE','SOL','NO POSEE','NO POSEE','NO POSEE','NO POSEE','NO POSEE',NULL,NULL,NULL),(8564289,'JURGEN','KLINSMANN','2024-10-01',21,'','PPPPP','asdadsasdads','351351351','PPPPP','P','P','P','P','P','P',NULL,NULL,NULL),(9999999,'ANTHOAN','PATINNO','2004-04-30',258,'DIVORCIADO','B','BBBBBBBBBB','352131','B','B','B','B','B','B','B',NULL,NULL,NULL),(12345678,'CRISTIANO ','RONALDO','2024-09-03',12,'','HOLA','HOLA','133513','HOLA','HOLA','HOLA','HOLA','HOLA','HOLA','HOLA',NULL,NULL,NULL),(30128924,'SALOMON','RONDON','2024-09-02',21,'','asdas','asdsda','35135153','asddd','adsadsadsads','dsaaa','adsdasas','das','ads','dasasas',NULL,NULL,NULL),(85642892,'SHOHEI','OHTANI','2024-10-01',21,'','undefined','asdadsasdads','351351351','undefined','undefined','undefined','undefined','undefined','undefined','undefined',NULL,NULL,NULL),(88888888,'JUAN','CHACON','2024-09-03',21,'','A','AAAAAAAAA','35135131','A','A','A','A','A','A','A',NULL,NULL,NULL);
+INSERT INTO `historias` VALUES (3513422,'MANUEL','PATIÑO','1993-02-25',31,'','AAAAAAA','AAAA','35135181','AAA','AAAAAAA','AAAAAA','AAAAAA','AAAAA','AAAAAAA','AAAA','AAAAAAA','AAAAAA','AAAAAAA'),(4655468,'MMMMMMMM','MMMMM','1995-03-05',29,'CASADO','MMMMMM','MMMM','3513511','MMMMMMMMM','AAA','AAA','AAA','AAA','AAA','MMMMM','MMMMMMM','MMMMMM','MMMMMMMMMM'),(5465489,'LUIS MIGUEL','GALLEGO BASTERI','1970-04-19',54,'DIVORCIADO','L','MEXICO','351351351','L','L','L','L','L','L','L',NULL,NULL,NULL),(7856209,'JOE ALEX','CHACON VARGAS','1966-04-28',58,'DIVORCIADO','LOCUTOR','CERRITOS BLANCO','4125105446','NO POSEE','SOL','NO POSEE','NO POSEE','NO POSEE','NO POSEE','NO POSEE',NULL,NULL,NULL),(8564289,'JURGEN','KLINSMANN','2024-10-01',21,'','PPPPP','asdadsasdads','351351351','PPPPP','P','P','P','P','P','P',NULL,NULL,NULL),(9999999,'ANTHOAN','PATINNO','2004-04-30',258,'DIVORCIADO','B','BBBBBBBBBB','352131','B','B','B','B','B','B','B',NULL,NULL,NULL),(12345678,'CRISTIANO ','RONALDO','2024-09-03',12,'','HOLA','HOLA','133513','HOLA','HOLA','HOLA','HOLA','HOLA','HOLA','HOLA',NULL,NULL,NULL),(30128924,'SALOMON','RONDON','2024-09-02',21,'','asdas','asdsda','35135153','asddd','adsadsadsads','dsaaa','adsdasas','das','ads','dasasas',NULL,NULL,NULL),(35135131,'MIGUEL','TORRES','2004-09-28',20,'CASADO','SDASAD','AAAAAA','3513511','ASDDASSAD','undefined','undefined','undefined','undefined','undefined','ADSADSD','DSAASD','DASASD','DASASD'),(85642892,'SHOHEI','OHTANI','2024-10-01',21,'','undefined','asdadsasdads','351351351','undefined','undefined','undefined','undefined','undefined','undefined','undefined',NULL,NULL,NULL),(88888888,'JUAN','CHACON','2024-09-03',21,'','A','AAAAAAAAA','35135131','A','A','A','A','A','A','A',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `historias` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -170,12 +170,12 @@ DROP TABLE IF EXISTS `personal`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `personal` (
   `cedula_personal` int NOT NULL,
-  `nombre` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `apellido` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `correo` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `telefono` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `cargo` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `clave` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `nombre` varchar(15) CHARACTER SET utf8mb4 NOT NULL,
+  `apellido` varchar(15) CHARACTER SET utf8mb4 NOT NULL,
+  `correo` varchar(30) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `telefono` varchar(15) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `cargo` varchar(15) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `clave` varchar(20) CHARACTER SET utf8mb4 NOT NULL,
   PRIMARY KEY (`cedula_personal`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -202,14 +202,14 @@ CREATE TABLE `registro` (
   `fecha_r` date DEFAULT NULL,
   `cedula_h` int NOT NULL,
   `cod_examenes` int NOT NULL,
-  `observacion_examen` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `ruta_imagen` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `observacion_examen` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `ruta_imagen` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
   PRIMARY KEY (`cod_registro`),
   KEY `cedula_h` (`cedula_h`),
   KEY `cod_examenes` (`cod_examenes`),
   CONSTRAINT `registro_ibfk_1` FOREIGN KEY (`cedula_h`) REFERENCES `historias` (`cedula_historia`),
   CONSTRAINT `registro_ibfk_2` FOREIGN KEY (`cod_examenes`) REFERENCES `examenes` (`cod_examenes`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -218,7 +218,7 @@ CREATE TABLE `registro` (
 
 LOCK TABLES `registro` WRITE;
 /*!40000 ALTER TABLE `registro` DISABLE KEYS */;
-INSERT INTO `registro` VALUES (1,'2024-10-10',9999999,1,'HOLA LOCO1',NULL),(4,'2024-11-19',7856209,1,'nada',NULL),(5,'2024-11-12',8564289,1,'nada',NULL),(20,'2024-11-12',30128924,4,'prueba',NULL);
+INSERT INTO `registro` VALUES (20,'2024-11-12',30128924,4,'prueba',NULL),(21,'2024-11-19',4655468,1,'AAAAAAAAAAAA',NULL),(23,'2024-11-19',9999999,7,'BBBBB',NULL),(24,'2024-11-20',3513422,14,'AAAAAAAAAAAA',NULL);
 /*!40000 ALTER TABLE `registro` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -231,4 +231,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-17 16:14:39
+-- Dump completed on 2024-11-27 12:13:04
