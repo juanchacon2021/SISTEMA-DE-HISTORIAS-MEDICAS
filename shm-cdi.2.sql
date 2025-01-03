@@ -25,30 +25,30 @@ DROP TABLE IF EXISTS `consultas`;
 CREATE TABLE `consultas` (
   `cod_consulta` int NOT NULL AUTO_INCREMENT,
   `fechaconsulta` date DEFAULT NULL,
-  `consulta` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `diagnostico` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `tratamientos` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `consulta` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `diagnostico` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `tratamientos` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL,
   `cedula_p` int NOT NULL,
   `cedula_h` int NOT NULL,
-  `general` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `respiratorio` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `cardiovascular` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `abdomen` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `extremidades_s` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `neurologicos` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `cabeza_craneo` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `ojos` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `nariz` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `oidos` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `boca_abierta` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `boca_cerrada` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `extremidades_r` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `general` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `respiratorio` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `cardiovascular` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `abdomen` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `extremidades_s` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `neurologicos` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `cabeza_craneo` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `ojos` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `nariz` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `oidos` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `boca_abierta` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `boca_cerrada` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `extremidades_r` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
   PRIMARY KEY (`cod_consulta`),
   KEY `cedula_p` (`cedula_p`),
   KEY `cedula_h` (`cedula_h`),
   CONSTRAINT `consultas_ibfk_1` FOREIGN KEY (`cedula_p`) REFERENCES `personal` (`cedula_personal`),
   CONSTRAINT `consultas_ibfk_2` FOREIGN KEY (`cedula_h`) REFERENCES `historias` (`cedula_historia`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,11 +70,11 @@ DROP TABLE IF EXISTS `emergencias`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `emergencias` (
   `cod_emergencia` int NOT NULL AUTO_INCREMENT,
-  `horaingreso` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `horaingreso` varchar(7) CHARACTER SET utf8mb4 DEFAULT NULL,
   `fechaingreso` date DEFAULT NULL,
-  `motingreso` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `diagnostico_e` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `tratamientos` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `motingreso` varchar(3000) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `diagnostico_e` varchar(3000) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `tratamientos` varchar(3000) CHARACTER SET utf8mb4 DEFAULT NULL,
   `cedula_p` int NOT NULL,
   `cedula_h` int NOT NULL,
   PRIMARY KEY (`cod_emergencia`),
@@ -82,7 +82,7 @@ CREATE TABLE `emergencias` (
   KEY `cedula_h` (`cedula_h`),
   CONSTRAINT `emergencias_ibfk_1` FOREIGN KEY (`cedula_p`) REFERENCES `personal` (`cedula_personal`),
   CONSTRAINT `emergencias_ibfk_2` FOREIGN KEY (`cedula_h`) REFERENCES `historias` (`cedula_historia`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -104,10 +104,10 @@ DROP TABLE IF EXISTS `examenes`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `examenes` (
   `cod_examenes` int NOT NULL AUTO_INCREMENT,
-  `nombre_examen` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `descripcion_examen` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `nombre_examen` varchar(20) CHARACTER SET utf8mb4 NOT NULL,
+  `descripcion_examen` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
   PRIMARY KEY (`cod_examenes`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,26 +129,26 @@ DROP TABLE IF EXISTS `historias`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `historias` (
   `cedula_historia` int NOT NULL,
-  `nombre` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `apellido` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `nombre` varchar(15) CHARACTER SET utf8mb4 NOT NULL,
+  `apellido` varchar(15) CHARACTER SET utf8mb4 NOT NULL,
   `fecha_nac` date DEFAULT NULL,
   `edad` int DEFAULT NULL,
-  `estadocivil` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `ocupacion` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `direccion` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `telefono` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `hda` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `alergias` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `alergias_med` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `quirurgico` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `transsanguineo` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `psicosocial` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `habtoxico` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `antc_padre` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `antc_hermano` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `antc_madre` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `estadocivil` varchar(15) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `ocupacion` varchar(15) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `direccion` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `telefono` varchar(15) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `hda` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `alergias` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `alergias_med` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `quirurgico` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `transsanguineo` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `psicosocial` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `habtoxico` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `antc_padre` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `antc_hermano` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `antc_madre` varchar(300) CHARACTER SET utf8mb4 DEFAULT NULL,
   PRIMARY KEY (`cedula_historia`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -170,12 +170,12 @@ DROP TABLE IF EXISTS `personal`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `personal` (
   `cedula_personal` int NOT NULL,
-  `nombre` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `apellido` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `correo` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `telefono` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `cargo` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `clave` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `nombre` varchar(15) CHARACTER SET utf8mb4 NOT NULL,
+  `apellido` varchar(15) CHARACTER SET utf8mb4 NOT NULL,
+  `correo` varchar(30) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `telefono` varchar(15) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `cargo` varchar(15) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `clave` varchar(20) CHARACTER SET utf8mb4 NOT NULL,
   PRIMARY KEY (`cedula_personal`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -202,14 +202,14 @@ CREATE TABLE `registro` (
   `fecha_r` date DEFAULT NULL,
   `cedula_h` int NOT NULL,
   `cod_examenes` int NOT NULL,
-  `observacion_examen` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `ruta_imagen` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `observacion_examen` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `ruta_imagen` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
   PRIMARY KEY (`cod_registro`),
   KEY `cedula_h` (`cedula_h`),
   KEY `cod_examenes` (`cod_examenes`),
   CONSTRAINT `registro_ibfk_1` FOREIGN KEY (`cedula_h`) REFERENCES `historias` (`cedula_historia`),
   CONSTRAINT `registro_ibfk_2` FOREIGN KEY (`cod_examenes`) REFERENCES `examenes` (`cod_examenes`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
