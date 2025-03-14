@@ -186,6 +186,29 @@ class historias extends datos{
 		$this->antc_hermano = $valor;
 	}
 	
+	function consultar() {
+        try {
+			$co = $this->conecta();
+			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$resultado = $co->query("SELECT * FROM historias");
+            if ($resultado) {
+                return [
+                    'resultado' => 'consultar',
+                    'datos' => $resultado
+                ];
+            } else {
+                return [
+                    'resultado' => 'consultar',
+                    'datos' => []
+                ];
+            }
+        } catch (Exception $e) {
+            return [
+                'resultado' => 'error',
+                'mensaje' => $e->getMessage()
+            ];
+        }
+    }
 	
 	function incluir(){
 		$r = array();
@@ -288,58 +311,7 @@ class historias extends datos{
 		return $r;
 	}
 	
-	
-	
-	function consultar(){
-		$co = $this->conecta();
-		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$r = array();
-		try{
-			
-			$resultado = $co->query("Select * from historias");
-			
-			if($resultado){
-				
-				$respuesta = '';
-				foreach($resultado as $r){
-					$respuesta = $respuesta."<tr>";
-					    $respuesta = $respuesta."<td>";
 
-						$respuesta = $respuesta."<div class='button-container' style='display: flex; justify-content: center; gap: 10px; margin-top: 10px'>
-                        
-                            <button type='button' class='btn btn-danger' onclick='pone(this,0)'>
-                                <img src='img/lapiz.svg' style='width: 20px'>
-                            </button>
-
-                            <a class='btn btn-success' href='vista/fpdf/historia.php' target='_blank'>
-                                <img src='img/descarga.svg' style='width: 20px;'>
-                            </a>
-
-                        </div><br/>";
-
-							$respuesta = $respuesta."<td>".$r['cedula_historia']."</td>";
-							$respuesta = $respuesta."<td>".$r['apellido']."</td>";
-							$respuesta = $respuesta."<td>".$r['nombre']."</td>";
-							$respuesta = $respuesta."<td>".$r['fecha_nac']."</td>";
-							$respuesta = $respuesta."<td>".$r['edad']."</td>";
-							$respuesta = $respuesta."<td>".$r['telefono']."</td>";
-							$respuesta = $respuesta."</tr>";
-				}
-				
-			    $r['resultado'] = 'consultar';
-				$r['mensaje'] =  $respuesta;
-			}
-			else{
-				$r['resultado'] = 'consultar';
-				$r['mensaje'] =  '';
-			}
-			
-		}catch(Exception $e){
-			$r['resultado'] = 'error';
-			$r['mensaje'] =  $e->getMessage();
-		}
-		return $r;
-	}
 	
 	
 	private function existe($cedula_historia){

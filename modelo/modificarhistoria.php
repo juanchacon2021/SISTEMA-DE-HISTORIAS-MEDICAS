@@ -328,7 +328,7 @@ class PacienteModel {
     private $db;
 
     public function __construct() {
-        $this->db = new PDO('mysql:host=localhost;dbname=shm-cdi.2', 'root', '');
+        $this->db = new PDO('mysql:host=localhost;dbname=shm-cdi.2', 'root', '123456');
     }
 
     public function getPacienteByCedula($cedula_historia) {
