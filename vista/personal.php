@@ -10,6 +10,7 @@
 <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
 Personal
 </div>
+<script type="text/javascript" src="js/personal.js"></script>
 <div class="container espacio"> <!-- container-->
 	<div class="container">
 		<div class="row mt-3 botoneseduin">
@@ -36,14 +37,47 @@ Personal
 				<th style="text-align: center;">Correo</th>
 				<th>Telefono</th>
 				<th>Cargo</th>
-				<th style="display: none;">Clave</th>
+				
 			  </tr>
 			</thead>
 			<tbody id="resultadoconsulta">
-			  
+			
+			
+			
+			<?php foreach ($datos as $r): ?>
+					
+				<script>
+				destruyeDT();		
+			</script>
+				<tr>
+						<td>
+							<div class="button-container" style="display: flex; justify-content: center; gap: 10px; margin-top: 10px">
+							<button type='button' class='btn btn-success' onclick='pone(this,0)'>
+                               <img src='img/lapiz.svg' style='width: 20px'>
+                            </button>
+							<a class='btn btn-danger' onclick='pone(this,1)'>
+                                <img src='img/trash-can-solid.svg' style='width: 20px;'>
+                             </a>
+							</div>
+						</td>
+						<td><?php echo $r['cedula_personal']; ?></td>
+						<td><?php echo $r['apellido']; ?></td>
+						<td><?php echo $r['nombre']; ?></td>
+						<td><?php echo $r['correo']; ?></td>
+						<td><?php echo $r['telefono']; ?></td>
+						<td><?php echo $r['cargo']; ?></td>
+
+					</tr>
+					<script>
+				crearDT();	
+			</script>
+				<?php endforeach; ?>
+		
+			
 			  
 			</tbody>
 	   </table>
+	   
 	  </div>
   </div>
 </div> <!-- fin de container -->
@@ -136,7 +170,7 @@ Personal
 </div>
 <!--Llamada a archivo modal.php, dentro de el hay una sección modal-->
 <?php require_once("comunes/modal.php"); ?>
-<script type="text/javascript" src="js/personal.js"></script>
+
 <?php
 }					?>
 </body>
