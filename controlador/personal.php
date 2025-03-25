@@ -33,8 +33,19 @@ require_once("modelo/".$pagina.".php");
 		  }
 		  exit;
 	  }
-	  
-	  
+	  class Controlador{
+		private $modelo;
+		public function __construct()
+		{
+			$this->modelo = new personal();
+		}
+
+		public function consultar(){
+			return $this->modelo->consultar();
+		}
+	  }
+	  $controlador = new Controlador();
+	  $datos= $controlador->consultar();
 	  require_once("vista/".$pagina.".php"); 
   }
   else{
