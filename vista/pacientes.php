@@ -42,7 +42,7 @@ Pacientes
 					<tr>
 						<td>
 							<div class="button-container" style="display: flex; justify-content: center; gap: 10px; margin-top: 10px">
-								<a type="button" class="btn btn-success" href="?pagina=modificarhistoria&&cedula_historia=<?php echo $r['cedula_historia']; ?>" target="_blank">
+								<a type="button" class="btn btn-success" href="?pagina=historia&&cedula_historia=<?php echo $r['cedula_historia']; ?>">
 									<img src="img/lapiz.svg" style="width: 20px">
 								</a>
 								<a class="btn btn-danger" href="vista/fpdf/historia.php?cedula_historia=<?php echo $r['cedula_historia']; ?>" target="_blank">

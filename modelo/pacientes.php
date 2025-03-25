@@ -266,59 +266,7 @@ class historias extends datos{
             ];
         }
     }
-	
-	// function consultar(){
-	// 	$co = $this->conecta();
-	// 	$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	// 	$r = array();
-	// 	try{
-			
-	// 		$resultado = $co->query("Select * from historias");
-			
-	// 		if($resultado){
-				
-	// 			$respuesta = '';
-	// 			foreach($resultado as $r){
-	// 				$respuesta = $respuesta."<tr>";
-	// 				    $respuesta = $respuesta."<td>";
 
-	// 					$respuesta = $respuesta."<div class='button-container' style='display: flex; justify-content: center; gap: 10px; margin-top: 10px'>
-                        
-    //                         <a type='button' class='btn btn-success' href='?pagina=modificarhistoria&&cedula_historia=" . $r['cedula_historia'] . " target='_blank'>
-	// 							<img src='img/lapiz.svg' style='width: 20px'>
-	// 						</a>
-
-    //                         <a class='btn btn-danger' href='vista/fpdf/historia.php?cedula_historia=" . $r['cedula_historia'] . "' target='_blank'>
-	// 							<img src='img/descarga.svg' style='width: 20px;'>
-	// 						</a>
-
-    //                     </div><br/>";
-
-	// 						$respuesta = $respuesta."<td>".$r['cedula_historia']."</td>";
-	// 						$respuesta = $respuesta."<td>".$r['apellido']."</td>";
-	// 						$respuesta = $respuesta."<td>".$r['nombre']."</td>";
-	// 						$respuesta = $respuesta."<td>".$r['fecha_nac']."</td>";
-	// 						$respuesta = $respuesta."<td>".$r['edad']."</td>";
-	// 						$respuesta = $respuesta."<td>".$r['telefono']."</td>";
-	// 						$respuesta = $respuesta."</tr>";
-	// 			}
-				
-	// 		    $r['resultado'] = 'consultar';
-	// 			$r['mensaje'] =  $respuesta;
-	// 		}
-	// 		else{
-	// 			$r['resultado'] = 'consultar';
-	// 			$r['mensaje'] =  '';
-	// 		}
-			
-	// 	}catch(Exception $e){
-	// 		$r['resultado'] = 'error';
-	// 		$r['mensaje'] =  $e->getMessage();
-	// 	}
-	// 	return $r;
-	// }
-	
-	
 	private function existe($cedula_historia){
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
