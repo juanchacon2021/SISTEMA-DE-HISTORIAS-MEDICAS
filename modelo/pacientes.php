@@ -1,6 +1,5 @@
 <?php
 require_once('modelo/datos.php');
-
 class historias extends datos{
 	private $cedula_historia; 
 	private $apellido;
@@ -28,17 +27,11 @@ class historias extends datos{
 	private $abdomen;
 	private $extremidades;
 	private $neurologico;
-	//Ok ya tenemos los atributos, pero como son privados no podemos acceder a ellos desde fueran
-	//por lo que debemos colcoar metodos (funciones) que me permitan leer (get) y colocar (set)
-	//valores en ello, esto es  muy mal llamado geters y seters por si alguien se los pregunta
+
 	
 	function set_cedula_historia($valor){
-		$this->cedula_historia = $valor; //fijencen como se accede a los elementos dentro de una clase
-		//this que singnifica esto es decir esta clase luego -> simbolo que indica que apunte
-		//a un elemento de this, es decir esta clase
-		//luego el nombre del elemento sin el $
+		$this->cedula_historia = $valor;
 	}
-	//lo mismo que se hizo para cedula se hace para usuario y clave
 	
 	function set_apellido($valor){
 		$this->apellido = $valor;
@@ -248,61 +241,32 @@ class historias extends datos{
 	
 	
 	
-	//Lo siguiente que demos hacer es crear los metodos para incluir, consultar y eliminar
-	
-	
-	function consultar(){
-		$co = $this->conecta();
-		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$r = array();
-		try{
-			
-			$resultado = $co->query("Select * from historias");
-			
-			if($resultado){
-				
-				$respuesta = '';
-				foreach($resultado as $r){
-					$respuesta = $respuesta."<tr>";
-					    $respuesta = $respuesta."<td>";
+	//Lo siguiente que demos hacer es crear los metodos para incluir y consultar
 
-						$respuesta = $respuesta."<div class='button-container' style='display: flex; justify-content: center; gap: 10px; margin-top: 10px'>
-                        
-                            <a type='button' class='btn btn-success' href='?pagina=modificarhistoria&&cedula_historia=" . $r['cedula_historia'] . " target='_blank'>
-								<img src='img/lapiz.svg' style='width: 20px'>
-							</a>
+	public function consultar() {
+        try {
+			$co = $this->conecta();
+			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$resultado = $co->query("SELECT * FROM historias");
+            if ($resultado) {
+                return [
+                    'resultado' => 'consultar',
+                    'datos' => $resultado
+                ];
+            } else {
+                return [
+                    'resultado' => 'consultar',
+                    'datos' => []
+                ];
+            }
+        } catch (Exception $e) {
+            return [
+                'resultado' => 'error',
+                'mensaje' => $e->getMessage()
+            ];
+        }
+    }
 
-                            <a class='btn btn-danger' href='vista/fpdf/historia.php?cedula_historia=" . $r['cedula_historia'] . "' target='_blank'>
-								<img src='img/descarga.svg' style='width: 20px;'>
-							</a>
-
-                        </div><br/>";
-
-							$respuesta = $respuesta."<td>".$r['cedula_historia']."</td>";
-							$respuesta = $respuesta."<td>".$r['apellido']."</td>";
-							$respuesta = $respuesta."<td>".$r['nombre']."</td>";
-							$respuesta = $respuesta."<td>".$r['fecha_nac']."</td>";
-							$respuesta = $respuesta."<td>".$r['edad']."</td>";
-							$respuesta = $respuesta."<td>".$r['telefono']."</td>";
-							$respuesta = $respuesta."</tr>";
-				}
-				
-			    $r['resultado'] = 'consultar';
-				$r['mensaje'] =  $respuesta;
-			}
-			else{
-				$r['resultado'] = 'consultar';
-				$r['mensaje'] =  '';
-			}
-			
-		}catch(Exception $e){
-			$r['resultado'] = 'error';
-			$r['mensaje'] =  $e->getMessage();
-		}
-		return $r;
-	}
-	
-	
 	private function existe($cedula_historia){
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

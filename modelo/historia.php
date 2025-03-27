@@ -2,6 +2,7 @@
 require_once('modelo/datos.php');
 
 class historias extends datos{
+	private $conexion; // Define the conexion property
 	private $cedula_historia;
 	private $apellido;
 	private $nombre;
@@ -25,6 +26,9 @@ class historias extends datos{
 	private $antc_hermano;
 	private $cedula_h;
 
+	function __construct() {
+		$this->conexion = $this->conecta(); // Initialize the conexion property
+	}
 
 	function set_cedula_historia($valor){
 		$this->cedula_historia = $valor; 
@@ -186,6 +190,41 @@ class historias extends datos{
 		$this->antc_hermano = $valor;
 	}
 	
+	function obtenerPorCedula($cedula_historia) {
+        try {
+            $sql = "SELECT * FROM historias WHERE cedula_historia = :cedula_historia";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->bindParam(':cedula_historia', $cedula_historia, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC); // Devuelve datos como un tipo array tiene un nombre pero no recuerdo jsjsjs
+        } catch (PDOException $e) {
+            return null; // En caso de error aqui devuelve null
+        }
+    }
+
+	function consultar() {
+        try {
+			$co = $this->conecta();
+			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$resultado = $co->query("SELECT * FROM historias");
+            if ($resultado) {
+                return [
+                    'resultado' => 'consultar',
+                    'datos' => $resultado
+                ];
+            } else {
+                return [
+                    'resultado' => 'consultar',
+                    'datos' => []
+                ];
+            }
+        } catch (Exception $e) {
+            return [
+                'resultado' => 'error',
+                'mensaje' => $e->getMessage()
+            ];
+        }
+    }
 	
 	function incluir(){
 		$r = array();
@@ -231,8 +270,7 @@ class historias extends datos{
 				// esto es para confirmar la transaccion
 				$co->commit();
 
-				$r['resultado'] = 'incluir';
-				$r['mensaje'] =  'Paciente Registrado Exitosamente';
+				return ["resultado" => "incluir", "mensaje" => "Registro Incluido"];
 		  	} catch(Exception $e) {
 				$r['resultado'] = 'error';
 				$r['mensaje'] =  'Ha ocurrido un error, por favor revisar los datos ingresados';
@@ -274,8 +312,7 @@ class historias extends datos{
 						WHERE
 						cedula_historia = '$this->cedula_historia'
 						");
-						$r['resultado'] = 'modificar';
-			            $r['mensaje'] =  'Registro Modificado';
+						return ["resultado" => "modificar", "mensaje" => "Registro Modificado"];
 			} catch(Exception $e) {
 				$r['resultado'] = 'error';
 			    $r['mensaje'] =  $e->getMessage();
@@ -288,61 +325,10 @@ class historias extends datos{
 		return $r;
 	}
 	
+
 	
 	
-	function consultar(){
-		$co = $this->conecta();
-		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$r = array();
-		try{
-			
-			$resultado = $co->query("Select * from historias");
-			
-			if($resultado){
-				
-				$respuesta = '';
-				foreach($resultado as $r){
-					$respuesta = $respuesta."<tr>";
-					    $respuesta = $respuesta."<td>";
-
-						$respuesta = $respuesta."<div class='button-container' style='display: flex; justify-content: center; gap: 10px; margin-top: 10px'>
-                        
-                            <button type='button' class='btn btn-danger' onclick='pone(this,0)'>
-                                <img src='img/lapiz.svg' style='width: 20px'>
-                            </button>
-
-                            <a class='btn btn-success' href='vista/fpdf/historia.php' target='_blank'>
-                                <img src='img/descarga.svg' style='width: 20px;'>
-                            </a>
-
-                        </div><br/>";
-
-							$respuesta = $respuesta."<td>".$r['cedula_historia']."</td>";
-							$respuesta = $respuesta."<td>".$r['apellido']."</td>";
-							$respuesta = $respuesta."<td>".$r['nombre']."</td>";
-							$respuesta = $respuesta."<td>".$r['fecha_nac']."</td>";
-							$respuesta = $respuesta."<td>".$r['edad']."</td>";
-							$respuesta = $respuesta."<td>".$r['telefono']."</td>";
-							$respuesta = $respuesta."</tr>";
-				}
-				
-			    $r['resultado'] = 'consultar';
-				$r['mensaje'] =  $respuesta;
-			}
-			else{
-				$r['resultado'] = 'consultar';
-				$r['mensaje'] =  '';
-			}
-			
-		}catch(Exception $e){
-			$r['resultado'] = 'error';
-			$r['mensaje'] =  $e->getMessage();
-		}
-		return $r;
-	}
-	
-	
-	private function existe($cedula_historia){
+	function existe($cedula_historia){
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		try{

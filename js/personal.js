@@ -2,11 +2,14 @@
 function consultar(){
 	var datos = new FormData();
 	datos.append('accion','consultar');
-	enviaAjax(datos);	
+	
+	enviaAjax(datos);
+		
 }
 function destruyeDT(){
 	if ($.fn.DataTable.isDataTable("#tablapersonal")) {
             $("#tablapersonal").DataTable().destroy();
+			
     }
 }
 function crearDT(){
@@ -208,6 +211,9 @@ function validarkeypress(er,e){
 	
     
 }
+
+
+
 function validarkeyup(er,etiqueta,etiquetamensaje,
 mensaje){
 	a = er.test(etiqueta.val());
@@ -263,7 +269,8 @@ function enviaAjax(datos) {
 		try {
 		  var lee = JSON.parse(respuesta);
 		  if (lee.resultado == "consultar") {
-			 destruyeDT();	
+ 
+			destruyeDT();	
 			 $("#resultadoconsulta").html(lee.mensaje);
 			 crearDT();
 		  }
@@ -294,6 +301,9 @@ function enviaAjax(datos) {
 		} catch (e) {
 		  alert("Error en JSON " + e.name);
 		}
+
+		
+
 	  },
 	  error: function (request, status, err) {
 		if (status == "timeout") {
