@@ -471,7 +471,41 @@ function enviaAjax(datos) {
         var lee = JSON.parse(respuesta);
         if (lee.resultado == "consultar") {
 		   destruyeDT();	
-           $("#resultadoconsulta").html(lee.mensaje);
+		   var html = '';
+            
+		   lee.datos.forEach(function (fila) {
+			   html += `<tr>
+				   <td>
+					   <div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
+						   <a type="button" class="btn btn-success" onclick="pone(this,0)"
+							   horaingreso="${fila.horaingreso}"
+							   fechaingreso="${fila.fechaingreso}"
+							   motingreso="${fila.motingreso}"
+							   diagnostico_e="${fila.diagnostico_e}"
+							   tratamientos="${fila.tratamientos}"
+							   cedula_p="${fila.cedula_p}"
+							   cedula_h="${fila.cedula_h}"
+							   cargo="${fila.cargo}"
+							   nombre="${fila.nombre}"
+							   apellido="${fila.apellido}">
+							   <img src="img/lapiz.svg" style="width: 20px">
+						   </a>
+						   <!-- Agrega los demás botones aquí -->
+					   </div>
+				   </td>
+				   <td style="display:none;">${fila.cod_emergencia}</td>
+				   <td>${fila.nombre_h}</td>
+				   <td>${fila.apellido_h}</td>
+				   <td>${fila.horaingreso}</td>
+				   <td>${fila.fechaingreso}</td>
+				   <td>${fila.cedula_h}</td>
+				   <td>${fila.nombre}</td>
+				   <td>${fila.apellido}</td>
+				   <td>${fila.cedula_p}</td>
+			   </tr>`;
+		   });
+		   
+		   $("#resultadoconsulta").html(html);
 		   crearDT();
         }
 		
@@ -515,6 +549,9 @@ function enviaAjax(datos) {
       } catch (e) {
         alert("Error en JSON " + e.name);
       }
+
+	  
+
     },
     error: function (request, status, err) {
       
