@@ -21,7 +21,7 @@
             <a href="?pagina=pacientes" class="boton px-4">Volver</a>
         </div>
 
-        <form method="post" id="f">
+        <form method="POST" id="f">
         <input type="hidden" name="accion" value="<?php echo isset($datos) ? 'modificar' : 'guardar'; ?>">
             <div class="container">	
                 <div class="row mb-3 mx-1">
@@ -181,7 +181,7 @@
                 </div>
 
                 <div class="row mt-3 justify-content-center">
-                    <button type="button" class="boton px-4" id="proceso" name="accion" value="<?php echo !empty($datos) ? 'modificar' : 'incluir'; ?>">
+                    <button type="submit" class="boton px-4" id="proceso" name="accion" value="<?php echo !empty($datos) ? 'modificar' : 'incluir'; ?>">
                         <?php echo !empty($datos) ? 'Modificar' : 'Guardar'; ?>
                     </button>
                 </div>
@@ -190,6 +190,7 @@
     </div>
 
     <?php require_once("comunes/modal.php"); ?>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="js/historia.js"></script>
     <?php
 }
