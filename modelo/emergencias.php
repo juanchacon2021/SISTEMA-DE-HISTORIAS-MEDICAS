@@ -274,122 +274,26 @@ class emergencias extends datos{
 	}
 	
 	
-	function consultar(){
+	function consultar() {
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$r = array();
-		try{
+		try {
+			$resultado = $co->query("SELECT *, h.nombre as nombre_h, h.apellido as apellido_h  
+									FROM emergencias e 
+									INNER JOIN historias h ON e.cedula_h = h.cedula_historia
+									INNER JOIN personal p ON e.cedula_p = p.cedula_personal");
 			
-			$resultado = $co->query("Select *, h.nombre as nombre_h, h.apellido as apellido_h  
-										from emergencias e 
-										inner join historias h on e.cedula_h = h.cedula_historia
-										inner join personal p on e.cedula_p = p.cedula_personal");
-			
-			if($resultado){
-				
-				$respuesta = '';
-				foreach($resultado as $r){
-					    $respuesta = $respuesta."<tr>";
-					    $respuesta = $respuesta."<td>";
-							$respuesta = $respuesta."<div class='button-containerotro' style='display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px'>
-							
-							<a type='button' class='btn btn-success' onclick='pone(this,0)'
-												' horaingreso='".$r['horaingreso']."'
-												' fechaingreso='".$r['fechaingreso']."'
-												' motingreso='".$r['motingreso']."'
-												' diagnostico_e='".$r['diagnostico_e']."'
-												' tratamientos='".$r['tratamientos']."'
-												' cedula_p='".$r['cedula_p']."'
-												' cedula_h='".$r['cedula_h']."'
-												' cargo='".$r['cargo']."'
-												' nombre='".$r['nombre']."'
-												' apellido='".$r['apellido']."'
-							>
-                                <img src='img/lapiz.svg' style='width: 20px'>
-                            </a>";
-
-							$respuesta = $respuesta."<a type='button'
-							class='btn btn-danger' 
-							onclick='pone(this,1)'
-												' horaingreso='".$r['horaingreso']."'
-												' fechaingreso='".$r['fechaingreso']."'
-												' motingreso='".$r['motingreso']."'
-												' diagnostico_e='".$r['diagnostico_e']."'
-												' tratamientos='".$r['tratamientos']."'
-												' cedula_p='".$r['cedula_p']."'
-												' cedula_h='".$r['cedula_h']."'
-												' cargo='".$r['cargo']."'
-												' nombre='".$r['nombre']."'
-												' apellido='".$r['apellido']."'
-						    >
-								<img src='img/basura.svg' style='width: 20px'>
-							</a>";
-							
-							$respuesta = $respuesta."<a type='button'
-							class='btn btn-primary' 
-							onclick='pone(this,2)'
-												' horaingreso='".$r['horaingreso']."'
-												' fechaingreso='".$r['fechaingreso']."'
-												' motingreso='".$r['motingreso']."'
-												' diagnostico_e='".$r['diagnostico_e']."'
-												' tratamientos='".$r['tratamientos']."'
-												' cedula_p='".$r['cedula_p']."'
-												' cedula_h='".$r['cedula_h']."'
-												' cargo='".$r['cargo']."'
-												' nombre='".$r['nombre']."'
-												' apellido='".$r['apellido']."'
-						    >
-								<img src='img/ojo.svg' style='width: 20px'>
-							</a>";
-							
-							$respuesta = $respuesta."<a class='btn btn-danger' href='vista/fpdf/emergencias.php?cod_emergencia=" . $r['cod_emergencia'] . "' target='_blank'>
-								<img src='img/descarga.svg' style='width: 20px;'>
-							</a></div><br/>";
-
-							$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td style='display:none;'>";
-							$respuesta = $respuesta.$r['cod_emergencia'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-						$respuesta = $respuesta.$r['nombre_h'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-						$respuesta = $respuesta.$r['apellido_h'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['horaingreso'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['fechaingreso'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-						$respuesta = $respuesta.$r['cedula_h'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-						$respuesta = $respuesta.$r['nombre'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-						$respuesta = $respuesta.$r['apellido'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-						
-						
-							$respuesta = $respuesta.$r['cedula_p'];
-							
-                        
-				}
-				
-			    $r['resultado'] = 'consultar';
-				$r['mensaje'] =  $respuesta;
-			}
-			else{
+			if ($resultado) {
 				$r['resultado'] = 'consultar';
-				$r['mensaje'] =  '';
+				$r['datos'] = $resultado->fetchAll(PDO::FETCH_ASSOC);
+			} else {
+				$r['resultado'] = 'consultar';
+				$r['datos'] = array();
 			}
-			
-		}catch(Exception $e){
+		} catch (Exception $e) {
 			$r['resultado'] = 'error';
-			$r['mensaje'] =  $e->getMessage();
+			$r['mensaje'] = $e->getMessage();
 		}
 		return $r;
 	}

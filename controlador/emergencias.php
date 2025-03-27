@@ -51,7 +51,8 @@ require_once("modelo/".$pagina.".php");
 		  exit;
 	  }
 	  
-	  
+	  $o = new emergencias();
+	$datos = $o->consultar(); 
 	  require_once("vista/".$pagina.".php"); 
   }
   else{

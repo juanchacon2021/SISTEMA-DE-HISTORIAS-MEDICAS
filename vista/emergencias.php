@@ -24,33 +24,60 @@ Emergencias
 		</div>
 	</div>
 	<div class="container">
-	   <div class="table-responsive">
-		<table class="table table-striped table-hover" id="tablapersonal">
-			<thead>
-			  <tr>
-				<th>Acciones</th>
-			    <th style="display:none;">Cod. de emergencia</th> 
-				<th>Nombre</th>
-				<th>Apellido</th>
-				<th>Hora de Ingreso</th>
-				<th>Fecha de Ingreso</th>				
-				<th>Cedula del Paciente</th>
-				<th>Nombre del Personal</th>
-				<th>Apellido del Personal</th>
-				<th>Cedula del Personal</th>
-
-
-			  </tr>
-			</thead>
-			<tbody id="resultadoconsulta">
-			  
-			  
-			</tbody>
-	   </table>
-
-	  </div>
-  </div>
-</div> 
+    <div class="table-responsive">
+        <table class="table table-striped table-hover" id="tablapersonal">
+            <thead>
+                <tr>
+                    <th>Acciones</th>
+                    <th style="display:none;">Cod. de emergencia</th> 
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Hora de Ingreso</th>
+                    <th>Fecha de Ingreso</th>               
+                    <th>Cédula del Paciente</th>
+                    <th>Nombre del Personal</th>
+                    <th>Apellido del Personal</th>
+                    <th>Cédula del Personal</th>
+                </tr>
+            </thead>
+            <tbody id="resultadoconsulta">
+                <?php if ($datos['resultado'] == 'consultar'): ?>
+                    <?php foreach ($datos['datos'] as $fila): ?>
+                        <tr>
+                            <td>
+                                <div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
+                                    <a type="button" class="btn btn-success" onclick="pone(this,0)"
+                                        horaingreso="<?= htmlspecialchars($fila['horaingreso']) ?>"
+                                        fechaingreso="<?= htmlspecialchars($fila['fechaingreso']) ?>"
+                                        motingreso="<?= htmlspecialchars($fila['motingreso']) ?>"
+                                        diagnostico_e="<?= htmlspecialchars($fila['diagnostico_e']) ?>"
+                                        tratamientos="<?= htmlspecialchars($fila['tratamientos']) ?>"
+                                        cedula_p="<?= htmlspecialchars($fila['cedula_p']) ?>"
+                                        cedula_h="<?= htmlspecialchars($fila['cedula_h']) ?>"
+                                        cargo="<?= htmlspecialchars($fila['cargo']) ?>"
+                                        nombre="<?= htmlspecialchars($fila['nombre']) ?>"
+                                        apellido="<?= htmlspecialchars($fila['apellido']) ?>">
+                                        <img src="img/lapiz.svg" style="width: 20px">
+                                    </a>
+                                    <!-- Agrega los demás botones aquí -->
+                                </div>
+                            </td>
+                            <td style="display:none;"><?= htmlspecialchars($fila['cod_emergencia']) ?></td>
+                            <td><?= htmlspecialchars($fila['nombre_h']) ?></td>
+                            <td><?= htmlspecialchars($fila['apellido_h']) ?></td>
+                            <td><?= htmlspecialchars($fila['horaingreso']) ?></td>
+                            <td><?= htmlspecialchars($fila['fechaingreso']) ?></td>
+                            <td><?= htmlspecialchars($fila['cedula_h']) ?></td>
+                            <td><?= htmlspecialchars($fila['nombre']) ?></td>
+                            <td><?= htmlspecialchars($fila['apellido']) ?></td>
+                            <td><?= htmlspecialchars($fila['cedula_p']) ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 
 <div class="modal fade" tabindex="-1" role="dialog"  id="modal1">
