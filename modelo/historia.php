@@ -2,7 +2,7 @@
 require_once('modelo/datos.php');
 
 class historias extends datos{
-	private $conexion; // Define the conexion property
+	private $conexion;
 	private $cedula_historia;
 	private $apellido;
 	private $nombre;
@@ -24,12 +24,10 @@ class historias extends datos{
 	private $antc_madre;
 	private $antc_padre;
 	private $antc_hermano;
-	private $cedula_h;
 
-	function __construct() {
+	 function __construct() {
 		$this->conexion = $this->conecta(); // Initialize the conexion property
 	}
-
 	function set_cedula_historia($valor){
 		$this->cedula_historia = $valor; 
 	}
@@ -108,7 +106,6 @@ class historias extends datos{
 		$this->antc_hermano = $valor;
 	}
 	
-
 	
 	//ahora la misma cosa pero para leer, es decir get
 	
@@ -189,8 +186,13 @@ class historias extends datos{
 	function get_antc_hermano($valor){
 		$this->antc_hermano = $valor;
 	}
+
+	 public function consultar() {
+        // Lógica para consultar datos
+        return ['status' => 'success', 'data' => []];
+    }
 	
-	function obtenerPorCedula($cedula_historia) {
+	 function obtenerPorCedula($cedula_historia) {
         try {
             $sql = "SELECT * FROM historias WHERE cedula_historia = :cedula_historia";
             $stmt = $this->conexion->prepare($sql);
@@ -202,30 +204,6 @@ class historias extends datos{
         }
     }
 
-	function consultar() {
-        try {
-			$co = $this->conecta();
-			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			$resultado = $co->query("SELECT * FROM historias");
-            if ($resultado) {
-                return [
-                    'resultado' => 'consultar',
-                    'datos' => $resultado
-                ];
-            } else {
-                return [
-                    'resultado' => 'consultar',
-                    'datos' => []
-                ];
-            }
-        } catch (Exception $e) {
-            return [
-                'resultado' => 'error',
-                'mensaje' => $e->getMessage()
-            ];
-        }
-    }
-	
 	function incluir(){
 		$r = array();
 		if(!$this->existe($this->cedula_historia)){
@@ -283,7 +261,7 @@ class historias extends datos{
 		return $r; 
 	  }
 	
-	function modificar(){
+	  function modificar(){
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$r = array();
@@ -324,16 +302,15 @@ class historias extends datos{
 		}
 		return $r;
 	}
-	
 
 	
 	
-	function existe($cedula_historia){
+	private function existe($cedula_historia){
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		try{
 			
-			$resultado = $co->query("SELECT * FROM historias WHERE cedula_historia='$cedula_historia'");
+			$resultado = $co->query("Select * from historias where cedula_historia='$cedula_historia'");
 			
 			
 			$fila = $resultado->fetchAll(PDO::FETCH_BOTH);
@@ -351,6 +328,22 @@ class historias extends datos{
 			return false;
 		}
 	}
+	
+	
+	
+	// function obtienefecha(){
+	// 	$r = array();
+		
+	// 		  $f = date('Y-m-d');
+	// 	      $f1 = strtotime ('-18 year' , strtotime($f)); 
+	// 	      $f1 = date ('Y-m-d',$f1);
+	// 		  $r['resultado'] = 'obtienefecha';
+	// 		  $r['mensaje'] =  $f1;
+		
+	// 	return $r;
+	// }
 
+	
+	
 	
 }

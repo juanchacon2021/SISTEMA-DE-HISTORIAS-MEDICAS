@@ -352,66 +352,61 @@ function validarkeyup(er, etiqueta, etiquetamensaje,
 	}
 }
 
-
-//funcion que envia y recibe datos por AJAX
 function enviaAjax(datos) {
-    $.ajax({
-        async: true,
-        url: "controlador/historia.php", // Asegúrate de que la URL apunte al controlador correcto
-        type: "POST",
-        contentType: false,
-        data: datos,
-        processData: false,
-        cache: false,
-        beforeSend: function () {
-            // Opcional: Mostrar un loader o mensaje de espera
-        },
-        timeout: 10000, // Tiempo máximo de espera
-        success: function (respuesta) {
-            try {
-				if (respuesta.trim().startsWith("<")) {
-					throw new Error("El servidor devolvió HTML en lugar de JSON.");
-				}
-				var lee = JSON.parse(respuesta);
-				if (lee.resultado === "consultar") {
-					destruyeDT();
-					$("#resultadoconsulta").html(lee.mensaje);
-					crearDT();
-				} else if (lee.resultado === "incluir") {
-					muestraMensaje(lee.mensaje);
-					if (lee.mensaje === "Registro Incluido") {
-						$("#modal1").modal("hide");
-						consultar();
-					}
-				} else if (lee.resultado === "modificar") {
-					muestraMensaje(lee.mensaje);
-					if (lee.mensaje === "Registro Modificado") {
-						$("#modal1").modal("hide");
-						consultar();
-					}
-				} else if (lee.resultado === "error") {
-					muestraMensaje(lee.mensaje);
-				}
-			} catch (e) {
-				console.error("Error al procesar la respuesta JSON:", e);
-				muestraMensaje("Error procesando la respuesta del servidor.");
-			}
-        },
-        error: function (request, status, err) {
-            if (status === "timeout") {
-                muestraMensaje("Servidor ocupado, intente de nuevo.");
-            } else {
-                muestraMensaje("Error: " + status + " - " + err);
-            }
-        },
-        complete: function () {
-            // Opcional: Ocultar loader o mensaje de espera
-        },
-    });
-}
+	$.ajax({
+	  async: true,
+	  url: "",
+	  type: "POST",
+	  contentType: false,
+	  data: datos,
+	  processData: false,
+	  cache: false,
+	  beforeSend: function () {},
+	  timeout: 10000, //tiempo maximo de espera por la respuesta del servidor
+	  success: function (respuesta) {
+	  console.log(respuesta);
+		try {
+		  var lee = JSON.parse(respuesta);
+		  if (lee.resultado == "incluir") {
+			 muestraMensaje(lee.mensaje);
+			 if(lee.mensaje=='Registro Inluido'){
+				 $("#modal1").modal("hide");
+				 consultar();
+                setTimeout(function() {
+                    window.location.href = '?pagina=pacientes';
+                }, 2000);
+			 }
+		  }
+		  else if (lee.resultado == "modificar") {
+			 muestraMensaje(lee.mensaje);
+			 if(lee.mensaje=='Registro Modificado'){
+				 $("#modal1").modal("hide");
+				 consultar();
+				 setTimeout(function() {
+					 window.location.href = '?pagina=pacientes';
+				 }, 2000);
+			 }
+		  }
+		  
+		  else if (lee.resultado == "error") {
+			 muestraMensaje(lee.mensaje);
+		  }
+		} catch (e) {
+		  alert("Error en JSON " + e.name);
+		}
+	  },
+	  error: function (request, status, err) {
+		if (status == "timeout") {
+		  muestraMensaje("Servidor ocupado, intente de nuevo");
+		} else {
+		  muestraMensaje("ERROR: <br/>" + request + status + err);
+		}
+	  },
+	  complete: function () {},
+	});
+  }
 
-
-document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', function () {
 	const fechaNacInput = document.getElementById('fecha_nac');
 	const edadInput = document.getElementById('edad');
 
