@@ -471,8 +471,8 @@ function enviaAjax(datos) {
         var lee = JSON.parse(respuesta);
         if (lee.resultado == "consultar") {
 		   destruyeDT();	
-		   var html = '';
-            
+		   var html = '';       
+
 		   lee.datos.forEach(function (fila) {
 			   html += `<tr>
 				   <td>
@@ -490,6 +490,35 @@ function enviaAjax(datos) {
 							   apellido="${fila.apellido}">
 							   <img src="img/lapiz.svg" style="width: 20px">
 						   </a>
+						   <a type="button" class="btn btn-danger" onclick="pone(this,1)"
+							   horaingreso="${fila.horaingreso}"
+							   fechaingreso="${fila.fechaingreso}"
+							   motingreso="${fila.motingreso}"
+							   diagnostico_e="${fila.diagnostico_e}"
+							   tratamientos="${fila.tratamientos}"
+							   cedula_p="${fila.cedula_p}"
+							   cedula_h="${fila.cedula_h}"
+							   cargo="${fila.cargo}"
+							   nombre="${fila.nombre}"
+							   apellido="${fila.apellido}">
+							   <img src="img/basura.svg" style="width: 20px">
+						   </a>
+						   <a type="button" class="btn btn-primary" onclick="pone(this,2)"
+							   horaingreso="${fila.horaingreso}"
+							   fechaingreso="${fila.fechaingreso}"
+							   motingreso="${fila.motingreso}"
+							   diagnostico_e="${fila.diagnostico_e}"
+							   tratamientos="${fila.tratamientos}"
+							   cedula_p="${fila.cedula_p}"
+							   cedula_h="${fila.cedula_h}"
+							   cargo="${fila.cargo}"
+							   nombre="${fila.nombre}"
+							   apellido="${fila.apellido}">
+							   <img src="img/ojo.svg" style="width: 20px">
+						   </a>
+						    <a type="button" class="btn btn-danger" href="vista/fpdf/consultasm.php?cod_consulta=${fila.cod_emergencia}" target="_blank">
+							<img src="img/descarga.svg" style="width: 20px;">
+								</a>
 						   <!-- Agrega los demás botones aquí -->
 					   </div>
 				   </td>

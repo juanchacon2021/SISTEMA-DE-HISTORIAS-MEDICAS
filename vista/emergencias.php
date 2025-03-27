@@ -59,6 +59,36 @@ Emergencias
                                         apellido="<?= htmlspecialchars($fila['apellido']) ?>">
                                         <img src="img/lapiz.svg" style="width: 20px">
                                     </a>
+									<a type="button" class="btn btn-danger" onclick="pone(this,1)"
+                                        horaingreso="<?= htmlspecialchars($fila['horaingreso']) ?>"
+                                        fechaingreso="<?= htmlspecialchars($fila['fechaingreso']) ?>"
+                                        motingreso="<?= htmlspecialchars($fila['motingreso']) ?>"
+                                        diagnostico_e="<?= htmlspecialchars($fila['diagnostico_e']) ?>"
+                                        tratamientos="<?= htmlspecialchars($fila['tratamientos']) ?>"
+                                        cedula_p="<?= htmlspecialchars($fila['cedula_p']) ?>"
+                                        cedula_h="<?= htmlspecialchars($fila['cedula_h']) ?>"
+                                        cargo="<?= htmlspecialchars($fila['cargo']) ?>"
+                                        nombre="<?= htmlspecialchars($fila['nombre']) ?>"
+                                        apellido="<?= htmlspecialchars($fila['apellido']) ?>">
+                                        <img src="img/basura.svg" style="width: 20px">
+                                    </a>
+									<a type="button" class="btn btn-primary" onclick="pone(this,2)"
+                                        horaingreso="<?= htmlspecialchars($fila['horaingreso']) ?>"
+                                        fechaingreso="<?= htmlspecialchars($fila['fechaingreso']) ?>"
+                                        motingreso="<?= htmlspecialchars($fila['motingreso']) ?>"
+                                        diagnostico_e="<?= htmlspecialchars($fila['diagnostico_e']) ?>"
+                                        tratamientos="<?= htmlspecialchars($fila['tratamientos']) ?>"
+                                        cedula_p="<?= htmlspecialchars($fila['cedula_p']) ?>"
+                                        cedula_h="<?= htmlspecialchars($fila['cedula_h']) ?>"
+                                        cargo="<?= htmlspecialchars($fila['cargo']) ?>"
+                                        nombre="<?= htmlspecialchars($fila['nombre']) ?>"
+                                        apellido="<?= htmlspecialchars($fila['apellido']) ?>">
+                                        <img src="img/ojo.svg" style="width: 20px">
+                                    </a>
+									<a type="button" class="btn btn-danger" href="vista/fpdf/consultasm.php?cod_consulta=<?= htmlspecialchars($fila['cod_emergencia']) ?>" target="_blank">
+									<img src="img/descarga.svg" style="width: 20px;"></a>
+									
+									
                                     <!-- Agrega los demás botones aquí -->
                                 </div>
                             </td>
@@ -240,7 +270,7 @@ Emergencias
 		  </tr>
 		</thead>
 		<tbody id="listadopacientes">
-		 
+
 		</tbody>
 		</table>
     </div>
