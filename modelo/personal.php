@@ -106,7 +106,7 @@ class personal extends datos{
 						'$this->clave'
 						)");
 						$r['resultado'] = 'incluir';
-			            $r['mensaje'] =  'Registro Inluido';
+			            $r['mensaje'] =  'Registro Incluido';
 			} catch(Exception $e) {
 				$r['resultado'] = 'error';
 			    $r['mensaje'] =  $e->getMessage();
@@ -180,10 +180,29 @@ class personal extends datos{
 		
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$r = array();
+		try {
+			$resultado = $co->query("SELECT * from personal");
+			
+			if ($resultado) {
+				$r['resultado'] = 'consultar';
+				$r['datos'] = $resultado->fetchAll(PDO::FETCH_ASSOC);
+			} else {
+				$r['resultado'] = 'consultar';
+				$r['datos'] = array();
+			}
+		} catch (Exception $e) {
+			$r['resultado'] = 'error';
+			$r['mensaje'] = $e->getMessage();
+		}
+		return $r;
+	}
+		// $co = $this->conecta();
+		// $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
-		$datos=$co->query("Select * from personal");
+		// $datos=$co->query("Select * from personal");
 		
-		return $datos->fetchAll(PDO::FETCH_ASSOC);
+		// return $datos->fetchAll(PDO::FETCH_ASSOC);
 		
 		// $r = array();
 		// try{
@@ -242,32 +261,32 @@ class personal extends datos{
 		// 	$r['mensaje'] =  $e->getMessage();
 		// }
 		// return $r;
-	}
-	
-	
-	private function existe($cedula_personal){
-		$co = $this->conecta();
-		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		try{
-			
-			$resultado = $co->query("Select * from personal where cedula_personal ='$cedula_personal'");
-			
-			
-			$fila = $resultado->fetchAll(PDO::FETCH_BOTH);
-			if($fila){
-
-				return true;
-			    
-			}
-			else{
+		private function existe($cedula_personal){
+			$co = $this->conecta();
+			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			try{
 				
-				return false;;
+				$resultado = $co->query("Select * from personal where cedula_personal ='$cedula_personal'");
+				
+				
+				$fila = $resultado->fetchAll(PDO::FETCH_BOTH);
+				if($fila){
+	
+					return true;
+					
+				}
+				else{
+					
+					return false;;
+				}
+				
+			}catch(Exception $e){
+				return false;
 			}
-			
-		}catch(Exception $e){
-			return false;
 		}
-	}
+	
+	
+	
 	
 	
 	

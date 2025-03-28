@@ -344,7 +344,7 @@ function colocapersonal(linea){
 	" / Apellido: "+$(linea).find("td:eq(3)").text()+" / Cargo: "+
 	$(linea).find("td:eq(4)").text());
 	$("#modalpersonal").modal("hide");
-}
+} 
 
 function colocapersonal_ver(linea, cargo, nombre, apellido){
 
@@ -356,12 +356,20 @@ function colocapersonal_ver(linea, cargo, nombre, apellido){
 	$("#modalpersonal").modal("hide");
 }
 
-function colocapacientes(linea){
-	$("#cedula_h").val($(linea).find("td:eq(1)").text());
-	$("#cedula_historia").val($(linea).find("td:eq(0)").text());
-	$("#datosdelpacientes").html("Nombre: "+$(linea).find("td:eq(2)").text()+
-	" / Apellido: "+$(linea).find("td:eq(3)").text());
-	$("#modalpacientes").modal("hide");
+function colocapacientes(linea) {
+    // Obtiene los datos de la fila seleccionada
+    const cedula = $(linea).find("td:eq(1)").text();
+    const nombre = $(linea).find("td:eq(2)").text();
+    const apellido = $(linea).find("td:eq(3)").text();
+
+    // Coloca los datos en los campos correspondientes
+    $("#cedula_h").val(cedula);
+    $("#datosdelpacientes").html(
+        `Nombre: ${nombre} / Apellido: ${apellido}`
+    );
+
+    // Cierra el modal
+    $("#modalpacientes").modal("hide");
 }
 
 
@@ -471,8 +479,8 @@ function enviaAjax(datos) {
         var lee = JSON.parse(respuesta);
         if (lee.resultado == "consultar") {
 		   destruyeDT();	
-		   var html = '';
-            
+		   var html = '';       
+
 		   lee.datos.forEach(function (fila) {
 			   html += `<tr>
 				   <td>
@@ -490,6 +498,36 @@ function enviaAjax(datos) {
 							   apellido="${fila.apellido}">
 							   <img src="img/lapiz.svg" style="width: 20px">
 						   </a>
+						   <a type="button" class="btn btn-danger" onclick="pone(this,1)"
+							   horaingreso="${fila.horaingreso}"
+							   fechaingreso="${fila.fechaingreso}"
+							   motingreso="${fila.motingreso}"
+							   diagnostico_e="${fila.diagnostico_e}"
+							   tratamientos="${fila.tratamientos}"
+							   cedula_p="${fila.cedula_p}"
+							   cedula_h="${fila.cedula_h}"
+							   cargo="${fila.cargo}"
+							   nombre="${fila.nombre}"
+							   apellido="${fila.apellido}">
+							   <img src="img/basura.svg" style="width: 20px">
+						   </a>
+						   <a type="button" class="btn btn-primary" onclick="pone(this,2)"
+							   horaingreso="${fila.horaingreso}"
+							   fechaingreso="${fila.fechaingreso}"
+							   motingreso="${fila.motingreso}"
+							   diagnostico_e="${fila.diagnostico_e}"
+							   tratamientos="${fila.tratamientos}"
+							   cedula_p="${fila.cedula_p}"
+							   cedula_h="${fila.cedula_h}"
+							   cargo="${fila.cargo}"
+							   nombre="${fila.nombre}"
+							   apellido="${fila.apellido}">
+							   <img src="img/ojo.svg" style="width: 20px">
+						   </a>
+						   
+						    <a class="btn btn-danger" href="vista/fpdf/emergencias.php?cod_emergencia=${fila.cod_emergencia}" target="_blank">
+								<img src="img/descarga.svg" style="width: 20px;">
+							</a>					
 						   <!-- Agrega los demás botones aquí -->
 					   </div>
 				   </td>
@@ -518,13 +556,12 @@ function enviaAjax(datos) {
 		}
 		else if(lee.resultado=='listadopacientes'){
 			destruyeDT1();
-
-			$('#listadopacientes').html(lee.mensaje);
+			$("#listadopacientes").html(html);
 			crearDT1();
 		}
 		else if (lee.resultado == "incluir") {
            muestraMensaje(lee.mensaje);
-		   if(lee.mensaje=='Registro Inluido'){
+		   if(lee.mensaje=='Registro Incluido'){
 			   $("#modal1").modal("hide");
 			   consultar();
 		   }

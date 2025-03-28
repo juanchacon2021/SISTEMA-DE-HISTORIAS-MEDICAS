@@ -21,7 +21,8 @@ require_once("modelo/".$pagina.".php");
 			$respuesta = $o->listadopersonal();
 			echo json_encode($respuesta);
 		}
-		elseif($accion=='listadopacientes'){
+		elseif ($accion == 'listadopacientes') {
+
 			$respuesta = $o->listadopacientes();
 			echo json_encode($respuesta);
 		}
@@ -51,7 +52,9 @@ require_once("modelo/".$pagina.".php");
 	  }
 	  
 	  $o = new emergencias();
-	$datos = $o->consultar(); 
+	$datos = $o->consultar();
+	$datosPacientes = $o->listadopacientes();
+	$datosPersonal = $o->listadopersonal();
 	  require_once("vista/".$pagina.".php"); 
   }
   else{

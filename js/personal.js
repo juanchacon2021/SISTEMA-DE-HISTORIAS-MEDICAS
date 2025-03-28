@@ -1,4 +1,3 @@
-
 function consultar(){
 	var datos = new FormData();
 	datos.append('accion','consultar');
@@ -34,127 +33,109 @@ function crearDT(){
             });
     }         
 }
-$(document).ready(function(){
-	
-	consultar();
-	
-//VALIDACION DE DATOS	
-	$("#cedula_personal").on("keypress",function(e){
-		validarkeypress(/^[0-9-\b]*$/,e);
-	});
-	
-	$("#cedula_personal").on("keyup",function(){
-		validarkeyup(/^[0-9]{7,8}$/,$(this),
-		$("#scedula_personal"),"El formato debe ser 12345678 ");
-	});
-	
-	
-	$("#apellido").on("keypress",function(e){
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
-	});
-	
-	$("#apellido").on("keyup",function(){
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#sapellido"),"Solo letras  entre 3 y 30 caracteres");
-	});
-	
-	$("#nombre").on("keypress",function(e){
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
-	});
-	
-	$("#nombre").on("keyup",function(){
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#snombre"),"Solo letras  entre 3 y 30 caracteres");
-	});
-	
-	$("#correo").on("keypress",function(e){
-		validarkeypress(/^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/);
-	});
-	
-	$("#correo").on("keyup",function(){
-		validarkeyup(/^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/ ,
-		$(this),$("#scorreo"),"Formato incorrecto");
-	});
-	
-	// Validación para el teléfono (ejemplo con formato 04124578987)
-$("#telefono").on("keypress", function(e) {
-    validarkeypress(/^\d{11}$/);
-});
+$(document).ready(function () {
+    consultar();
 
-$("#telefono").on("keyup", function() {
-    validarkeyup(/^\d{11}$/, $(this), $("#stelefono"), "Formato del teléfono incorrecto");
-});
+    // VALIDACION DE DATOS
+    $("#cedula_personal").on("keypress", function (e) {
+        validarkeypress(/^[0-9-\b]*$/, e);
+    });
 
-// Validación para la clave (ejemplo con al menos 8 caracteres, una mayúscula, una minúscula y un número)
-$("#clave").on("keypress", function(e) {
-    validarkeypress(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/);
-});
+    $("#cedula_personal").on("keyup", function () {
+        validarkeyup(/^[0-9]{7,8}$/, $(this), $("#scedula_personal"), "El formato debe ser 12345678 ");
+    });
 
-$("#clave").on("keyup", function() {
-    validarkeyup(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, $(this), $("#sclave"), "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número");
-});
-	
-	
-//FIN DE VALIDACION DE DATOS
+    $("#apellido").on("keypress", function (e) {
+        validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
+    });
 
+    $("#apellido").on("keyup", function () {
+        validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/, $(this), $("#sapellido"), "Solo letras entre 3 y 30 caracteres");
+    });
 
+    $("#nombre").on("keypress", function (e) {
+        validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
+    });
 
-$("#proceso").on("click",function(){
-	if($(this).text()=="INCLUIR"){
-		if(validarenvio()){
-			var datos = new FormData();
-			datos.append('accion','incluir');
-			datos.append('cedula_personal',$("#cedula_personal").val());
-			datos.append('apellido',$("#apellido").val());
-			datos.append('nombre',$("#nombre").val());
-			datos.append('correo',$("#correo").val());
-			datos.append('telefono',$("#telefono").val());
-			datos.append('cargo',$("#cargo").val());
-			datos.append('clave',$("#clave").val());
-			enviaAjax(datos);
-		}
-	}
-	else if($(this).text()=="MODIFICAR"){
-		if(validarenvio()){
-			var datos = new FormData();
-			datos.append('accion','modificar');
-			datos.append('cedula_personal',$("#cedula_personal").val());
-			datos.append('apellido',$("#apellido").val());
-			datos.append('nombre',$("#nombre").val());
-			datos.append('correo',$("#correo").val());
-			datos.append('telefono',$("#telefono").val());
-			datos.append('cargo',$("#cargo").val());
-			datos.append('clave',$("#clave").val());
-			enviaAjax(datos);
-		}
-	}
-	if($(this).text()=="ELIMINAR"){
-		if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula_personal"),
-		$("#scedula_personal"),"El formato debe ser 12345678")==0){
-	    muestraMensaje("La cedula debe coincidir con el formato <br/>"+ 
-						"12345678");	
-		
-	    }
-		else{
-			var datos = new FormData();
-			datos.append('accion','eliminar');
-			datos.append('cedula_personal',$("#cedula_personal").val());
-			enviaAjax(datos);
-		}
-	}
-});
-$("#incluir").on("click",function(){
-	limpia();
-	$("#proceso").text("INCLUIR");
-	$("#modal1").modal("show");
-});
+    $("#nombre").on("keyup", function () {
+        validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/, $(this), $("#snombre"), "Solo letras entre 3 y 30 caracteres");
+    });
 
+    $("#correo").on("keypress", function (e) {
+        validarkeypress(/^[\w@.-]*$/, e); // Corrected regex for keypress validation
+    });
 
+    $("#correo").on("keyup", function () {
+        validarkeyup(/^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/, $(this), $("#scorreo"), "Formato incorrecto");
+    });
 
+    // Validación para el teléfono (ejemplo con formato 04124578987)
+    $("#telefono").on("keypress", function (e) {
+        validarkeypress(/^[0-9]*$/, e); // Corrected regex for keypress validation
+    });
 
+    $("#telefono").on("keyup", function () {
+        validarkeyup(/^\d{11}$/, $(this), $("#stelefono"), "Formato del teléfono incorrecto");
+    });
 
-	
-	
+    // Validación para la clave (ejemplo con al menos 8 caracteres, una mayúscula, una minúscula y un número)
+    $("#clave").on("keypress", function (e) {
+        validarkeypress(/^[a-zA-Z0-9]*$/, e); // Corrected regex for keypress validation
+    });
+
+    $("#clave").on("keyup", function () {
+        validarkeyup(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, $(this), $("#sclave"), "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número");
+    });
+
+    // FIN DE VALIDACION DE DATOS
+
+    $("#proceso").on("click", function () {
+        if ($(this).text() == "INCLUIR") {
+            if (validarenvio()) {
+                var datos = new FormData();
+                datos.append("accion", "incluir");
+                datos.append("cedula_personal", $("#cedula_personal").val());
+                datos.append("apellido", $("#apellido").val());
+                datos.append("nombre", $("#nombre").val());
+                datos.append("correo", $("#correo").val());
+                datos.append("telefono", $("#telefono").val());
+                datos.append("cargo", $("#cargo").val());
+                datos.append("clave", $("#clave").val());
+                enviaAjax(datos);
+            }
+        } else if ($(this).text() == "MODIFICAR") {
+            if (validarenvio()) {
+                var datos = new FormData();
+                datos.append("accion", "modificar");
+                datos.append("cedula_personal", $("#cedula_personal").val());
+                datos.append("apellido", $("#apellido").val());
+                datos.append("nombre", $("#nombre").val());
+                datos.append("correo", $("#correo").val());
+                datos.append("telefono", $("#telefono").val());
+                datos.append("cargo", $("#cargo").val());
+                datos.append("clave", $("#clave").val());
+                enviaAjax(datos);
+            }
+        }
+        if ($(this).text() == "ELIMINAR") {
+            if (
+                validarkeyup(/^[0-9]{7,8}$/, $("#cedula_personal"), $("#scedula_personal"), "El formato debe ser 12345678") == 0
+            ) {
+                muestraMensaje("La cedula debe coincidir con el formato <br/>" + "12345678");
+            } else {
+                var datos = new FormData();
+                datos.append("accion", "eliminar");
+                datos.append("cedula_personal", $("#cedula_personal").val());
+                enviaAjax(datos);
+            }
+        }
+    });
+
+    $("#incluir").on("click", function () {
+        limpia();
+        $("#proceso").text("INCLUIR");
+        $("#modal1").modal("show");
+    });
 });
 
 function validarenvio(){
@@ -269,17 +250,42 @@ function enviaAjax(datos) {
 		try {
 		  var lee = JSON.parse(respuesta);
 		  if (lee.resultado == "consultar") {
- 
 			destruyeDT();	
+			var html = '';
+			
+			lee.datos.forEach(function (fila) {
+				html += `<tr>
+					<td>
+						<div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
+							<button type='button' class='btn btn-success' onclick='pone(this,0)'>
+                                <img src='img/lapiz.svg' style='width: 20px'>
+                             </button>
+							<a class='btn btn-danger' onclick='pone(this,1)'>
+                               <img src='img/trash-can-solid.svg' style='width: 20px;'>
+                        </a>
+						</div>
+					</td>
+					
+					<td>${fila.cedula_personal}</td>
+					<td>${fila.apellido}</td>
+					<td>${fila.nombre}</td>
+					<td>${fila.correo}</td>
+					<td>${fila.telefono}</td>
+					<td>${fila.cargo}</td>
+					
+				</tr>`;
+			});
+			$("#resultadoconsulta").html(html);
+			
 			 $("#resultadoconsulta").html(lee.mensaje);
 			 crearDT();
 		  }
 		  else if (lee.resultado == "incluir") {
 			 muestraMensaje(lee.mensaje);
-			 if(lee.mensaje=='Registro Inluido'){
-				 $("#modal1").modal("hide");
-				 consultar();
-			 }
+			 if (lee.mensaje == 'Registro Incluido') {
+				$("#modal1").modal("hide");
+			consultar();
+			}
 		  }
 		  else if (lee.resultado == "modificar") {
 			 muestraMensaje(lee.mensaje);
