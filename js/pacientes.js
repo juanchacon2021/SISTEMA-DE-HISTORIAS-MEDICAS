@@ -298,41 +298,36 @@ mensaje){
 
 
 //funcion para pasar de la lista a el formulario
-function pone(pos, accion) { 
-    linea = $(pos).closest('tr');
-    if (accion == 0) {
-        $("#proceso").text("MODIFICAR");
-    } else {
-        $("#proceso").text("INCLUIR");
-    }
+function pone(pos,accion){ 
+	linea=$(pos).closest('tr');
 
-    // Depuración: Verificar cada valor antes de asignarlo
-    console.log("Cedula Historia:", $(linea).find("td:eq(1)").text().trim());
-    console.log("Alergias Médicas:", $(linea).find("td:eq(13)").text().trim());
-
-    // Asignar valores a los campos del modal
-    $("#cedula_historia").val($(linea).find("td:eq(1)").text().trim());
-    $("#apellido").val($(linea).find("td:eq(2)").text().trim());
-    $("#nombre").val($(linea).find("td:eq(3)").text().trim());
-    $("#fecha_nac").val($(linea).find("td:eq(4)").text().trim());
-    $("#edad").val($(linea).find("td:eq(5)").text().trim());
-    $("#telefono").val($(linea).find("td:eq(6)").text().trim());
-    $("#estadocivil").val($(linea).find("td:eq(7)").text().trim());
-    $("#direccion").val($(linea).find("td:eq(8)").text().trim());
-    $("#ocupacion").val($(linea).find("td:eq(9)").text().trim());
-    $("#hda").val($(linea).find("td:eq(10)").text().trim());
-    $("#habtoxico").val($(linea).find("td:eq(11)").text().trim());
-    $("#alergias").val($(linea).find("td:eq(12)").text().trim());
-    $("#alergias_med").val($(linea).find("td:eq(13)").text().trim());
-    $("#quirurgico").val($(linea).find("td:eq(14)").text().trim());
-    $("#psicosocial").val($(linea).find("td:eq(15)").text().trim());
-    $("#transsanguineo").val($(linea).find("td:eq(16)").text().trim());
-    $("#antc_padre").val($(linea).find("td:eq(17)").text().trim());
-    $("#antc_hermano").val($(linea).find("td:eq(18)").text().trim());
-    $("#antc_madre").val($(linea).find("td:eq(19)").text().trim());
-
-    // Mostrar el modal
-    $("#modal1").modal("show");
+	if(accion==0){
+		$("#proceso").text("MODIFICAR");
+	}
+	else{
+		$("#proceso").text("INCLUIR");
+	}
+	$("#cedula_historia").val($(linea).find("td:eq(1)").text());
+	$("#apellido").val($(linea).find("td:eq(2)").text());
+	$("#nombre").val($(linea).find("td:eq(3)").text());
+	$("#fecha_nac").val($(linea).find("td:eq(4)").text());
+	$("#edad").val($(linea).find("td:eq(5)").text());
+	$("#telefono").val($(linea).find("td:eq(6)").text());
+	$("#estadocivil").val($(linea).find("td:eq(7)").text());
+	$("#direccion").val($(linea).find("td:eq(8)").text());
+	$("#ocupacion").val($(linea).find("td:eq(9)").text());
+	$("#hda").val($(linea).find("td:eq(10)").text());
+	$("#habtoxico").val($(linea).find("td:eq(11)").text());
+	$("#alergias").val($(linea).find("td:eq(12)").text());
+	$("#alergias_med").val($(linea).find("td:eq(13)").text());
+	$("#quirurgico").val($(linea).find("td:eq(14)").text());
+	$("#psicosocial").val($(linea).find("td:eq(15)").text());
+	$("#transsanguineo").val($(linea).find("td:eq(16)").text());
+    $("#antc_padre").val($(linea).find("td:eq(17)").text());
+	$("#antc_hermano").val($(linea).find("td:eq(18)").text());
+	$("#antc_madre").val($(linea).find("td:eq(19)").text());
+	
+	$("#modal1").modal("show");
 }
 
 //funcion que envia y recibe datos por AJAX
