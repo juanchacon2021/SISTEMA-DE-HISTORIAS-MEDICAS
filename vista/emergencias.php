@@ -41,69 +41,7 @@ Emergencias
                 </tr>
             </thead>
             <tbody id="resultadoconsulta">
-                <?php if ($datos['resultado'] == 'consultar'): ?>
-                    <?php foreach ($datos['datos'] as $fila): ?>
-                        <tr>
-                            <td>
-                                <div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
-                                    <a type="button" class="btn btn-success" onclick="pone(this,0)"
-                                        horaingreso="<?= htmlspecialchars($fila['horaingreso']) ?>"
-                                        fechaingreso="<?= htmlspecialchars($fila['fechaingreso']) ?>"
-                                        motingreso="<?= htmlspecialchars($fila['motingreso']) ?>"
-                                        diagnostico_e="<?= htmlspecialchars($fila['diagnostico_e']) ?>"
-                                        tratamientos="<?= htmlspecialchars($fila['tratamientos']) ?>"
-                                        cedula_p="<?= htmlspecialchars($fila['cedula_p']) ?>"
-                                        cedula_h="<?= htmlspecialchars($fila['cedula_h']) ?>"
-                                        cargo="<?= htmlspecialchars($fila['cargo']) ?>"
-                                        nombre="<?= htmlspecialchars($fila['nombre']) ?>"
-                                        apellido="<?= htmlspecialchars($fila['apellido']) ?>">
-                                        <img src="img/lapiz.svg" style="width: 20px">
-                                    </a>
-									<a type="button" class="btn btn-danger" onclick="pone(this,1)"
-                                        horaingreso="<?= htmlspecialchars($fila['horaingreso']) ?>"
-                                        fechaingreso="<?= htmlspecialchars($fila['fechaingreso']) ?>"
-                                        motingreso="<?= htmlspecialchars($fila['motingreso']) ?>"
-                                        diagnostico_e="<?= htmlspecialchars($fila['diagnostico_e']) ?>"
-                                        tratamientos="<?= htmlspecialchars($fila['tratamientos']) ?>"
-                                        cedula_p="<?= htmlspecialchars($fila['cedula_p']) ?>"
-                                        cedula_h="<?= htmlspecialchars($fila['cedula_h']) ?>"
-                                        cargo="<?= htmlspecialchars($fila['cargo']) ?>"
-                                        nombre="<?= htmlspecialchars($fila['nombre']) ?>"
-                                        apellido="<?= htmlspecialchars($fila['apellido']) ?>">
-                                        <img src="img/basura.svg" style="width: 20px">
-                                    </a>
-									<a type="button" class="btn btn-primary" onclick="pone(this,2)"
-                                        horaingreso="<?= htmlspecialchars($fila['horaingreso']) ?>"
-                                        fechaingreso="<?= htmlspecialchars($fila['fechaingreso']) ?>"
-                                        motingreso="<?= htmlspecialchars($fila['motingreso']) ?>"
-                                        diagnostico_e="<?= htmlspecialchars($fila['diagnostico_e']) ?>"
-                                        tratamientos="<?= htmlspecialchars($fila['tratamientos']) ?>"
-                                        cedula_p="<?= htmlspecialchars($fila['cedula_p']) ?>"
-                                        cedula_h="<?= htmlspecialchars($fila['cedula_h']) ?>"
-                                        cargo="<?= htmlspecialchars($fila['cargo']) ?>"
-                                        nombre="<?= htmlspecialchars($fila['nombre']) ?>"
-                                        apellido="<?= htmlspecialchars($fila['apellido']) ?>">
-                                        <img src="img/ojo.svg" style="width: 20px">
-                                    </a>
-									<a type="button" class="btn btn-danger" href="vista/fpdf/consultasm.php?cod_consulta=<?= htmlspecialchars($fila['cod_emergencia']) ?>" target="_blank">
-									<img src="img/descarga.svg" style="width: 20px;"></a>
-									
-									
-                                    <!-- Agrega los demás botones aquí -->
-                                </div>
-                            </td>
-                            <td style="display:none;"><?= htmlspecialchars($fila['cod_emergencia']) ?></td>
-                            <td><?= htmlspecialchars($fila['nombre_h']) ?></td>
-                            <td><?= htmlspecialchars($fila['apellido_h']) ?></td>
-                            <td><?= htmlspecialchars($fila['horaingreso']) ?></td>
-                            <td><?= htmlspecialchars($fila['fechaingreso']) ?></td>
-                            <td><?= htmlspecialchars($fila['cedula_h']) ?></td>
-                            <td><?= htmlspecialchars($fila['nombre']) ?></td>
-                            <td><?= htmlspecialchars($fila['apellido']) ?></td>
-                            <td><?= htmlspecialchars($fila['cedula_p']) ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php endif; ?>
+                
             </tbody>
         </table>
     </div>
@@ -243,6 +181,17 @@ Emergencias
 		  </tr>
 		</thead>
 		<tbody id="listadopersonal">
+			<?php if ($datosPersonal['resultado'] == 'listadopersonal'): ?>
+				<?php foreach ($datosPersonal['datos'] as $fila): ?>
+					<tr onclick="colocapacientes(this)">
+						<td style="display:none;"><?= htmlspecialchars($fila['cedula_personal']) ?></td>
+						<td><?= htmlspecialchars($fila['cedula_personal']) ?></td>
+						<td><?= htmlspecialchars($fila['nombre']) ?></td>
+						<td><?= htmlspecialchars($fila['apellido']) ?></td>
+						<td><?= htmlspecialchars($fila['cargo']) ?></td>
+					</tr>
+				<?php endforeach; ?>
+			<?php endif; ?>
 		 
 		</tbody>
 		</table>
@@ -270,7 +219,16 @@ Emergencias
 		  </tr>
 		</thead>
 		<tbody id="listadopacientes">
-
+			<?php if ($datosPacientes['resultado'] == 'listadopacientes'): ?>
+				<?php foreach ($datosPacientes['datos'] as $fila): ?>
+					<tr onclick="colocapacientes(this)">
+						<td style="display:none;"><?= htmlspecialchars($fila['cedula_historia']) ?></td>
+						<td><?= htmlspecialchars($fila['cedula_historia']) ?></td>
+						<td><?= htmlspecialchars($fila['nombre']) ?></td>
+						<td><?= htmlspecialchars($fila['apellido']) ?></td>
+					</tr>
+				<?php endforeach; ?>
+			<?php endif; ?>
 		</tbody>
 		</table>
     </div>

@@ -83,85 +83,45 @@ class emergencias extends datos{
 		return $this->cedula_h;
 	}
 
-	function listadopersonal(){
+	function listadopersonal() {
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$r = array(); // en este arreglo
-			// se enviara la respuesta a la solicitud y el
-			// contenido de la respuesta
-		try{
-			$resultado = $co->query("Select * from personal");
-			$respuesta = '';
-			if($resultado){
-				foreach($resultado as $r){
-					$respuesta = $respuesta."<tr style='cursor:pointer' onclick='colocapersonal(this);'>";
-					$respuesta = $respuesta."<td style='display:none'>";
-						$respuesta = $respuesta.$r['cedula_personal'];
-					$respuesta = $respuesta."</td>";
-					$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['cedula_personal'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['nombre'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['apellido'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['cargo'];
-						$respuesta = $respuesta."</td>";
-					$respuesta = $respuesta."</tr>";
-				}
-			}
+		$r = array(); // En este arreglo se enviará la respuesta a la solicitud
+		try {
+			$resultado = $co->query("SELECT * FROM personal");
+			if ($resultado) {
 				$r['resultado'] = 'listadopersonal';
-			    $r['mensaje'] =  $respuesta;
-			    
-			
-			
-		}catch(Exception $e){
+				$r['datos'] = $resultado->fetchAll(PDO::FETCH_ASSOC); // Devuelve los datos como un arreglo asociativo
+			} else {
+				$r['resultado'] = 'listadopersonal';
+				$r['datos'] = array(); // Devuelve un arreglo vacío si no hay resultados
+			}
+		} catch (Exception $e) {
 			$r['resultado'] = 'error';
-			$r['mensaje'] =  $e->getMessage();
+			$r['mensaje'] = $e->getMessage(); // Devuelve el mensaje de error en caso de excepción
 		}
-			return $r;
+		return $r;
 	}
 
-	function listadopacientes(){
+
+	function listadopacientes() {
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$r = array(); // en este arreglo
-			// se enviara la respuesta a la solicitud y el
-			// contenido de la respuesta
-		try{
-			$resultado = $co->query("Select * from historias");
-			$respuesta = '';
-			if($resultado){
-				foreach($resultado as $r){
-					$respuesta = $respuesta."<tr style='cursor:pointer' onclick='colocapacientes(this);'>";
-					$respuesta = $respuesta."<td style='display:none'>";
-						$respuesta = $respuesta.$r['cedula_historia'];
-					$respuesta = $respuesta."</td>";
-					$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['cedula_historia'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['nombre'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['apellido'];
-						$respuesta = $respuesta."</td>";
-					$respuesta = $respuesta."</tr>";
-				}
-			}
+		$r = array(); // En este arreglo se enviará la respuesta a la solicitud
+		try {
+			$resultado = $co->query("SELECT * FROM historias");
+			if ($resultado) {
 				$r['resultado'] = 'listadopacientes';
-			    $r['mensaje'] =  $respuesta;
-			    
-			
-			
-		}catch(Exception $e){
+				$r['datos'] = $resultado->fetchAll(PDO::FETCH_ASSOC); // Devuelve los datos como un arreglo asociativo
+			} else {
+				$r['resultado'] = 'listadopacientes';
+				$r['datos'] = array(); // Devuelve un arreglo vacío si no hay resultados
+			}
+		} catch (Exception $e) {
 			$r['resultado'] = 'error';
-			$r['mensaje'] =  $e->getMessage();
+			$r['mensaje'] = $e->getMessage(); // Devuelve el mensaje de error en caso de excepción
 		}
-			return $r;
+		return $r;
 	}
 
 
