@@ -30,130 +30,213 @@ function crearDT(){
             });
     }         
 }
-$(document).ready(function(){
+
+$(document).ready(function () {
 	consultar();
-	
-// Validaciones
-	$("#cedula_historia").on("keypress",function(e){
-		validarkeypress(/^[0-9-\b]*$/,e);
+
+	// Validaciones
+	$("#cedula_historia").on("keypress", function (e) {
+		validarkeypress(/^[0-9-\b]*$/, e);
 	});
-	
-	$("#cedula_historia").on("keyup",function(){
-		validarkeyup(/^[0-9]{7,8}$/,$(this),
-		$("#scedula_historia"),"El formato debe ser 12345678 ");
+
+	$("#cedula_historia").on("keyup", function () {
+		validarkeyup(/^[0-9]{7,8}$/, $(this),
+			$("#scedula_historia"), "El formato debe ser 12345678 ");
 	});
-	
-	
-	$("#apellido").on("keypress",function(e){
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+
+
+	$("#apellido").on("keypress", function (e) {
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
 	});
-	
-	$("#apellido").on("keyup",function(){
+
+	$("#apellido").on("keyup", function () {
 		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#sapellido"),"Solo letras  entre 3 y 30 caracteres");
+			$(this), $("#sapellido"), "Solo letras  entre 3 y 30 caracteres");
 	});
-	
-	$("#nombre").on("keypress",function(e){
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+
+	$("#nombre").on("keypress", function (e) {
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
 	});
-	
-	$("#nombre").on("keyup",function(){
+
+	$("#nombre").on("keyup", function () {
 		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#snombre"),"Solo letras  entre 3 y 30 caracteres");
+			$(this), $("#snombre"), "Solo letras  entre 3 y 30 caracteres");
 	});
+
+	$("#telefono").on("keypress", function (e) {
+		validarkeypress(/^[0-9-\b]*$/, e);
+	});
+
+	$("#telefono").on("keyup", function () {
+		validarkeyup(/^[0-9]{7,11}$/, $(this),
+			$("#stelefono"), "El formato debe ser de 11 numeros");
+	});
+
+	$("#ocupacion").on("keypress", function (e) {
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
+	});
+
+	$("#ocupacion").on("keyup", function () {
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+			$(this), $("#socupacion"), "Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#hda").on("keypress", function (e) {
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
+	});
+
+	$("#hda").on("keyup", function () {
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+			$(this), $("#shda"), "Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#habtoxico").on("keypress", function (e) {
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
+	});
+
+	$("#habtoxico").on("keyup", function () {
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+			$(this), $("#shabtoxico"), "Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#alergias").on("keypress", function (e) {
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
+	});
+
+	$("#alergias").on("keyup", function () {
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+			$(this), $("#salergias"), "Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#quirurgico").on("keypress", function (e) {
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
+	});
+
+	$("#quirurgico").on("keyup", function () {
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+			$(this), $("#squirurgico"), "Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#transsanguineo").on("keypress", function (e) {
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
+	});
+
+	$("#transsanguineo").on("keyup", function () {
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+			$(this), $("#stranssanguineo"), "Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#alergias_med").on("keypress", function (e) {
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
+	});
+
+	$("#alergias_med").on("keyup", function () {
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+			$(this), $("#salergias_med"), "Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#psicosocial").on("keypress", function (e) {
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
+	});
+
+	$("#psicosocial").on("keyup", function () {
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+			$(this), $("#spsicosocial"), "Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#antc_madre").on("keypress", function (e) {
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
+	});
+
+	$("#antc_madre").on("keyup", function () {
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+			$(this), $("#santc_madre"), "Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#antc_padre").on("keypress", function (e) {
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
+	});
+
+	$("#antc_padre").on("keyup", function () {
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+			$(this), $("#santc_padre"), "Solo letras  entre 3 y 300 caracteres");
+	});
+
+	$("#antc_hermano").on("keypress", function (e) {
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
+	});
+
+	$("#antc_hermano").on("keyup", function () {
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+			$(this), $("#santc_hermano"), "Solo letras  entre 3 y 300 caracteres");
+	});
+});
 
 
 
 
 // Control de los Botones
-$("#proceso").on("click",function(){
+$("#proceso").on("click", function () {
 	if($(this).text()=="INCLUIR"){
-		
-			var datos = new FormData();
-			datos.append('accion','incluir');
-			datos.append('cedula_historia',$("#cedula_historia").val());
-			datos.append('apellido',$("#apellido").val());
-			datos.append('nombre',$("#nombre").val());
-			datos.append('fecha_nac',$("#fecha_nac").val());
-			datos.append('edad',$("#edad").val());
-			datos.append('telefono',$("#telefono").val());
-			datos.append('estadocivi',$("#estadocivi").val());
-			datos.append('direccion',$("#direccion").val());
-			datos.append('ocupacion',$("#ocupacion").val());
-			datos.append('hda',$("#hda").val());
-			datos.append('habtoxico',$("#habtoxico").val());
-			datos.append('alergias',$("#alergias").val());
-			datos.append('quirurgico',$("#quirurgico").val());
-			datos.append('transsanguineo',$("#transsanguineo").val());
-			datos.append('boca_abierta',$("#boca_abierta").val());
-			datos.append('boca_cerrada',$("#boca_cerrada").val());
-			datos.append('oidos',$("#oidos").val());
-			datos.append('cabeza_craneo',$("#cabeza_craneo").val());
-			datos.append('ojos',$("#ojos").val());
-			datos.append('nariz',$("#nariz").val());
-			datos.append('tiroides',$("#tiroides").val());
-			datos.append('cardiovascular',$("#cardiovascular").val());
-			datos.append('respiratorio',$("#respiratorio").val());
-			datos.append('abdomen',$("#abdomen").val());
-			datos.append('extremidades',$("#extremidades").val());
-			datos.append('neurologico',$("#neurologico").val());
-			enviaAjax(datos);
-		
-	}
-	else if($(this).text()=="MODIFICAR"){
 		if(validarenvio()){
 			var datos = new FormData();
-			datos.append('accion','modificar');
-			datos.append('cedula_historia',$("#cedula_historia").val());
-			datos.append('apellido',$("#apellido").val());
-			datos.append('nombre',$("#nombre").val());
-			datos.append('fecha_nac',$("#fecha_nac").val());
-			datos.append('edad',$("#edad").val());
-			datos.append('telefono',$("#telefono").val());
-			datos.append('estadocivi',$("#estadocivi").val());
-			datos.append('direccion',$("#direccion").val());
-			datos.append('ocupacion',$("#ocupacion").val());
-			datos.append('hda',$("#hda").val());
-			datos.append('habtoxico',$("#habtoxico").val());
-			datos.append('alergias',$("#alergias").val());
-			datos.append('quirurgico',$("#quirurgico").val());
-			datos.append('transsanguineo',$("#transsanguineo").val());
-			datos.append('boca_abierta',$("#boca_abierta").val());
-			datos.append('boca_cerrada',$("#boca_cerrada").val());
-			datos.append('oidos',$("#oidos").val());
-			datos.append('cabeza_craneo',$("#cabeza_craneo").val());
-			datos.append('ojos',$("#ojos").val());
-			datos.append('nariz',$("#nariz").val());
-			datos.append('tiroides',$("#tiroides").val());
-			datos.append('cardiovascular',$("#cardiovascular").val());
-			datos.append('respiratorio',$("#respiratorio").val());
-			datos.append('abdomen',$("#abdomen").val());
-			datos.append('extremidades',$("#extremidades").val());
-			datos.append('neurologico',$("#neurologico").val());
+			datos.append("accion", accion);
+			datos.append("cedula_historia", $("#cedula_historia").val());
+			datos.append("nombre", $("#nombre").val());
+			datos.append("apellido", $("#apellido").val());
+			datos.append("fecha_nac", $("#fecha_nac").val());
+			datos.append("edad", $("#edad").val());
+			datos.append("telefono", $("#telefono").val());
+			datos.append("estadocivil", $("#estadocivil").val());
+			datos.append("direccion", $("#direccion").val());
+			datos.append("ocupacion", $("#ocupacion").val());
+			datos.append("hda", $("#hda").val());
+			datos.append("alergias", $("#alergias").val());
+			datos.append("alergias_med", $("#alergias_med").val());
+			datos.append("transsanguineo", $("#transsanguineo").val());
+			datos.append("quirurgico", $("#quirurgico").val());
+			datos.append("psicosocial", $("#psicosocial").val());
+			datos.append("habtoxico", $("#habtoxico").val());
+			datos.append("antc_padre", $("#antc_padre").val());
+			datos.append("antc_hermano", $("#antc_hermano").val());
+			datos.append("antc_madre", $("#antc_madre").val());
+			consultar();
+			// Enviar los datos
+			enviaAjax(datos);
+		}
+	}else if($(this).text()=="MODIFICAR"){
+		if(validarenvio()){
+			var datos = new FormData();
+			datos.append("accion", accion);
+			datos.append("cedula_historia", $("#cedula_historia").val());
+			datos.append("nombre", $("#nombre").val());
+			datos.append("apellido", $("#apellido").val());
+			datos.append("fecha_nac", $("#fecha_nac").val());
+			datos.append("edad", $("#edad").val());
+			datos.append("telefono", $("#telefono").val());
+			datos.append("estadocivil", $("#estadocivil").val());
+			datos.append("direccion", $("#direccion").val());
+			datos.append("ocupacion", $("#ocupacion").val());
+			datos.append("hda", $("#hda").val());
+			datos.append("alergias", $("#alergias").val());
+			datos.append("alergias_med", $("#alergias_med").val());
+			datos.append("transsanguineo", $("#transsanguineo").val());
+			datos.append("quirurgico", $("#quirurgico").val());
+			datos.append("psicosocial", $("#psicosocial").val());
+			datos.append("habtoxico", $("#habtoxico").val());
+			datos.append("antc_padre", $("#antc_padre").val());
+			datos.append("antc_hermano", $("#antc_hermano").val());
+			datos.append("antc_madre", $("#antc_madre").val());
+			consultar();
+			// Enviar los datos
 			enviaAjax(datos);
 		}
 	}
-	// if($(this).text()=="ELIMINAR"){
-	// 	if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula_historia"),
-	// 	$("#scedula_historia"),"El formato debe ser 12345678")==0){
-	//     muestraMensaje("La cedula debe coincidir con el formato <br/>"+ 
-	// 					"12345678");	
-		
-	//     }
-	// 	else{
-	// 		var datos = new FormData();
-	// 		datos.append('accion','eliminar');
-	// 		datos.append('cedula_historia',$("#cedula_historia").val());
-	// 		enviaAjax(datos);
-	// 	}
-	// }
 });
 $("#incluir").on("click",function(){
 	limpia();
 	$("#proceso").text("INCLUIR");
 	$("#modal1").modal("show");
-});
-	
 });
 
 //Validación de todos los campos antes de eviar
@@ -181,12 +264,11 @@ function validarenvio(){
 
 //Funcion que muestra el modal con un mensaje
 function muestraMensaje(mensaje){
-	
 	$("#contenidodemodal").html(mensaje);
 			$("#mostrarmodal").modal("show");
 			setTimeout(function() {
 					$("#mostrarmodal").modal("hide");
-			},5000);
+			},2000);
 }
 
 
@@ -216,42 +298,41 @@ mensaje){
 
 
 //funcion para pasar de la lista a el formulario
-function pone(pos,accion){ 
-	linea=$(pos).closest('tr');
-	if(accion==0){
-		$("#proceso").text("MODIFICAR");
-	}
-	else{
-		$("#proceso").text("INCLUIR");
-	}
-	$("#cedula_historia").val($(linea).find("td:eq(1)").text());
-	$("#apellido").val($(linea).find("td:eq(2)").text());
-	$("#nombre").val($(linea).find("td:eq(3)").text());
-	$("#fecha_nac").val($(linea).find("td:eq(4)").text());
-	$("#edad").val($(linea).find("td:eq(5)").text());
-	$("#telefono").val($(linea).find("td:eq(6)").text());
-	$("#estadocivi").val($(linea).find("td:eq(7)").text());
-	$("#direccion").val($(linea).find("td:eq(8)").text());
-	$("#ocupacion").val($(linea).find("td:eq(9)").text());
-	$("#hda").val($(linea).find("td:eq(10)").text());
-	$("#habtoxico").val($(linea).find("td:eq(11)").text());
-	$("#alergias").val($(linea).find("td:eq(12)").text());
-	$("#quirurgico").val($(linea).find("td:eq(13)").text());
-	$("#transsanguineo").val($(linea).find("td:eq(14)").text());
-	$("#boca_abierta").val($(linea).find("td:eq(15)").text());
-	$("#boca_cerrada").val($(linea).find("td:eq(16)").text());
-	$("#oidos").val($(linea).find("td:eq(17)").text());
-	$("#cabeza_craneo").val($(linea).find("td:eq(18)").text());
-	$("#ojos").val($(linea).find("td:eq(19)").text());
-	$("#nariz").val($(linea).find("td:eq(20)").text());
-	$("#tiroides").val($(linea).find("td:eq(21)").text());
-	$("#cardiovascular").val($(linea).find("td:eq(22)").text());
-	$("#respiratorio").val($(linea).find("td:eq(23)").text());
-	$("#abdomen").val($(linea).find("td:eq(24)").text());
-	$("#extremidades").val($(linea).find("td:eq(25)").text());
-	$("#neurologico").val($(linea).find("td:eq(26)").text());
-	
-	$("#modal1").modal("show");
+function pone(pos, accion) { 
+    linea = $(pos).closest('tr');
+    if (accion == 0) {
+        $("#proceso").text("MODIFICAR");
+    } else {
+        $("#proceso").text("INCLUIR");
+    }
+
+    // Depuración: Verificar cada valor antes de asignarlo
+    console.log("Cedula Historia:", $(linea).find("td:eq(1)").text().trim());
+    console.log("Alergias Médicas:", $(linea).find("td:eq(13)").text().trim());
+
+    // Asignar valores a los campos del modal
+    $("#cedula_historia").val($(linea).find("td:eq(1)").text().trim());
+    $("#apellido").val($(linea).find("td:eq(2)").text().trim());
+    $("#nombre").val($(linea).find("td:eq(3)").text().trim());
+    $("#fecha_nac").val($(linea).find("td:eq(4)").text().trim());
+    $("#edad").val($(linea).find("td:eq(5)").text().trim());
+    $("#telefono").val($(linea).find("td:eq(6)").text().trim());
+    $("#estadocivil").val($(linea).find("td:eq(7)").text().trim());
+    $("#direccion").val($(linea).find("td:eq(8)").text().trim());
+    $("#ocupacion").val($(linea).find("td:eq(9)").text().trim());
+    $("#hda").val($(linea).find("td:eq(10)").text().trim());
+    $("#habtoxico").val($(linea).find("td:eq(11)").text().trim());
+    $("#alergias").val($(linea).find("td:eq(12)").text().trim());
+    $("#alergias_med").val($(linea).find("td:eq(13)").text().trim());
+    $("#quirurgico").val($(linea).find("td:eq(14)").text().trim());
+    $("#psicosocial").val($(linea).find("td:eq(15)").text().trim());
+    $("#transsanguineo").val($(linea).find("td:eq(16)").text().trim());
+    $("#antc_padre").val($(linea).find("td:eq(17)").text().trim());
+    $("#antc_hermano").val($(linea).find("td:eq(18)").text().trim());
+    $("#antc_madre").val($(linea).find("td:eq(19)").text().trim());
+
+    // Mostrar el modal
+    $("#modal1").modal("show");
 }
 
 //funcion que envia y recibe datos por AJAX
@@ -272,15 +353,73 @@ function enviaAjax(datos) {
 		try {
 		  var lee = JSON.parse(respuesta);
 		  if (lee.resultado == "consultar") {
-			 destruyeDT();	
-			 $("#resultadoconsulta").html(lee.mensaje);
-			 crearDT();
+			destruyeDT();	
+			var html = '';
+			 
+			lee.datos.forEach(function (fila) {
+				html += `<tr>
+					<td>
+						<div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
+							<a type="button" class="btn btn-success" onclick="pone(this,0)"
+								cedula_historia="${fila.cedula_historia}"
+								apellido="${fila.apellido}
+								nombre="${fila.nombre}"
+								fecha_nac="${fila.fecha_nac}"
+								edad="${fila.edad}"
+								telefono="${fila.telefono}"
+								estadocivil="${fila.estadocivil}"
+								direccion="${fila.direccion}"
+								ocupacion="${fila.ocupacion}"
+								hda="${fila.hda}"
+								habtoxico="${fila.habtoxico}"
+								alergias="${fila.alergias}"
+								alergia_med="${fila.alergia_med}"
+								quirurgico="${fila.quirurgico}"
+								transsanguineo="${fila.transsanguineo}"
+								psicosocial="${fila.psicosocial}"
+								antc_padre="${fila.antc_padre}"
+								antc_hermano="${fila.antc_hermano}"
+								antc_madre="${fila.antc_madre}">
+								<img src="img/lapiz.svg" style="width: 20px">
+							</a>
+							<a class="btn btn-danger" href="vista/fpdf/historia.php?cedula_historia=${fila.cedula_historia}" target="_blank">
+								<img src="img/descarga.svg" style="width: 20px;">
+							</a>
+						</div>
+					</td>
+					<td>${fila.cedula_historia}</td>
+					<td>${fila.apellido}</td>
+					<td>${fila.nombre}</td>
+					<td>${fila.fecha_nac}</td>
+					<td>${fila.edad}</td>
+					<td>${fila.telefono}</td>
+					<td style="display: none;">${fila.estadocivil}</td>
+					<td style="display: none;">${fila.direccion}</td>
+					<td style="display: none;">${fila.ocupacion}</td>
+					<td style="display: none;">${fila.hda}</td>
+					<td style="display: none;">${fila.habtoxico}</td>
+					<td style="display: none;">${fila.alergias}</td>
+					<td style="display: none;">${fila.alergia_med}</td>
+					<td style="display: none;">${fila.quirurgico}</td>
+					<td style="display: none;">${fila.psicosocial}</td>
+					<td style="display: none;">${fila.transsanguineo}</td>
+					<td style="display: none;">${fila.antc_padre}</td>
+					<td style="display: none;">${fila.antc_hermano}</td>
+					<td style="display: none;">${fila.antc_madre}</td>
+				</tr>`;
+			});
+			
+			$("#resultadoconsulta").html(html);
+			crearDT();
 		  }
 		  else if (lee.resultado == "incluir") {
 			 muestraMensaje(lee.mensaje);
 			 if(lee.mensaje=='Registro Inluido'){
 				 $("#modal1").modal("hide");
 				 consultar();
+				 setTimeout(function() {
+					 window.location.href = '?pagina=pacientes';
+				 }, 2000);
 			 }
 		  }
 		  else if (lee.resultado == "modificar") {
@@ -288,6 +427,9 @@ function enviaAjax(datos) {
 			 if(lee.mensaje=='Registro Modificado'){
 				 $("#modal1").modal("hide");
 				 consultar();
+				 setTimeout(function() {
+					 window.location.href = '?pagina=pacientes';
+				 }, 2000);
 			 }
 		  }
 		  
@@ -299,9 +441,6 @@ function enviaAjax(datos) {
 		}
 	  },
 	  error: function (request, status, err) {
-		// si ocurrio un error en la trasmicion
-		// o recepcion via ajax entra aca
-		// y se muestran los mensaje del error
 		if (status == "timeout") {
 		  //pasa cuando superan los 10000 10 segundos de timeout
 		  muestraMensaje("Servidor ocupado, intente de nuevo");
@@ -312,55 +451,44 @@ function enviaAjax(datos) {
 	  },
 	  complete: function () {},
 	});
+	function limpia(){
+		$("#cedula_historia").val("");
+		$("#apellido").val("");
+		$("#nombre").val("");
+		$("#fecha_nac").val("");
+		$("#edad").val("");
+		$("#telefono").val("");
+		$("#estadocivil").val("");
+		$("#direccion").val("");
+		$("#ocupacion").val("");
+		$("#hda").val("");
+		$("#habtoxico").val("");
+		$("#alergias").val("");
+		$("#alergias_med").val("");
+		$("#quirurgico").val("");
+		$("#transsanguineo").val("");
+		$("#psicosocial").val("");
+		$("#antc_padre").val("");
+		$("#antc_hermano").val("");
+		$("#antc_madre").val("");
+	}
   }
 
-  $(document).on('click', '.btn-modificar', function() {
-    var row = $(this).closest('tr');
-    
-    // Leer los valores de los atributos data-*
-    var estadocivi = row.data('estadocivi');
-    var direccion = row.data('direccion');
-    var ocupacion = row.data('ocupacion');
-    var hda = row.data('hda');
-    var habtoxico = row.data('habtoxico');
-    var alergias = row.data('alergias');
-    var quirurgico = row.data('quirurgico');
-    var transsanguineo = row.data('transsanguineo');
-    var boca_abierta = row.data('boca_abierta');
-    var boca_cerrada = row.data('boca_cerrada');
-    var oidos = row.data('oidos');
-    var cabeza_craneo = row.data('cabeza_craneo');
-    var ojos = row.data('ojos');
-    var nariz = row.data('nariz');
-    var tiroides = row.data('tiroides');
-    var cardiovascular = row.data('cardiovascular');
-    var respiratorio = row.data('respiratorio');
-    var abdomen = row.data('abdomen');
-    var extremidades = row.data('extremidades');
-    var neurologico = row.data('neurologico');
-    
-    // Rellenar los campos del formulario en el modal
-    $('#modalModificar input[name="estadocivi"]').val(estadocivi);
-    $('#modalModificar input[name="direccion"]').val(direccion);
-    $('#modalModificar input[name="ocupacion"]').val(ocupacion);
-    $('#modalModificar input[name="hda"]').val(hda);
-    $('#modalModificar input[name="habtoxico"]').val(habtoxico);
-    $('#modalModificar input[name="alergias"]').val(alergias);
-    $('#modalModificar input[name="quirurgico"]').val(quirurgico);
-    $('#modalModificar input[name="transsanguineo"]').val(transsanguineo);
-    $('#modalModificar input[name="boca_abierta"]').val(boca_abierta);
-    $('#modalModificar input[name="boca_cerrada"]').val(boca_cerrada);
-    $('#modalModificar input[name="oidos"]').val(oidos);
-    $('#modalModificar input[name="cabeza_craneo"]').val(cabeza_craneo);
-    $('#modalModificar input[name="ojos"]').val(ojos);
-    $('#modalModificar input[name="nariz"]').val(nariz);
-    $('#modalModificar input[name="tiroides"]').val(tiroides);
-    $('#modalModificar input[name="cardiovascular"]').val(cardiovascular);
-    $('#modalModificar input[name="respiratorio"]').val(respiratorio);
-    $('#modalModificar input[name="abdomen"]').val(abdomen);
-    $('#modalModificar input[name="extremidades"]').val(extremidades);
-    $('#modalModificar input[name="neurologico"]').val(neurologico);
-    
-    // Mostrar el modal
-    $('#modalModificar').modal('show');
+document.addEventListener('DOMContentLoaded', function () {
+	const fechaNacInput = document.getElementById('fecha_nac');
+	const edadInput = document.getElementById('edad');
+
+	fechaNacInput.addEventListener('input', function () {
+		const fechaNac = new Date(this.value);
+		const hoy = new Date();
+		let edad = hoy.getFullYear() - fechaNac.getFullYear();
+		const mes = hoy.getMonth() - fechaNac.getMonth();
+
+		if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNac.getDate())) {
+			edad--;
+		}
+
+		edadInput.value = edad;
+	});
 });
+

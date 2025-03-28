@@ -187,10 +187,26 @@ class historias extends datos{
 		$this->antc_hermano = $valor;
 	}
 
-	 public function consultar() {
-        // Lógica para consultar datos
-        return ['status' => 'success', 'data' => []];
-    }
+	function consultar() {
+		$co = $this->conecta();
+		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$r = array();
+		try {
+			$resultado = $co->query("SELECT * FROM historias");
+			
+			if ($resultado) {
+				$r['resultado'] = 'consultar';
+				$r['datos'] = $resultado->fetchAll(PDO::FETCH_ASSOC);
+			} else {
+				$r['resultado'] = 'consultar';
+				$r['datos'] = array();
+			}
+		} catch (Exception $e) {
+			$r['resultado'] = 'error';
+			$r['mensaje'] = $e->getMessage();
+		}
+		return $r;
+	}
 	
 	 function obtenerPorCedula($cedula_historia) {
         try {
@@ -251,7 +267,7 @@ class historias extends datos{
 				return ["resultado" => "incluir", "mensaje" => "Registro Incluido"];
 		  	} catch(Exception $e) {
 				$r['resultado'] = 'error';
-				$r['mensaje'] =  'Ha ocurrido un error, por favor revisar los datos ingresados';
+				$r['mensaje'] =  $e->getMessage();
 		  }
 		}
 		else{

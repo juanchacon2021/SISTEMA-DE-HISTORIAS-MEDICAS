@@ -1,36 +1,34 @@
 <?php
 require_once('modelo/datos.php');
 class historias extends datos{
-	private $cedula_historia; 
+	private $conexion;
+	private $cedula_historia;
 	private $apellido;
 	private $nombre;
 	private $fecha_nac;
 	private $edad;
 	private $telefono;
-	private $estadocivi;
+	private $estadocivil;
 	private $direccion;
 	private $ocupacion;
 	private $hda;
 	private $habtoxico;
 	private $alergias;
+	private $alergias_med;
 	private $quirurgico;
 	private $transsanguineo;
-	private $boca_abierta;
-	private $boca_cerrada;
-	private $oidos;
-	private $cabeza_craneo;
-	private $ojos;
-	private $nariz;
-	private $tiroides;
-	private $cardiovascular;
-	private $respiratorio;
-	private $abdomen;
-	private $extremidades;
-	private $neurologico;
+	private $psicosocial;
 
-	
+	// antcEDENTES
+	private $antc_madre;
+	private $antc_padre;
+	private $antc_hermano;
+
+	 function __construct() {
+		$this->conexion = $this->conecta(); // Initialize the conexion property
+	}
 	function set_cedula_historia($valor){
-		$this->cedula_historia = $valor;
+		$this->cedula_historia = $valor; 
 	}
 	
 	function set_apellido($valor){
@@ -57,8 +55,8 @@ class historias extends datos{
 		$this->direccion = $valor;
 	}
 	
-	function set_estadocivi($valor){
-		$this->estadocivi = $valor;
+	function set_estadocivil($valor){
+		$this->estadocivil = $valor;
 	}
 	
 	function set_ocupacion($valor){
@@ -77,6 +75,10 @@ class historias extends datos{
 		$this->alergias = $valor;
 	}
 	
+	function set_alergias_med($valor){
+		$this->alergias_med = $valor;
+	}
+	
 	function set_quirurgico($valor){
 		$this->quirurgico = $valor;
 	}
@@ -85,53 +87,24 @@ class historias extends datos{
 		$this->transsanguineo = $valor;
 	}
 	
-	function set_boca_abierta($valor){
-		$this->boca_abierta = $valor;
+	function set_psicosocial($valor){
+		$this->psicosocial = $valor;
 	}
 	
-	function set_boca_cerrada($valor){
-		$this->boca_cerrada = $valor;
+	// antcEDENTES
+
+	function set_antc_madre($valor){
+		$this->antc_madre = $valor;
 	}
 	
-	function set_oidos($valor){
-		$this->oidos = $valor;
+	function set_antc_padre($valor){
+		$this->antc_padre = $valor;
 	}
 	
-	function set_cabeza_craneo($valor){
-		$this->cabeza_craneo = $valor;
+	function set_antc_hermano($valor){
+		$this->antc_hermano = $valor;
 	}
 	
-	function set_ojos($valor){
-		$this->ojos = $valor;
-	}
-	
-	function set_nariz($valor){
-		$this->nariz = $valor;
-	}
-	
-	function set_tiroides($valor){
-		$this->tiroides = $valor;
-	}
-	
-	function set_cardiovascular($valor){
-		$this->cardiovascular = $valor;
-	}
-	
-	function set_respiratorio($valor){
-		$this->respiratorio = $valor;
-	}
-	
-	function set_abdomen($valor){
-		$this->abdomen = $valor;
-	}
-	
-	function set_extremidades($valor){
-		$this->extremidades = $valor;
-	}
-	
-	function set_neurologico($valor){
-		$this->neurologico = $valor;
-	}
 	
 	//ahora la misma cosa pero para leer, es decir get
 	
@@ -159,8 +132,8 @@ class historias extends datos{
 		return $this->telefono;
 	}
 	
-	function get_estadocivi(){
-		return $this->estadocivi;
+	function get_estadocivil(){
+		return $this->estadocivil;
 	}
 	
 	function get_direccion(){
@@ -183,129 +156,173 @@ class historias extends datos{
 		return $this->alergias;
 	}
 	
-	function get_quirurgico(){
-		return $this->quirurgico;
+	function get_alergias_med($valor){
+		$this->alergias_med = $valor;
 	}
 	
-	function get_transsanguineo(){
-		return $this->transsanguineo;
+	function get_quirurgico($valor){
+		$this->quirurgico = $valor;
 	}
 	
-	function get_boca_abierta(){
-		return $this->boca_abierta;
+	function get_transsanguineo($valor){
+		$this->transsanguineo = $valor;
 	}
 	
-	function get_boca_cerrada(){
-		return $this->boca_cerrada;
+	function get_psicosocial($valor){
+		$this->psicosocial = $valor;
 	}
-	
-	function get_oidos(){
-		return $this->oidos;
-	}
-	
-	function get_cabeza_craneo(){
-		return $this->cabeza_craneo;
-	}
-	
-	function get_ojos(){
-		return $this->ojos;
-	}
-	
-	function get_nariz(){
-		return $this->nariz;
-	}
-	
-	function get_tiroides(){
-		return $this->tiroides;
-	}
-	
-	function get_cardiovascular(){
-		return $this->cardiovascular;
-	}
-	
-	function get_respiratorio(){
-		return $this->respiratorio;
-	}
-	
-	function get_abdomen(){
-		return $this->abdomen;
-	}
-	
-	function get_extremidades(){
-		return $this->extremidades;
-	}
-	
-	function get_neurologico(){
-		return $this->neurologico;
-	}
-	
-	
-	
-	//Lo siguiente que demos hacer es crear los metodos para incluir y consultar
 
-	public function consultar() {
-        try {
-			$co = $this->conecta();
-			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	// antcEDENTES	
+	
+	function get_antc_madre($valor){
+		$this->antc_madre = $valor;
+	}
+	
+	function get_antc_padre($valor){
+		$this->antc_padre = $valor;
+	}
+	
+	function get_antc_hermano($valor){
+		$this->antc_hermano = $valor;
+	}
+	
+	function incluir(){
+		$r = array();
+		if(!$this->existe($this->cedula_historia)){
+		  	$co = $this->conecta();
+		  	$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		  	try {
+				// Aqui inicia la transaccion
+				$co->beginTransaction();
+			
+				// Aqui hice la primera consulta INSERT
+				$stmt1 = $co->prepare("INSERT INTO historias(
+					cedula_historia, apellido, nombre, fecha_nac, edad, telefono, estadocivil, direccion, ocupacion, hda, habtoxico,
+					alergias, quirurgico, transsanguineo, alergias_med, psicosocial, antc_madre, antc_padre, antc_hermano
+				) VALUES (
+					:cedula_historia, :apellido, :nombre, :fecha_nac, :edad, :telefono, :estadocivil, :direccion, :ocupacion,
+					:hda, :habtoxico, :alergias, :quirurgico, :transsanguineo, :alergias_med, :psicosocial, :antc_madre, :antc_padre, :antc_hermano
+				)");
+			
+				$stmt1->execute([
+					':cedula_historia' => $this->cedula_historia,
+					':apellido' => $this->apellido,
+					':nombre' => $this->nombre,
+					':fecha_nac' => $this->fecha_nac,
+					':edad' => $this->edad,
+					':telefono' => $this->telefono,
+					':estadocivil' => $this->estadocivil,
+					':direccion' => $this->direccion,
+					':ocupacion' => $this->ocupacion,
+					':hda' => $this->hda,
+					':habtoxico' => $this->habtoxico,
+					':alergias' => $this->alergias,
+					':quirurgico' => $this->quirurgico,
+					':transsanguineo' => $this->transsanguineo,
+					':alergias_med' => $this->alergias_med,
+					':psicosocial' => $this->psicosocial,
+					':antc_madre' => $this->antc_madre,
+					':antc_padre' => $this->antc_padre,
+					':antc_hermano' => $this->antc_hermano
+				]);
+			
+			
+				// esto es para confirmar la transaccion
+				$co->commit();
+
+				return ["resultado" => "incluir", "mensaje" => "Registro Incluido"];
+		  	} catch(Exception $e) {
+				$r['resultado'] = 'error';
+				$r['mensaje'] =  $e->getMessage();
+		  }
+		}
+		else{
+		  $r['resultado'] = 'incluir';
+		  $r['mensaje'] =  'Ya existe la cedula';
+		}
+		return $r; 
+	  }
+	
+	  function modificar(){
+		$co = $this->conecta();
+		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$r = array();
+		if($this->existe($this->cedula_historia)){
+			try {
+					$co->query("UPDATE historias SET
+						cedula_historia = '$this->cedula_historia',
+						apellido = '$this->apellido',
+						nombre = '$this->nombre',
+						fecha_nac = '$this->fecha_nac',
+						edad = '$this->edad',
+						telefono = '$this->telefono',
+						estadocivil = '$this->estadocivil',
+						direccion = '$this->direccion',
+						ocupacion = '$this->ocupacion',
+						hda = '$this->hda',
+						habtoxico = '$this->habtoxico',
+						alergias = '$this->alergias',
+						quirurgico = '$this->quirurgico',
+						transsanguineo = '$this->transsanguineo',
+						alergias_med = '$this->alergias_med',
+						psicosocial = '$this->psicosocial',
+						antc_madre = '$this->antc_madre',
+						antc_padre = '$this->antc_padre',
+						antc_hermano = '$this->antc_hermano'	
+						WHERE
+						cedula_historia = '$this->cedula_historia'
+						");
+						return ["resultado" => "modificar", "mensaje" => "Registro Modificado"];
+			} catch(Exception $e) {
+				$r['resultado'] = 'error';
+			    $r['mensaje'] =  $e->getMessage();
+			}
+		}
+		else{
+			$r['resultado'] = 'modificar';
+			$r['mensaje'] =  'Cedula no registrada';
+		}
+		return $r;
+	}
+
+
+	function consultar() {
+		$co = $this->conecta();
+		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$r = array();
+		try {
 			$resultado = $co->query("SELECT * FROM historias");
-            if ($resultado) {
-                return [
-                    'resultado' => 'consultar',
-                    'datos' => $resultado
-                ];
-            } else {
-                return [
-                    'resultado' => 'consultar',
-                    'datos' => []
-                ];
-            }
-        } catch (Exception $e) {
-            return [
-                'resultado' => 'error',
-                'mensaje' => $e->getMessage()
-            ];
-        }
-    }
+			
+			if ($resultado) {
+				$r['resultado'] = 'consultar';
+				$r['datos'] = $resultado->fetchAll(PDO::FETCH_ASSOC);
+			} else {
+				$r['resultado'] = 'consultar';
+				$r['datos'] = array();
+			}
+		} catch (Exception $e) {
+			$r['resultado'] = 'error';
+			$r['mensaje'] = $e->getMessage();
+		}
+		return $r;
+	}
 
 	private function existe($cedula_historia){
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		try{
-			
-			$resultado = $co->query("Select * from historias where cedula_historia='$cedula_historia'");
-			
-			
+			$resultado = $co->query("SELECT * FROM historias WHERE cedula_historia='$cedula_historia'");
 			$fila = $resultado->fetchAll(PDO::FETCH_BOTH);
 			if($fila){
-
 				return true;
-			    
 			}
 			else{
-				
 				return false;;
 			}
-			
 		}catch(Exception $e){
 			return false;
 		}
 	}
-	
-	
-	
-	// function obtienefecha(){
-	// 	$r = array();
-		
-	// 		  $f = date('Y-m-d');
-	// 	      $f1 = strtotime ('-18 year' , strtotime($f)); 
-	// 	      $f1 = date ('Y-m-d',$f1);
-	// 		  $r['resultado'] = 'obtienefecha';
-	// 		  $r['mensaje'] =  $f1;
-		
-	// 	return $r;
-	// }
-
-	
 	
 	
 }

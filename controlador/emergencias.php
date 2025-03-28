@@ -8,7 +8,6 @@ if (!is_file("modelo/".$pagina.".php")){
 }  
 require_once("modelo/".$pagina.".php");  
   if(is_file("vista/".$pagina.".php")){
-
 	  
 	  if(!empty($_POST)){
 		$o = new emergencias();   

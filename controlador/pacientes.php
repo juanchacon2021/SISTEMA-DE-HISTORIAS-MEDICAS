@@ -1,39 +1,55 @@
 <?php
-require_once 'modelo/pacientes.php';
 
-if (!empty($_POST)) {
-    $accion = $_POST['accion'];
-    $o = new historias();
+if (!is_file("modelo/".$pagina.".php")){
+	echo "Falta definir la clase ".$pagina;
+	exit;
+}  
+require_once("modelo/".$pagina.".php");  
+  if(is_file("vista/".$pagina.".php")){
+	  
+	  if(!empty($_POST)){
+		$o = new historias();   
 
-    if ($accion == 'consultar') {
-        $resultado = $o->consultar();
-        if (json_last_error() === JSON_ERROR_NONE) {
-            echo json_encode($resultado);
-        } else {
-            echo "Error JSON: " . json_last_error_msg();
-        }
-    } else {
+		  $accion = $_POST['accion'];
+		  
+		  if($accion=='consultar'){
+			 echo  json_encode($o->consultar());  
+		  }
+		  else{		  
         $o->set_cedula_historia($_POST['cedula_historia']);
-        $o->set_apellido($_POST['apellido']);
         $o->set_nombre($_POST['nombre']);
+        $o->set_apellido($_POST['apellido']);
         $o->set_fecha_nac($_POST['fecha_nac']);
         $o->set_edad($_POST['edad']);
+        $o->set_estadocivil($_POST['estadocivil']);
+        $o->set_ocupacion($_POST['ocupacion']);
+        $o->set_direccion($_POST['direccion']);
         $o->set_telefono($_POST['telefono']);
-    }
-} else {
-    function mostrarPacientes() {
-        $modelo = new historias();
-        $resultado = $modelo->consultar();
-
-        if ($resultado['resultado'] == 'consultar') {
-            $datos = $resultado['datos'];
-            $nivel = 'Doctor';
-            require 'vista/pacientes.php';
-        } else {
-            echo "Error: " . $resultado['mensaje'];
-        }
-    }
-
-    mostrarPacientes();
-}
+        $o->set_hda($_POST['hda']);
+        $o->set_alergias($_POST['alergias']);
+        $o->set_alergias_med($_POST['alergias_med']);
+        $o->set_quirurgico($_POST['quirurgico']);
+        $o->set_transsanguineo($_POST['transsanguineo']);
+        $o->set_psicosocial($_POST['psicosocial']);
+        $o->set_habtoxico($_POST['habtoxico']);
+        $o->set_antc_padre($_POST['antc_padre']);
+        $o->set_antc_hermano($_POST['antc_hermano']);
+        $o->set_antc_madre($_POST['antc_madre']);
+          if($accion=='incluir'){
+          echo  json_encode($o->incluir());
+          }
+          elseif($accion=='modificar'){
+          echo  json_encode($o->modificar());
+			  }
+		  }
+		  exit;
+	  }
+	  
+	  $o = new historias();
+	  $datos = $o->consultar(); 
+	  require_once("vista/".$pagina.".php"); 
+  }
+  else{
+	  echo "pagina en construccion";
+  }
 ?>
