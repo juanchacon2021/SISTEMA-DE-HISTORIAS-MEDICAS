@@ -32,143 +32,51 @@ function crearDT(){
 }
 
 $(document).ready(function () {
-	consultar();
+    consultar();
 
-	// Validaciones
-	$("#cedula_historia").on("keypress", function (e) {
-		validarkeypress(/^[0-9-\b]*$/, e);
-	});
+    // Función genérica para validaciones
+    function agregarValidacion(selector, regex, errorSelector, errorMessage, onInput) {
+		$(selector).on("input", onInput);
+        $(selector).on("keypress", function (e) {
+            // validarkeypress(regex, e); // Comentar para pruebas
+        });
 
-	$("#cedula_historia").on("keyup", function () {
-		validarkeyup(/^[0-9]{7,8}$/, $(this),
-			$("#scedula_historia"), "El formato debe ser 12345678 ");
-	});
+        $(selector).on("keyup", function () {
+            validarkeyup(regex, $(this), $(errorSelector), errorMessage);
+        });
+    }
 
+    // Configuración de validaciones
+    const validaciones = [
+        { selector: "#cedula_historia", regex: /^[0-9]{7,8}$/, errorSelector: "#scedula_historia", errorMessage: "El formato debe ser 12345678" },
+        { selector: "#apellido", regex: /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/, errorSelector: "#sapellido", errorMessage: "Solo letras entre 3 y 30 caracteres" },
+        { selector: "#nombre", regex: /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/, errorSelector: "#snombre", errorMessage: "Solo letras entre 3 y 30 caracteres" },
+        { 
+			selector: "#telefono", 
+			regex: /^[0-9]{0,11}$/, 
+			errorSelector: "#stelefono", 
+			errorMessage: "El formato debe ser de 11 números",
+			onInput: function () {
+				const valor = $(this).val();
+				$(this).val(valor.replace(/[^0-9]/g, ''));
+			}
+		},
+        { selector: "#ocupacion", regex: /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/, errorSelector: "#socupacion", errorMessage: "Solo letras entre 3 y 300 caracteres" },
+        { selector: "#hda", regex: /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/, errorSelector: "#shda", errorMessage: "Solo letras entre 3 y 300 caracteres" },
+        { selector: "#habtoxico", regex: /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/, errorSelector: "#shabtoxico", errorMessage: "Solo letras entre 3 y 300 caracteres" },
+        { selector: "#alergias", regex: /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/, errorSelector: "#salergias", errorMessage: "Solo letras entre 3 y 300 caracteres" },
+        { selector: "#quirurgico", regex: /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/, errorSelector: "#squirurgico", errorMessage: "Solo letras entre 3 y 300 caracteres" },
+        { selector: "#transsanguineo", regex: /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/, errorSelector: "#stranssanguineo", errorMessage: "Solo letras entre 3 y 300 caracteres" },
+        { selector: "#alergias_med", regex: /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/, errorSelector: "#salergias_med", errorMessage: "Solo letras entre 3 y 300 caracteres" },
+        { selector: "#psicosocial", regex: /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/, errorSelector: "#spsicosocial", errorMessage: "Solo letras entre 3 y 300 caracteres" },
+        { selector: "#antc_madre", regex: /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/, errorSelector: "#santc_madre", errorMessage: "Solo letras entre 3 y 300 caracteres" },
+        { selector: "#antc_padre", regex: /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/, errorSelector: "#santc_padre", errorMessage: "Solo letras entre 3 y 300 caracteres" },
+        { selector: "#antc_hermano", regex: /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/, errorSelector: "#santc_hermano", errorMessage: "Solo letras entre 3 y 300 caracteres" }
+    ];
 
-	$("#apellido").on("keypress", function (e) {
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
-	});
-
-	$("#apellido").on("keyup", function () {
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-			$(this), $("#sapellido"), "Solo letras  entre 3 y 30 caracteres");
-	});
-
-	$("#nombre").on("keypress", function (e) {
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
-	});
-
-	$("#nombre").on("keyup", function () {
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-			$(this), $("#snombre"), "Solo letras  entre 3 y 30 caracteres");
-	});
-
-	$("#telefono").on("keypress", function (e) {
-		validarkeypress(/^[0-9-\b]*$/, e);
-	});
-
-	$("#telefono").on("keyup", function () {
-		validarkeyup(/^[0-9]{7,11}$/, $(this),
-			$("#stelefono"), "El formato debe ser de 11 numeros");
-	});
-
-	$("#ocupacion").on("keypress", function (e) {
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
-	});
-
-	$("#ocupacion").on("keyup", function () {
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-			$(this), $("#socupacion"), "Solo letras  entre 3 y 300 caracteres");
-	});
-
-	$("#hda").on("keypress", function (e) {
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
-	});
-
-	$("#hda").on("keyup", function () {
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-			$(this), $("#shda"), "Solo letras  entre 3 y 300 caracteres");
-	});
-
-	$("#habtoxico").on("keypress", function (e) {
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
-	});
-
-	$("#habtoxico").on("keyup", function () {
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-			$(this), $("#shabtoxico"), "Solo letras  entre 3 y 300 caracteres");
-	});
-
-	$("#alergias").on("keypress", function (e) {
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
-	});
-
-	$("#alergias").on("keyup", function () {
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-			$(this), $("#salergias"), "Solo letras  entre 3 y 300 caracteres");
-	});
-
-	$("#quirurgico").on("keypress", function (e) {
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
-	});
-
-	$("#quirurgico").on("keyup", function () {
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-			$(this), $("#squirurgico"), "Solo letras  entre 3 y 300 caracteres");
-	});
-
-	$("#transsanguineo").on("keypress", function (e) {
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
-	});
-
-	$("#transsanguineo").on("keyup", function () {
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-			$(this), $("#stranssanguineo"), "Solo letras  entre 3 y 300 caracteres");
-	});
-
-	$("#alergias_med").on("keypress", function (e) {
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
-	});
-
-	$("#alergias_med").on("keyup", function () {
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-			$(this), $("#salergias_med"), "Solo letras  entre 3 y 300 caracteres");
-	});
-
-	$("#psicosocial").on("keypress", function (e) {
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
-	});
-
-	$("#psicosocial").on("keyup", function () {
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-			$(this), $("#spsicosocial"), "Solo letras  entre 3 y 300 caracteres");
-	});
-
-	$("#antc_madre").on("keypress", function (e) {
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
-	});
-
-	$("#antc_madre").on("keyup", function () {
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-			$(this), $("#santc_madre"), "Solo letras  entre 3 y 300 caracteres");
-	});
-
-	$("#antc_padre").on("keypress", function (e) {
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
-	});
-
-	$("#antc_padre").on("keyup", function () {
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-			$(this), $("#santc_padre"), "Solo letras  entre 3 y 300 caracteres");
-	});
-
-	$("#antc_hermano").on("keypress", function (e) {
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
-	});
-
-	$("#antc_hermano").on("keyup", function () {
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-			$(this), $("#santc_hermano"), "Solo letras  entre 3 y 300 caracteres");
+    // Aplicar validaciones
+    validaciones.forEach(({ selector, regex, errorSelector, errorMessage, onInput }) => {
+		agregarValidacion(selector, regex, errorSelector, errorMessage, onInput);
 	});
 });
 
@@ -177,66 +85,71 @@ $(document).ready(function () {
 
 // Control de los Botones
 $("#proceso").on("click", function () {
-	if($(this).text()=="INCLUIR"){
-		if(validarenvio()){
-			var datos = new FormData();
-			datos.append("accion", accion);
-			datos.append("cedula_historia", $("#cedula_historia").val());
-			datos.append("nombre", $("#nombre").val());
-			datos.append("apellido", $("#apellido").val());
-			datos.append("fecha_nac", $("#fecha_nac").val());
-			datos.append("edad", $("#edad").val());
-			datos.append("telefono", $("#telefono").val());
-			datos.append("estadocivil", $("#estadocivil").val());
-			datos.append("direccion", $("#direccion").val());
-			datos.append("ocupacion", $("#ocupacion").val());
-			datos.append("hda", $("#hda").val());
-			datos.append("alergias", $("#alergias").val());
-			datos.append("alergias_med", $("#alergias_med").val());
-			datos.append("transsanguineo", $("#transsanguineo").val());
-			datos.append("quirurgico", $("#quirurgico").val());
-			datos.append("psicosocial", $("#psicosocial").val());
-			datos.append("habtoxico", $("#habtoxico").val());
-			datos.append("antc_padre", $("#antc_padre").val());
-			datos.append("antc_hermano", $("#antc_hermano").val());
-			datos.append("antc_madre", $("#antc_madre").val());
-			consultar();
-			// Enviar los datos
-			enviaAjax(datos);
-		}
-	}else if($(this).text()=="MODIFICAR"){
-		if(validarenvio()){
-			var datos = new FormData();
-			datos.append("accion", accion);
-			datos.append("cedula_historia", $("#cedula_historia").val());
-			datos.append("nombre", $("#nombre").val());
-			datos.append("apellido", $("#apellido").val());
-			datos.append("fecha_nac", $("#fecha_nac").val());
-			datos.append("edad", $("#edad").val());
-			datos.append("telefono", $("#telefono").val());
-			datos.append("estadocivil", $("#estadocivil").val());
-			datos.append("direccion", $("#direccion").val());
-			datos.append("ocupacion", $("#ocupacion").val());
-			datos.append("hda", $("#hda").val());
-			datos.append("alergias", $("#alergias").val());
-			datos.append("alergias_med", $("#alergias_med").val());
-			datos.append("transsanguineo", $("#transsanguineo").val());
-			datos.append("quirurgico", $("#quirurgico").val());
-			datos.append("psicosocial", $("#psicosocial").val());
-			datos.append("habtoxico", $("#habtoxico").val());
-			datos.append("antc_padre", $("#antc_padre").val());
-			datos.append("antc_hermano", $("#antc_hermano").val());
-			datos.append("antc_madre", $("#antc_madre").val());
-			consultar();
-			// Enviar los datos
-			enviaAjax(datos);
-		}
-	}
+    if ($(this).text() == "INCLUIR") {
+        if (validarenvio()) {
+            // Construir los datos como un objeto JSON
+            var datos = {
+                accion: accion,
+                cedula_historia: $("#cedula_historia").val(),
+                nombre: $("#nombre").val(),
+                apellido: $("#apellido").val(),
+                fecha_nac: $("#fecha_nac").val(),
+                edad: $("#edad").val(),
+                telefono: $("#telefono").val(),
+                estadocivil: $("#estadocivil").val(),
+                direccion: $("#direccion").val(),
+                ocupacion: $("#ocupacion").val(),
+                hda: $("#hda").val(),
+                alergias: $("#alergias").val(),
+                alergias_med: $("#alergias_med").val(),
+                transsanguineo: $("#transsanguineo").val(),
+                quirurgico: $("#quirurgico").val(),
+                psicosocial: $("#psicosocial").val(),
+                habtoxico: $("#habtoxico").val(),
+                antc_padre: $("#antc_padre").val(),
+                antc_hermano: $("#antc_hermano").val(),
+                antc_madre: $("#antc_madre").val()
+            };
+            consultar();
+            // Enviar los datos como JSON
+            enviaAjax(JSON.stringify(datos));
+        }
+    } else if ($(this).text() == "MODIFICAR") {
+        if (validarenvio()) {
+            // Construir los datos como un objeto JSON
+            var datos = {
+                accion: accion,
+                cedula_historia: $("#cedula_historia").val(),
+                nombre: $("#nombre").val(),
+                apellido: $("#apellido").val(),
+                fecha_nac: $("#fecha_nac").val(),
+                edad: $("#edad").val(),
+                telefono: $("#telefono").val(),
+                estadocivil: $("#estadocivil").val(),
+                direccion: $("#direccion").val(),
+                ocupacion: $("#ocupacion").val(),
+                hda: $("#hda").val(),
+                alergias: $("#alergias").val(),
+                alergias_med: $("#alergias_med").val(),
+                transsanguineo: $("#transsanguineo").val(),
+                quirurgico: $("#quirurgico").val(),
+                psicosocial: $("#psicosocial").val(),
+                habtoxico: $("#habtoxico").val(),
+                antc_padre: $("#antc_padre").val(),
+                antc_hermano: $("#antc_hermano").val(),
+                antc_madre: $("#antc_madre").val()
+            };
+            consultar();
+            // Enviar los datos como JSON
+            enviaAjax(JSON.stringify(datos));
+        }
+    }
 });
-$("#incluir").on("click",function(){
-	limpia();
-	$("#proceso").text("INCLUIR");
-	$("#modal1").modal("show");
+
+$("#incluir").on("click", function () {
+    limpia();
+    $("#proceso").text("INCLUIR");
+    $("#modal1").modal("show");
 });
 
 //Validación de todos los campos antes de eviar
@@ -298,36 +211,40 @@ mensaje){
 
 
 //funcion para pasar de la lista a el formulario
-function pone(pos,accion){ 
-	linea=$(pos).closest('tr');
+function pone(pos, accion) {
+    const linea = $(pos).closest('tr');
+    const mapeoCampos = {
+        "cedula_historia": "cedula_historia",
+        "apellido": "apellido",
+        "nombre": "nombre",
+        "fecha_nac": "fecha_nac",
+        "edad": "edad",
+        "telefono": "telefono",
+        "estadocivil": "estadocivil",
+        "direccion": "direccion",
+        "ocupacion": "ocupacion",
+        "hda": "hda",
+        "habtoxico": "habtoxico",
+        "alergias": "alergias",
+        "alergias_med": "alergias_med",
+        "quirurgico": "quirurgico",
+        "psicosocial": "psicosocial",
+        "transsanguineo": "transsanguineo",
+        "antc_padre": "antc_padre",
+        "antc_hermano": "antc_hermano",
+        "antc_madre": "antc_madre"
+    };
 
-	if(accion==0){
-		$("#proceso").text("MODIFICAR");
-	}
-	else{
-		$("#proceso").text("INCLUIR");
-	}
-	$("#cedula_historia").val($(linea).find("td:eq(1)").text());
-	$("#apellido").val($(linea).find("td:eq(2)").text());
-	$("#nombre").val($(linea).find("td:eq(3)").text());
-	$("#fecha_nac").val($(linea).find("td:eq(4)").text());
-	$("#edad").val($(linea).find("td:eq(5)").text());
-	$("#telefono").val($(linea).find("td:eq(6)").text());
-	$("#estadocivil").val($(linea).find("td:eq(7)").text());
-	$("#direccion").val($(linea).find("td:eq(8)").text());
-	$("#ocupacion").val($(linea).find("td:eq(9)").text());
-	$("#hda").val($(linea).find("td:eq(10)").text());
-	$("#habtoxico").val($(linea).find("td:eq(11)").text());
-	$("#alergias").val($(linea).find("td:eq(12)").text());
-	$("#alergias_med").val($(linea).find("td:eq(13)").text());
-	$("#quirurgico").val($(linea).find("td:eq(14)").text());
-	$("#psicosocial").val($(linea).find("td:eq(15)").text());
-	$("#transsanguineo").val($(linea).find("td:eq(16)").text());
-    $("#antc_padre").val($(linea).find("td:eq(17)").text());
-	$("#antc_hermano").val($(linea).find("td:eq(18)").text());
-	$("#antc_madre").val($(linea).find("td:eq(19)").text());
-	
-	$("#modal1").modal("show");
+    // Cambiar el texto del proceso según la acción
+    $("#proceso").text(accion === 0 ? "MODIFICAR" : "INCLUIR");
+
+    // Iterar sobre el mapeo y asignar valores
+    Object.entries(mapeoCampos).forEach(([campo, clase]) => {
+        $(`#${campo}`).val($(linea).find(`.${clase}`).text());
+    });
+
+    // Mostrar el modal
+    $("#modal1").modal("show");
 }
 
 //funcion que envia y recibe datos por AJAX
@@ -382,25 +299,25 @@ function enviaAjax(datos) {
 							</a>
 						</div>
 					</td>
-					<td>${fila.cedula_historia}</td>
-					<td>${fila.apellido}</td>
-					<td>${fila.nombre}</td>
-					<td>${fila.fecha_nac}</td>
-					<td>${fila.edad}</td>
-					<td>${fila.telefono}</td>
-					<td style="display: none;">${fila.estadocivil}</td>
-					<td style="display: none;">${fila.direccion}</td>
-					<td style="display: none;">${fila.ocupacion}</td>
-					<td style="display: none;">${fila.hda}</td>
-					<td style="display: none;">${fila.habtoxico}</td>
-					<td style="display: none;">${fila.alergias}</td>
-					<td style="display: none;">${fila.alergia_med}</td>
-					<td style="display: none;">${fila.quirurgico}</td>
-					<td style="display: none;">${fila.psicosocial}</td>
-					<td style="display: none;">${fila.transsanguineo}</td>
-					<td style="display: none;">${fila.antc_padre}</td>
-					<td style="display: none;">${fila.antc_hermano}</td>
-					<td style="display: none;">${fila.antc_madre}</td>
+					<td class="cedula_historia">${fila.cedula_historia}</td>
+					<td class="apellido">${fila.apellido}</td>
+					<td class="nombre">${fila.nombre}</td>
+					<td class="fecha_nac">${fila.fecha_nac}</td>
+					<td class="edad">${fila.edad}</td>
+					<td class="telefono">${fila.telefono}</td>
+					<td class="estadocivil" style="display: none;">${fila.estadocivil}</td>
+					<td class="direccion" style="display: none;">${fila.direccion}</td>
+					<td class="ocupacion" style="display: none;">${fila.ocupacion}</td>
+					<td class="hda" style="display: none;">${fila.hda}</td>
+					<td class="habtoxico" style="display: none;">${fila.habtoxico}</td>
+					<td class="alergias" style="display: none;">${fila.alergias}</td>
+					<td class="alergias_med" style="display: none;">${fila.alergias_med}</td>
+					<td class="quirurgico" style="display: none;">${fila.quirurgico}</td>
+					<td class="psicosocial" style="display: none;">${fila.psicosocial}</td>
+					<td class="transsanguineo" style="display: none;">${fila.transsanguineo}</td>
+					<td class="antc_padre" style="display: none;">${fila.antc_padre}</td>
+					<td class="antc_hermano" style="display: none;">${fila.antc_hermano}</td>
+					<td class="antc_madre" style="display: none;">${fila.antc_madre}</td>
 				</tr>`;
 			});
 			
