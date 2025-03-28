@@ -44,34 +44,7 @@ Personal
 			
 			
 			
-			<?php foreach ($datos as $r): ?>
-					
-				<script>
-				destruyeDT();		
-			</script>
-				<tr>
-						<td>
-							<div class="button-container" style="display: flex; justify-content: center; gap: 10px; margin-top: 10px">
-							<button type='button' class='btn btn-success' onclick='pone(this,0)'>
-                               <img src='img/lapiz.svg' style='width: 20px'>
-                            </button>
-							<a class='btn btn-danger' onclick='pone(this,1)'>
-                                <img src='img/trash-can-solid.svg' style='width: 20px;'>
-                             </a>
-							</div>
-						</td>
-						<td><?php echo $r['cedula_personal']; ?></td>
-						<td><?php echo $r['apellido']; ?></td>
-						<td><?php echo $r['nombre']; ?></td>
-						<td><?php echo $r['correo']; ?></td>
-						<td><?php echo $r['telefono']; ?></td>
-						<td><?php echo $r['cargo']; ?></td>
-
-					</tr>
-					<script>
-				crearDT();	
-			</script>
-				<?php endforeach; ?>
+			
 		
 			
 			  
