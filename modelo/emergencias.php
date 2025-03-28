@@ -157,7 +157,7 @@ class emergencias extends datos{
 								'$this->cedula_h'
 								)");
 								$r['resultado'] = 'incluir';
-								$r['mensaje'] =  'Registro Inluido';
+								$r['mensaje'] =  'Registro Incluido';
 					} catch(Exception $e) {
 						$r['resultado'] = 'error';
 						$r['mensaje'] =  'Un error en alguna de las cedulas';

@@ -561,7 +561,7 @@ function enviaAjax(datos) {
 		}
 		else if (lee.resultado == "incluir") {
            muestraMensaje(lee.mensaje);
-		   if(lee.mensaje=='Registro Inluido'){
+		   if(lee.mensaje=='Registro Incluido'){
 			   $("#modal1").modal("hide");
 			   consultar();
 		   }
