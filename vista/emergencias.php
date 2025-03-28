@@ -183,7 +183,7 @@ Emergencias
 		<tbody id="listadopersonal">
 			<?php if ($datosPersonal['resultado'] == 'listadopersonal'): ?>
 				<?php foreach ($datosPersonal['datos'] as $fila): ?>
-					<tr onclick="colocapacientes(this)">
+					<tr onclick="colocapersonal(this)">
 						<td style="display:none;"><?= htmlspecialchars($fila['cedula_personal']) ?></td>
 						<td><?= htmlspecialchars($fila['cedula_personal']) ?></td>
 						<td><?= htmlspecialchars($fila['nombre']) ?></td>
