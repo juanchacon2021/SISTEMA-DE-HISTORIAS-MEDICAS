@@ -85,67 +85,58 @@ $(document).ready(function () {
 
 // Control de los Botones
 $("#proceso").on("click", function () {
-    if ($(this).text() == "INCLUIR") {
-        if (validarenvio()) {
-            // Construir los datos como un objeto JSON
-            var datos = {
-                accion: accion,
-                cedula_historia: $("#cedula_historia").val(),
-                nombre: $("#nombre").val(),
-                apellido: $("#apellido").val(),
-                fecha_nac: $("#fecha_nac").val(),
-                edad: $("#edad").val(),
-                telefono: $("#telefono").val(),
-                estadocivil: $("#estadocivil").val(),
-                direccion: $("#direccion").val(),
-                ocupacion: $("#ocupacion").val(),
-                hda: $("#hda").val(),
-                alergias: $("#alergias").val(),
-                alergias_med: $("#alergias_med").val(),
-                transsanguineo: $("#transsanguineo").val(),
-                quirurgico: $("#quirurgico").val(),
-                psicosocial: $("#psicosocial").val(),
-                habtoxico: $("#habtoxico").val(),
-                antc_padre: $("#antc_padre").val(),
-                antc_hermano: $("#antc_hermano").val(),
-                antc_madre: $("#antc_madre").val()
-            };
-            consultar();
-            // Enviar los datos como JSON
-            enviaAjax(JSON.stringify(datos));
-        }
-    } else if ($(this).text() == "MODIFICAR") {
-        if (validarenvio()) {
-            // Construir los datos como un objeto JSON
-            var datos = {
-                accion: accion,
-                cedula_historia: $("#cedula_historia").val(),
-                nombre: $("#nombre").val(),
-                apellido: $("#apellido").val(),
-                fecha_nac: $("#fecha_nac").val(),
-                edad: $("#edad").val(),
-                telefono: $("#telefono").val(),
-                estadocivil: $("#estadocivil").val(),
-                direccion: $("#direccion").val(),
-                ocupacion: $("#ocupacion").val(),
-                hda: $("#hda").val(),
-                alergias: $("#alergias").val(),
-                alergias_med: $("#alergias_med").val(),
-                transsanguineo: $("#transsanguineo").val(),
-                quirurgico: $("#quirurgico").val(),
-                psicosocial: $("#psicosocial").val(),
-                habtoxico: $("#habtoxico").val(),
-                antc_padre: $("#antc_padre").val(),
-                antc_hermano: $("#antc_hermano").val(),
-                antc_madre: $("#antc_madre").val()
-            };
-            consultar();
-            // Enviar los datos como JSON
-            enviaAjax(JSON.stringify(datos));
-        }
-    }
+	if ($(this).text() == "INCLUIR") {
+		if (validarenvio()) {
+			var datos = new FormData();
+			datos.append("accion", "incluir");
+			datos.append("cedula_historia", $("#cedula_historia").val());
+			datos.append("apellido", $("#apellido").val());
+			datos.append("nombre", $("#nombre").val());
+			datos.append("fecha_nac", $("#fecha_nac").val());
+			datos.append("edad", $("#edad").val());
+			datos.append("telefono", $("#telefono").val());
+			datos.append("estadocivil", $("#estadocivil").val());
+			datos.append("direccion", $("#direccion").val());
+			datos.append("ocupacion", $("#ocupacion").val());
+			datos.append("hda", $("#hda").val());
+			datos.append("habtoxico", $("#habtoxico").val());
+			datos.append("alergias", $("#alergias").val());
+			datos.append("alergias_med", $("#alergias_med").val());
+			datos.append("quirurgico", $("#quirurgico").val());
+			datos.append("transsanguineo", $("#transsanguineo").val());
+			datos.append("psicosocial", $("#psicosocial").val());
+			datos.append("antc_padre", $("#antc_padre").val());
+			datos.append("antc_hermano", $("#antc_hermano").val());
+			datos.append("antc_madre", $("#antc_madre").val());
+			enviaAjax(datos);
+		}
+	} else if ($(this).text() == "MODIFICAR") {
+		if (validarenvio()) {
+			var datos = new FormData();
+			datos.append("accion", "modificar");
+			datos.append("cedula_historia", $("#cedula_historia").val());
+			datos.append("apellido", $("#apellido").val());
+			datos.append("nombre", $("#nombre").val());
+			datos.append("fecha_nac", $("#fecha_nac").val());
+			datos.append("edad", $("#edad").val());
+			datos.append("telefono", $("#telefono").val());
+			datos.append("estadocivil", $("#estadocivil").val());
+			datos.append("direccion", $("#direccion").val());
+			datos.append("ocupacion", $("#ocupacion").val());
+			datos.append("hda", $("#hda").val());
+			datos.append("habtoxico", $("#habtoxico").val());
+			datos.append("alergias", $("#alergias").val());
+			datos.append("alergias_med", $("#alergias_med").val());
+			datos.append("quirurgico", $("#quirurgico").val());
+			datos.append("transsanguineo", $("#transsanguineo").val());
+			datos.append("psicosocial", $("#psicosocial").val());
+			datos.append("antc_padre", $("#antc_padre").val());
+			datos.append("antc_hermano", $("#antc_hermano").val());
+			datos.append("antc_madre", $("#antc_madre").val());
+			enviaAjax(datos);
+		}
+	}
 });
-
 $("#incluir").on("click", function () {
     limpia();
     $("#proceso").text("INCLUIR");
@@ -320,31 +311,25 @@ function enviaAjax(datos) {
 					<td class="antc_madre" style="display: none;">${fila.antc_madre}</td>
 				</tr>`;
 			});
-			
 			$("#resultadoconsulta").html(html);
-			crearDT();
+			
+			 $("#resultadoconsulta").html(lee.mensaje);
+			 crearDT();
 		  }
 		  else if (lee.resultado == "incluir") {
 			 muestraMensaje(lee.mensaje);
-			 if(lee.mensaje=='Registro Inluido'){
-				 $("#modal1").modal("hide");
-				 consultar();
-				 setTimeout(function() {
-					 window.location.href = '?pagina=pacientes';
-				 }, 2000);
-			 }
+			 if (lee.mensaje == 'Registro Incluido') {
+				$("#modal1").modal("hide");
+			consultar();
+			}
 		  }
 		  else if (lee.resultado == "modificar") {
 			 muestraMensaje(lee.mensaje);
 			 if(lee.mensaje=='Registro Modificado'){
 				 $("#modal1").modal("hide");
 				 consultar();
-				 setTimeout(function() {
-					 window.location.href = '?pagina=pacientes';
-				 }, 2000);
 			 }
 		  }
-		  
 		  else if (lee.resultado == "error") {
 			 muestraMensaje(lee.mensaje);
 		  }
@@ -404,3 +389,16 @@ document.addEventListener('DOMContentLoaded', function () {
 	});
 });
 
+
+// DESENFOCAR FONDO DEL MODAL
+document.addEventListener('DOMContentLoaded', function () {
+    const modal = document.getElementById('modal1');
+
+    modal.addEventListener('show.bs.modal', function () {
+      document.body.classList.add('blur-background');
+    });
+
+    modal.addEventListener('hidden.bs.modal', function () {
+      document.body.classList.remove('blur-background');
+    });
+  });

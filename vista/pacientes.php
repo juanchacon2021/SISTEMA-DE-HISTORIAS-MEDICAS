@@ -70,6 +70,9 @@ Pacientes
 				<form method="post" id="f" autocomplete="off">
 					<input autocomplete="off" type="text" class="form-control" name="accion" id="accion" style="display: none;">
 					<div class="container">	
+
+					<!-- PRIMERA PARTE -->
+
 						<div class="row mb-3">
 							<div class="col-md-3">
 								<label for="cedula_historia" class="texto-inicio font-medium">Cedula</label>
@@ -99,6 +102,10 @@ Pacientes
 								<span id="sfecha_nac"></span>
 							</div>
 						</div>
+
+					<!-- FIN DE LA PRIMERA PARTE
+
+					SEGUNDA PARTE -->
 
 						<div class="row mb-3">
 							<div class="col-md-3">
@@ -158,50 +165,54 @@ Pacientes
 								<span id="shda"></span>
 							</div>
 
-							<div class="col-md-3">
+							<div class="col-md-3 mb-2">
 								<label for="alergias" class="texto-inicio font-medium">Alergias</label>
 								<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="alergias"
 										name="alergias"/>
 								<span id="salergias"></span>
 							</div>
 
-							<div class="col-md-3">
+							<div class="col-md-6">
 								<label for="alergias_med" class="texto-inicio font-medium">Alergias Médicas</label>
 								<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="alergias_med"
 										name="alergias_med"/>
 								<span id="salergias_med"></span>
 							</div>
+
+							<div class="col-md-6">
+								<label for="habtoxico" class="texto-inicio font-medium">Habito Toxico</label>
+								<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="habtoxico"
+										name="habtoxico"/>
+								<span id="shabtoxico"></span>
+							</div>
 						</div>
 
 						<div class="row mb-3">
-							<div class="col-md-3">
+							<div class="col-md-4">
 								<label for="quirurgico" class="texto-inicio font-medium">Quirurgico</label>
 								<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="quirurgico"
 										name="quirurgico"/>
 								<span id="squirurgico"></span>
 							</div>
 							
-							<div class="col-md-3">
+							<div class="col-md-4">
 								<label for="transsanguineo" class="texto-inicio font-medium">Trans Sanguineos</label>
 								<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="transsanguineo"
 										name="transsanguineo"/>
 								<span id="stranssanguineo"></span>
 							</div>
 
-							<div class="col-md-3">
-								<label for="habtoxico" class="texto-inicio font-medium">Habito Toxico</label>
-								<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="habtoxico"
-										name="habtoxico"/>
-								<span id="shabtoxico"></span>
-							</div>
-
-							<div class="col-md-3">
+							<div class="col-md-4">
 								<label for="psicosocial" class="texto-inicio font-medium">Psicosocial</label>
 								<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="psicosocial"
 										name="psicosocial"/>
 								<span id="spsicosocial"></span>
 							</div>
 						</div>
+<!-- 
+						FIN DE LA SEGUNDA PARTE
+
+						TERCERA PARTE -->
 
 						<div class="row py-4">
 							<div class="col-md-12">
@@ -209,7 +220,7 @@ Pacientes
 							</div>
 						</div>
 
-						<div class="row mb-3 mx-1">
+						<div class="row mb-3">
 							<div class="col-md-6">
 								<label for="antc_madre" class="texto-inicio font-medium">Antecedentes Maternos</label>
 								<textarea class="form-control bg-gray-200 rounded-lg border-white" name="antcmadre" id="antc_madre"></textarea>
@@ -228,6 +239,8 @@ Pacientes
 								<span id="santchermano"></span>
 							</div>
 						</div>
+
+						<!-- FIN DE LA TERCERA PARTE -->
 
 						<div class="row mt-3 justify-content-center">
 							<div class="col-md-2">
