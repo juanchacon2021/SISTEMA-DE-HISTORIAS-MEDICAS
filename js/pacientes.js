@@ -83,65 +83,323 @@ $(document).ready(function () {
 
 
 
-// Control de los Botones
-$("#proceso").on("click", function () {
-	if ($(this).text() == "INCLUIR") {
-		if (validarenvio()) {
-			var datos = new FormData();
-			datos.append("accion", "incluir");
-			datos.append("cedula_historia", $("#cedula_historia").val());
-			datos.append("apellido", $("#apellido").val());
-			datos.append("nombre", $("#nombre").val());
-			datos.append("fecha_nac", $("#fecha_nac").val());
-			datos.append("edad", $("#edad").val());
-			datos.append("telefono", $("#telefono").val());
-			datos.append("estadocivil", $("#estadocivil").val());
-			datos.append("direccion", $("#direccion").val());
-			datos.append("ocupacion", $("#ocupacion").val());
-			datos.append("hda", $("#hda").val());
-			datos.append("habtoxico", $("#habtoxico").val());
-			datos.append("alergias", $("#alergias").val());
-			datos.append("alergias_med", $("#alergias_med").val());
-			datos.append("quirurgico", $("#quirurgico").val());
-			datos.append("transsanguineo", $("#transsanguineo").val());
-			datos.append("psicosocial", $("#psicosocial").val());
-			datos.append("antc_padre", $("#antc_padre").val());
-			datos.append("antc_hermano", $("#antc_hermano").val());
-			datos.append("antc_madre", $("#antc_madre").val());
-			enviaAjax(datos);
-		}
-	} else if ($(this).text() == "MODIFICAR") {
-		if (validarenvio()) {
-			var datos = new FormData();
-			datos.append("accion", "modificar");
-			datos.append("cedula_historia", $("#cedula_historia").val());
-			datos.append("apellido", $("#apellido").val());
-			datos.append("nombre", $("#nombre").val());
-			datos.append("fecha_nac", $("#fecha_nac").val());
-			datos.append("edad", $("#edad").val());
-			datos.append("telefono", $("#telefono").val());
-			datos.append("estadocivil", $("#estadocivil").val());
-			datos.append("direccion", $("#direccion").val());
-			datos.append("ocupacion", $("#ocupacion").val());
-			datos.append("hda", $("#hda").val());
-			datos.append("habtoxico", $("#habtoxico").val());
-			datos.append("alergias", $("#alergias").val());
-			datos.append("alergias_med", $("#alergias_med").val());
-			datos.append("quirurgico", $("#quirurgico").val());
-			datos.append("transsanguineo", $("#transsanguineo").val());
-			datos.append("psicosocial", $("#psicosocial").val());
-			datos.append("antc_padre", $("#antc_padre").val());
-			datos.append("antc_hermano", $("#antc_hermano").val());
-			datos.append("antc_madre", $("#antc_madre").val());
-			enviaAjax(datos);
-		}
-	}
-});
-$("#incluir").on("click", function () {
-    limpia();
-    $("#proceso").text("INCLUIR");
+
+
+function pone(pos, accion) {
+    const linea = $(pos).closest('tr');
+    const mapeoCampos = {
+        "cedula_historia": "cedula_historia",
+        "apellido": "apellido",
+        "nombre": "nombre",
+        "fecha_nac": "fecha_nac",
+        "edad": "edad",
+        "telefono": "telefono",
+        "estadocivil": "estadocivil",
+        "direccion": "direccion",
+        "ocupacion": "ocupacion",
+        "hda": "hda",
+        "habtoxico": "habtoxico",
+        "alergias": "alergias",
+        "alergias_med": "alergias_med",
+        "quirurgico": "quirurgico",
+        "psicosocial": "psicosocial",
+        "transsanguineo": "transsanguineo",
+        "antc_padre": "antc_padre",
+        "antc_hermano": "antc_hermano",
+        "antc_madre": "antc_madre"
+    };
+
+    // Cambiar el texto del proceso según la acción
+    if (accion === 0) {
+        $("#proceso").text("MODIFICAR");
+        $("#accion").val("modificar"); // Actualizar el valor del campo oculto
+    } else {
+        $("#proceso").text("INCLUIR");
+        $("#accion").val("incluir"); // Actualizar el valor del campo oculto
+    }
+
+    // Iterar sobre el mapeo y asignar valores
+    Object.entries(mapeoCampos).forEach(([campo, clase]) => {
+        $(`#${campo}`).val($(linea).find(`.${clase}`).text());
+    });
+
+    // Mostrar el modal
     $("#modal1").modal("show");
+}
+
+let currentStep = 1; // Variable global para rastrear el paso actual
+
+const updateStep = () => {
+    // Ocultar todas las secciones
+    document.querySelectorAll('.step').forEach((step) => step.classList.add('d-none'));
+
+    // Mostrar la sección actual
+    const currentSection = document.getElementById(`step-${currentStep}`);
+    if (currentSection) {
+        currentSection.classList.remove('d-none');
+    } else {
+        console.error(`No se encontró la sección para el paso ${currentStep}`);
+    }
+
+    // Mostrar/Ocultar el botón "Atrás"
+    const prevBtn = document.getElementById('prev-btn');
+    if (currentStep === 1) {
+        prevBtn.style.display = 'none'; // Ocultar en el primer paso
+    } else {
+        prevBtn.style.display = 'inline-block'; // Mostrar en los pasos posteriores
+    }
+
+    // Cambiar el botón "Siguiente" en la tercera parte
+    const nextBtn = document.getElementById('next-btn');
+    const accion = document.getElementById('accion').value; // Obtener el valor del campo oculto
+
+    if (currentStep === 3) {
+        // Ocultar el botón "Siguiente"
+        nextBtn.style.display = 'none';
+
+        // Verificar si el botón "proceso" ya existe
+        let procesoBtn = document.getElementById('proceso');
+        if (!procesoBtn) {
+            // Crear el botón "proceso" si no existe
+            procesoBtn = document.createElement('button');
+            procesoBtn.type = 'button';
+            procesoBtn.className = 'btn botonverde';
+            procesoBtn.id = 'proceso';
+            nextBtn.parentNode.appendChild(procesoBtn);
+        }
+
+        // Configurar el texto del botón "proceso"
+        procesoBtn.textContent = accion === 'modificar' ? 'MODIFICAR' : 'INCLUIR';
+
+        // Configurar el evento click del botón "proceso"
+        procesoBtn.onclick = function () {
+            if (accion === 'modificar') {
+                if (validarenvio()) {
+                    const datos = new FormData();
+                    datos.append("accion", "modificar");
+                    datos.append("cedula_historia", $("#cedula_historia").val());
+                    datos.append("apellido", $("#apellido").val());
+                    datos.append("nombre", $("#nombre").val());
+                    datos.append("fecha_nac", $("#fecha_nac").val());
+                    datos.append("edad", $("#edad").val());
+                    datos.append("telefono", $("#telefono").val());
+                    datos.append("estadocivil", $("#estadocivil").val());
+                    datos.append("direccion", $("#direccion").val());
+                    datos.append("ocupacion", $("#ocupacion").val());
+                    datos.append("hda", $("#hda").val());
+                    datos.append("habtoxico", $("#habtoxico").val());
+                    datos.append("alergias", $("#alergias").val());
+                    datos.append("alergias_med", $("#alergias_med").val());
+                    datos.append("quirurgico", $("#quirurgico").val());
+                    datos.append("transsanguineo", $("#transsanguineo").val());
+                    datos.append("psicosocial", $("#psicosocial").val());
+                    datos.append("antc_padre", $("#antc_padre").val());
+                    datos.append("antc_hermano", $("#antc_hermano").val());
+                    datos.append("antc_madre", $("#antc_madre").val());
+                    enviaAjax(datos);
+                }
+            } else if (accion === 'incluir') {
+                if (validarenvio()) {
+                    const datos = new FormData();
+                    datos.append("accion", "incluir");
+                    datos.append("cedula_historia", $("#cedula_historia").val());
+                    datos.append("apellido", $("#apellido").val());
+                    datos.append("nombre", $("#nombre").val());
+                    datos.append("fecha_nac", $("#fecha_nac").val());
+                    datos.append("edad", $("#edad").val());
+                    datos.append("telefono", $("#telefono").val());
+                    datos.append("estadocivil", $("#estadocivil").val());
+                    datos.append("direccion", $("#direccion").val());
+                    datos.append("ocupacion", $("#ocupacion").val());
+                    datos.append("hda", $("#hda").val());
+                    datos.append("habtoxico", $("#habtoxico").val());
+                    datos.append("alergias", $("#alergias").val());
+                    datos.append("alergias_med", $("#alergias_med").val());
+                    datos.append("quirurgico", $("#quirurgico").val());
+                    datos.append("transsanguineo", $("#transsanguineo").val());
+                    datos.append("psicosocial", $("#psicosocial").val());
+                    datos.append("antc_padre", $("#antc_padre").val());
+                    datos.append("antc_hermano", $("#antc_hermano").val());
+                    datos.append("antc_madre", $("#antc_madre").val());
+                    enviaAjax(datos);
+                }
+            }
+        };
+    } else {
+        // Mostrar el botón "Siguiente" y eliminar el botón "proceso" si existe
+        nextBtn.style.display = 'inline-block';
+        const existingProcesoBtn = document.getElementById('proceso');
+        if (existingProcesoBtn) {
+            existingProcesoBtn.remove();
+        }
+    }
+};
+
+// Configurar el evento click del botón "Siguiente"
+document.getElementById('next-btn').addEventListener('click', () => {
+    if (currentStep < 3) {
+        currentStep++; // Incrementar el paso actual
+        updateStep(); // Actualizar la vista del modal
+    }
 });
+
+// Configurar el evento click del botón "Atrás"
+document.getElementById('prev-btn').addEventListener('click', () => {
+    if (currentStep > 1) {
+        currentStep--; // Decrementar el paso actual
+        updateStep(); // Actualizar la vista del modal
+    }
+});
+
+// Inicializar el modal en el primer paso
+updateStep();
+
+
+
+
+
+
+
+
+
+
+// CONTROL DE BOTONES DE PAGINACION
+// document.addEventListener('DOMContentLoaded', function () {
+//     const modal = document.getElementById('modal1');
+//     let currentStep = 1; // Asegúrate de que esta variable esté accesible
+
+//     modal.addEventListener('show.bs.modal', function () {
+//         document.body.classList.add('blur-background');
+//     });
+
+//     modal.addEventListener('hidden.bs.modal', function () {
+//         document.body.classList.remove('blur-background');
+        
+//         // Restablecer al primer paso
+//         currentStep = 1;
+//         updateStep(); // Llama a la función para actualizar la vista al paso 1
+//     });
+
+//     const updateStep = () => {
+//         // Ocultar todas las secciones
+//         document.querySelectorAll('.step').forEach((step) => step.classList.add('d-none'));
+//         // Mostrar la sección actual
+//         document.getElementById(`step-${currentStep}`).classList.remove('d-none');
+
+//         // Mostrar/Ocultar el botón "Atrás"
+//         const prevBtn = document.getElementById('prev-btn');
+//         if (currentStep === 1) {
+//             prevBtn.style.display = 'none'; // Ocultar en el primer paso
+//         } else {
+//             prevBtn.style.display = 'inline-block'; // Mostrar en los pasos posteriores
+//         }
+
+//         // Cambiar el botón "Siguiente" en la tercera parte
+//         const nextBtn = document.getElementById('next-btn');
+//         const accion = document.getElementById('accion').value; // Obtener el valor del campo oculto
+//         const procesoBtn = document.createElement('button'); // Crear el nuevo botón
+
+//         if (currentStep === 3) {
+//             // Ocultar el botón "Siguiente"
+//             nextBtn.style.display = 'none';
+
+//             // Configurar el nuevo botón
+//             procesoBtn.type = 'button';
+//             procesoBtn.className = 'btn botonverde';
+//             procesoBtn.id = 'proceso';
+//             procesoBtn.textContent = accion === 'modificar' ? 'MODIFICAR' : 'INCLUIR';
+
+//             // Insertar el nuevo botón si no existe
+//             if (!document.getElementById('proceso')) {
+//                 nextBtn.parentNode.appendChild(procesoBtn);
+//             }
+//         } else {
+//             // Mostrar el botón "Siguiente" y eliminar el botón "proceso" si existe
+//             nextBtn.style.display = 'inline-block';
+//             const existingProcesoBtn = document.getElementById('proceso');
+//             if (existingProcesoBtn) {
+//                 existingProcesoBtn.remove();
+//             }
+//         }
+//     };
+
+//     document.getElementById('next-btn').addEventListener('click', function () {
+//         if (currentStep < 3) {
+//             currentStep++;
+//             updateStep();
+//         }
+//     });
+
+//     document.getElementById('prev-btn').addEventListener('click', function () {
+//         if (currentStep > 1) {
+//             currentStep--;
+//             updateStep();
+//         }
+//     });
+
+//     updateStep();
+// });
+
+
+// Control de los Botones
+// $("#proceso").on("click", function () {
+// 	if ($(this).text() == "INCLUIR") {
+// 		if (validarenvio()) {
+// 			var datos = new FormData();
+// 			datos.append("accion", "incluir");
+// 			datos.append("cedula_historia", $("#cedula_historia").val());
+// 			datos.append("apellido", $("#apellido").val());
+// 			datos.append("nombre", $("#nombre").val());
+// 			datos.append("fecha_nac", $("#fecha_nac").val());
+// 			datos.append("edad", $("#edad").val());
+// 			datos.append("telefono", $("#telefono").val());
+// 			datos.append("estadocivil", $("#estadocivil").val());
+// 			datos.append("direccion", $("#direccion").val());
+// 			datos.append("ocupacion", $("#ocupacion").val());
+// 			datos.append("hda", $("#hda").val());
+// 			datos.append("habtoxico", $("#habtoxico").val());
+// 			datos.append("alergias", $("#alergias").val());
+// 			datos.append("alergias_med", $("#alergias_med").val());
+// 			datos.append("quirurgico", $("#quirurgico").val());
+// 			datos.append("transsanguineo", $("#transsanguineo").val());
+// 			datos.append("psicosocial", $("#psicosocial").val());
+// 			datos.append("antc_padre", $("#antc_padre").val());
+// 			datos.append("antc_hermano", $("#antc_hermano").val());
+// 			datos.append("antc_madre", $("#antc_madre").val());
+// 			enviaAjax(datos);
+// 		}
+// 	} else if ($(this).text() == "MODIFICAR") {
+// 		if (validarenvio()) {
+// 			var datos = new FormData();
+// 			datos.append("accion", "modificar");
+// 			datos.append("cedula_historia", $("#cedula_historia").val());
+// 			datos.append("apellido", $("#apellido").val());
+// 			datos.append("nombre", $("#nombre").val());
+// 			datos.append("fecha_nac", $("#fecha_nac").val());
+// 			datos.append("edad", $("#edad").val());
+// 			datos.append("telefono", $("#telefono").val());
+// 			datos.append("estadocivil", $("#estadocivil").val());
+// 			datos.append("direccion", $("#direccion").val());
+// 			datos.append("ocupacion", $("#ocupacion").val());
+// 			datos.append("hda", $("#hda").val());
+// 			datos.append("habtoxico", $("#habtoxico").val());
+// 			datos.append("alergias", $("#alergias").val());
+// 			datos.append("alergias_med", $("#alergias_med").val());
+// 			datos.append("quirurgico", $("#quirurgico").val());
+// 			datos.append("transsanguineo", $("#transsanguineo").val());
+// 			datos.append("psicosocial", $("#psicosocial").val());
+// 			datos.append("antc_padre", $("#antc_padre").val());
+// 			datos.append("antc_hermano", $("#antc_hermano").val());
+// 			datos.append("antc_madre", $("#antc_madre").val());
+// 			enviaAjax(datos);
+// 		}
+// 	}
+// });
+// $("#incluir").on("click", function () {
+//     limpia();
+//     $("#proceso").text("INCLUIR");
+//     $("#modal1").modal("show");
+// });
 
 //Validación de todos los campos antes de eviar
 function validarenvio(){
@@ -202,41 +460,45 @@ mensaje){
 
 
 //funcion para pasar de la lista a el formulario
-function pone(pos, accion) {
-    const linea = $(pos).closest('tr');
-    const mapeoCampos = {
-        "cedula_historia": "cedula_historia",
-        "apellido": "apellido",
-        "nombre": "nombre",
-        "fecha_nac": "fecha_nac",
-        "edad": "edad",
-        "telefono": "telefono",
-        "estadocivil": "estadocivil",
-        "direccion": "direccion",
-        "ocupacion": "ocupacion",
-        "hda": "hda",
-        "habtoxico": "habtoxico",
-        "alergias": "alergias",
-        "alergias_med": "alergias_med",
-        "quirurgico": "quirurgico",
-        "psicosocial": "psicosocial",
-        "transsanguineo": "transsanguineo",
-        "antc_padre": "antc_padre",
-        "antc_hermano": "antc_hermano",
-        "antc_madre": "antc_madre"
-    };
+// function pone(pos, accion) {
+//     const linea = $(pos).closest('tr');
+//     const mapeoCampos = {
+//         "cedula_historia": "cedula_historia",
+//         "apellido": "apellido",
+//         "nombre": "nombre",
+//         "fecha_nac": "fecha_nac",
+//         "edad": "edad",
+//         "telefono": "telefono",
+//         "estadocivil": "estadocivil",
+//         "direccion": "direccion",
+//         "ocupacion": "ocupacion",
+//         "hda": "hda",
+//         "habtoxico": "habtoxico",
+//         "alergias": "alergias",
+//         "alergias_med": "alergias_med",
+//         "quirurgico": "quirurgico",
+//         "psicosocial": "psicosocial",
+//         "transsanguineo": "transsanguineo",
+//         "antc_padre": "antc_padre",
+//         "antc_hermano": "antc_hermano",
+//         "antc_madre": "antc_madre"
+//     };
 
-    // Cambiar el texto del proceso según la acción
-    $("#proceso").text(accion === 0 ? "MODIFICAR" : "INCLUIR");
+//     // Cambiar el texto del proceso según la acción
+//     if (accion === 0) {
+//         $("#proceso").text("MODIFICAR");
+//     } else {
+//         $("#proceso").text("INCLUIR");
+//     }
 
-    // Iterar sobre el mapeo y asignar valores
-    Object.entries(mapeoCampos).forEach(([campo, clase]) => {
-        $(`#${campo}`).val($(linea).find(`.${clase}`).text());
-    });
+//     // Iterar sobre el mapeo y asignar valores
+//     Object.entries(mapeoCampos).forEach(([campo, clase]) => {
+//         $(`#${campo}`).val($(linea).find(`.${clase}`).text());
+//     });
 
-    // Mostrar el modal
-    $("#modal1").modal("show");
-}
+//     // Mostrar el modal
+//     $("#modal1").modal("show");
+// }
 
 //funcion que envia y recibe datos por AJAX
 
