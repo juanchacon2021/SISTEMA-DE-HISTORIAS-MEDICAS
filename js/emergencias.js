@@ -158,11 +158,8 @@ $(document).ready(function(){
 	$("#cedula_p").on("keyup",function(){
 		var cedula = $(this).val();
 		var encontro = false;
-		$("#listadopersonal tr").each(function(){
-			if(cedula == $(this).find("td:eq(1)").text()){
-				colocapersonal($(this));
-				encontro = true;
-			} 
+		$("#listadopersonal tr").on("click", function () {
+			colocapersonal($(this));
 		});
 		if(!encontro){
 			$("#datosdelpersonal").html("");
@@ -337,23 +334,21 @@ mensaje){
 		return 0;
 	}
 }
-function colocapersonal(linea){
-	$("#cedula_p").val($(linea).find("td:eq(1)").text());
-	$("#cedula_personal").val($(linea).find("td:eq(0)").text());
-	$("#datosdelpersonal").html("Nombre: "+$(linea).find("td:eq(2)").text()+
-	" / Apellido: "+$(linea).find("td:eq(3)").text()+" / Cargo: "+
-	$(linea).find("td:eq(4)").text());
-	$("#modalpersonal").modal("hide");
-} 
+function colocapersonal(linea) {
+    // Obtiene los datos de la fila seleccionada
+    const cedula = $(linea).find("td:eq(1)").text();
+    const nombre = $(linea).find("td:eq(2)").text();
+    const apellido = $(linea).find("td:eq(3)").text();
+    const cargo = $(linea).find("td:eq(4)").text();
 
-function colocapersonal_ver(linea, cargo, nombre, apellido){
+    // Coloca los datos en los campos correspondientes
+    $("#cedula_p").val(cedula);
+    $("#datosdelpersonal").html(
+        `Nombre: ${nombre} / Apellido: ${apellido} / Cargo: ${cargo}`
+    );
 
-	$("#cedula_p").val($(linea).find("td:eq(1)").text());
-	$("#cedula_personal").val($(linea).find("td:eq(0)").text());
-	$("#datosdelpersonal").html("Nombre: "+nombre+
-	" / Apellido: "+apellido+" / Cargo: "+
-	cargo);
-	$("#modalpersonal").modal("hide");
+    // Cierra el modal
+    $("#modalpersonal").modal("hide");
 }
 
 function colocapacientes(linea) {
@@ -397,7 +392,7 @@ function pone(pos,accion){
 		boton_p.style.display = '';
 		limpiarm();
 		colocapacientes(linea)
-		colocapersonal_ver(linea, $(pos).attr('cargo'),  $(pos).attr('nombre'),  $(pos).attr('apellido'))
+		colocapersonal(linea)
 	}
 	else if (accion==1){
 		$("#horaingreso").prop("readonly",true);
@@ -415,7 +410,7 @@ function pone(pos,accion){
 
 		limpiarm();
 		colocapacientes(linea)
-		colocapersonal_ver(linea, $(pos).attr('cargo'),  $(pos).attr('nombre'),  $(pos).attr('apellido'))
+		colocapersonal(linea)
 		console.log($(pos).attr('cargo'))
 
 		
@@ -437,7 +432,7 @@ function pone(pos,accion){
 
 		limpiarm();
 		colocapacientes(linea)
-		colocapersonal_ver(linea, $(pos).attr('cargo'),  $(pos).attr('nombre'),  $(pos).attr('apellido'))
+		colocapersonal(linea)
 		
 	}
 	else{
