@@ -72,7 +72,10 @@ Consultas
 							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cod_consulta" />
 							<span id="scod_consulta"></span>
 						</div>
-					</div>					
+				
+					</div>	
+					
+					<div class="row mb-3">
 
 					<div class="col-md-2" style="margin-right:20px">
 						<label class="texto-inicio font-medium" for="fechaconsulta">Fecha de Consulta</label>
@@ -97,7 +100,7 @@ Consultas
 					
 					
 
-					<div class="ced-paciente col-md-3">
+					
 						<label class="texto-inicio font-medium" for="cedula_h">Cedula del Paciente</label>
 						<div class="boton-ced">
 							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_h" name="cedula_h" />				
@@ -111,16 +114,22 @@ Consultas
 							</div>
 						</div>
 					</div>
-				</div>
+
+
+
+					</div>
+
+					
+				
 				
 	
 
-				<div class="row mb-3">
-					<div class="col-md-4" >
-					<label class="texto-inicio font-medium" class="mt-[-20px]" for="consulta">Consulta</label>
-					<textarea rows="2" cols="25" class="form-control bg-gray-200 rounded-lg border-white" type="text" id="consulta"></textarea>
-					<span id="sconsulta"></span>
-					</div>   
+					<div class="row mb-3">
+						<div class="col-md-4" >
+						<label class="texto-inicio font-medium" class="mt-[-20px]" for="consulta">Consulta</label>
+						<textarea rows="2" cols="25" class="form-control bg-gray-200 rounded-lg border-white" type="text" id="consulta"></textarea>
+						<span id="sconsulta"></span>
+						</div>   
 					<div class="col-md-4">
 						<label class="texto-inicio font-medium" for="diagnostico">Diagnostico</label>
 						<textarea rows="2" cols="25" class="form-control bg-gray-200 rounded-lg border-white" type="text" id="diagnostico"></textarea>
@@ -284,11 +293,9 @@ Consultas
 <!-- seccion del modal personal -->
 <div class="modal fade" tabindex="-1" role="dialog"  id="modalpersonal">
   <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-header text-light bg-info">
+    <div class="modal-header text-light bg-info gradiente">
         <h5 class="modal-title">Listado de Personal</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-          <span aria-hidden="true">&times;</span>
-        </button>
+		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-content">
 		<table class="table table-striped table-hover" id="tabladelpersonal">
@@ -302,12 +309,20 @@ Consultas
 		  </tr>
 		</thead>
 		<tbody id="listadopersonal">
+			<?php if ($datosPersonal['resultado'] == 'listadopersonal'): ?>
+				<?php foreach ($datosPersonal['datos'] as $fila): ?>
+					<tr onclick="colocapersonal(this)">
+						<td style="display:none;"><?= htmlspecialchars($fila['cedula_personal']) ?></td>
+						<td><?= htmlspecialchars($fila['cedula_personal']) ?></td>
+						<td><?= htmlspecialchars($fila['nombre']) ?></td>
+						<td><?= htmlspecialchars($fila['apellido']) ?></td>
+						<td><?= htmlspecialchars($fila['cargo']) ?></td>
+					</tr>
+				<?php endforeach; ?>
+			<?php endif; ?>
 		 
 		</tbody>
 		</table>
-    </div>
-	<div class="modal-footer bg-light">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
     </div>
   </div>
 </div>
@@ -317,11 +332,9 @@ Consultas
 <!-- seccion del modal historias -->
 <div class="modal fade" tabindex="-1" role="dialog"  id="modalpacientes">
   <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-header text-light bg-info">
+    <div class="modal-header text-light bg-info gradiente">
         <h5 class="modal-title">Listado de Pacientes</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-content">
 		<table class="table table-striped table-hover" id="tablahistorias">
@@ -334,12 +347,18 @@ Consultas
 		  </tr>
 		</thead>
 		<tbody id="listadopacientes">
-		 
+			<?php if ($datosPacientes['resultado'] == 'listadopacientes'): ?>
+				<?php foreach ($datosPacientes['datos'] as $fila): ?>
+					<tr onclick="colocapacientes(this)">
+						<td style="display:none;"><?= htmlspecialchars($fila['cedula_historia']) ?></td>
+						<td><?= htmlspecialchars($fila['cedula_historia']) ?></td>
+						<td><?= htmlspecialchars($fila['nombre']) ?></td>
+						<td><?= htmlspecialchars($fila['apellido']) ?></td>
+					</tr>
+				<?php endforeach; ?>
+			<?php endif; ?>
 		</tbody>
 		</table>
-    </div>
-	<div class="modal-footer bg-light">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
     </div>
   </div>
 </div>

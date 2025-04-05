@@ -63,7 +63,10 @@ require_once("modelo/".$pagina.".php");
 		  exit;
 	  }
 	  
-	  
+	$o = new consultasm();
+	$datos = $o->consultar();
+	$datosPacientes = $o->listadopacientes();
+	$datosPersonal = $o->listadopersonal();
 	  require_once("vista/".$pagina.".php"); 
   }
   else{

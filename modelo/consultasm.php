@@ -190,86 +190,45 @@ class consultasm extends datos{
 	   return $this->cardiovascular;
    }
 
-	function listadopersonal(){
-		$co = $this->conecta();
-		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$r = array(); // en este arreglo
-			// se enviara la respuesta a la solicitud y el
-			// contenido de la respuesta
-		try{
-			$resultado = $co->query("SELECT * FROM personal");
-			$respuesta = '';
-			if($resultado){
-				foreach($resultado as $r){
-					$respuesta = $respuesta."<tr style='cursor:pointer' onclick='colocapersonal(this);'>";
-					$respuesta = $respuesta."<td style='display:none'>";
-						$respuesta = $respuesta.$r['cedula_personal'];
-					$respuesta = $respuesta."</td>";
-					$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['cedula_personal'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['nombre'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['apellido'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['cargo'];
-						$respuesta = $respuesta."</td>";
-					$respuesta = $respuesta."</tr>";
-				}
-			}
-				$r['resultado'] = 'listadopersonal';
-			    $r['mensaje'] =  $respuesta;
-			    
-			
-			
-		}catch(Exception $e){
-			$r['resultado'] = 'error';
-			$r['mensaje'] =  $e->getMessage();
+   function listadopersonal() {
+	$co = $this->conecta();
+	$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	$r = array(); // En este arreglo se enviará la respuesta a la solicitud
+	try {
+		$resultado = $co->query("SELECT * FROM personal");
+		if ($resultado) {
+			$r['resultado'] = 'listadopersonal';
+			$r['datos'] = $resultado->fetchAll(PDO::FETCH_ASSOC); // Devuelve los datos como un arreglo asociativo
+		} else {
+			$r['resultado'] = 'listadopersonal';
+			$r['datos'] = array(); // Devuelve un arreglo vacío si no hay resultados
 		}
-			return $r;
+	} catch (Exception $e) {
+		$r['resultado'] = 'error';
+		$r['mensaje'] = $e->getMessage(); // Devuelve el mensaje de error en caso de excepción
 	}
+	return $r;
+}
 
-	function listadopacientes(){
-		$co = $this->conecta();
-		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$r = array(); // en este arreglo
-			// se enviara la respuesta a la solicitud y el
-			// contenido de la respuesta
-		try{
-			$resultado = $co->query("SELECT * FROM historias");
-			$respuesta = '';
-			if($resultado){
-				foreach($resultado as $r){
-					$respuesta = $respuesta."<tr style='cursor:pointer' onclick='colocapacientes(this);'>";
-					$respuesta = $respuesta."<td style='display:none'>";
-						$respuesta = $respuesta.$r['cedula_historia'];
-					$respuesta = $respuesta."</td>";
-					$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['cedula_historia'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['nombre'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['apellido'];
-						$respuesta = $respuesta."</td>";
-					$respuesta = $respuesta."</tr>";
-				}
-			}
-				$r['resultado'] = 'listadopacientes';
-			    $r['mensaje'] =  $respuesta;
-			    
-			
-			
-		}catch(Exception $e){
-			$r['resultado'] = 'error';
-			$r['mensaje'] =  $e->getMessage();
+function listadopacientes() {
+	$co = $this->conecta();
+	$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	$r = array(); // En este arreglo se enviará la respuesta a la solicitud
+	try {
+		$resultado = $co->query("SELECT * FROM historias");
+		if ($resultado) {
+			$r['resultado'] = 'listadopacientes';
+			$r['datos'] = $resultado->fetchAll(PDO::FETCH_ASSOC); // Devuelve los datos como un arreglo asociativo
+		} else {
+			$r['resultado'] = 'listadopacientes';
+			$r['datos'] = array(); // Devuelve un arreglo vacío si no hay resultados
 		}
-			return $r;
+	} catch (Exception $e) {
+		$r['resultado'] = 'error';
+		$r['mensaje'] = $e->getMessage(); // Devuelve el mensaje de error en caso de excepción
 	}
+	return $r;
+}
 
 
 
@@ -416,162 +375,34 @@ class consultasm extends datos{
 		}
 		return $r;
 	}
-	
-	
-	function consultar(){
+
+
+	function consultar() {
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$r = array();
-		try{
+		try {
+			$resultado = $co->query("SELECT *, h.nombre as nombre_h, h.apellido as apellido_h  
+									FROM consultas c 
+									INNER JOIN historias h ON c.cedula_h = h.cedula_historia
+									INNER JOIN personal p ON c.cedula_p = p.cedula_personal");
 			
-			$resultado = $co->query("Select *, h.nombre as nombre_h, h.apellido as apellido_h  
-										from consultas c 
-										inner join historias h on c.cedula_h = h.cedula_historia
-										inner join personal p on c.cedula_p = p.cedula_personal");
-			
-			if($resultado){
-				
-				$respuesta = '';
-				foreach($resultado as $r){
-					    $respuesta = $respuesta."<tr>";
-					    $respuesta = $respuesta."<td>";
-						
-							$respuesta = $respuesta."
-							<div class='button-container' style='display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px'>
-							
-							<a type='button'
-							class='btn btn-success' 
-							onclick='pone(this,0)'
-												' fechaconsulta='".$r['fechaconsulta']."'
-												' consulta='".$r['consulta']."'
-												' diagnostico='".$r['diagnostico']."'
-												' tratamientos='".$r['tratamientos']."'
-												' cedula_p='".$r['cedula_p']."'
-												' cedula_h='".$r['cedula_h']."'
-												' cargo='".$r['cargo']."'
-												' nombre='".$r['nombre']."'
-												' apellido='".$r['apellido']."'
-												' boca_abierta='".$r['boca_abierta']."'
-												' boca_cerrada='".$r['boca_cerrada']."'
-												' oidos='".$r['oidos']."'
-												' cabeza_craneo='".$r['cabeza_craneo']."'
-												' ojos='".$r['ojos']."'
-												' nariz='".$r['nariz']."'
-												' respiratorio='".$r['respiratorio']."'
-												' abdomen='".$r['abdomen']."'
-												' extremidades_r='".$r['extremidades_r']."'
-												' extremidades_s='".$r['extremidades_s']."'
-												' neurologicos='".$r['neurologicos']."'
-												' general='".$r['general']."'
-												' cardiovascular='".$r['cardiovascular']."'
-						    ><img src='img/lapiz.svg' style='width: 20px'></a>
-							<a type='button'
-							class='btn btn-danger' 
-							onclick='pone(this,1)'
-												' fechaconsulta='".$r['fechaconsulta']."'
-												' consulta='".$r['consulta']."'
-												' diagnostico='".$r['diagnostico']."'
-												' tratamientos='".$r['tratamientos']."'
-												' cedula_p='".$r['cedula_p']."'
-												' cedula_h='".$r['cedula_h']."'
-												' cargo='".$r['cargo']."'
-												' nombre='".$r['nombre']."'
-												' apellido='".$r['apellido']."'
-												' boca_abierta='".$r['boca_abierta']."'
-												' boca_cerrada='".$r['boca_cerrada']."'
-												' oidos='".$r['oidos']."'
-												' cabeza_craneo='".$r['cabeza_craneo']."'
-												' ojos='".$r['ojos']."'
-												' nariz='".$r['nariz']."'
-												' respiratorio='".$r['respiratorio']."'
-												' abdomen='".$r['abdomen']."'
-												' extremidades_r='".$r['extremidades_r']."'
-												' extremidades_s='".$r['extremidades_s']."'
-												' neurologicos='".$r['neurologicos']."'
-												' general='".$r['general']."'
-												' cardiovascular='".$r['cardiovascular']."'
-												
-						    ><img src='img/basura.svg' style='width: 20px'></a>
-							
-							<a type='button'
-							class='btn btn-primary' 
-							onclick='pone(this,2)'
-												' fechaconsulta='".$r['fechaconsulta']."'
-												' consulta='".$r['consulta']."'
-												' diagnostico='".$r['diagnostico']."'
-												' tratamientos='".$r['tratamientos']."'
-												' cedula_p='".$r['cedula_p']."'
-												' cedula_h='".$r['cedula_h']."'
-												' cargo='".$r['cargo']."'
-												' nombre='".$r['nombre']."'
-												' apellido='".$r['apellido']."'
-												' boca_abierta='".$r['boca_abierta']."'
-												' boca_cerrada='".$r['boca_cerrada']."'
-												' oidos='".$r['oidos']."'
-												' cabeza_craneo='".$r['cabeza_craneo']."'
-												' ojos='".$r['ojos']."'
-												' nariz='".$r['nariz']."'
-												' respiratorio='".$r['respiratorio']."'
-												' abdomen='".$r['abdomen']."'
-												' extremidades_r='".$r['extremidades_r']."'
-												' extremidades_s='".$r['extremidades_s']."'
-												' neurologicos='".$r['neurologicos']."'
-												' general='".$r['general']."'
-												' cardiovascular='".$r['cardiovascular']."'
-						    ><img src='img/ojo.svg' style='width: 20px'></a>
-
-							<a class='btn btn-danger' href='vista/fpdf/consultasm.php?cod_consulta=" . $r['cod_consulta'] . "' target='_blank'>
-								<img src='img/descarga.svg' style='width: 20px;'>
-							</a>
-							
-							
-							</div><br/>";
-
-
-							$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td style='display:none;'>";
-							$respuesta = $respuesta.$r['cod_consulta'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-						$respuesta = $respuesta.$r['nombre_h'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-						$respuesta = $respuesta.$r['apellido_h'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-							$respuesta = $respuesta.$r['fechaconsulta'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-						$respuesta = $respuesta.$r['cedula_h'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-						$respuesta = $respuesta.$r['nombre'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-						$respuesta = $respuesta.$r['apellido'];
-						$respuesta = $respuesta."</td>";
-						$respuesta = $respuesta."<td>";
-						
-						
-							$respuesta = $respuesta.$r['cedula_p'];
-							
-                        
-				}
-				
-			    $r['resultado'] = 'consultar';
-				$r['mensaje'] =  $respuesta;
-			}
-			else{
+			if ($resultado) {
 				$r['resultado'] = 'consultar';
-				$r['mensaje'] =  '';
+				$r['datos'] = $resultado->fetchAll(PDO::FETCH_ASSOC);
+			} else {
+				$r['resultado'] = 'consultar';
+				$r['datos'] = array();
 			}
-			
-		}catch(Exception $e){
+		} catch (Exception $e) {
 			$r['resultado'] = 'error';
-			$r['mensaje'] =  $e->getMessage();
+			$r['mensaje'] = $e->getMessage();
 		}
 		return $r;
 	}
+	
+	
+	
 	
 	
 	private function existe($cod_consulta){

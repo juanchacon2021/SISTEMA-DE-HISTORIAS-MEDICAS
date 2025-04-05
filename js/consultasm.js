@@ -489,30 +489,37 @@ mensaje){
 		return 0;
 	}
 }
-function colocapersonal(linea){
-	$("#cedula_p").val($(linea).find("td:eq(1)").text());
-	$("#cedula_personal").val($(linea).find("td:eq(0)").text());
-	$("#datosdelpersonal").html("Nombre: "+$(linea).find("td:eq(2)").text()+
-	" / Apellido: "+$(linea).find("td:eq(3)").text()+" / Cargo: "+
-	$(linea).find("td:eq(4)").text());
-	$("#modalpersonal").modal("hide");
-}
-function colocapacientes(linea){
-	$("#cedula_h").val($(linea).find("td:eq(1)").text());
-	$("#cedula_historia").val($(linea).find("td:eq(0)").text());
-	$("#datosdelpacientes").html("Nombre: "+$(linea).find("td:eq(2)").text()+
-	" / Apellido: "+$(linea).find("td:eq(3)").text());
-	$("#modalpacientes").modal("hide");
+function colocapersonal(linea) {
+    // Obtiene los datos de la fila seleccionada
+    const cedula = $(linea).find("td:eq(1)").text();
+    const nombre = $(linea).find("td:eq(2)").text();
+    const apellido = $(linea).find("td:eq(3)").text();
+    const cargo = $(linea).find("td:eq(4)").text();
+
+    // Coloca los datos en los campos correspondientes
+    $("#cedula_p").val(cedula);
+    $("#datosdelpersonal").html(
+        `Nombre: ${nombre} / Apellido: ${apellido} / Cargo: ${cargo}`
+    );
+
+    // Cierra el modal
+    $("#modalpersonal").modal("hide");
 }
 
-function colocapersonal_ver(linea, cargo, nombre, apellido){
+function colocapacientes(linea) {
+    // Obtiene los datos de la fila seleccionada
+    const cedula = $(linea).find("td:eq(1)").text();
+    const nombre = $(linea).find("td:eq(2)").text();
+    const apellido = $(linea).find("td:eq(3)").text();
 
-	$("#cedula_p").val($(linea).find("td:eq(1)").text());
-	$("#cedula_personal").val($(linea).find("td:eq(0)").text());
-	$("#datosdelpersonal").html("Nombre: "+nombre+
-	" / Apellido: "+apellido+" / Cargo: "+
-	cargo);
-	$("#modalpersonal").modal("hide");
+    // Coloca los datos en los campos correspondientes
+    $("#cedula_h").val(cedula);
+    $("#datosdelpacientes").html(
+        `Nombre: ${nombre} / Apellido: ${apellido}`
+    );
+
+    // Cierra el modal
+    $("#modalpacientes").modal("hide");
 }
 
 function pone(pos,accion){
@@ -549,8 +556,8 @@ function pone(pos,accion){
 		boton_p.style.display = '';
 
 		limpiarm();
-		colocapacientes(linea);
-		colocapersonal_ver(linea, $(pos).attr('cargo'),  $(pos).attr('nombre'),  $(pos).attr('apellido'));
+		colocapacientes(linea)
+		colocapersonal(linea)
 	}
 	else if (accion==1){
 		$("#fechaconsulta").prop("readonly",true);
@@ -577,8 +584,8 @@ function pone(pos,accion){
 		boton_p.style.display = 'none';
 
 		limpiarm();
-		colocapacientes(linea);
-		colocapersonal_ver(linea, $(pos).attr('cargo'),  $(pos).attr('nombre'),  $(pos).attr('apellido'));
+		colocapacientes(linea)
+		colocapersonal(linea)
 	}
 	else if (accion==2){
 		$("#fechaconsulta").prop("readonly",true);
@@ -606,8 +613,8 @@ function pone(pos,accion){
 		boton_p.style.display = 'none';
 
 		limpiarm();
-		colocapacientes(linea);
-		colocapersonal_ver(linea, $(pos).attr('cargo'),  $(pos).attr('nombre'),  $(pos).attr('apellido'));
+		colocapacientes(linea)
+		colocapersonal(linea)
 		
 	}
 	else{
@@ -665,8 +672,104 @@ function enviaAjax(datos) {
         var lee = JSON.parse(respuesta);
         if (lee.resultado == "consultar") {
 		   destruyeDT();	
-           $("#resultadoconsulta").html(lee.mensaje);
-		   crearDT();
+		   var html="";
+		   lee.datos.forEach(function (fila) {
+			html += `<tr>
+				<td>
+					<div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
+						<a type="button" class="btn btn-success" onclick="pone(this,0)"
+							fechaconsulta="${fila.fechaconsulta}"
+							consulta="${fila.consulta}"
+							diagnostico="${fila.diagnostico}"
+							tratamientos="${fila.tratamientos}"
+							cedula_p="${fila.cedula_p}"
+							cedula_h="${fila.cedula_h}"
+							cargo="${fila.cargo}"
+							nombre="${fila.nombre}"
+							apellido="${fila.apellido}"
+							boca_abierta="${fila.boca_abierta}"
+							boca_cerrada="${fila.boca_cerrada}"
+							oidos="${fila.oidos}"
+							cabeza_craneo="${fila.cabeza_craneo}"
+							ojos="${fila.ojos}"
+							nariz="${fila.nariz}"
+							respiratorio="${fila.respiratorio}"
+							abdomen="${fila.abdomen}"
+							extremidades_r="${fila.extremidades_r}"
+							extremidades_s="${fila.extremidades_s}"
+							neurologicos="${fila.neurologicos}"
+							general="${fila.general}"
+							cardiovascular="${fila.cardiovascular}">
+							<img src="img/lapiz.svg" style="width: 20px">
+						</a>
+						<a type="button" class="btn btn-danger" onclick="pone(this,1)"
+							fechaconsulta="${fila.fechaconsulta}"
+							consulta="${fila.consulta}"
+							diagnostico="${fila.diagnostico}"
+							tratamientos="${fila.tratamientos}"
+							cedula_p="${fila.cedula_p}"
+							cedula_h="${fila.cedula_h}"
+							cargo="${fila.cargo}"
+							nombre="${fila.nombre}"
+							apellido="${fila.apellido}"
+							boca_abierta="${fila.boca_abierta}"
+							boca_cerrada="${fila.boca_cerrada}"
+							oidos="${fila.oidos}"
+							cabeza_craneo="${fila.cabeza_craneo}"
+							ojos="${fila.ojos}"
+							nariz="${fila.nariz}"
+							respiratorio="${fila.respiratorio}"
+							abdomen="${fila.abdomen}"
+							extremidades_r="${fila.extremidades_r}"
+							extremidades_s="${fila.extremidades_s}"
+							neurologicos="${fila.neurologicos}"
+							general="${fila.general}"
+							cardiovascular="${fila.cardiovascular}">
+							<img src="img/basura.svg" style="width: 20px">
+						</a>
+						<a type="button" class="btn btn-primary" onclick="pone(this,2)"
+							fechaconsulta="${fila.fechaconsulta}"
+							consulta="${fila.consulta}"
+							diagnostico="${fila.diagnostico}"
+							tratamientos="${fila.tratamientos}"
+							cedula_p="${fila.cedula_p}"
+							cedula_h="${fila.cedula_h}"
+							cargo="${fila.cargo}"
+							nombre="${fila.nombre}"
+							apellido="${fila.apellido}"
+							boca_abierta="${fila.boca_abierta}"
+							boca_cerrada="${fila.boca_cerrada}"
+							oidos="${fila.oidos}"
+							cabeza_craneo="${fila.cabeza_craneo}"
+							ojos="${fila.ojos}"
+							nariz="${fila.nariz}"
+							respiratorio="${fila.respiratorio}"
+							abdomen="${fila.abdomen}"
+							extremidades_r="${fila.extremidades_r}"
+							extremidades_s="${fila.extremidades_s}"
+							neurologicos="${fila.neurologicos}"
+							general="${fila.general}"
+							cardiovascular="${fila.cardiovascular}">
+							<img src="img/ojo.svg" style="width: 20px">
+						</a>
+						<a class="btn btn-danger" href="vista/fpdf/consultasm.php?cod_consulta=${fila.cod_consulta}" target="_blank">
+							<img src="img/descarga.svg" style="width: 20px;">
+						</a>
+					</div>
+				</td>
+				<td style="display:none;">${fila.cod_consulta}</td>
+				<td>${fila.nombre_h}</td>
+				<td>${fila.apellido_h}</td>
+				<td>${fila.fechaconsulta}</td>
+				<td>${fila.cedula_h}</td>
+				<td>${fila.nombre}</td>
+				<td>${fila.apellido}</td>
+				<td>${fila.cedula_p}</td>
+			</tr>`;
+		});
+		
+		$("#resultadoconsulta").html(html);
+		crearDT();
         }
 		else if(lee.resultado=='listadopersonal'){
 			destruyeDT2();
