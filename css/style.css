@@ -8,6 +8,35 @@
     src: url('../Sora.ttf');
   }
   
+.btn-flotante {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgb(220 38 38);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    z-index: 1000;
+    transition: background-color 0.3s ease;
+}
+
+.btn-flotante img {
+    width: 30px;
+    height: 30px;
+}
+
+.btn-flotante:hover {
+    background-color: rgb(150, 25, 25);
+}
+
 .abajo {
     color: rgb(153, 153, 153);
     font-size: 20px;
@@ -40,10 +69,23 @@
     font-family: 'Sora';
     background-color: rgb(46, 99, 49);
     border-radius: 0.5rem;
-    background-color: rgb(46, 99, 49);
     color: white;
     width: auto;
     font-size: 15px;
+}
+
+.publicar {
+    background-color: rgb(47, 148, 52);
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 7px 0px;
+    font-weight: 700;
+}
+
+.publicar:hover {
+    background-color: rgb(0, 102, 7);
+    color: white;
 }
 
 
@@ -523,6 +565,20 @@ background: linear-gradient(90deg, #ff0000,#ff8080);/* W3C, IE 10+/ Edge, Firefo
 	color: white;
 }
 
+.subir {
+    background-color: rgb(220 38 38);
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+}
+
+.subir:hover {
+    background-color: rgb(150, 25, 25);;
+}
+
+.borde {
+    border-radius: 10px;
+}
 
 
 
