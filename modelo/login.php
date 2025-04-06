@@ -40,41 +40,36 @@ class entrada extends datos{
 	
 	
 	
-	function existe(){
+	function existe() {
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$r = array();
-		try{
-			//grado de instruccion sera el valor que voy 
-			//a guadr en $_SESSION, ustedes pueden cambiar por el que sea
-			//se usara para determinar que elementos del menu se van a mostrar
-			$p = $co->prepare("Select cargo from personal 
-			where 
-			cedula_personal=:cedula
-			and 
-			clave=:clave");
-					$p->bindParam(':cedula',$this->cedula);		
-					$p->bindParam(':clave',$this->clave);
+		try {
+			// Consulta para obtener el cargo y la cédula del personal
+			$p = $co->prepare("SELECT cargo, cedula_personal FROM personal 
+								WHERE cedula_personal = :cedula 
+								AND clave = :clave");
+			$p->bindParam(':cedula', $this->cedula);		
+			$p->bindParam(':clave', $this->clave);
 			$p->execute();
 			
 			$fila = $p->fetchAll(PDO::FETCH_BOTH);
-			if($fila){
-
+			if ($fila) {
 				$r['resultado'] = 'existe';
-			    $r['mensaje'] =  $fila[0][0];
-			    
-			}
-			else{
+				$r['mensaje'] = $fila[0]['cargo']; // Cargo del usuario
+				$r['usuario'] = $fila[0]['cedula_personal']; // Cédula del usuario
+			} else {
 				$r['resultado'] = 'noexiste';
-			    $r['mensaje'] =  "Error en cedula y/o clave !!!";
+				$r['mensaje'] = "Error en cédula y/o clave !!!";
 			}
-			
-		}catch(Exception $e){
+		} catch (Exception $e) {
 			$r['resultado'] = 'error';
-			$r['mensaje'] =  $e->getMessage();
+			$r['mensaje'] = $e->getMessage();
 		}
 		return $r;
 	}
+
+	
 	
 	
 

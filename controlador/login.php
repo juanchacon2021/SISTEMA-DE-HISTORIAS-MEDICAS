@@ -18,6 +18,7 @@
 			  session_start(); //inicia el entorno de sesion
 			  //asigna una clave nivel con el valor obtenido de la base de datos
 			  $_SESSION['nivel'] = $m['mensaje'];
+			  $_SESSION['usuario'] = $m['usuario'];
 			  
 			  // Esta nueva instruccion lo que hace es 
 			  //redireccionar el flujo de nuevo al index.php FrontController
