@@ -18,6 +18,19 @@
             <?php
 		   //verificamos que exista la variable nivel
 		   //que es la que contiene el valor de la sesion
+
+           if (isset($_SESSION['usuario'])) {
+            $usuario = $_SESSION['usuario'];
+            // Imprime un script de JavaScript para enviar el valor a la consola
+            echo "<script>console.log('Usuario actual: " . $usuario . "');</script>";
+        } else {
+            echo "<script>console.log('no hay ningun usuario');</script>";
+
+        }
+
+
+
+
 		   if(!empty($nivel)){
 		 ?>
          <?php
