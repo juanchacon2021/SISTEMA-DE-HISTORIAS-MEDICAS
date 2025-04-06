@@ -132,8 +132,8 @@ class personal extends datos{
 						nombre = '$this->nombre',
 						correo = '$this->correo',
 						telefono = '$this->telefono',
-						cargo = '$this->cargo',
-						clave = '$this->clave'
+						cargo = '$this->cargo'
+						
 						where
 						cedula_personal = '$this->cedula_personal'
 						");
