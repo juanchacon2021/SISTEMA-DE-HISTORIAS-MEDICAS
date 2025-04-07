@@ -68,13 +68,13 @@ if(is_file("vista/".$pagina.".php")){
                 echo json_encode($o->incluir_area());
                 break;
                 
-            case 'modificar_area':
-                $o->set_cod_area($_POST['cod_area']);
-                $o->set_nombre_area($_POST['nombre_area']);
-                $o->set_descripcion($_POST['descripcion']);
-                $o->set_responsable_id($_POST['responsable_id']);
-                echo json_encode($o->modificar_area());
-                break;
+                case 'modificar_area':
+                    $o->set_cod_area($_POST['cod_area']);  // Quitar el apóstrofe simple extra
+                    $o->set_nombre_area($_POST['nombre_area']);
+                    $o->set_descripcion($_POST['descripcion']);
+                    $o->set_responsable_id($_POST['responsable_id']);
+                    echo json_encode($o->modificar_area());
+                    break;
                 
             case 'eliminar_area':
                 $o->set_cod_area($_POST['cod_area']);

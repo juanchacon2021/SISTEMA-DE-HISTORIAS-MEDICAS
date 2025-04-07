@@ -108,9 +108,7 @@ function cargarEstudiantes() {
             });
             
             tablaEstudiantes = $('#tablaEstudiantes').DataTable({
-                language: {
-                    url: '//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json'
-                },
+               
                 responsive: true,
                 autoWidth: false,
                 columnDefs: [
@@ -227,9 +225,7 @@ function cargarAreas() {
             });
             
             tablaAreas = $('#tablaAreas').DataTable({
-                language: {
-                    url: '//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json'
-                },
+                
                 responsive: true,
                 autoWidth: false,
                 columnDefs: [
@@ -268,10 +264,11 @@ function guardarArea() {
     if(!validarFormularioArea()) {
         return;
     }
+    var cod_area = $('#cod_area').val()
 
     var datos = new FormData($('#formArea')[0]);
     datos.append('accion', $('#accionArea').val());
-    
+    datos.append('cod_area', cod_area);
     enviaAjax(datos, function(respuesta) {
         muestraMensaje(respuesta.mensaje, respuesta.resultado == 'error' ? 'error' : 'success');
         if(respuesta.resultado != 'error') {
