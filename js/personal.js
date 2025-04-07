@@ -208,31 +208,30 @@ mensaje){
 	}
 }
 
-function pone(pos,accion){
-	
-	linea=$(pos).closest('tr');
+function pone(pos, accion) {
+    linea = $(pos).closest('tr');
 
+    if (accion == 0) {
+        $("#proceso").text("MODIFICAR");
+        $("#idclave").hide(); // Oculta el botón con id "idclave"
+    } else if (accion == 1) {
+        $("#proceso").text("ELIMINAR");
+        $("#idclave").hide(); // Muestra el botón con id "idclave"
+    } else {
+        $("#proceso").text("INCLUIR");
+        $("#idclave").show(); // Muestra el botón con id "idclave"
+    }
 
-	if(accion==0){
-		$("#proceso").text("MODIFICAR");
-	}
-	else if(accion==1){
-		$("#proceso").text("ELIMINAR"); 
-	}
-	else{
-		$("#proceso").text("INCLUIR");
-	}
-	$("#cedula_personal").val($(linea).find("td:eq(1)").text());
-	$("#apellido").val($(linea).find("td:eq(2)").text());
-	$("#nombre").val($(linea).find("td:eq(3)").text());
-	$("#correo").val($(linea).find("td:eq(4)").text());
-	$("#telefono").val($(linea).find("td:eq(5)").text());
-	$("#cargo").val($(linea).find("td:eq(6)").text());
-	$("#clave").val(accion === 0 || accion === 1 ? '**********' : $(linea).find("td:eq(7)").text());
-	
-	$("#modal1").modal("show");
+    $("#cedula_personal").val($(linea).find("td:eq(1)").text());
+    $("#apellido").val($(linea).find("td:eq(2)").text());
+    $("#nombre").val($(linea).find("td:eq(3)").text());
+    $("#correo").val($(linea).find("td:eq(4)").text());
+    $("#telefono").val($(linea).find("td:eq(5)").text());
+    $("#cargo").val($(linea).find("td:eq(6)").text());
+    $("#clave").val(accion === 0 || accion === 1 ? '**********' : $(linea).find("td:eq(7)").text());
+
+    $("#modal1").modal("show");
 }
-
 
 function enviaAjax(datos) {
 	$.ajax({

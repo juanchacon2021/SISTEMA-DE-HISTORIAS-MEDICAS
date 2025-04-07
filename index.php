@@ -15,7 +15,7 @@ if (is_file("modelo/verifica.php")) {
         $nivel = $v->leesesion();
     }
 }
-
+ 
 if (is_file("controlador/" . $pagina . ".php")) {
     require_once("controlador/" . $pagina . ".php");
 } else {
