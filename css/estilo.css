@@ -9,7 +9,11 @@
 label {
   min-width: 80px;
 }
-
+*/
+.content-wrapper {
+    margin-left: 280px; /* Ajusta este valor según el ancho del sidebar */
+    padding: 35px;
+}
 * {
   margin: 0;
   padding: 0;
