@@ -17,7 +17,7 @@ require_once("comunes/sidebar.php");
             </div>
 
             <div class="container-fluid">
-                <!-- Tabs para alternar entre estudiantes y áreas -->
+                <!-- Tabs -->
                 <ul class="nav nav-tabs" id="pasantiasTabs" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="estudiantes-tab" data-bs-toggle="tab" data-bs-target="#estudiantes" type="button" role="tab">
