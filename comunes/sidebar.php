@@ -65,6 +65,14 @@
                         
                     </div>
                 </div>
+
+                <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-10000 cursor-pointer hover:text-white hover:bg-red-800 text-stone-600">
+                    <img class="w-6 h-8" src="img/student.svg" alt="">
+                    <div class="flex justify-between w-full items-center hover:text-white">
+                        <a href="?pagina=pasantias"><span class="text-[15px] ml-4 hover:text-white text-lg">Pasantías</span></a>
+                        
+                    </div>
+                </div>
                 <?php 		 
 				}
 		 ?>

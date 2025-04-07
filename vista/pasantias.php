@@ -8,20 +8,16 @@ require_once("comunes/sidebar.php");
     <div class="content-wrapper" style="margin-left: 290px;"> <!-- Ajusta el margen izquierdo -->
         <!-- Main content -->
         <section class="content">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">Gestión de Pasantías</h1>
-                    </div>
-                </div>
-            </div>
+        <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
+Pasantías
+</div>
 
             <div class="container-fluid">
                 <!-- Tabs -->
                 <ul class="nav nav-tabs" id="pasantiasTabs" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="estudiantes-tab" data-bs-toggle="tab" data-bs-target="#estudiantes" type="button" role="tab">
-                            <i class="fas fa-users mr-1"></i> Estudiantes
+                            Estudiantes
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -42,7 +38,7 @@ require_once("comunes/sidebar.php");
                                     </div>
                                     <div class="col-md-6 text-right">
                                         <button type="button" class="btn btn-success" onclick="mostrarModalEstudiante('incluir')">
-                                            <i class="fas fa-plus-circle mr-1"></i> Nuevo Estudiante
+                                             Nuevo Estudiante
                                         </button>
                                         <a href="vista/fpdf/pasantias.php" target="_blank" class="btn btn-primary">
                                             <i class="fas fa-file-pdf mr-1"></i> Generar Reporte
@@ -82,7 +78,7 @@ require_once("comunes/sidebar.php");
                                     </div>
                                     <div class="col-md-6 text-right">
                                         <button type="button" class="btn btn-success" onclick="mostrarModalArea('incluir')">
-                                            <i class="fas fa-plus-circle mr-1"></i> Nueva Área
+                                             Nueva Área
                                         </button>
                                         <a href="vista/fpdf/areas_pasantia.php" target="_blank" class="btn btn-primary">
                                             <i class="fas fa-file-pdf mr-1"></i> Generar Reporte

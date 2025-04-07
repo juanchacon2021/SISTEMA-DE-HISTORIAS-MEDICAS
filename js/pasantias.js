@@ -89,10 +89,10 @@ function cargarEstudiantes() {
                     <td>
                         <div class="btn-group">
                             <button class='btn btn-sm btn-primary mr-1' onclick='editarEstudiante(${JSON.stringify(estudiante)})'>
-                                <i class='fas fa-edit'></i>
+                              <img src="img/lapiz.svg" style="width: 20px">
                             </button>
                             <button class='btn btn-sm btn-danger' onclick='confirmarEliminar("estudiante", "${estudiante.cedula_estudiante}")'>
-                                <i class='fas fa-trash'></i>
+                                <img src='img/trash-can-solid.svg' style='width: 20px;'>
                             </button>
                         </div>
                     </td>
@@ -102,7 +102,7 @@ function cargarEstudiantes() {
                     <td>${estudiante.institucion}</td>
                     <td>${estudiante.nombre_area}</td>
                     <td>${estudiante.responsable}</td>
-                    <td>${estudiante.activo == 1 ? '<span class="badge badge-success">Activo</span>' : '<span class="badge badge-secondary">Inactivo</span>'}</td>
+                    <td>${estudiante.activo == 1 ? '<span class="badge badge-success" style="background-color: green;">Activo</span>' : '<span class="badge badge-secondary" style="background-color: red;">Inactivo</span>'}</td>
                 </tr>`;
                 $('#resultadoEstudiantes').append(fila);
             });
@@ -212,10 +212,10 @@ function cargarAreas() {
                     <td>
                         <div class="btn-group">
                             <button class='btn btn-sm btn-primary mr-1' onclick='editarArea(${JSON.stringify(area)})'>
-                                <i class='fas fa-edit'></i>
+                               <img src="img/lapiz.svg" style="width: 20px">
                             </button>
                             <button class='btn btn-sm btn-danger' onclick='confirmarEliminar("area", "${area.cod_area}")'>
-                                <i class='fas fa-trash'></i>
+                               <img src='img/trash-can-solid.svg' style='width: 20px;'>
                             </button>
                         </div>
                     </td>
