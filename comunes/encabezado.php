@@ -23,6 +23,7 @@
     <script src="js/popper.min.js" ></script>
     <script src="js/bootstrap.min.js" ></script>
     <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery.jscroll.js"></script>
     <!--Lineas para usar el DataTblet-->
     <link rel="stylesheet" type="text/css" href="datatables/datatables.css"/> 
     <script type="text/javascript" src="datatables/datatables.min.js"></script>
