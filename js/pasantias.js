@@ -108,7 +108,20 @@ function cargarEstudiantes() {
             });
             
             tablaEstudiantes = $('#tablaEstudiantes').DataTable({
-               
+                language: {
+                    lengthMenu: "Mostrar _MENU_ por página",
+                    zeroRecords: "No se encontró pacientes",
+                    info: "Mostrando página _PAGE_ de _PAGES_",
+                    infoEmpty: "No hay pacientes registrados",
+                    infoFiltered: "(filtrado de _MAX_ registros totales)",
+                    search: "Buscar:",
+                    paginate: {
+                      first: "Primera",
+                      last: "Última",
+                      next: "Siguiente",
+                      previous: "Anterior",
+                    },
+                  },
                 responsive: true,
                 autoWidth: false,
                 columnDefs: [
@@ -225,7 +238,20 @@ function cargarAreas() {
             });
             
             tablaAreas = $('#tablaAreas').DataTable({
-                
+                language: {
+                    lengthMenu: "Mostrar _MENU_ por página",
+                    zeroRecords: "No se encontró pacientes",
+                    info: "Mostrando página _PAGE_ de _PAGES_",
+                    infoEmpty: "No hay pacientes registrados",
+                    infoFiltered: "(filtrado de _MAX_ registros totales)",
+                    search: "Buscar:",
+                    paginate: {
+                      first: "Primera",
+                      last: "Última",
+                      next: "Siguiente",
+                      previous: "Anterior",
+                    },
+                  },
                 responsive: true,
                 autoWidth: false,
                 columnDefs: [
