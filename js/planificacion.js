@@ -24,6 +24,17 @@ $(document).ready(function() {
         }
     });
     
+    // Validar cantidad de imágenes
+    function validarCantidadImagenes(input) {
+        const maxImagenes = 4;
+        if (input.files.length > maxImagenes) {
+            $('#errorImagenes').text(`Solo puedes subir un máximo de ${maxImagenes} imágenes.`);
+            input.value = ''; // Limpia el input
+        } else {
+            $('#errorImagenes').text('');
+        }
+    }
+    
     // Envío del formulario
     $('#formPublicacion').submit(function(e) {
         e.preventDefault();
@@ -64,6 +75,7 @@ $(document).ready(function() {
                 $('#contenedorPublicaciones').html('');
                 if (response.length > 0) {
                     response.forEach(function(publicacion) {
+                        console.log(publicacion);
                         $('#contenedorPublicaciones').append(crearCardPublicacion(publicacion));
                     });
                 } else {
@@ -81,38 +93,38 @@ $(document).ready(function() {
         let imagenHTML = '';
         if (publicacion.imagen) {
             imagenHTML = `<div class="text-center mt-2">
-                            <img src="${publicacion.imagen}" class="img-fluid rounded" style="max-height: 300px;">
+                            <center><img src="${publicacion.imagen}" class="img-fluid rounded" style="max-height: 300px;"></center>
                           </div>`;
         }
         
         let accionesHTML = '';
         if (publicacion.cedula_p == $('#usuarioActual').val()) { // Asume que hay un input hidden con el usuario actual
             accionesHTML = `<div class="d-flex justify-content-end mt-2">
-                              <button class="btn btn-sm btn-outline-primary me-2 btn-editar" 
-                                      data-id="${publicacion.cod_pub}">
-                                  Editar
+                              <button class="btn btn-sm btn-primary me-2 btn-editar" 
+                                    data-id="${publicacion.cod_pub}">
+                                    <img src="img/lapiz.svg" alt="Editar" width="16">
                               </button>
-                              <button class="btn btn-sm btn-outline-danger btn-eliminar" 
-                                      data-id="${publicacion.cod_pub}">
-                                  Eliminar
+                              <button class="btn btn-sm btn-danger btn-eliminar" 
+                                    data-id="${publicacion.cod_pub}">
+                                    <img src="img/basura.svg" alt="Eliminar" width="16">
                               </button>
                            </div>`;
         }
         
-        return `<div class="card mb-3" id="publicacion-${publicacion.cod_pub}">
+        return `<div class="card-pub" id="publicacion-${publicacion.cod_pub}">
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-2">
                             <div class="flex-shrink-0">
-                                <img src="img/user-default.png" alt="Usuario" class="rounded-circle" width="40">
+                                <img src="img/user-1.svg" alt="Usuario" class="rounded-circle" width="40">
                             </div>
                             <div class="flex-grow-1 ms-3">
-                                <h5 class="mb-0">${publicacion.nombre} ${publicacion.apellido}</h5>
-                                <small class="text-muted">${formatFecha(publicacion.fecha)}</small>
+                                <h1 class="font-bold">${publicacion.nombre} ${publicacion.apellido}</h1>
+                                <small class="text-sm">${formatFecha(publicacion.fecha)}</small>
                             </div>
+                            ${accionesHTML}
                         </div>
                         <p class="card-text">${publicacion.contenido || ''}</p>
                         ${imagenHTML}
-                        ${accionesHTML}
                     </div>
                 </div>`;
     }
@@ -125,8 +137,8 @@ $(document).ready(function() {
     
     // Mostrar mensajes
     function mostrarMensaje(tipo, mensaje) {
-        const alertClass = tipo === 'success' ? 'alert-success' : 'alert-danger';
-        $('#mensaje').html(`<div class="alert ${alertClass}">${mensaje}</div>`);
+        $('#contenidoMensaje').html(mensaje); // Inserta el mensaje en el cuerpo del modal
+        $('#modalMensaje').modal('show'); // Muestra el modal
         setTimeout(() => $('#mensaje').html(''), 3000);
     }
     

@@ -27,7 +27,7 @@ if ($nivel == 'Doctor' || $nivel == 'Enfermera') {
     <hr class="my-4 text-gray-600">
 
     <!-- Contenedor de publicaciones -->
-    <div class="scroll" id="contenedorPublicaciones">
+    <div class="scroll" id="contenedorPublicaciones" style="display: flex; flex-direction: column; justify-content: between;">
         <?php require_once 'comunes/publicaciones.php'; ?>
     </div>
 </div>
@@ -42,6 +42,7 @@ if ($nivel == 'Doctor' || $nivel == 'Enfermera') {
             <div class="container">
                 <form id="formPublicacion" enctype="multipart/form-data" autocomplete="off" style="margin: 0em 2em 2em 2em;">
                     <input type="hidden" name="accion" id="accion" value="guardarPublicacion">
+                    <input type="hidden" name="usuarioActual" id="usuarioActual" value="<?= htmlspecialchars($usuario) ?>">
                     <input type="hidden" name="cod_pub" id="cod_pub" value="">
                     
                     <div class="row mb-6">

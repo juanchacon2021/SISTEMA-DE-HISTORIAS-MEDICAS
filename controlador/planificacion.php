@@ -21,6 +21,24 @@ if(is_file("vista/".$pagina.".php")){
                     echo json_encode(array("resultado" => "error", "mensaje" => "No se pudo identificar al usuario"));
                     exit;
                 }
+
+                if (!empty($_FILES['imagenes']['name'][0])) {
+                    $rutasImagenes = [];
+                    foreach ($_FILES['imagenes']['tmp_name'] as $key => $tmpName) {
+                        $nombreImagen = uniqid() . '_' . basename($_FILES['imagenes']['name'][$key]);
+                        $rutaImagen = 'img/publicaciones/' . $nombreImagen;
+
+                        if (move_uploaded_file($tmpName, $rutaImagen)) {
+                            $rutasImagenes[] = $rutaImagen;
+                        } else {
+                            echo json_encode(["resultado" => "error", "mensaje" => "Error al subir las imágenes"]);
+                            exit;
+                        }
+                    }
+                    $imagenesSerializadas = json_encode($rutasImagenes);
+                    $sql .= ", imagenes = ?";
+                    $params[] = $imagenesSerializadas;
+                }
                 
                 echo json_encode($o->guardarPublicacion($cedula_p, $contenido, $imagen));
                 break;

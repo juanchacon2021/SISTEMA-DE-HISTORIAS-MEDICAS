@@ -11,7 +11,7 @@ if (count($publicaciones) > 0) {
         $imagenHTML = '';
         if ($publicacion['imagen']) {
             $imagenHTML = '<div class="text-center mt-2">
-                            <img src="'.$publicacion['imagen'].'" class="img-fluid rounded" style="max-height: 300px;">
+                            <center><img src="'.$publicacion['imagen'].'" class="img-fluid rounded" style="max-height: 300px;"></center>
                           </div>';
         }
         
@@ -28,12 +28,11 @@ if (count($publicaciones) > 0) {
                               </button>
                            </div>';
         }
-        
-        echo '<div class="w-[20px]" id="publicacion-'.$publicacion['cod_pub'].'">
+        echo '<div class="card-pub" id="publicacion-'.$publicacion['cod_pub'].'">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-2">
                         <div class="flex-shrink-0">
-                            <img src="img/user-default.png" alt="Usuario" class="rounded-circle" width="40">
+                            <img src="img/user-1.svg" alt="Usuario" class="rounded-circle" width="40">
                         </div>
                         <div class="flex-grow-1 ms-3">
                             <h1 class="font-bold">'.$publicacion['nombre'].' '.$publicacion['apellido'].'</h1>

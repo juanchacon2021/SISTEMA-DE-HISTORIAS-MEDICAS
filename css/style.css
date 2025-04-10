@@ -16,7 +16,8 @@
     width: 100%;
     margin: -500px auto;
 }
-  
+
+
 .btn-flotante {
     position: fixed;
     bottom: 20px;
@@ -341,6 +342,15 @@ background: linear-gradient(90deg, #ff0000,#ff8080);/* W3C, IE 10+/ Edge, Firefo
 
 .inputField::target-text {
     font-size: 4rem;
+}
+
+.card-pub {
+    background-color: rgb(243, 243, 243);
+    padding: 20px;
+    border-radius: 10px;
+    width: 40%;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+    margin: 20px auto;
 }
 
 #button {
