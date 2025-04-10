@@ -11,7 +11,7 @@
                     <span class="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
                 </span>
                 <a href="?pagina=principal"><img class="w-10 h-8 mx-2 my-2 p-2 bg-red-800 rounded-md text-white hover:text-white" src="img/home.svg" alt=""></a>
-                <a href="?pagina=principal" class="text-[18px] ml-3 text-stone-600 font-bold cursor-pointer text-stone-500 hover:text-stone-800">CDI - Carmen Estella Mendoza de Flores</a>
+                <a href="?pagina=principal" class="text-[18px] ml-3 text-stone-600 font-bold cursor-pointer hover:text-stone-800">CDI - Carmen Estella Mendoza de Flores</a>
                 <a href="#" class="ml-8"><img src="img/x.svg" alt="" onclick="Openbar()" style="width: 60px;"></a>
             </div>
             <hr class="my-2 text-gray-600">
@@ -19,19 +19,19 @@
 		   //verificamos que exista la variable nivel
 		   //que es la que contiene el valor de la sesion
 
-           if (isset($_SESSION['usuario'])) {
-            $usuario = $_SESSION['usuario'];
-            // Imprime un script de JavaScript para enviar el valor a la consola
-            echo "<script>console.log('Usuario actual: " . $usuario . "');</script>";
-        } else {
-            echo "<script>console.log('no hay ningun usuario');</script>";
-
-        }
-
+            if (isset($_SESSION['usuario'])) {
+                $usuario = $_SESSION['usuario'];
+                // Imprime un script de JavaScript para enviar el valor a la consola
+                echo "<script>console.log('Usuario actual: " . $usuario . "');</script>";
+            } else {
+                echo "<script>console.log('no hay ningun usuario');</script>";
+            }
 
 
 
-		   if(!empty($nivel)){
+
+            global $nivel;
+		    if(!empty($nivel)){
 		 ?>
          <?php
 					  if($nivel=='Doctor'){
