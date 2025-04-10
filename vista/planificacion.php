@@ -1,4 +1,3 @@
-
 <?php 
 require_once("comunes/encabezado.php"); 
 require_once("comunes/sidebar.php");	
@@ -24,6 +23,8 @@ if ($nivel == 'Doctor' || $nivel == 'Enfermera') {
             </div>
         </div>
     </div>
+    
+    <hr class="my-4 text-gray-600">
 
     <!-- Contenedor de publicaciones -->
     <div class="scroll" id="contenedorPublicaciones">
@@ -68,9 +69,8 @@ if ($nivel == 'Doctor' || $nivel == 'Enfermera') {
                     </div>
                     
                     <div id="previewImagen" class="mt-3 text-center"></div>
-                    
-                    <div class="mt-3 text-end">
-                        <button type="submit" class="btn btn-primary" id="btnGuardarPublicacion">Publicar</button>
+                    <div class="mt-3 publicar">
+                        <button type="submit" id="btnGuardarPublicacion">Publicar</button>
                     </div>
                 </form>
                 

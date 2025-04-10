@@ -1,11 +1,10 @@
-
 <?php
 class planificacion {
     private $db;
     
     public function __construct() {
         try {
-            $this->db = new PDO("mysql:host=localhost;dbname=shm-cdi.2", "root", "");
+            $this->db = new PDO("mysql:host=localhost;dbname=shm-cdi.2", "root", "123456");
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             die("Error de conexión: " . $e->getMessage());

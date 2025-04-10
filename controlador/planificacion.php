@@ -1,4 +1,3 @@
-
 <?php
 if (!is_file("modelo/".$pagina.".php")){
     echo "Falta definir la clase ".$pagina;

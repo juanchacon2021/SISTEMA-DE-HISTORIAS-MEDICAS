@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
     // Variables globales
     let publicacionActual = null;
