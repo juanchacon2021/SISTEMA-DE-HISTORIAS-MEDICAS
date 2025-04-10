@@ -63,6 +63,7 @@
                         <img class="w-6 h-8" src="img/examen.svg" alt="">
                         <a href="?pagina=examenes" ><span class="text-[15px] ml-4 text-lg hover:text-white">Examenes</span></a>
                     </div>
+                    
                 </div>
 
                 <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:text-white hover:bg-red-800 text-stone-600">
@@ -88,10 +89,17 @@
                 <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-10000 cursor-pointer hover:text-white hover:bg-red-800 text-stone-600">
                     <img class="w-6 h-8" src="img/student.svg" alt="">
                     <div class="flex justify-between w-full items-center hover:text-white">
-                        <a href="?pagina=pasantias"><span class="text-[15px] ml-4 hover:text-white text-lg">Pasantías</span></a>
-                        
+                        <a href="?pagina=pasantias"><span class="text-[15px] ml-4 hover:text-white text-lg">Pasantías</span></a> 
                     </div>
                 </div>
+                <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:text-white hover:bg-red-800 text-stone-600">
+                        <img class="w-6 h-8" src="img/cronico.svg" alt="">
+                        <a href="?pagina=p_cronicos" ><span class="text-[15px] ml-4 text-lg hover:text-white">Pacientes cronicos</span></a>
+                    </div>
+                    <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:text-white hover:bg-red-800 text-stone-600">
+                        <img class="w-6 h-8" src="img/jornadas.svg" alt="">
+                        <a href="?pagina=jornadas" ><span class="text-[15px] ml-4 text-lg hover:text-white">Jornadas</span></a>
+                    </div>
                 <?php 		 
 				}
 		 ?>

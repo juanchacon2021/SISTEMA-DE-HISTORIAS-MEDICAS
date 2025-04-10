@@ -5,7 +5,7 @@ require_once("comunes/sidebar.php");
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper" style="margin-left: 290px;"> <!-- Ajusta el margen izquierdo -->
+    <div class="container espacio"> <!-- Ajusta el margen izquierdo -->
         <!-- Main content -->
         <section class="content">
         <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
