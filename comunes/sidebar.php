@@ -45,7 +45,7 @@
 					  }
 					?>
 
-                <hr class="my-4 text-gray-600">
+                <hr class="my-2 text-gray-600">
                 <?php
 					  if($nivel=='Doctor'){
 					?>
@@ -78,29 +78,46 @@
                     <a href="?pagina=planificacion" ><span class="text-[15px] ml-4 text-lg hover:text-white">Planificacion</span></a>
                 </div>
 
-                <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-10000 cursor-pointer hover:text-white hover:bg-red-800 text-stone-600">
-                    <img class="w-6 h-8" src="img/chart.svg" alt="">
-                    <div class="flex justify-between w-full items-center hover:text-white">
-                        <a href="?pagina=consultasm"><span class="text-[15px] ml-4 hover:text-white text-lg">Consultas</span></a>
-                        
-                    </div>
-                </div>
+                <style>
+                    details > div {
+                        overflow: hidden;
+                        max-height: 0;
+                        transition: max-height 0.5s ease;
+                    }
 
-                <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-10000 cursor-pointer hover:text-white hover:bg-red-800 text-stone-600">
-                    <img class="w-6 h-8" src="img/student.svg" alt="">
-                    <div class="flex justify-between w-full items-center hover:text-white">
-                        <a href="?pagina=pasantias"><span class="text-[15px] ml-4 hover:text-white text-lg">Pasantías</span></a> 
+                    details[open] > div {
+                        max-height: 500px;
+                    }
+                </style>
+
+                <details class="p-2.5 mt-2 rounded-md px-4 duration-300 cursor-pointer hover:text-white text-stone-600">
+                    <summary class="rounded-md duration-300 cursor-pointer flex items-center text-stone-600 hover:bg-stone-600">
+                        <img class="w-6 h-8" src="img/hospital.svg" alt="">
+                        <span class="text-[15px] ml-4 text-lg">Centro Médico</span>
+                        <span class="ml-8 text-[15px]">&#9660;</span>
+                    </summary>
+                    <div class="mt-2">
+                        <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-10000 cursor-pointer hover:text-white hover:bg-red-800 text-stone-600">
+                            <img class="w-6 h-8" src="img/chart.svg" alt="">
+                            <div class="flex justify-between w-full items-center hover:text-white">
+                                <a href="?pagina=consultasm"><span class="text-[15px] ml-4 hover:text-white text-lg">Consultas</span></a>
+                            </div>
+                        </div>
+                        <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:text-white hover:bg-red-800 text-stone-600">
+                            <img class="w-6 h-8" src="img/student.svg" alt="">
+                            <a href="?pagina=pasantias"><span class="text-[15px] ml-4 text-lg hover:text-white">Pasantías</span></a>
+                        </div>
+                        <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:text-white hover:bg-red-800 text-stone-600">
+                            <img class="w-6 h-8" src="img/cronico.svg" alt="">
+                            <a href="?pagina=p_cronicos"><span class="text-[15px] ml-4 text-lg hover:text-white">Pacientes crónicos</span></a>
+                        </div>
+                        <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:text-white hover:bg-red-800 text-stone-600">
+                            <img class="w-6 h-8" src="img/jornadas.svg" alt="">
+                            <a href="?pagina=jornadas"><span class="text-[15px] ml-4 text-lg hover:text-white">Jornadas</span></a>
+                        </div>
                     </div>
-                </div>
-                <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:text-white hover:bg-red-800 text-stone-600">
-                        <img class="w-6 h-8" src="img/cronico.svg" alt="">
-                        <a href="?pagina=p_cronicos" ><span class="text-[15px] ml-4 text-lg hover:text-white">Pacientes cronicos</span></a>
-                    </div>
-                    <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:text-white hover:bg-red-800 text-stone-600">
-                        <img class="w-6 h-8" src="img/jornadas.svg" alt="">
-                        <a href="?pagina=jornadas" ><span class="text-[15px] ml-4 text-lg hover:text-white">Jornadas</span></a>
-                    </div>
-                <?php 		 
+                </details>
+        <?php 		 
 				}
 		 ?>
            <?php 		 
@@ -132,3 +149,14 @@
     
     <script src="js/sidebar.js"></script>
     </header>
+
+    <script>
+    function toggleAccordion(id) {
+        const menu = document.getElementById(id);
+        if (menu.classList.contains('hidden')) {
+            menu.classList.remove('hidden');
+        } else {
+            menu.classList.add('hidden');
+        }
+    }
+</script>
