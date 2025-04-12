@@ -131,12 +131,12 @@ Pacientes
           <div class="container step d-none" id="step-2">
             <div class="row mb-3">
 
-			<h1 class="text-2xl font-bold mb-2">Historia Médica</h1>
+				<h1 class="text-2xl font-bold mb-2">Historia Médica</h1>
 
-			<div>
-				<div class="col-md-1 mb-4 p-1 rounded-full" style="background-color: rgb(220 38 38);">
+				<div>
+					<div class="col-md-1 mb-4 p-1 rounded-full" style="background-color: rgb(220 38 38);">
+					</div>
 				</div>
-			</div>
 
 				<div class="col-md-6 mt-4">
 					<label for="ocupacion" class="texto-inicio font-medium mb-2">Ocupacion *</label>

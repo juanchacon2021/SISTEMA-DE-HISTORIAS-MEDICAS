@@ -38,7 +38,7 @@
 					?>
             <div>
                 <div class="iconos p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
-                    <img class="w-6 h-8" src="img/usuario.svg" alt="">
+                    <img class="w-6 h-8 imagen" src="img/usuario.svg" alt="">
                 <a href="?pagina=pacientes"><span class="text-[15px] ml-4 text-lg hover:text-white">Pacientes</span></a>
                 </div>
                 <?php
@@ -50,7 +50,7 @@
 					  if($nivel=='Doctor'){
 					?>
                     <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:text-white hover:bg-red-800 text-stone-600">
-                        <img class="w-6 h-8" src="img/personal.svg" alt="">
+                        <img class="w-6 h-8 imagen" src="img/personal.svg" alt="">
                         <a href="?pagina=personal" ><span class="text-[15px] ml-4 text-lg hover:text-white">Personal</span></a>
                     </div>
                     <?php
@@ -60,7 +60,7 @@
 					  if($nivel=='Doctor' or $nivel=='Enfermera'){
 					?>
                     <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:text-white hover:bg-red-800 text-stone-600">
-                        <img class="w-6 h-8" src="img/examen.svg" alt="">
+                        <img class="w-6 h-8 imagen" src="img/examen.svg" alt="">
                         <a href="?pagina=examenes" ><span class="text-[15px] ml-4 text-lg hover:text-white">Examenes</span></a>
                     </div>
                     
@@ -68,13 +68,13 @@
 
                 <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:text-white hover:bg-red-800 text-stone-600">
 
-                    <img class="w-6 h-8" src="img/exclamacion.svg" alt="">
+                    <img class="w-6 h-8 imagen" src="img/exclamacion.svg" alt="">
                     <a href="?pagina=emergencias" ><span class="text-[15px] ml-4 text-lg hover:text-white">Emergencia</span></a>
                 </div>
 
                 <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:text-white hover:bg-red-800 text-stone-600">
 
-                    <img class="w-6 h-8" src="img/pen.svg" alt="">
+                    <img class="w-6 h-8 imagen" src="img/pen.svg" alt="">
                     <a href="?pagina=planificacion" ><span class="text-[15px] ml-4 text-lg hover:text-white">Planificacion</span></a>
                 </div>
 
@@ -92,28 +92,32 @@
 
                 <details class="p-2.5 mt-2 rounded-md px-4 duration-300 cursor-pointer hover:text-white text-stone-600">
                     <summary class="rounded-md duration-300 cursor-pointer flex items-center text-stone-600 hover:bg-stone-600">
-                        <img class="w-6 h-8" src="img/hospital.svg" alt="">
+                        <img class="w-6 h-8 imagen" src="img/hospital.svg" alt="">
                         <span class="text-[15px] ml-4 text-lg">Centro Médico</span>
                         <span class="ml-8 text-[15px]">&#9660;</span>
                     </summary>
                     <div class="mt-2">
                         <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-10000 cursor-pointer hover:text-white hover:bg-red-800 text-stone-600">
-                            <img class="w-6 h-8" src="img/chart.svg" alt="">
+                            <img class="w-6 h-8 imagen" src="img/chart.svg" alt="">
                             <div class="flex justify-between w-full items-center hover:text-white">
                                 <a href="?pagina=consultasm"><span class="text-[15px] ml-4 hover:text-white text-lg">Consultas</span></a>
                             </div>
                         </div>
                         <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:text-white hover:bg-red-800 text-stone-600">
-                            <img class="w-6 h-8" src="img/student.svg" alt="">
+                            <img class="w-6 h-8 imagen" src="img/student.svg" alt="">
                             <a href="?pagina=pasantias"><span class="text-[15px] ml-4 text-lg hover:text-white">Pasantías</span></a>
                         </div>
                         <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:text-white hover:bg-red-800 text-stone-600">
-                            <img class="w-6 h-8" src="img/cronico.svg" alt="">
+                            <img class="w-6 h-8 imagen" src="img/cronico.svg" alt="">
                             <a href="?pagina=p_cronicos"><span class="text-[15px] ml-4 text-lg hover:text-white">Pacientes crónicos</span></a>
                         </div>
                         <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:text-white hover:bg-red-800 text-stone-600">
-                            <img class="w-6 h-8" src="img/jornadas.svg" alt="">
+                            <img class="w-6 h-8 imagen" src="img/jornadas.svg" alt="">
                             <a href="?pagina=jornadas"><span class="text-[15px] ml-4 text-lg hover:text-white">Jornadas</span></a>
+                        </div>
+                        <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:text-white hover:bg-red-800 text-stone-600">
+                            <img class="w-6 h-8 imagen" src="img/truck.svg" alt="">
+                            <a href="?pagina=inventario"><span class="text-[15px] ml-4 text-lg hover:text-white">Inventario</span></a>
                         </div>
                     </div>
                 </details>
@@ -128,7 +132,7 @@
 				if(!empty($nivel) and $nivel!=""){
 		 ?>
               <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
-                    <img class="w-6 h-8" src="img/bracket.svg" alt="">
+                    <img class="w-6 h-8 imagen" src="img/bracket.svg" alt="">
                     <a href="?pagina=salida" class="text-[15px] ml-4 text-lg">Cerrar Sesión</a>
                 </div>
                 <?php	
@@ -137,7 +141,7 @@
 		 ?>
                
                 <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
-                    <img class="w-6 h-8" src="img/user.svg" alt="">
+                    <img class="w-6 h-8 imagen" src="img/user.svg" alt="">
                     <a href="?pagina=login" class="text-[15px] ml-4 text-lg">Iniciar Sesión</a>
                 </div>
                 <?php 		 
@@ -159,4 +163,4 @@
             menu.classList.add('hidden');
         }
     }
-</script>
+    </script>
