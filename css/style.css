@@ -8,6 +8,58 @@
     src: url('../Sora.ttf');
   }
 
+/* Sidebar fijo */
+.sidebar-chat {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 350px;
+    height: 100vh;
+    background-color: white;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+    z-index: 1030;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid #dee2e6;
+}
+
+.sidebar-header {
+    border-bottom: 1px solid #dee2e6;
+}
+
+.sidebar-conversaciones, 
+.sidebar-usuarios {
+    flex-grow: 1;
+    max-height: calc(100vh - 120px);
+}
+
+/* Ajuste del contenido principal cuando el sidebar está visible */
+.main-content {
+    margin-right: 350px; /* Asegura que el contenido no quede detrás del sidebar */
+    transition: margin-right 0.3s ease;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .sidebar-chat {
+        width: 300px;
+    }
+    .main-content {
+        margin-right: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar-chat {
+        width: 100%;
+        right: 0;
+    }
+    .main-content {
+        margin-right: 0;
+        margin-bottom: 60px; /* Para móviles */
+    }
+}
+
 .scroll {
     width: 100%;
 }

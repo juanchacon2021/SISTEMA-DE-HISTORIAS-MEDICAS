@@ -17,7 +17,6 @@ Pacientes
 			<div style="color: white;" class="col-md-2 botonverde" style="cursor: pointer;" onclick='pone(this,3), limpiarm()' >
 				Registrar Paciente
 			</div>
-					
 			<div class="col-md-2 recortar">	
                 <a href="?pagina=principal" class="boton">Volver</a>
 			</div>
@@ -237,7 +236,6 @@ Pacientes
     </div>
   </div>
 </div>
-
 
 <?php require_once("comunes/modal.php"); ?>
 <script type="text/javascript" src="js/pacientes.js"></script>
