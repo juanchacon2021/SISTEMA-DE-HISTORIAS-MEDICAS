@@ -16,6 +16,33 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `areas_pasantia`
+--
+
+DROP TABLE IF EXISTS `areas_pasantia`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `areas_pasantia` (
+  `cod_area` int NOT NULL AUTO_INCREMENT,
+  `nombre_area` varchar(50) NOT NULL,
+  `descripcion` varchar(200) DEFAULT NULL,
+  `responsable_id` int NOT NULL COMMENT 'Doctor a cargo',
+  PRIMARY KEY (`cod_area`),
+  KEY `responsable_id` (`responsable_id`),
+  CONSTRAINT `areas_pasantia_ibfk_1` FOREIGN KEY (`responsable_id`) REFERENCES `personal` (`cedula_personal`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `areas_pasantia`
+--
+
+LOCK TABLES `areas_pasantia` WRITE;
+/*!40000 ALTER TABLE `areas_pasantia` DISABLE KEYS */;
+/*!40000 ALTER TABLE `areas_pasantia` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `consultas`
 --
 
@@ -32,7 +59,7 @@ CREATE TABLE `consultas` (
   `cedula_h` int NOT NULL,
   `general` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `respiratorio` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `cardiovascular` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `cardiovascular` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `abdomen` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `extremidades_s` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `neurologicos` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -48,7 +75,7 @@ CREATE TABLE `consultas` (
   KEY `cedula_h` (`cedula_h`),
   CONSTRAINT `consultas_ibfk_1` FOREIGN KEY (`cedula_p`) REFERENCES `personal` (`cedula_personal`),
   CONSTRAINT `consultas_ibfk_2` FOREIGN KEY (`cedula_h`) REFERENCES `historias` (`cedula_historia`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -57,8 +84,32 @@ CREATE TABLE `consultas` (
 
 LOCK TABLES `consultas` WRITE;
 /*!40000 ALTER TABLE `consultas` DISABLE KEYS */;
-INSERT INTO `consultas` VALUES (4,'2024-11-28','AAAA','AAAA','AAAA',31111111,12345678,'AAA','AAA','AAA','AAA','AAA','AAA','AAA','AAA','AAA','AAA','AAA','AAA','AAA');
+INSERT INTO `consultas` VALUES (9,'2024-11-18','WWWss','WWW','WWW',31111553,12345678,'aaaaaaaaaa','aaaaaaaaaaaaa','aaaaaaa','aaaaaaaaaaaa','aaaaaaaa','aaaaaaa','aaaaaaaaaa','aaaa','sss','aaaaaaaa','aaaaaaa','aaaaaaaaa','aaaaaaa'),(14,'2024-11-19','AAA','AAA','AAA',31111553,9999999,'','','','','','','','','','','','',''),(16,'2024-11-19','ttttttttttttttt','tttttttttttttttttt','tttttttttttttttttt',12345678,9999999,'ttttttttttttttttt','ttttttttttttttttt','ttttttttttttttt','tttttttttttttt','tttttttttttttttttt','ttttttttttttttttttt','ttttttttttttttttttttt','tttttttttttttt','ttttttttttttt','ttttttttttttt','ttttttttttttttt','ttttttttttttt','ttttttttttttttttttttt'),(17,'2024-11-03','hola','hola','hola',12345678,9999999,'hola','hola','hola','hola','hola','hola','hola','hola','hola','hola','hola','hola','hola');
 /*!40000 ALTER TABLE `consultas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `conversaciones`
+--
+
+DROP TABLE IF EXISTS `conversaciones`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `conversaciones` (
+  `id_conversacion` int NOT NULL AUTO_INCREMENT,
+  `fecha_creacion` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_conversacion`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `conversaciones`
+--
+
+LOCK TABLES `conversaciones` WRITE;
+/*!40000 ALTER TABLE `conversaciones` DISABLE KEYS */;
+INSERT INTO `conversaciones` VALUES (1,'2025-04-13 00:00:00');
+/*!40000 ALTER TABLE `conversaciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -82,7 +133,7 @@ CREATE TABLE `emergencias` (
   KEY `cedula_h` (`cedula_h`),
   CONSTRAINT `emergencias_ibfk_1` FOREIGN KEY (`cedula_p`) REFERENCES `personal` (`cedula_personal`),
   CONSTRAINT `emergencias_ibfk_2` FOREIGN KEY (`cedula_h`) REFERENCES `historias` (`cedula_historia`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -91,8 +142,39 @@ CREATE TABLE `emergencias` (
 
 LOCK TABLES `emergencias` WRITE;
 /*!40000 ALTER TABLE `emergencias` DISABLE KEYS */;
-INSERT INTO `emergencias` VALUES (31,'22:28','2024-11-27','PIERNA ROTA','FRACTURA','ACETAMINOFEN',31111111,30128924),(32,'21:30','2025-02-23','Me mintieron','Una mentirosa','Besametazol',31111111,30266879);
+INSERT INTO `emergencias` VALUES (22,'02:49','2024-11-12','llego con un dolor de cabesa','aaaaaaaaaaaa','aaaaaaaaaaaaaaa',31111553,7856209),(24,'05:51','2024-11-12','Como modelo de lenguaje, no puedo proporcionarte un diagnóstico médico.\r\n\r\nDiagnosticar una enfermedad requiere de un profesional de la salud capacitado, quien evaluará tus síntomas, realizará un examen físico y, si es necesario, ordenará pruebas de laboratorio o de imagen.\r\n\r\n¿Por qué no puedo darte un diagnóstico?\r\n\r\nInformación limitada: A través de una conversación en línea, no tengo acceso a tu historial médico completo, resultados de exámenes o a una exploración física.\r\nComplejidad de las enfermedades: Muchas enfermedades comparten síntomas similares, lo que hace que un diagnóstico preciso requiera una evaluación exhaustiva por parte de un médico.\r\nResponsabilidad profesional: Proporcionar un diagnóstico médico es una responsabilidad seria que requiere de conocimientos y habilidades específicas.\r\n¿Qué puedo hacer si estoy enfermo?\r\n\r\nSi tienes alguna preocupación sobre tu salud, te recomiendo:\r\n\r\nConsulta a un médico: Es la persona más capacitada para evaluar tus síntomas y realizar un diagnóstico preciso.\r\nDescribe tus síntomas con claridad: Incluye cuándo comenzaron, con qué frecuencia ocurren y qué los empeora o mejora.\r\nSé honesto sobre tu historial médico: Informa a tu médico sobre cualquier enfermedad que hayas tenido, medicamentos que estés tomando y alergias.\r\nRecuerda:\r\n\r\nNo te automediques: Tomar medicamentos sin receta médica puede empeorar tu condición o interactuar negativamente con otros medicamentos.\r\nBusca información confiable: Si quieres investigar sobre alguna enfermedad, consulta fuentes confiables como la Organización Mundial de la Salud (OMS) o sitios web de instituciones médicas reconocidas.\r\n¿Te gustaría que te proporcione información sobre alguna enfermedad en particular?\r\n\r\nPuedo ofrecerte información general sobre diversas enfermedades, sus síntomas, causas y tratamientos. Sin embargo, esta información no debe reemplazar el consejo médico profesional.\r\n\r\nPor favor, ten en cuenta que mi función es proporcionar información y no reemplazar la atención médica.','aaaaaaaaaaaaa','aaaaaaaaaaaaaaaaaa',31111553,12345678),(25,'05:51','2024-11-12','Como modelo de lenguaje, no puedo proporcionarte un diagnóstico médico.\r\n\r\nDiagnosticar una enfermedad requiere de un profesional de la salud capacitado, quien evaluará tus síntomas, realizará un examen físico y, si es necesario, ordenará pruebas de laboratorio o de imagen.\r\n\r\n¿Por qué no puedo darte un diagnóstico?\r\n\r\nInformación limitada: A través de una conversación en línea, no tengo acceso a tu historial médico completo, resultados de exámenes o a una exploración física.\r\nComplejidad de las enfermedades: Muchas enfermedades comparten síntomas similares, lo que hace que un diagnóstico preciso requiera una evaluación exhaustiva por parte de un médico.\r\nResponsabilidad profesional: Proporcionar un diagnóstico médico es una responsabilidad seria que requiere de conocimientos y habilidades específicas.\r\n¿Qué puedo hacer si estoy enfermo?\r\n\r\nSi tienes alguna preocupación sobre tu salud, te recomiendo:\r\n\r\nConsulta a un médico: Es la persona más capacitada para evaluar tus síntomas y realizar un diagnóstico preciso.\r\nDescribe tus síntomas con claridad: Incluye cuándo comenzaron, con qué frecuencia ocurren y qué los empeora o mejora.\r\nSé honesto sobre tu historial médico: Informa a tu médico sobre cualquier enfermedad que hayas tenido, medicamentos que estés tomando y alergias.\r\nRecuerda:\r\n\r\nNo te automediques: Tomar medicamentos sin receta médica puede empeorar tu condición o interactuar negativamente con otros medicamentos.\r\nBusca información confiable: Si quieres investigar sobre alguna enfermedad, consulta fuentes confiables como la Organización Mundial de la Salud (OMS) o sitios web de instituciones médicas reconocidas.\r\n¿Te gustaría que te proporcione información sobre alguna enfermedad en particular?\r\n\r\nPuedo ofrecerte información general sobre diversas enfermedades, sus síntomas, causas y tratamientos. Sin embargo, esta información no debe reemplazar el consejo médico profesional.\r\n\r\nPor favor, ten en cuenta que mi función es proporcionar información y no reemplazar la atención médica.','Como modelo de lenguaje, no puedo proporcionarte un diagnóstico médico.\r\n\r\nDiagnosticar una enfermedad requiere de un profesional de la salud capacitado, quien evaluará tus síntomas, realizará un examen físico y, si es necesario, ordenará pruebas de laboratorio o de imagen.\r\n\r\n¿Por qué no puedo darte un diagnóstico?\r\n\r\nInformación limitada: A través de una conversación en línea, no tengo acceso a tu historial médico completo, resultados de exámenes o a una exploración física.\r\nComplejidad de las enfermedades: Muchas enfermedades comparten síntomas similares, lo que hace que un diagnóstico preciso requiera una evaluación exhaustiva por parte de un médico.\r\nResponsabilidad profesional: Proporcionar un diagnóstico médico es una responsabilidad seria que requiere de conocimientos y habilidades específicas.\r\n¿Qué puedo hacer si estoy enfermo?\r\n\r\nSi tienes alguna preocupación sobre tu salud, te recomiendo:\r\n\r\nConsulta a un médico: Es la persona más capacitada para evaluar tus síntomas y realizar un diagnóstico preciso.\r\nDescribe tus síntomas con claridad: Incluye cuándo comenzaron, con qué frecuencia ocurren y qué los empeora o mejora.\r\nSé honesto sobre tu historial médico: Informa a tu médico sobre cualquier enfermedad que hayas tenido, medicamentos que estés tomando y alergias.\r\nRecuerda:\r\n\r\nNo te automediques: Tomar medicamentos sin receta médica puede empeorar tu condición o interactuar negativamente con otros medicamentos.\r\nBusca información confiable: Si quieres investigar sobre alguna enfermedad, consulta fuentes confiables como la Organización Mundial de la Salud (OMS) o sitios web de instituciones médicas reconocidas.\r\n¿Te gustaría que te proporcione información sobre alguna enfermedad en particular?\r\n\r\nPuedo ofrecerte información general sobre diversas enfermedades, sus síntomas, causas y tratamientos. Sin embargo, esta información no debe reemplazar el consejo médico profesional.\r\n\r\nPor favor, ten en cuenta que mi función es proporcionar información y no reemplazar la atención médica.','Como modelo de lenguaje, no puedo proporcionarte un diagnóstico médico.\r\n\r\nDiagnosticar una enfermedad requiere de un profesional de la salud capacitado, quien evaluará tus síntomas, realizará un examen físico y, si es necesario, ordenará pruebas de laboratorio o de imagen.\r\n\r\n¿Por qué no puedo darte un diagnóstico?\r\n\r\nInformación limitada: A través de una conversación en línea, no tengo acceso a tu historial médico completo, resultados de exámenes o a una exploración física.\r\nComplejidad de las enfermedades: Muchas enfermedades comparten síntomas similares, lo que hace que un diagnóstico preciso requiera una evaluación exhaustiva por parte de un médico.\r\nResponsabilidad profesional: Proporcionar un diagnóstico médico es una responsabilidad seria que requiere de conocimientos y habilidades específicas.\r\n¿Qué puedo hacer si estoy enfermo?\r\n\r\nSi tienes alguna preocupación sobre tu salud, te recomiendo:\r\n\r\nConsulta a un médico: Es la persona más capacitada para evaluar tus síntomas y realizar un diagnóstico preciso.\r\nDescribe tus síntomas con claridad: Incluye cuándo comenzaron, con qué frecuencia ocurren y qué los empeora o mejora.\r\nSé honesto sobre tu historial médico: Informa a tu médico sobre cualquier enfermedad que hayas tenido, medicamentos que estés tomando y alergias.\r\nRecuerda:\r\n\r\nNo te automediques: Tomar medicamentos sin receta médica puede empeorar tu condición o interactuar negativamente con otros medicamentos.\r\nBusca información confiable: Si quieres investigar sobre alguna enfermedad, consulta fuentes confiables como la Organización Mundial de la Salud (OMS) o sitios web de instituciones médicas reconocidas.\r\n¿Te gustaría que te proporcione información sobre alguna enfermedad en particular?\r\n\r\nPuedo ofrecerte información general sobre diversas enfermedades, sus síntomas, causas y tratamientos. Sin embargo, esta información no debe reemplazar el consejo médico profesional.\r\n\r\nPor favor, ten en cuenta que mi función es proporcionar información y no reemplazar la atención médica.',31111553,5465489),(28,'19:02','2024-11-12','L','L','L',31111553,88888888),(33,'05:03','2025-03-26','LLLL','LKLLLL','LLLLLL',31111111,88888888),(35,'02:24','2025-03-27','wwwwwwwwwwwwwwwwwwww','wwwwwwwwwwwwwwwwwwwwwwww','wwwwwwwwwwwwwwwwwww',31111553,30128924),(36,'00:12','2025-03-27','ttttttttttttttttttttttt','ttttttttttttttttttttttt','tttttttttttttttttttttttttttttttttt',31111553,5465489),(37,'11:20','2025-03-27','lllllllllllllllllll','lllllllllllllllllllllllllll','llllllllllllllllllllllllllllllllllll',31111553,5465489),(38,'02:49','2025-04-07','holaaaaaaa','llllllllllll','lllllllllllllll',31111553,7856209),(39,'10:15','2025-04-16','LLLLLLLLLLLLLLL','LLlllllllllllllllllllll','llllllllllllllllllllllll',31111553,5465489),(40,'11:18','2025-04-15','llllllllllll','llllllllllllllll','lllllllllllllllllllllll',31111553,4234235),(41,'11:17','2025-04-16','lllllllllllll','llllllllllllllllll','llllllllllllllllllllll',31111111,5465489),(42,'20:17','2025-04-11','lllllllllllllllll','llllllllllllllllllll','lllllllllllllllllllllll',31111553,5465489),(43,'11:17','2025-04-13','lllllllllllllllll','lllllllllllllllllll','lllllllllllll',31111553,7856209);
 /*!40000 ALTER TABLE `emergencias` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `estudiantes_pasantia`
+--
+
+DROP TABLE IF EXISTS `estudiantes_pasantia`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `estudiantes_pasantia` (
+  `cedula_estudiante` int NOT NULL,
+  `nombre` varchar(30) NOT NULL,
+  `apellido` varchar(30) NOT NULL,
+  `institucion` varchar(50) DEFAULT NULL COMMENT 'Universidad o institución de origen',
+  `fecha_inicio` date NOT NULL,
+  `fecha_fin` date DEFAULT NULL,
+  `cod_area` int NOT NULL COMMENT 'Área asignada',
+  `activo` tinyint(1) DEFAULT '1' COMMENT '1=Activo, 0=Inactivo',
+  PRIMARY KEY (`cedula_estudiante`),
+  KEY `cod_area` (`cod_area`),
+  CONSTRAINT `estudiantes_pasantia_ibfk_1` FOREIGN KEY (`cod_area`) REFERENCES `areas_pasantia` (`cod_area`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `estudiantes_pasantia`
+--
+
+LOCK TABLES `estudiantes_pasantia` WRITE;
+/*!40000 ALTER TABLE `estudiantes_pasantia` DISABLE KEYS */;
+/*!40000 ALTER TABLE `estudiantes_pasantia` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -132,12 +214,11 @@ CREATE TABLE `feed` (
   `fecha` datetime NOT NULL,
   `contenido` varchar(300) DEFAULT NULL,
   `imagen` text,
-  `comentarios` varchar(100) DEFAULT NULL,
   `cedula_p` int NOT NULL,
   PRIMARY KEY (`cod_pub`),
   KEY `feed_ibfk_idx` (`cedula_p`),
   CONSTRAINT `feed_ibfk` FOREIGN KEY (`cedula_p`) REFERENCES `personal` (`cedula_personal`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -146,7 +227,7 @@ CREATE TABLE `feed` (
 
 LOCK TABLES `feed` WRITE;
 /*!40000 ALTER TABLE `feed` DISABLE KEYS */;
-INSERT INTO `feed` VALUES (22,'2025-04-10 21:15:30','Mi viaje a la playa','img/publicaciones/67f85146ee151_488604822_18366885310192741_4513097790580921780_n.jpg',NULL,30128924),(23,'2025-04-11 01:16:57','Eduin hecho estilo Ghibli','img/publicaciones/67f85169747e2_ChatGPT Image 29 mar 2025, 10_18_54 a.m..png',NULL,30128924),(24,'2025-04-11 01:17:32','Los muchachos y yo','img/publicaciones/67f8518c345e1_ChatGPT Image 29 mar 2025, 10_07_25 a.m..png',NULL,31111111),(25,'2025-04-11 01:31:46','Hoy fue un gran dia','img/publicaciones/67f854e214ed9_488546122_18366885292192741_8822447902500239145_n.jpg',NULL,31111111);
+INSERT INTO `feed` VALUES (1,'2025-05-05 18:20:08','Eduin hecho por el estudio Ghibli','img/publicaciones/6818e538a3965_ChatGPT Image 29 mar 2025, 10_18_54 a.m..png',31111111),(2,'2025-05-05 18:48:11','mi cumpleaños','img/publicaciones/6818ebcb3acdd_WhatsApp Image 2025-04-30 at 6.47.06 AM.jpg',31111111);
 /*!40000 ALTER TABLE `feed` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -187,8 +268,42 @@ CREATE TABLE `historias` (
 
 LOCK TABLES `historias` WRITE;
 /*!40000 ALTER TABLE `historias` DISABLE KEYS */;
-INSERT INTO `historias` VALUES (2133456,'nombre','apellido','1996-12-28',28,'VIUDO','ocupacion','direccion','telefono','hda','alergias','alergias med','quirurgico','transsanguinepo','psicosocial','habtoxico','padre','hermano','madre'),(2542291,'AAAAAAA','ANTONIMO','1998-02-02',27,'CASADO','AAAAAAAA','AAAAAAAAAAA','1111111111','SDASADASD','BBBBBBB','AAAAAAAAA','AAAAAA','AAAAAAAAA','AAAAAAAA','AAAAAA','BBBBBBB','SDAASDSAD','ASDASDDSA'),(3513584,'MARIA','SALAZAR','1968-11-22',56,'CASADO','MAESTRA','FUNDACION MENDOZA','04121051985','NO POSE','NO POSEE','NO POSEE','Okey','NO POSEE','NO POSEE','NO POSEE','AAAAAA','AAAAAAA','AAAAAA'),(5465489,'LUIS MIGUEL','GALLEGO BASTERI','1970-04-19',54,'CASADO','L','MEXICO','351351351','L','L','L','L','L','L','L','NINGUNO','NINGUNO','NINGUNO'),(12345678,'CRISTIANO ','RONALDO','2024-09-03',12,'CASADO','HOLA','HOLA','133513','HOLA','HOLA','HOLA','HOLA','HOLA','HOLA','HOLA','AAA','AAA','AAA'),(30128924,'SALOMON','RONDON','2024-09-02',21,'DIVORCIADO','asdas','asdsda','35135153','asddd','adsadsadsads','dsaaa','adsdasas','das','ads','dasasas','AAAAAAAAAA','AAAAAA','AAAAAAAA'),(30266879,'Samuel','Sanchez','2004-05-03',20,'DIVORCIADO','Actor porno','La Batalla','04125231260','Sida','A las mentiras','No aun','no aun','No gracias','Egocentrico','Las mujeres','no aun','no aun','No aun'),(30405531,'MICHELLE','MARCHAN','2003-12-28',21,'CASADO','ADMINISTRADORA','FRANCISCO TAMAYO','04120555555','MENTIROSA','LAS MENTIRAS','LAS MENTIRAS MEDICAS','OJALA LE QUITEN LO MENTIROSA','NINGUNO','VIVE BIEN','MENTIR','NINGUNO','NINGUNO','NINGUNO'),(45654547,'XXXX','XXXXX','2004-04-30',20,'CASADO','XXX','XXX','3513515','XXXX','XXX','XXX','XXX','XXX','XXX','XXX','XXX','XXX','XXX');
+INSERT INTO `historias` VALUES (4234235,'LLLLLL','LLLLLL','2025-04-02',0,'CASADO','albañi','ttttttt','12354564','ddddddd','LKLLLL','LLLLLLLLLLLLLLLL','LLLLLLLLLLLL','LLLLLLLLLL','LLLLLLLLLLL','LLLLL','LLLLLLLLLLLLLLLLLLLLLLL','LLLLLLLLLLLLLLLLLLL','LLLLLLLLLLLLL'),(5465489,'LUIS MIGUEL','GALLEGO BASTERI','1970-04-19',54,'DIVORCIADO','L','MEXICO','351351351','L','L','L','L','L','L','L',NULL,NULL,NULL),(7856209,'JOE ALEX','CHACON VARGAS','1966-04-28',58,'DIVORCIADO','LOCUTOR','CERRITOS BLANCO','4125105446','NO POSEE','SOL','NO POSEE','NO POSEE','NO POSEE','NO POSEE','NO POSEE',NULL,NULL,NULL),(8564289,'JURGEN','KLINSMANN','2024-10-01',21,'','PPPPP','asdadsasdads','351351351','PPPPP','P','P','P','P','P','P',NULL,NULL,NULL),(9999999,'ANTHOAN','PATINNO','2004-04-30',258,'DIVORCIADO','B','BBBBBBBBBB','352131','B','B','B','B','B','B','B',NULL,NULL,NULL),(12345678,'CRISTIANO ','RONALDO','2024-09-03',12,'','HOLA','HOLA','133513','HOLA','HOLA','HOLA','HOLA','HOLA','HOLA','HOLA',NULL,NULL,NULL),(30128924,'SALOMON','RONDON','2024-09-02',21,'','asdas','asdsda','35135153','asddd','adsadsadsads','dsaaa','adsdasas','das','ads','dasasas',NULL,NULL,NULL),(85642892,'SHOHEI','OHTANI','2024-10-01',21,'','undefined','asdadsasdads','351351351','undefined','undefined','undefined','undefined','undefined','undefined','undefined',NULL,NULL,NULL),(88888888,'JUAN','CHACON','2024-09-03',14,'','A','AAAAAAAAA','35135131','A','A','A','A','A','A','A','null','null','null');
 /*!40000 ALTER TABLE `historias` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `jornadas_medicas`
+--
+
+DROP TABLE IF EXISTS `jornadas_medicas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `jornadas_medicas` (
+  `cod_jornada` int NOT NULL AUTO_INCREMENT,
+  `fecha_jornada` date NOT NULL,
+  `ubicacion` varchar(255) NOT NULL,
+  `descripcion` text,
+  `total_pacientes` int NOT NULL DEFAULT '0',
+  `pacientes_masculinos` int NOT NULL DEFAULT '0',
+  `pacientes_femeninos` int NOT NULL DEFAULT '0',
+  `pacientes_embarazadas` int NOT NULL DEFAULT '0',
+  `cedula_responsable` int NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`cod_jornada`),
+  KEY `cedula_responsable` (`cedula_responsable`),
+  CONSTRAINT `jornadas_medicas_ibfk_1` FOREIGN KEY (`cedula_responsable`) REFERENCES `personal` (`cedula_personal`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `jornadas_medicas`
+--
+
+LOCK TABLES `jornadas_medicas` WRITE;
+/*!40000 ALTER TABLE `jornadas_medicas` DISABLE KEYS */;
+INSERT INTO `jornadas_medicas` VALUES (1,'2025-04-16','LLLLLLLLLLLLL','LLLLLL',15,10,5,5,31111111,'2025-04-14 15:37:56'),(2,'2025-04-14','XXXXXXX','XXXXXXX',40,20,20,10,23045014,'2025-04-14 20:38:59'),(3,'2025-04-22','TTTT','TTTTT',10,7,3,2,31111111,'2025-04-14 20:43:40');
+/*!40000 ALTER TABLE `jornadas_medicas` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -207,12 +322,8 @@ CREATE TABLE `medicamentos` (
   `fecha_vencimiento` date DEFAULT NULL,
   `lote` varchar(30) DEFAULT NULL,
   `proveedor` varchar(50) DEFAULT NULL,
-  `fecha_registro` datetime DEFAULT CURRENT_TIMESTAMP,
-  `cedula_p` int NOT NULL,
-  PRIMARY KEY (`cod_medicamento`),
-  KEY `cedula_p` (`cedula_p`),
-  CONSTRAINT `medicamentos_ibfk_1` FOREIGN KEY (`cedula_p`) REFERENCES `personal` (`cedula_personal`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`cod_medicamento`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -221,8 +332,128 @@ CREATE TABLE `medicamentos` (
 
 LOCK TABLES `medicamentos` WRITE;
 /*!40000 ALTER TABLE `medicamentos` DISABLE KEYS */;
-INSERT INTO `medicamentos` VALUES (1,'ACETAMINOFEN','aaaaaaaaaaaaaa',30,'mg','2026-02-20','2000','FARMATODO','2025-04-12 10:08:54',30128924),(2,'LAMOTRIGINA','Pastillas de Lamotrigina',50,'mg','2027-08-20','314134','Epitral','2025-04-12 10:22:15',30128924),(3,'LORATADINA','LORATADINA DE 200MG',20,'mg','2028-04-30','11516','FARMATODO','2025-04-12 10:23:29',30128924);
 /*!40000 ALTER TABLE `medicamentos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `mensajes`
+--
+
+DROP TABLE IF EXISTS `mensajes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `mensajes` (
+  `id_mensaje` int NOT NULL AUTO_INCREMENT,
+  `id_conversacion` int NOT NULL,
+  `cedula_remitente` int NOT NULL,
+  `mensaje` text NOT NULL,
+  `fecha_envio` datetime DEFAULT CURRENT_TIMESTAMP,
+  `visto` tinyint(1) DEFAULT '0',
+  `fecha_visto` datetime DEFAULT NULL,
+  PRIMARY KEY (`id_mensaje`),
+  KEY `id_conversacion` (`id_conversacion`),
+  KEY `cedula_remitente` (`cedula_remitente`),
+  CONSTRAINT `mensajes_ibfk_1` FOREIGN KEY (`id_conversacion`) REFERENCES `conversaciones` (`id_conversacion`),
+  CONSTRAINT `mensajes_ibfk_2` FOREIGN KEY (`cedula_remitente`) REFERENCES `personal` (`cedula_personal`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `mensajes`
+--
+
+LOCK TABLES `mensajes` WRITE;
+/*!40000 ALTER TABLE `mensajes` DISABLE KEYS */;
+INSERT INTO `mensajes` VALUES (1,1,30128924,'hola','2025-04-13 00:00:00',1,'2025-04-13 00:00:00');
+/*!40000 ALTER TABLE `mensajes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `p_cronicos`
+--
+
+DROP TABLE IF EXISTS `p_cronicos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `p_cronicos` (
+  `cod_cronico` int NOT NULL AUTO_INCREMENT,
+  `patologia_cronica` varchar(30) NOT NULL,
+  `Tratamiento` varchar(300) DEFAULT NULL,
+  `admistracion_t` varchar(300) DEFAULT NULL,
+  `cedula_h` int DEFAULT NULL,
+  PRIMARY KEY (`cod_cronico`),
+  KEY `cedula_h` (`cedula_h`),
+  CONSTRAINT `p_cronicos_ibfk_1` FOREIGN KEY (`cedula_h`) REFERENCES `historias` (`cedula_historia`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `p_cronicos`
+--
+
+LOCK TABLES `p_cronicos` WRITE;
+/*!40000 ALTER TABLE `p_cronicos` DISABLE KEYS */;
+INSERT INTO `p_cronicos` VALUES (1,'Cardiopatía','insulina','via sagra',7856209),(2,'Renal','insulina','sagra',7856209),(4,'Cardiopatía, Renal','lll','llll',88888888),(5,'Cardiopatía, Asmático','xxxxxxxxx','xxxxxxxxxx',85642892),(7,'Asmático, Renal','LLLL','LLLL',9999999),(8,'Hipertensión, Mental','lll','llll',7856209),(9,'Cardiopatía, Asmático','lll','lll',88888888),(10,'Hipertensión','llll','lllll',88888888);
+/*!40000 ALTER TABLE `p_cronicos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `participantes_conversacion`
+--
+
+DROP TABLE IF EXISTS `participantes_conversacion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `participantes_conversacion` (
+  `id_participante` int NOT NULL AUTO_INCREMENT,
+  `id_conversacion` int NOT NULL,
+  `cedula_p` int NOT NULL,
+  `fecha_union` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_participante`),
+  KEY `id_conversacion` (`id_conversacion`),
+  KEY `cedula_p` (`cedula_p`),
+  CONSTRAINT `participantes_conversacion_ibfk_1` FOREIGN KEY (`id_conversacion`) REFERENCES `conversaciones` (`id_conversacion`),
+  CONSTRAINT `participantes_conversacion_ibfk_2` FOREIGN KEY (`cedula_p`) REFERENCES `personal` (`cedula_personal`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `participantes_conversacion`
+--
+
+LOCK TABLES `participantes_conversacion` WRITE;
+/*!40000 ALTER TABLE `participantes_conversacion` DISABLE KEYS */;
+INSERT INTO `participantes_conversacion` VALUES (1,1,31111111,'2025-04-13 00:00:00');
+/*!40000 ALTER TABLE `participantes_conversacion` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `participantes_jornadas`
+--
+
+DROP TABLE IF EXISTS `participantes_jornadas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `participantes_jornadas` (
+  `cod_participacion` int NOT NULL AUTO_INCREMENT,
+  `cod_jornada` int NOT NULL,
+  `cedula_personal` int NOT NULL,
+  PRIMARY KEY (`cod_participacion`),
+  UNIQUE KEY `cod_jornada` (`cod_jornada`,`cedula_personal`),
+  KEY `cedula_personal` (`cedula_personal`),
+  CONSTRAINT `participantes_jornadas_ibfk_1` FOREIGN KEY (`cod_jornada`) REFERENCES `jornadas_medicas` (`cod_jornada`),
+  CONSTRAINT `participantes_jornadas_ibfk_2` FOREIGN KEY (`cedula_personal`) REFERENCES `personal` (`cedula_personal`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `participantes_jornadas`
+--
+
+LOCK TABLES `participantes_jornadas` WRITE;
+/*!40000 ALTER TABLE `participantes_jornadas` DISABLE KEYS */;
+INSERT INTO `participantes_jornadas` VALUES (1,1,12345678),(3,1,23045014),(4,1,31111111),(2,1,31111553),(7,2,12345678),(5,2,31111111),(6,2,31111553),(9,3,23045014),(8,3,31111111);
+/*!40000 ALTER TABLE `participantes_jornadas` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -250,7 +481,7 @@ CREATE TABLE `personal` (
 
 LOCK TABLES `personal` WRITE;
 /*!40000 ALTER TABLE `personal` DISABLE KEYS */;
-INSERT INTO `personal` VALUES (30128924,'JUAN','CHACON','correo@correo.com','04120754296','Doctor','Dinosaurio123'),(31111111,'anthoan','gonzalez','anthoangonzalez@gmail.com','0412785948','Doctor','Dinosaurio'),(31111553,'franchesco','gonzalez','franchescovernouli@gmail.com','04241875864','Enfermera','Dinosaurio');
+INSERT INTO `personal` VALUES (12345678,'admin','admin','admin@gmail.com','12345678910','Doctor','12345678'),(23045014,'lll','ttt','ttt@gmail.com','04145842747','Doctor','Dinosaurio23'),(31111111,'anthoan','gonzalez','anthoangonzalez@gmail.com','0412785948','Doctor','Dinosaurio'),(31111553,'franchesco','gonzalez','franchescovernouli@gmail.com','04241875864','Enfermera','Dinosaurio');
 /*!40000 ALTER TABLE `personal` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -273,7 +504,7 @@ CREATE TABLE `registro` (
   KEY `cod_examenes` (`cod_examenes`),
   CONSTRAINT `registro_ibfk_1` FOREIGN KEY (`cedula_h`) REFERENCES `historias` (`cedula_historia`),
   CONSTRAINT `registro_ibfk_2` FOREIGN KEY (`cod_examenes`) REFERENCES `examenes` (`cod_examenes`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -282,8 +513,40 @@ CREATE TABLE `registro` (
 
 LOCK TABLES `registro` WRITE;
 /*!40000 ALTER TABLE `registro` DISABLE KEYS */;
-INSERT INTO `registro` VALUES (25,'2024-11-28',5465489,1,'NINGUNA',NULL);
+INSERT INTO `registro` VALUES (1,'2024-10-10',9999999,1,'HOLA LOCO1',NULL),(4,'2024-11-19',7856209,1,'nada',NULL),(5,'2024-11-12',8564289,1,'nada',NULL),(20,'2024-11-12',30128924,4,'prueba',NULL);
 /*!40000 ALTER TABLE `registro` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `transaccion`
+--
+
+DROP TABLE IF EXISTS `transaccion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `transaccion` (
+  `cod_transaccion` int NOT NULL AUTO_INCREMENT,
+  `tipo_transaccion` varchar(30) DEFAULT NULL,
+  `cantidad` int DEFAULT NULL,
+  `fecha` date DEFAULT NULL,
+  `hora` varchar(7) DEFAULT NULL,
+  `cedula_p` int DEFAULT NULL,
+  `cod_m` int DEFAULT NULL,
+  PRIMARY KEY (`cod_transaccion`),
+  KEY `cedula_p` (`cedula_p`),
+  KEY `cod_m` (`cod_m`),
+  CONSTRAINT `transaccion_ibfk_1` FOREIGN KEY (`cedula_p`) REFERENCES `personal` (`cedula_personal`),
+  CONSTRAINT `transaccion_ibfk_2` FOREIGN KEY (`cod_m`) REFERENCES `medicamentos` (`cod_medicamento`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `transaccion`
+--
+
+LOCK TABLES `transaccion` WRITE;
+/*!40000 ALTER TABLE `transaccion` DISABLE KEYS */;
+/*!40000 ALTER TABLE `transaccion` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -295,4 +558,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-13 10:16:13
+-- Dump completed on 2025-05-07 21:24:03
