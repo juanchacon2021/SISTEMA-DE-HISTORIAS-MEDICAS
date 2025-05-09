@@ -225,38 +225,22 @@ class inventario extends datos {
             $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             
             try {
-                // Obtener cantidad para registrar salida
-                $cantidad = $co->query("SELECT cantidad FROM medicamentos WHERE cod_medicamento = '$this->cod_medicamento'")
-                              ->fetchColumn();
-                
                 $co->beginTransaction();
                 
-                // Registrar transacción de salida
-                $co->query("INSERT INTO transaccion(
-                    tipo_transaccion, fecha, hora, cedula_p
-                ) VALUES(
-                    'salida', CURDATE(), TIME_FORMAT(NOW(), '%H:%i'), '$this->cedula_p'
-                )");
+                // 1. Eliminar registros en insumos que referencian este medicamento
+                $co->query("DELETE FROM insumos WHERE cod_medicamento = '$this->cod_medicamento'");
                 
-                $cod_transaccion = $co->lastInsertId();
-                
-                // Registrar insumo de salida
-                $co->query("INSERT INTO insumos(
-                    cod_transaccion, cod_medicamento, cantidad
-                ) VALUES(
-                    '$cod_transaccion', '$this->cod_medicamento', '$cantidad'
-                )");
-                
-                // Eliminar medicamento
+                // 2. Luego eliminar el medicamento
                 $co->query("DELETE FROM medicamentos WHERE cod_medicamento = '$this->cod_medicamento'");
                 
                 $co->commit();
+                
                 $r['resultado'] = 'eliminar';
                 $r['mensaje'] = 'Medicamento eliminado con éxito';
             } catch(Exception $e) {
                 $co->rollBack();
                 $r['resultado'] = 'error';
-                $r['mensaje'] = $e->getMessage();
+                $r['mensaje'] = 'Error al eliminar: ' . $e->getMessage();
             }
         } else {
             $r['resultado'] = 'error';

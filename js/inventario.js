@@ -132,6 +132,27 @@ $(document).ready(function() {
     });
 });
 
+function muestraMensaje(mensaje) {
+    // Crea un div para el mensaje si no existe
+    if (!$('#mensajeContainer').length) {
+        $('body').append('<div id="mensajeContainer" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>');
+    }
+    
+    // Crea y muestra el mensaje
+    const id = 'msg-' + Date.now();
+    $('#mensajeContainer').append(`
+        <div id="${id}" class="alert alert-info alert-dismissible fade show" role="alert" style="min-width: 300px;">
+            ${mensaje}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    `);
+    
+    // Elimina el mensaje después de 5 segundos
+    setTimeout(() => {
+        $(`#${id}`).alert('close');
+    }, 5000);
+}
+
 function enviaAjax(datos) {
     $.ajax({
         url: '',  // Cambia esta URL a la de tu controlador PHP

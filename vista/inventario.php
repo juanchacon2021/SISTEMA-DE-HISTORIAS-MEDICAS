@@ -33,7 +33,7 @@ require_once("comunes/sidebar.php");
                 <thead class="table-dark">
                     <tr>
                         <th>Acciones</th>
-                        <th>ID</th>
+                        <th>Codigo</th>
                         <th>Nombre</th>
                         <th>Descripción</th>
                         <th>Cantidad</th>
@@ -57,7 +57,7 @@ require_once("comunes/sidebar.php");
             <table id="tablaTransacciones" class="table table-striped table-bordered" style="width:100%">
                 <thead class="table-dark">
                     <tr>
-                        <th>ID</th>
+                        <th>Codigo</th>
                         <th>Fecha</th>
                         <th>Hora</th>
                         <th>Tipo</th>
