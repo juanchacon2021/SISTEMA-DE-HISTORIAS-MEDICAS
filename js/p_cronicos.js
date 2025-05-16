@@ -228,6 +228,14 @@ mensaje){
 		return 0;
 	}
 }
+function actualizarCheckboxes() {
+    const checkboxes = document.querySelectorAll("#patologia_options input[type='checkbox']");
+    const seleccionadas = Array.from(checkboxes)
+      .filter(chk => chk.checked)
+      .map(chk => chk.value);
+    
+    document.getElementById("patologia_cronica").value = seleccionadas.join(", ");
+  }
 
 function colocapacientes(linea) {
     // Obtiene los datos de la fila seleccionada
@@ -257,9 +265,11 @@ function pone(pos,accion){
 	const boton_h = document.querySelector('#listadodepacientes');
 	
 	linea=$(pos).closest('tr');
+	$("#patologia_options").show();
 
 
 	if(accion==0){
+		$("#patologia_options input[type='checkbox']").prop('checked', false);
 
 		$("#proceso").text("MODIFICAR");
 		boton_h.style.display = '';
@@ -273,7 +283,7 @@ function pone(pos,accion){
 		$("#cedula_h").prop("readonly",true);
 		$("#proceso").text("ELIMINAR");
 
-		
+		$("#patologia_options").hide();
 		boton_h.style.display = 'none';
 
 		limpiarm();
@@ -287,7 +297,7 @@ function pone(pos,accion){
 		$("#admistracion_t").prop("readonly",true);
 		$("#cedula_h").prop("readonly",true);
 		$("#proceso").text("CERRAR");
-
+		$("#patologia_options").hide();
 		
 		boton_h.style.display = 'none';
 
@@ -299,7 +309,7 @@ function pone(pos,accion){
 	else{
 		$("#proceso").text("INCLUIR");
 		boton_h.style.display = '';
-		
+		$("#patologia_options input[type='checkbox']").prop('checked', false);
 	}
 	$("#cod_cronico").val($(linea).find("td:eq(1)").text());
 	$("#patologia_cronica").val( $(pos).attr('patologia_cronica') );
