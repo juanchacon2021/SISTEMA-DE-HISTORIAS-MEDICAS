@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="dist/style.css">
     <link rel="stylesheet" href="dist/styles.css">
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://kit.fontawesome.com/3cb14f89ed.js" crossorigin="anonymous"></script>
 
     <title>Sistema de Historia Medica</title>
 

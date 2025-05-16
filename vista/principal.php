@@ -2,6 +2,28 @@
 <?php 
 	require_once("comunes/encabezado.php"); 
 	require_once("comunes/sidebar.php");	
+    require_once("modelo/datos.php"); // Asegúrate de incluir el archivo de conexión a la base de datos
+
+    $nombre = "Usuario no encontrado"; // Valor por defecto si no se encuentra el usuario
+
+    if (isset($usuario)) {
+        try {
+            $conexion = (new datos())->conecta(); // Conexión a la base de datos
+            $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            // Consulta para obtener el nombre y apellido del personal
+            $stmt = $conexion->prepare("SELECT nombre FROM personal WHERE cedula_personal = :cedula");
+            $stmt->bindParam(':cedula', $usuario, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($resultado) {
+                $nombre = $resultado['nombre'];
+            }
+        } catch (Exception $e) {
+            $nombre = "Error al obtener el nombre";
+        }
+    }
 ?>
 <head>
 <title>Botón de Ayuda</title> 
@@ -44,10 +66,10 @@
     </style>
 </head>
 <body class="bg-stone-100">
-<a href="MANUAL DE USUARIO.pdf" id="helpButton" target="blank">Ayuda</a>
+    <a href="MANUAL DE USUARIO.pdf" id="helpButton" target="blank">Ayuda</a>
 
     <article class="inicio bg-white py-8 px-4">
-        <!-- <h1 class="texto-inicio">Hola, Bienvenido</h1> -->
+        <h1 class="texto-inicio">Hola, Bienvenido <?php echo htmlspecialchars($nombre); ?></h1>
     </article>
 
     <div class="fondo">

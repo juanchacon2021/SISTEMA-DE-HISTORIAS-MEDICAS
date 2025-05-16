@@ -1,70 +1,264 @@
 <?php
-class inventario {
-    private $db;
-    
-    public function __construct() {
-        require_once("modelo/datos.php");
-        if (!function_exists('conecta')) {
-            function conecta() {
-                try {
-                    $dsn = "mysql:host=localhost;dbname=shm-cdi.2;charset=utf8";
-                    $username = "root";
-                    $password = "123456";
-                    return new PDO($dsn, $username, $password, [
-                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                    ]);
-                } catch (PDOException $e) {
-                    die("Database connection failed: " . $e->getMessage());
-                }
+require_once('modelo/datos.php');
+
+class inventario extends datos {
+    private $cod_medicamento;
+    private $nombre;
+    private $descripcion;
+    private $cantidad;
+    private $unidad_medida;
+    private $fecha_vencimiento;
+    private $lote;
+    private $proveedor;
+    private $cod_transaccion;
+    private $tipo_transaccion;
+    private $cedula_p;
+
+    // Setters
+    public function set_cod_medicamento($valor) { $this->cod_medicamento = $valor; }
+    public function set_nombre($valor) { $this->nombre = $valor; }
+    public function set_descripcion($valor) { $this->descripcion = $valor; }
+    public function set_cantidad($valor) { $this->cantidad = $valor; }
+    public function set_unidad_medida($valor) { $this->unidad_medida = $valor; }
+    public function set_fecha_vencimiento($valor) { $this->fecha_vencimiento = $valor; }
+    public function set_lote($valor) { $this->lote = $valor; }
+    public function set_proveedor($valor) { $this->proveedor = $valor; }
+    public function set_cod_transaccion($valor) { $this->cod_transaccion = $valor; }
+    public function set_tipo_transaccion($valor) { $this->tipo_transaccion = $valor; }
+    public function set_cedula_p($valor) { $this->cedula_p = $valor; }
+
+    // Getters
+    public function get_cod_medicamento() { return $this->cod_medicamento; }
+    public function get_nombre() { return $this->nombre; }
+    public function get_descripcion() { return $this->descripcion; }
+    public function get_cantidad() { return $this->cantidad; }
+    public function get_unidad_medida() { return $this->unidad_medida; }
+    public function get_fecha_vencimiento() { return $this->fecha_vencimiento; }
+    public function get_lote() { return $this->lote; }
+    public function get_proveedor() { return $this->proveedor; }
+
+    // Métodos CRUD
+    public function consultar_medicamentos() {
+        $co = $this->conecta();
+        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $r = array();
+        
+        try {
+            $resultado = $co->query("SELECT * FROM medicamentos");
+            if($resultado) {
+                $r['resultado'] = 'consultar_medicamentos';
+                $r['datos'] = $resultado->fetchAll(PDO::FETCH_ASSOC);
+            } else {
+                $r['resultado'] = 'consultar_medicamentos';
+                $r['datos'] = array();
             }
+        } catch(Exception $e) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $e->getMessage();
         }
-        $this->db = conecta();
+        return $r;
     }
-    
-    public function agregarMedicamento($nombre, $descripcion, $cantidad, $unidad_medida, $fecha_vencimiento, $lote, $proveedor, $cedula_p) {
-        $stmt = $this->db->prepare("INSERT INTO medicamentos 
-                                   (nombre, descripcion, cantidad, unidad_medida, fecha_vencimiento, lote, proveedor, cedula_p) 
-                                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$nombre, $descripcion, $cantidad, $unidad_medida, $fecha_vencimiento, $lote, $proveedor, $cedula_p]);
-        return $this->db->lastInsertId();
+
+    public function consultar_transacciones() {
+        $co = $this->conecta();
+        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $r = array();
+        
+        try {
+            $resultado = $co->query("SELECT t.*, p.nombre, p.apellido, m.nombre as medicamento, i.cantidad
+                                   FROM transaccion t
+                                   JOIN personal p ON t.cedula_p = p.cedula_personal
+                                   JOIN insumos i ON t.cod_transaccion = i.cod_transaccion
+                                   JOIN medicamentos m ON i.cod_medicamento = m.cod_medicamento
+                                   ORDER BY t.fecha DESC, t.hora DESC");
+            if($resultado) {
+                $r['resultado'] = 'consultar_transacciones';
+                $r['datos'] = $resultado->fetchAll(PDO::FETCH_ASSOC);
+            } else {
+                $r['resultado'] = 'consultar_transacciones';
+                $r['datos'] = array();
+            }
+        } catch(Exception $e) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $e->getMessage();
+        }
+        return $r;
     }
-    
-    public function modificarMedicamento($cod_medicamento, $nombre, $descripcion, $cantidad, $unidad_medida, $fecha_vencimiento, $lote, $proveedor) {
-        $stmt = $this->db->prepare("UPDATE medicamentos 
-                                   SET nombre = ?, descripcion = ?, cantidad = ?, unidad_medida = ?, 
-                                       fecha_vencimiento = ?, lote = ?, proveedor = ? 
-                                   WHERE cod_medicamento = ?");
-        return $stmt->execute([$nombre, $descripcion, $cantidad, $unidad_medida, $fecha_vencimiento, $lote, $proveedor, $cod_medicamento]);
+
+    public function obtener_medicamento() {
+        $co = $this->conecta();
+        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $r = array();
+        
+        try {
+            $resultado = $co->query("SELECT * FROM medicamentos WHERE cod_medicamento = '$this->cod_medicamento'");
+            if($resultado) {
+                $fila = $resultado->fetch(PDO::FETCH_ASSOC);
+                if($fila) {
+                    $r['resultado'] = 'obtener_medicamento';
+                    $r['datos'] = $fila;
+                } else {
+                    $r['resultado'] = 'error';
+                    $r['mensaje'] = 'Medicamento no encontrado';
+                }
+            } else {
+                $r['resultado'] = 'error';
+                $r['mensaje'] = 'Error al consultar medicamento';
+            }
+        } catch(Exception $e) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $e->getMessage();
+        }
+        return $r;
     }
-    
-    public function eliminarMedicamento($cod_medicamento) {
-        $stmt = $this->db->prepare("DELETE FROM medicamentos WHERE cod_medicamento = ?");
-        return $stmt->execute([$cod_medicamento]);
+
+    public function incluir() {
+        $r = array();
+        $co = $this->conecta();
+        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        
+        try {
+            // Insertar medicamento
+            $co->beginTransaction();
+            
+            $co->query("INSERT INTO medicamentos(
+                nombre, descripcion, cantidad, unidad_medida, 
+                fecha_vencimiento, lote, proveedor
+            ) VALUES(
+                '$this->nombre', '$this->descripcion', '$this->cantidad', 
+                '$this->unidad_medida', '$this->fecha_vencimiento', 
+                '$this->lote', '$this->proveedor'
+            )");
+            
+            $cod_medicamento = $co->lastInsertId();
+            
+            // Registrar transacción
+            $co->query("INSERT INTO transaccion(
+                tipo_transaccion, fecha, hora, cedula_p
+            ) VALUES(
+                'entrada', CURDATE(), TIME_FORMAT(NOW(), '%H:%i'), '$this->cedula_p'
+            )");
+            
+            $cod_transaccion = $co->lastInsertId();
+            
+            // Registrar insumo
+            $co->query("INSERT INTO insumos(
+                cod_transaccion, cod_medicamento, cantidad
+            ) VALUES(
+                '$cod_transaccion', '$cod_medicamento', '$this->cantidad'
+            )");
+            
+            $co->commit();
+            $r['resultado'] = 'incluir_medicamento';
+            $r['mensaje'] = 'Medicamento registrado con éxito';
+        } catch(Exception $e) {
+            $co->rollBack();
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $e->getMessage();
+        }
+        return $r;
     }
-    
-    public function obtenerMedicamentos() {
-        $stmt = $this->db->query("SELECT m.*, p.nombre as nombre_personal, p.apellido 
-                                 FROM medicamentos m 
-                                 JOIN personal p ON m.cedula_p = p.cedula_personal 
-                                 ORDER BY m.nombre");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    public function modificar() {
+        $r = array();
+        if($this->existe($this->cod_medicamento)) {
+            $co = $this->conecta();
+            $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            
+            try {
+                // Obtener cantidad anterior
+                $cant_anterior = $co->query("SELECT cantidad FROM medicamentos WHERE cod_medicamento = '$this->cod_medicamento'")
+                                    ->fetchColumn();
+                
+                $co->beginTransaction();
+                
+                // Actualizar medicamento
+                $co->query("UPDATE medicamentos SET
+                    nombre = '$this->nombre',
+                    descripcion = '$this->descripcion',
+                    cantidad = '$this->cantidad',
+                    unidad_medida = '$this->unidad_medida',
+                    fecha_vencimiento = '$this->fecha_vencimiento',
+                    lote = '$this->lote',
+                    proveedor = '$this->proveedor'
+                    WHERE cod_medicamento = '$this->cod_medicamento'");
+                
+                // Si cambió la cantidad, registrar transacción
+                if($cant_anterior != $this->cantidad) {
+                    $diferencia = $this->cantidad - $cant_anterior;
+                    $tipo = $diferencia > 0 ? 'ajuste_positivo' : 'ajuste_negativo';
+                    
+                    $co->query("INSERT INTO transaccion(
+                        tipo_transaccion, fecha, hora, cedula_p
+                    ) VALUES(
+                        '$tipo', CURDATE(), TIME_FORMAT(NOW(), '%H:%i'), '$this->cedula_p'
+                    )");
+                    
+                    $cod_transaccion = $co->lastInsertId();
+                    
+                    $co->query("INSERT INTO insumos(
+                        cod_transaccion, cod_medicamento, cantidad
+                    ) VALUES(
+                        '$cod_transaccion', '$this->cod_medicamento', '".abs($diferencia)."'
+                    )");
+                }
+                
+                $co->commit();
+                $r['resultado'] = 'modificar_medicamento';
+                $r['mensaje'] = 'Medicamento actualizado con éxito';
+            } catch(Exception $e) {
+                $co->rollBack();
+                $r['resultado'] = 'error';
+                $r['mensaje'] = $e->getMessage();
+            }
+        } else {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = 'Medicamento no existe';
+        }
+        return $r;
     }
-    
-    public function obtenerMedicamento($cod_medicamento) {
-        $stmt = $this->db->prepare("SELECT * FROM medicamentos WHERE cod_medicamento = ?");
-        $stmt->execute([$cod_medicamento]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+
+    public function eliminar() {
+        $r = array();
+        if($this->existe($this->cod_medicamento)) {
+            $co = $this->conecta();
+            $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            
+            try {
+                $co->beginTransaction();
+                
+                // 1. Eliminar registros en insumos que referencian este medicamento
+                $co->query("DELETE FROM insumos WHERE cod_medicamento = '$this->cod_medicamento'");
+                
+                // 2. Luego eliminar el medicamento
+                $co->query("DELETE FROM medicamentos WHERE cod_medicamento = '$this->cod_medicamento'");
+                
+                $co->commit();
+                
+                $r['resultado'] = 'eliminar_medicamento';
+                $r['mensaje'] = 'Medicamento eliminado con éxito';
+            } catch(Exception $e) {
+                $co->rollBack();
+                $r['resultado'] = 'error';
+                $r['mensaje'] = 'Error al eliminar: ' . $e->getMessage();
+            }
+        } else {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = 'Medicamento no existe';
+        }
+        return $r;
     }
-    
-    public function obtenerTotalMedicamentos() {
-        $stmt = $this->db->query("SELECT COUNT(*) as total FROM medicamentos");
-        return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
-    }
-    
-    public function obtenerTotalStock() {
-        $stmt = $this->db->query("SELECT SUM(cantidad) as total FROM medicamentos");
-        return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+    private function existe($cod_medicamento) {
+        $co = $this->conecta();
+        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        
+        try {
+            $resultado = $co->query("SELECT * FROM medicamentos WHERE cod_medicamento = '$cod_medicamento'");
+            return $resultado->rowCount() > 0;
+        } catch(Exception $e) {
+            return false;
+        }
     }
 }
 ?>
