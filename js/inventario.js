@@ -1,7 +1,54 @@
+// Variable global para guardar el código a eliminar
+let codMedicamentoAEliminar = null;
+
 function consultarMedicamentos() {
     var datos = new FormData();
     datos.append('accion', 'consultar_medicamentos');
-    enviaAjax(datos);
+    $.ajax({
+        url: '',  // Cambia esta URL a la de tu controlador PHP si es necesario
+        type: 'POST',
+        data: datos,
+        processData: false,
+        contentType: false,
+        success: function(respuesta) {
+            try {
+                var lee = JSON.parse(respuesta);
+                if (lee.resultado == "consultar_medicamentos") {
+                    destruyeDT();
+                    var html = '';
+                    lee.datos.forEach(function(fila) {
+                        html += `<tr>
+                            <td>
+                                <div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
+                                    <a type="button" class="btn btn-success" onclick="editarMedicamento(${fila.cod_medicamento})">
+                                        <img src="img/lapiz.svg" style="width: 20px">
+                                    </a>
+                                    <a type="button" class="btn btn-danger" onclick="confirmarEliminacion(${fila.cod_medicamento})">
+                                        <img src="img/basura.svg" style="width: 20px">
+                                    </a>
+                                </div>
+                            </td>
+                            <td>${fila.cod_medicamento}</td>
+                            <td>${fila.nombre}</td>
+                            <td>${fila.descripcion}</td>
+                            <td>${fila.cantidad}</td>
+                            <td>${fila.unidad_medida}</td>
+                            <td>${fila.fecha_vencimiento ? new Date(fila.fecha_vencimiento).toLocaleDateString() : 'N/A'}</td>
+                            <td>${fila.lote}</td>
+                            <td>${fila.proveedor}</td>
+                        </tr>`;
+                    });
+                    $("#resultadoMedicamentos").html(html);
+                    crearDT();
+                }
+            } catch (e) {
+                muestraMensaje("Error al actualizar la tabla de medicamentos");
+            }
+        },
+        error: function(xhr, status, error) {
+            muestraMensaje("Error en la petición AJAX al actualizar la tabla");
+        }
+    });
 }
 
 function consultarTransacciones() {
@@ -83,13 +130,21 @@ function editarMedicamento(cod_medicamento) {
 }
 
 function confirmarEliminacion(cod_medicamento) {
-    if (confirm('¿Está seguro que desea eliminar este medicamento?')) {
+    codMedicamentoAEliminar = cod_medicamento;
+    $('#modalConfirmacion').modal('show');
+}
+
+// Al hacer clic en el botón "Eliminar" del modal
+$('#btnConfirmarEliminar').off('click').on('click', function() {
+    if (codMedicamentoAEliminar) {
         var datos = new FormData();
         datos.append('accion', 'eliminar_medicamento');
-        datos.append('cod_medicamento', cod_medicamento);
+        datos.append('cod_medicamento', codMedicamentoAEliminar);
         enviaAjax(datos);
+        codMedicamentoAEliminar = null;
+        $('#modalConfirmacion').modal('hide');
     }
-}
+});
 
 function limpiaFormulario() {
     $("#cod_medicamento").val("");
@@ -133,24 +188,11 @@ $(document).ready(function() {
 });
 
 function muestraMensaje(mensaje) {
-    // Crea un div para el mensaje si no existe
-    if (!$('#mensajeContainer').length) {
-        $('body').append('<div id="mensajeContainer" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>');
-    }
-    
-    // Crea y muestra el mensaje
-    const id = 'msg-' + Date.now();
-    $('#mensajeContainer').append(`
-        <div id="${id}" class="alert alert-info alert-dismissible fade show" role="alert" style="min-width: 300px;">
-            ${mensaje}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    `);
-    
-    // Elimina el mensaje después de 5 segundos
-    setTimeout(() => {
-        $(`#${id}`).alert('close');
-    }, 5000);
+    $("#contenidodemodal").html(mensaje);
+    $("#mostrarmodal").modal("show");
+    setTimeout(function() {
+        $("#mostrarmodal").modal("hide");
+    }, 2000);
 }
 
 function enviaAjax(datos) {
@@ -172,11 +214,10 @@ function enviaAjax(datos) {
 function procesarRespuesta(respuesta) {
     try {
         var lee = JSON.parse(respuesta);
-        
+
         if (lee.resultado == "consultar_medicamentos") {
             destruyeDT();
             var html = '';
-            
             lee.datos.forEach(function(fila) {
                 html += `<tr>
                     <td>
@@ -199,14 +240,12 @@ function procesarRespuesta(respuesta) {
                     <td>${fila.proveedor}</td>
                 </tr>`;
             });
-            
             $("#resultadoMedicamentos").html(html);
             crearDT();
         }
         else if (lee.resultado == "consultar_transacciones") {
             destruyeDTTransacciones();
             var html = '';
-            
             lee.datos.forEach(function(fila) {
                 var tipo = '';
                 switch(fila.tipo_transaccion) {
@@ -216,7 +255,6 @@ function procesarRespuesta(respuesta) {
                     case 'ajuste_negativo': tipo = '<span class="badge bg-warning text-dark">Ajuste -</span>'; break;
                     default: tipo = fila.tipo_transaccion;
                 }
-                
                 html += `<tr>
                     <td>${fila.cod_transaccion}</td>
                     <td>${new Date(fila.fecha).toLocaleDateString()}</td>
@@ -227,7 +265,6 @@ function procesarRespuesta(respuesta) {
                     <td>${fila.nombre} ${fila.apellido}</td>
                 </tr>`;
             });
-            
             $("#resultadoTransacciones").html(html);
             crearDTTransacciones();
         }
@@ -240,18 +277,21 @@ function procesarRespuesta(respuesta) {
             $("#fecha_vencimiento").val(lee.datos.fecha_vencimiento);
             $("#lote").val(lee.datos.lote);
             $("#proveedor").val(lee.datos.proveedor);
-            
+
             $("#procesoMedicamento").text("MODIFICAR");
             $("#modalMedicamentoLabel").text("Editar Medicamento");
             $("#modalMedicamento").modal("show");
         }
-        else if (lee.resultado == "incluir_medicamento" || lee.resultado == "modificar_medicamento" || lee.resultado == "eliminar_medicamento") {
+        else if (
+            lee.resultado == "incluir_medicamento" ||
+            lee.resultado == "modificar_medicamento" ||
+            lee.resultado == "eliminar_medicamento"
+        ) {
             muestraMensaje(lee.mensaje);
-            if (lee.mensaje.includes('éxito') || lee.mensaje.includes('correctamente')) {
-                $("#modalMedicamento").modal("hide");
-                consultarMedicamentos();
-                consultarTransacciones();
-            }
+            $("#modalMedicamento").modal("hide");
+            $('#modalConfirmacion').modal("hide");
+            consultarMedicamentos();
+            consultarTransacciones();
         }
         else if (lee.resultado == "error") {
             muestraMensaje(lee.mensaje);

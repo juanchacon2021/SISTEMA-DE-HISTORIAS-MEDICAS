@@ -65,7 +65,7 @@ class inventario extends datos {
         $r = array();
         
         try {
-            $resultado = $co->query("SELECT t.*, p.nombre, p.apellido, m.nombre as medicamento 
+            $resultado = $co->query("SELECT t.*, p.nombre, p.apellido, m.nombre as medicamento, i.cantidad
                                    FROM transaccion t
                                    JOIN personal p ON t.cedula_p = p.cedula_personal
                                    JOIN insumos i ON t.cod_transaccion = i.cod_transaccion
@@ -149,7 +149,7 @@ class inventario extends datos {
             )");
             
             $co->commit();
-            $r['resultado'] = 'incluir';
+            $r['resultado'] = 'incluir_medicamento';
             $r['mensaje'] = 'Medicamento registrado con éxito';
         } catch(Exception $e) {
             $co->rollBack();
@@ -204,7 +204,7 @@ class inventario extends datos {
                 }
                 
                 $co->commit();
-                $r['resultado'] = 'modificar';
+                $r['resultado'] = 'modificar_medicamento';
                 $r['mensaje'] = 'Medicamento actualizado con éxito';
             } catch(Exception $e) {
                 $co->rollBack();
@@ -235,7 +235,7 @@ class inventario extends datos {
                 
                 $co->commit();
                 
-                $r['resultado'] = 'eliminar';
+                $r['resultado'] = 'eliminar_medicamento';
                 $r['mensaje'] = 'Medicamento eliminado con éxito';
             } catch(Exception $e) {
                 $co->rollBack();
