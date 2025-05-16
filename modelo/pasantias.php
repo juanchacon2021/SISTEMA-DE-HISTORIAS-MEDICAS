@@ -40,20 +40,27 @@ class pasantias extends datos {
         
         try {
             if(!$this->existe_estudiante($this->cedula_estudiante)) {
+                // Primero insertamos en estudiantes_pasantia
                 $stmt = $co->prepare("INSERT INTO estudiantes_pasantia VALUES(
-                    :cedula, :nombre, :apellido, :institucion, :telefono, 
-                    :area, :inicio, :fin, :activo)");
+                    :cedula, :nombre, :apellido, :institucion)");
                 
                 $stmt->execute(array(
                     ':cedula' => $this->cedula_estudiante,
                     ':nombre' => $this->nombre,
                     ':apellido' => $this->apellido,
-                    ':institucion' => $this->institucion,
-                    ':telefono' => $this->telefono,
-                    ':area' => $this->cod_area,
+                    ':institucion' => $this->institucion
+                ));
+                
+                // Luego insertamos en asistencia
+                $stmt = $co->prepare("INSERT INTO asistencia VALUES(
+                    :inicio, :fin, :activo, :cedula, :area)");
+                
+                $stmt->execute(array(
                     ':inicio' => $this->fecha_inicio,
                     ':fin' => $this->fecha_fin,
-                    ':activo' => $this->activo
+                    ':activo' => $this->activo,
+                    ':cedula' => $this->cedula_estudiante,
+                    ':area' => $this->cod_area
                 ));
                 
                 $r['resultado'] = 'incluir';
@@ -76,21 +83,28 @@ class pasantias extends datos {
         
         try {
             if($this->existe_estudiante($this->cedula_estudiante)) {
+                // Actualizar datos básicos del estudiante
                 $stmt = $co->prepare("UPDATE estudiantes_pasantia SET
-                    nombre = :nombre, apellido = :apellido, institucion = :institucion,
-                    telefono = :telefono, cod_area = :area, fecha_inicio = :inicio,
-                    fecha_fin = :fin, activo = :activo
+                    nombre = :nombre, apellido = :apellido, institucion = :institucion
                     WHERE cedula_estudiante = :cedula");
                 
                 $stmt->execute(array(
                     ':nombre' => $this->nombre,
                     ':apellido' => $this->apellido,
                     ':institucion' => $this->institucion,
-                    ':telefono' => $this->telefono,
-                    ':area' => $this->cod_area,
+                    ':cedula' => $this->cedula_estudiante
+                ));
+                
+                // Actualizar datos de asistencia
+                $stmt = $co->prepare("UPDATE asistencia SET
+                    fecha_inicio = :inicio, fecha_fin = :fin, activo = :activo, cod_area = :area
+                    WHERE cedula_estudiante = :cedula");
+                
+                $stmt->execute(array(
                     ':inicio' => $this->fecha_inicio,
                     ':fin' => $this->fecha_fin,
                     ':activo' => $this->activo,
+                    ':area' => $this->cod_area,
                     ':cedula' => $this->cedula_estudiante
                 ));
                 
@@ -114,8 +128,11 @@ class pasantias extends datos {
         
         try {
             if($this->existe_estudiante($this->cedula_estudiante)) {
-                $co->query("DELETE FROM estudiantes_pasantia 
-                           WHERE cedula_estudiante = '$this->cedula_estudiante'");
+                // Primero eliminamos de asistencia
+                $co->query("DELETE FROM asistencia WHERE cedula_estudiante = '$this->cedula_estudiante'");
+                
+                // Luego eliminamos de estudiantes_pasantia
+                $co->query("DELETE FROM estudiantes_pasantia WHERE cedula_estudiante = '$this->cedula_estudiante'");
                 
                 $r['resultado'] = 'eliminar';
                 $r['mensaje'] = 'Estudiante eliminado exitosamente';
@@ -136,11 +153,14 @@ class pasantias extends datos {
         $r = array();
         
         try {
-            $resultado = $co->query("SELECT e.*, a.nombre_area, 
+            $resultado = $co->query("SELECT e.cedula_estudiante, e.nombre, e.apellido, e.institucion, 
+                                   a.fecha_inicio, a.fecha_fin, a.activo, a.cod_area,
+                                   ar.nombre_area, 
                                    CONCAT(p.nombre, ' ', p.apellido) as responsable
                                    FROM estudiantes_pasantia e
-                                   JOIN areas_pasantia a ON e.cod_area = a.cod_area
-                                   JOIN personal p ON a.responsable_id = p.cedula_personal
+                                   JOIN asistencia a ON e.cedula_estudiante = a.cedula_estudiante
+                                   JOIN areas_pasantia ar ON a.cod_area = ar.cod_area
+                                   JOIN personal p ON ar.responsable_id = p.cedula_personal
                                    ORDER BY e.apellido, e.nombre");
             
             $r['resultado'] = 'consultar';
@@ -211,7 +231,7 @@ class pasantias extends datos {
         
         try {
             // Verificar si hay estudiantes en esta área
-            $resultado = $co->query("SELECT COUNT(*) as total FROM estudiantes_pasantia 
+            $resultado = $co->query("SELECT COUNT(*) as total FROM asistencia 
                                    WHERE cod_area = '$this->cod_area'");
             $fila = $resultado->fetch(PDO::FETCH_ASSOC);
             

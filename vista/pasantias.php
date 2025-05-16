@@ -4,7 +4,7 @@ require_once("comunes/sidebar.php");
 ?>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
-    <!-- Content Wrapper. Contains page content -->
+    
     <div class="container espacio"> <!-- Ajusta el margen izquierdo -->
         <!-- Main content -->
         <section class="content">
@@ -153,14 +153,14 @@ Pasantías
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-6" style="display: none;">
                                 <div class="form-group">
                                     <label for="telefono">Teléfono</label>
                                     <input type="text" class="form-control" id="telefono" name="telefono">
                                     <small id="stelefono" class="form-text text-danger"></small>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md">
                                 <div class="form-group">
                                     <label for="cod_area">Área de Pasantía</label>
                                     <select class="form-control" id="cod_area" name="cod_area" required>
