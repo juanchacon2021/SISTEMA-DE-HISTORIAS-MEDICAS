@@ -15,7 +15,7 @@ Pacientes cronicos
 	<div class="container">
 		<div class="row mt-3 botones">
 		    <div style="color: white;" class="col-md-2 botonverde" style="cursor: pointer;" onclick='pone(this,3), limpiarm()' >
-				Registrar p_cronicos
+				Registrar pacientes cronicos
 			</div>
 
 			<div class="col-md-2 recortar">	
@@ -48,7 +48,7 @@ Pacientes cronicos
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
 	<div class="modal-header text-light bg-info gradiente">
-        <h5 class="modal-title">Formulario de p_cronicos</h5>
+        <h5 class="modal-title">Formulario de pacientes cronicos</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
 		<div class="container">

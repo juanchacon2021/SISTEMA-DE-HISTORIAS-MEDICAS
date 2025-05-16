@@ -77,10 +77,9 @@ require_once("comunes/sidebar.php");
 <!-- Modal para formulario de medicamentos -->
 <div class="modal fade" id="modalMedicamento" tabindex="-1" aria-labelledby="modalMedicamentoLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="modalMedicamentoLabel">Gestión de Medicamento</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-content" style="padding: 25px 25px 0px 25px;">
+            <div class="text-light text-end" style="margin: 20px 20px 0px 0px;">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="formMedicamento" autocomplete="off">
@@ -89,19 +88,19 @@ require_once("comunes/sidebar.php");
                     
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="nombre" class="form-label">Nombre del Medicamento</label>
-                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                            <label for="nombre" class="texto-inicio font-medium mb-2">Nombre del Medicamento</label>
+                            <input type="text" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="nombre" name="nombre" placeholder="Nombre del Medicamento" required>
                         </div>
                         <div class="col-md-6">
-                            <label for="cantidad" class="form-label">Cantidad</label>
-                            <input type="number" class="form-control" id="cantidad" name="cantidad" min="0" required>
+                            <label for="cantidad" class="texto-inicio font-medium mb-2">Cantidad</label>
+                            <input type="number" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="cantidad" name="cantidad" min="0" required>
                         </div>
                     </div>
                     
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="unidad_medida" class="form-label">Unidad de Medida</label>
-                            <select class="form-select" id="unidad_medida" name="unidad_medida" required>
+                            <label for="unidad_medida" class="texto-inicio font-medium mb-2">Unidad de Medida</label>
+                            <select class="form-select bg-gray-200 rounded-lg border-white p-3 text" id="unidad_medida" name="unidad_medida" required>
                                 <option value="">Seleccione...</option>
                                 <option value="mg">mg</option>
                                 <option value="ml">ml</option>
@@ -112,30 +111,30 @@ require_once("comunes/sidebar.php");
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label for="fecha_vencimiento" class="form-label">Fecha de Vencimiento</label>
-                            <input type="date" class="form-control" id="fecha_vencimiento" name="fecha_vencimiento">
+                            <label for="fecha_vencimiento" class="texto-inicio font-medium mb-2">Fecha de Vencimiento</label>
+                            <input type="date" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="fecha_vencimiento" name="fecha_vencimiento">
                         </div>
                     </div>
                     
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="lote" class="form-label">Lote</label>
-                            <input type="text" class="form-control" id="lote" name="lote">
+                            <label for="lote" class="texto-inicio font-medium mb-2">Lote</label>
+                            <input type="text" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="lote" name="lote">
                         </div>
                         <div class="col-md-6">
-                            <label for="proveedor" class="form-label">Proveedor</label>
-                            <input type="text" class="form-control" id="proveedor" name="proveedor">
+                            <label for="proveedor" class="texto-inicio font-medium mb-2">Proveedor</label>
+                            <input type="text" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="proveedor" name="proveedor">
                         </div>
                     </div>
                     
                     <div class="mb-3">
-                        <label for="descripcion" class="form-label">Descripción</label>
-                        <textarea class="form-control" id="descripcion" name="descripcion" rows="3"></textarea>
+                        <label for="descripcion" class="texto-inicio font-medium mb-2">Descripción</label>
+                        <textarea class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="descripcion" name="descripcion" rows="3"></textarea>
                     </div>
                     
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" id="procesoMedicamento" class="btn btn-primary">INCLUIR</button>
+                        <button type="button" class="btn boton" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" id="procesoMedicamento" class="btn botonverde">Incluir</button>
                     </div>
                 </form>
             </div>
