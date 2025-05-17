@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <?php 
-        require_once("comunes/encabezado.php"); 
+    require_once("comunes/encabezado.php"); 
 ?>
 <?php require_once("comunes/modal.php"); ?>
 <!--Div oculta para colocar el mensaje a mostrar-->
 <div id="mensajes" style="display:none">
 <?php
-	if(!empty($mensaje)){
-		echo $mensaje;
-	}
-?>	
+    if(!empty($mensaje)){
+        echo $mensaje;
+    }
+?>    
 </div>
 <head>
 </head>
@@ -31,8 +31,8 @@
                     <img src="img/user.svg" alt="">
                 </div>
                 <div class="div">
-                    <input id="cedula" type="text" class="input border-0 form-control" name="cedula" placeholder="Cedula">
-                    <span id="scedula"></span>
+                    <input id="email" type="email" class="input border-0 form-control" name="email" placeholder="Email">
+                    <span id="semail"></span>
                 </div>
             </div>
             <div class="input-div pass">
@@ -52,5 +52,4 @@
    </div>
    <script type="text/javascript" src="js/login.js"></script>
 </body>
-
 </html>
