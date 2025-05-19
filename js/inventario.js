@@ -5,7 +5,7 @@ function consultarMedicamentos() {
     var datos = new FormData();
     datos.append('accion', 'consultar_medicamentos');
     $.ajax({
-        url: '',  // Cambia esta URL a la de tu controlador PHP si es necesario
+        url: '', 
         type: 'POST',
         data: datos,
         processData: false,
@@ -197,13 +197,13 @@ function muestraMensaje(mensaje) {
 
 function enviaAjax(datos) {
     $.ajax({
-        url: '',  // Cambia esta URL a la de tu controlador PHP
+        url: '', 
         type: 'POST',
         data: datos,
         processData: false,
         contentType: false,
         success: function(respuesta) {
-            procesarRespuesta(respuesta);  // Aquí se procesan las respuestas que regresa tu servidor
+            procesarRespuesta(respuesta);  
         },
         error: function(xhr, status, error) {
             console.log('Error en la petición AJAX: ', error);
