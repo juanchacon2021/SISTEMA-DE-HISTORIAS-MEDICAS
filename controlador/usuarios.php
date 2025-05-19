@@ -78,8 +78,19 @@ if(is_file("vista/".$pagina.".php")) {
                 echo json_encode($o->consultar_permisos_rol($_POST['rol_id']));
                 break;
                 
-            case 'actualizar_permisos':
-                $modulos = isset($_POST['modulos']) ? $_POST['modulos'] : array();
+           case 'actualizar_permisos':
+                
+                $modulos = isset($_POST['modulos']) ? json_decode($_POST['modulos']) : array();
+                
+        
+                if(!is_array($modulos)) {
+                    echo json_encode(array("resultado"=>"error", "mensaje"=>"Formato de módulos inválido"));
+                    exit;
+                }
+                
+                
+                $modulos = array_map('intval', $modulos);
+                
                 echo json_encode($o->actualizar_permisos($_POST['rol_id'], $modulos));
                 break;
                 
