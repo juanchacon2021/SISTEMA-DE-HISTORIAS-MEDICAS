@@ -28,6 +28,7 @@ if(is_file("vista/".$pagina.".php")){
                 $o->set_fecha_fin($_POST['fecha_fin']);
                 $o->set_activo(isset($_POST['activo']) ? 1 : 0);
                 echo json_encode($o->incluir_estudiante());
+                bitacora::registrar('Registrar', 'Se ha registrado un estudiante');
                 break;
                 
             case 'modificar_estudiante':
@@ -41,11 +42,13 @@ if(is_file("vista/".$pagina.".php")){
                 $o->set_fecha_fin($_POST['fecha_fin']);
                 $o->set_activo(isset($_POST['activo']) ? 1 : 0);
                 echo json_encode($o->modificar_estudiante());
+                bitacora::registrar('Modificar', 'Se ha modificado un estudiante');
                 break;
                 
             case 'eliminar_estudiante':
                 $o->set_cedula_estudiante($_POST['cedula_estudiante']);
                 echo json_encode($o->eliminar_estudiante());
+                bitacora::registrar('Eliminar', 'Se ha eliminado un estudiante');
                 break;
                 
             // Acciones para áreas
@@ -66,6 +69,7 @@ if(is_file("vista/".$pagina.".php")){
                 $o->set_descripcion($_POST['descripcion']);
                 $o->set_responsable_id($_POST['responsable_id']);
                 echo json_encode($o->incluir_area());
+                bitacora::registrar('Registrar', 'Se ha registrado un área');
                 break;
                 
                 case 'modificar_area':
@@ -74,11 +78,13 @@ if(is_file("vista/".$pagina.".php")){
                     $o->set_descripcion($_POST['descripcion']);
                     $o->set_responsable_id($_POST['responsable_id']);
                     echo json_encode($o->modificar_area());
+                    bitacora::registrar('Modificar', 'Se ha modificado un área');
                     break;
                 
             case 'eliminar_area':
                 $o->set_cod_area($_POST['cod_area']);
                 echo json_encode($o->eliminar_area());
+                bitacora::registrar('Eliminar', 'Se ha eliminado un área');
                 break;
                 
             default:

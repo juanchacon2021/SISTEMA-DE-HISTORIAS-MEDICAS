@@ -69,7 +69,7 @@ if(is_file("vista/".$pagina.".php")) {
                 echo json_encode($o->eliminar_rol());
                 break;
                 
-            // Acciones para permisos
+
             case 'consultar_modulos':
                 echo json_encode($o->consultar_modulos());
                 break;

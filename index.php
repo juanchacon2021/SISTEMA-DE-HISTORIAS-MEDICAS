@@ -1,5 +1,5 @@
 <?php
-$pagina = "principal"; 
+$pagina = "principal";
 
 if (!empty($_GET['pagina'])){
     $pagina = $_GET['pagina'];  
@@ -7,18 +7,29 @@ if (!empty($_GET['pagina'])){
 
 $nivel = ""; 
 if (is_file("modelo/verifica.php")) {
-    require_once("modelo/verifica.php");	
+    require_once("modelo/verifica.php");    
     $v = new verifica();
     if ($pagina == 'salida') {
+        // Registrar cierre de sesión
+        if(isset($_SESSION['usuario'])) {
+            require_once("modelo/bitacora.php");
+            bitacora::registrar('Cierre de sesión', 'Usuario cerró sesión');
+        }
         $v->destruyesesion();
     } else {
         $nivel = $v->leesesion();
+        
+        // Registrar acceso a la página
+        if($nivel && !in_array($pagina, ['login', 'bitacora'])) {
+            require_once("modelo/bitacora.php");
+            
+        }
     }
 }
 
 if (is_file("controlador/" . $pagina . ".php")) {
     require_once("controlador/" . $pagina . ".php");
 } else {
-    echo "PAGINA EN CONSTRUCCIÓN";
+    echo "PÁGINA EN CONSTRUCCIÓN";
 }
 ?>

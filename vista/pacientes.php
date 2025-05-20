@@ -6,7 +6,7 @@
 
 <body>
 <?php
-	if($nivel=='Doctor'){
+	
 ?>
 <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100">
 Pacientes
@@ -240,7 +240,7 @@ Pacientes
 <?php require_once("comunes/modal.php"); ?>
 <script type="text/javascript" src="js/pacientes.js"></script>
 <?php
-	}
+
 ?>
 </body>
 </html>
