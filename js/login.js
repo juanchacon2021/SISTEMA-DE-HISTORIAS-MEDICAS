@@ -20,9 +20,13 @@ $(document).ready(function(){
     });
     
     $("#clave").on("keyup",function(){
-        validarkeyup(/^[A-Za-z0-9]{7,15}$/,
-        $(this),$("#sclave"),"Solo letras y numeros entre 7 y 15 caracteres");
-    });
+    if($(this).val().length > 0) {
+        validarkeyup(/^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,}$/,
+        $(this),$("#sclave"),"Mínimo 8 caracteres, puede incluir símbolos");
+    } else {
+        $("#sclave").text("");
+    }
+});
     
     //CONTROL DE BOTONES
     $("#entrar").on("click",function(){
