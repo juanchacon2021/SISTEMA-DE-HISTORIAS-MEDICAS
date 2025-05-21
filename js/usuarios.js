@@ -51,9 +51,30 @@ $(document).ready(function() {
 
     $("#passwordUsuario").on("keyup", function() {
         if($(this).val().length > 0) {
-            validarkeyup(/^[A-Za-z0-9]{7,15}$/, $(this), $("#spasswordUsuario"), "Solo letras y números entre 7 y 15 caracteres");
+            validarkeyup(/^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,}$/, $(this), $("#spasswordUsuario"), "Mínimo 8 caracteres, puede incluir símbolos");
         } else {
             $("#spasswordUsuario").text("");
+        }
+    });
+
+    // Vista previa de la foto de perfil
+    $('#fotoPerfil').change(function() {
+        var file = this.files[0];
+        if(file) {
+            // Validar tamaño (50MB máximo)
+            if(file.size > 52428800) {
+                muestraMensaje('El archivo es demasiado grande (máximo 50MB)', 'error');
+                $(this).val('');
+                return;
+            }
+            
+            // Mostrar vista previa
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#fotoPreview').attr('src', e.target.result);
+                $('#previewFoto').show();
+            }
+            reader.readAsDataURL(file);
         }
     });
 });
@@ -72,6 +93,10 @@ function cargarUsuarios() {
             $('#resultadoUsuarios').html('');
             
             respuesta.datos.forEach(function(usuario) {
+                var foto = usuario.foto_perfil ? 
+                    `<img src="img/perfiles/${usuario.foto_perfil}" class="rounded-circle" style="width:40px;height:40px;object-fit:cover;">` : 
+                    '<i class="fas fa-user-circle fa-2x"></i>';
+                
                 var fila = `
                 <tr>
                     <td>
@@ -85,7 +110,12 @@ function cargarUsuarios() {
                         </div>
                     </td>
                     <td>${usuario.id}</td>
-                    <td>${usuario.nombre}</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="mr-2">${foto}</div>
+                            <div>${usuario.nombre}</div>
+                        </div>
+                    </td>
                     <td>${usuario.email}</td>
                     <td>${usuario.rol_nombre}</td>
                     <td>${usuario.fecha_creacion}</td>
@@ -128,7 +158,11 @@ function mostrarModalUsuario(modo, datos = null) {
     if(modo == 'incluir') {
         $('#formUsuario')[0].reset();
         $('#idUsuario').val('');
-        $('#snombreUsuario, #semailUsuario, #spasswordUsuario').text('');
+        $('#fotoActual').val('');
+        $('#previewFoto').hide();
+        $('#fotoPerfil').val('');
+        $('#fotoPerfilLabel').text('Seleccionar archivo (máx. 50MB)');
+        $('.invalid-feedback').text('');
     } else {
         // Llenar formulario con datos
         $('#idUsuario').val(datos.id);
@@ -136,6 +170,17 @@ function mostrarModalUsuario(modo, datos = null) {
         $('#emailUsuario').val(datos.email);
         $('#passwordUsuario').val('');
         $('#rolUsuario').val(datos.rol_id);
+        
+        if(datos.foto_perfil) {
+            $('#fotoActual').val(datos.foto_perfil);
+            $('#fotoPreview').attr('src', 'img/perfiles/' + datos.foto_perfil);
+            $('#previewFoto').show();
+        } else {
+            $('#fotoActual').val('');
+            $('#previewFoto').hide();
+        }
+        $('#fotoPerfil').val('');
+        $('#fotoPerfilLabel').text('Cambiar foto...');
     }
     
     $('#modalUsuario').modal('show');
@@ -146,10 +191,55 @@ function guardarUsuario() {
         return;
     }
 
+    // Si hay una foto nueva, subirla primero
+    if($('#fotoPerfil')[0].files.length > 0) {
+        $('#btnGuardarUsuario').html('<i class="fas fa-spinner fa-spin"></i> Subiendo foto...').prop('disabled', true);
+        
+        var formData = new FormData();
+        formData.append('accion', 'subir_foto');
+        formData.append('foto_perfil', $('#fotoPerfil')[0].files[0]);
+        
+        $.ajax({
+            url: '',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(respuesta) {
+                try {
+                    var json = JSON.parse(respuesta);
+                    if(json.resultado === 'exito') {
+                        // Continuar con el guardado del usuario
+                        guardarUsuarioDatos(json.nombre_archivo);
+                    } else {
+                        muestraMensaje(json.mensaje, 'error');
+                        $('#btnGuardarUsuario').html(modoActual == 'incluir' ? 'Registrar' : 'Actualizar').prop('disabled', false);
+                    }
+                } catch(e) {
+                    muestraMensaje('Error al procesar la respuesta', 'error');
+                    $('#btnGuardarUsuario').html(modoActual == 'incluir' ? 'Registrar' : 'Actualizar').prop('disabled', false);
+                }
+            },
+            error: function() {
+                muestraMensaje('Error en la conexión', 'error');
+                $('#btnGuardarUsuario').html(modoActual == 'incluir' ? 'Registrar' : 'Actualizar').prop('disabled', false);
+            }
+        });
+    } else {
+        // No hay foto nueva, guardar directamente
+        guardarUsuarioDatos($('#fotoActual').val());
+    }
+}
+
+function guardarUsuarioDatos(nombreFoto) {
     var datos = new FormData($('#formUsuario')[0]);
     datos.append('accion', $('#accionUsuario').val());
+    if(nombreFoto) {
+        datos.append('foto_perfil', nombreFoto);
+    }
     
     enviaAjax(datos, function(respuesta) {
+        $('#btnGuardarUsuario').html(modoActual == 'incluir' ? 'Registrar' : 'Actualizar').prop('disabled', false);
         muestraMensaje(respuesta.mensaje, respuesta.resultado == 'error' ? 'error' : 'success');
         if(respuesta.resultado != 'error') {
             $('#modalUsuario').modal('hide');
@@ -160,6 +250,26 @@ function guardarUsuario() {
 
 function editarUsuario(usuario) {
     mostrarModalUsuario('editar', usuario);
+}
+
+function eliminarFoto() {
+    if(!confirm('¿Está seguro de eliminar la foto de perfil?')) return;
+    
+    var datos = new FormData();
+    datos.append('accion', 'eliminar_foto');
+    datos.append('id', $('#idUsuario').val());
+    
+    enviaAjax(datos, function(respuesta) {
+        if(respuesta.resultado == 'exito') {
+            $('#fotoActual').val('');
+            $('#previewFoto').hide();
+            $('#fotoPerfil').val('');
+            $('#fotoPerfilLabel').text('Seleccionar archivo (máx. 50MB)');
+            muestraMensaje(respuesta.mensaje, 'success');
+        } else {
+            muestraMensaje(respuesta.mensaje, 'error');
+        }
+    });
 }
 
 function confirmarEliminar(tipo, id) {
@@ -300,7 +410,6 @@ function eliminarRolConfirmado() {
 }
 
 // Funciones para permisos
-// Funciones para permisos
 function cargarModulos() {
     var datos = new FormData();
     datos.append('accion', 'consultar_modulos');
@@ -360,7 +469,7 @@ function cargarPermisos() {
             });
             
             // Habilitar/deshabilitar checkboxes según el rol seleccionado
-            if(rol_id == 3) { // Rol admin (todos los permisos)
+            if(rol_id == 1) { // Rol admin (todos los permisos)
                 $('.modulo-check').prop('disabled', true).prop('checked', true);
                 $('#btnGuardarPermisos').prop('disabled', true);
                 muestraMensaje('El rol Administrador tiene todos los permisos y no puede ser modificado', 'info');
@@ -374,17 +483,19 @@ function cargarPermisos() {
 
 function guardarPermisos() {
     var rol_id = $('#selectRolPermisos').val();
-    if(!rol_id || rol_id == 3) {
+    if(!rol_id || rol_id == 1) {
         muestraMensaje('Seleccione un rol válido para asignar permisos');
         return;
     }
     
     // Mostrar confirmación antes de guardar
-   
+    if(!confirm('¿Está seguro de actualizar los permisos para este rol?')) {
+        return;
+    }
     
     var modulos = [];
     $('.modulo-check:checked').each(function() {
-        modulos.push($(this).val());
+        modulos.push(parseInt($(this).val()));
     });
     
     var datos = new FormData();
@@ -392,12 +503,34 @@ function guardarPermisos() {
     datos.append('rol_id', rol_id);
     datos.append('modulos', JSON.stringify(modulos));
     
-    enviaAjax(datos, function(respuesta) {
-        muestraMensaje(respuesta.mensaje, respuesta.resultado == 'error' ? 'error' : 'success');
-        
-        // Recargar los permisos para verificar los cambios
-        if(respuesta.resultado != 'error') {
-            cargarPermisos();
+    $('#btnGuardarPermisos').html('<i class="fas fa-spinner fa-spin"></i> Guardando...').prop('disabled', true);
+    
+    $.ajax({
+        url: '',
+        type: 'POST',
+        data: datos,
+        processData: false,
+        contentType: false,
+        success: function(respuesta) {
+            try {
+                var json = JSON.parse(respuesta);
+                if(json.resultado === 'exito') {
+                    muestraMensaje(json.mensaje, 'success');
+                    // Recargar los permisos para verificar los cambios
+                    cargarPermisos();
+                } else {
+                    muestraMensaje(json.mensaje, 'error');
+                }
+            } catch(e) {
+                console.error('Error parsing JSON:', e, 'Response:', respuesta);
+                muestraMensaje('Error al interpretar la respuesta del servidor', 'error');
+            }
+        },
+        error: function(xhr, status, error) {
+            muestraMensaje('Error en la conexión: ' + error, 'error');
+        },
+        complete: function() {
+            $('#btnGuardarPermisos').html('<i class="fas fa-save mr-1"></i> Guardar Permisos').prop('disabled', false);
         }
     });
 }
@@ -444,7 +577,7 @@ function validarFormularioUsuario() {
     }
     
     if($("#passwordUsuario").val().length > 0 && 
-       validarkeyup(/^[A-Za-z0-9]{7,15}$/, $("#passwordUsuario"), $("#spasswordUsuario"), "Solo letras y números entre 7 y 15 caracteres") == 0){
+       validarkeyup(/^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,}$/, $("#passwordUsuario"), $("#spasswordUsuario"), "Mínimo 8 caracteres, puede incluir símbolos") == 0){
         valido = false;
     }
     
@@ -498,9 +631,11 @@ function enviaAjax(datos, callback) {
         cache: false,
         timeout: 10000,
         beforeSend: function() {
-            // Mostrar loader si es necesario
+            console.log(datos);
         },
+        
         success: function(respuesta) {
+            console.log(respuesta);
             try {
                 const json = JSON.parse(respuesta);
                 if(typeof callback === 'function') {
