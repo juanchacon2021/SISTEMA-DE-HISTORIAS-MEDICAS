@@ -7,9 +7,7 @@
 
 
 
-<?php
-    if($nivel=='Doctor' or $nivel=='Enfermera'){
-?>
+
 <h1 class="fw-bold fs-1 text-center mt-4">Estadistica</h1>
 
 <div class="container mt-4" style="margin-left: 300px;">
@@ -117,8 +115,5 @@
 <?php require_once("comunes/modal.php"); ?>
 <script type="text/javascript" src="js/estadistica.js"></script> 
 
-<?php
-}   
-?>
 </body>
 </html>

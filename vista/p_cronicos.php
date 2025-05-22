@@ -4,10 +4,8 @@
 	require_once("comunes/sidebar.php");	
 ?>
 <body >
-<?php
-					  if($nivel=='Doctor' or $nivel=='Enfermera'){
-					?>
 
+<?php if(in_array('Pacientes crónicos', $permisos)): ?>
 <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
 Pacientes cronicos
 </div>
@@ -194,7 +192,6 @@ Pacientes cronicos
 
 <?php require_once("comunes/modal.php"); ?>
 <script type="text/javascript" src="js/p_cronicos.js"></script> 
-<?php
-}					?>
+ <?php endif; ?>
 </body>
 </html>
