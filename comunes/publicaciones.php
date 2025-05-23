@@ -37,10 +37,15 @@ function mostrarPublicacion($publicacion, $esPropietario = false) {
     echo '
     <div class="card publicacion mb-4">
         <div class="card-header bg-white d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center">
-                <div class="avatar bg-primary text-white rounded-circle me-2">
-                    '.substr($publicacion['nombre_usuario'], 0, 1).'
-                </div>
+            <div class="d-flex align-items-center">';
+                if (!empty($publicacion['foto_perfil'])) {
+                    echo '<img src="img/perfiles/' . htmlspecialchars($publicacion['foto_perfil']) . '" class="rounded-circle me-2" style="width:40px;height:40px;object-fit:cover;" alt="Foto de perfil">';
+                } else {
+                    echo '<div class="avatar bg-primary text-white rounded-circle me-2">'
+                        .substr($publicacion['nombre_usuario'], 0, 1).
+                        '</div>';
+                }
+                echo '
                 <div>
                     <h6 class="mb-0">'.$publicacion['nombre_usuario'].'</h6>
                     <small class="text-muted">'.$fechaFormateada.'</small>

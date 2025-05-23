@@ -29,24 +29,34 @@ function cargarPublicaciones() {
                         
                         html += `
                         <div class="card mb-3">
-                            <div class="card-header d-flex justify-content-between">
-                                <div>
-                                    <strong>${publicacion.nombre_usuario}</strong>
-                                    <small class="text-muted">${fecha}</small>
+                            <div class="card-header d-flex justify-between">
+                                <div class="d-flex">
+                                    ${
+                                        publicacion.foto_perfil 
+                                        ? `<img src="img/perfiles/${publicacion.foto_perfil}" class="rounded-circle me-2" style="width:40px;height:40px;object-fit:cover;" alt="Foto de perfil">`
+                                        : `<i class="fas fa-user-circle fa-2x text-secondary me-2"></i>`
+                                    }
+                                    <div>
+                                        <strong>${publicacion.nombre_usuario}</strong>
+                                        <small class="text-muted">${fecha}</small>
+                                    </div>
                                 </div>
-                                ${esPropietario ? `
                                 <div>
-                                    <button onclick="editarPublicacion(${publicacion.cod_pub})" 
-                                            class="btn btn-sm btn-primary">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button onclick="confirmarEliminacion(${publicacion.cod_pub})" 
-                                            class="btn btn-sm btn-danger">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
+                                    ${esPropietario ? `
+                                        <div>
+                                            <button onclick="editarPublicacion(${publicacion.cod_pub})" 
+                                                    class="btn btn-sm btn-primary">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button onclick="confirmarEliminacion(${publicacion.cod_pub})" 
+                                                    class="btn btn-sm btn-danger">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                        ` : ''}
                                 </div>
-                                ` : ''}
                             </div>
+                            
                             <div class="card-body">
                                 <p>${publicacion.contenido}</p>
                                 ${publicacion.imagen ? `

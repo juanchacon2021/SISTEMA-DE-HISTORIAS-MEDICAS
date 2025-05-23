@@ -34,6 +34,7 @@ class planificacion extends datos {
                 f.*,
                 u.nombre as nombre_usuario,
                 u.email,
+                u.foto_perfil,
                 CASE 
                     WHEN f.id_usuario = {$this->id_usuario} THEN 1
                     ELSE 0

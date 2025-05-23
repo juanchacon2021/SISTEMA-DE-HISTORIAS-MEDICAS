@@ -20,7 +20,6 @@
             // Verificar si hay un usuario autenticado
             if (isset($_SESSION['usuario'])) {
                 $permisos = $_SESSION['permisos'];
-                echo $_SESSION['usuario'];
             ?>
                 <!-- Inicio siempre visible -->
                 <div class="iconos p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
@@ -40,6 +39,13 @@
                 <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
                     <img class="w-6 h-8 imagen" src="img/personal.svg" alt="">
                     <a href="?pagina=personal"><span class="text-[15px] ml-4 text-lg hover:text-white">Personal</span></a>
+                </div>
+                <?php endif; ?>
+
+                <?php if(in_array('Usuarios', $permisos)): ?>
+                <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
+                    <img class="w-6 h-8 imagen" src="img/user.svg" alt="">
+                    <a href="?pagina=usuarios"><span class="text-[15px] ml-4 text-lg hover:text-white">Usuarios</span></a>
                 </div>
                 <?php endif; ?>
                 
@@ -81,7 +87,7 @@
                 <?php if(in_array('Pacientes crónicos', $permisos)): ?>
                 <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
                     <img class="w-6 h-8 imagen" src="img/cronico.svg" alt="">
-                    <a href="?pagina=p_cronicos"><span class="text-[15px] ml-4 text-lg hover:text-white">Pacientes crónicos</span></a>
+                    <a href="?pagina=p_cronicos"><span class="text-[15px] ml-4 text-lg hover:text-white">Pacientes Crónicos</span></a>
                 </div>
                 <?php endif; ?>
                 

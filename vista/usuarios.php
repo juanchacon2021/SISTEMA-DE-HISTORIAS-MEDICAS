@@ -11,7 +11,7 @@ require_once("comunes/sidebar.php");
             Gestión de Usuarios y Permisos
         </div>
 
-            <div class="container-fluid">
+            <div class="container-fluid d-flex">
                 <!-- Tabs -->
                 <ul class="nav nav-tabs" id="usuariosTabs" role="tablist">
                     <li class="nav-item" role="presentation">
@@ -30,11 +30,11 @@ require_once("comunes/sidebar.php");
                         </button>
                     </li>
                 </ul>
-
+            </div>
                 <div class="tab-content" id="usuariosTabContent">
                     <!-- Tab de Usuarios -->
                     <div class="tab-pane fade show active" id="usuarios" role="tabpanel">
-                        <div class="card mt-3">
+                        <div class="cardd mt-3">
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -70,7 +70,7 @@ require_once("comunes/sidebar.php");
 
                     <!-- Tab de Roles -->
                     <div class="tab-pane fade" id="roles" role="tabpanel">
-                        <div class="card mt-3">
+                        <div class="cardd mt-3">
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -104,7 +104,7 @@ require_once("comunes/sidebar.php");
                     <!-- Tab de Permisos -->
                     <!-- Tab de Permisos -->
                     <div class="tab-pane fade" id="permisos" role="tabpanel">
-                        <div class="card mt-3">
+                        <div class="cardd mt-3">
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -150,40 +150,45 @@ require_once("comunes/sidebar.php");
     <div class="modal fade" id="modalUsuario" tabindex="-1" role="dialog" aria-labelledby="modalUsuarioLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="modalUsuarioLabel">Registrar Usuario</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="text-light text-end" style="margin: 20px 20px 0px 0px;">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div style="margin: 0em 2em 0em 2em;">
+                    <h1 class="text-2xl font-bold mb-2">Registrar Usuario</h1>
+
+                    <div>
+                        <div class="col-md-2 mb-4 p-1 rounded-full" style="background-color: rgb(220 38 38);">
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-body">
-                    <form id="formUsuario" autocomplete="off">
+                    <form id="formUsuario" autocomplete="off" style="margin: 0em 1em 0em 1em;">
                         <input type="hidden" id="accionUsuario" name="accion" value="">
                         <input type="hidden" id="idUsuario" name="id" value="">
                         <div class="form-group">
-                            <label for="nombreUsuario">Nombre</label>
-                            <input type="text" class="form-control" id="nombreUsuario" name="nombre" required>
+                            <label class="texto-inicio font-medium mt-2" for="nombreUsuario">Nombre</label>
+                            <input type="text" class="form-control bg-gray-200 rounded-lg border-white p-3 text" placeholder="Nombre" id="nombreUsuario" name="nombre" required>
                             <small id="snombreUsuario" class="form-text text-danger"></small>
                         </div>
                         <div class="form-group">
-                            <label for="emailUsuario">Email</label>
-                            <input type="email" class="form-control" id="emailUsuario" name="email" required>
+                            <label class="texto-inicio font-medium mt-2" for="emailUsuario">Email</label>
+                            <input type="email" class="form-control bg-gray-200 rounded-lg border-white p-3 text" placeholder="Email" id="emailUsuario" name="email" required>
                             <small id="semailUsuario" class="form-text text-danger"></small>
                         </div>
                         <div class="form-group">
-                            <label for="passwordUsuario">Contraseña</label>
-                            <input type="password" class="form-control" id="passwordUsuario" name="password">
+                            <label class="texto-inicio font-medium mt-2" for="passwordUsuario">Contraseña</label>
+                            <input type="password" class="form-control bg-gray-200 rounded-lg border-white p-3 text" placeholder="Contraseña" id="passwordUsuario" name="password">
                             <small id="spasswordUsuario" class="form-text text-danger"></small>
                             <small class="form-text text-muted">Dejar en blanco para no cambiar</small>
                         </div>
                         <div class="form-group">
-                            <label for="rolUsuario">Rol</label>
-                            <select class="form-control" id="rolUsuario" name="rol_id" required>
+                            <label class="texto-inicio font-medium mt-2" for="rolUsuario">Rol</label>
+                            <select class="form-control bg-gray-200 rounded-lg border-white p-3 text" placeholder="Rol" id="rolUsuario" name="rol_id" required>
                                 <option value="">Seleccione un rol</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="fotoPerfil">Foto de Perfil</label>
+                            <label class="texto-inicio font-medium mt-2" placeholder="Foto de Perfil" for="fotoPerfil">Foto de Perfil</label>
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" id="fotoPerfil" name="foto_perfil" accept="image/jpeg,image/png,image/gif">
                                 <label class="custom-file-label" for="fotoPerfil" id="fotoPerfilLabel">Seleccionar archivo (máx. 50MB)</label>
@@ -199,9 +204,9 @@ require_once("comunes/sidebar.php");
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" id="btnGuardarUsuario">Guardar</button>
+                <div class="modal-footer botones">
+                    <button type="button" class="btn boton" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn botonverde" id="btnGuardarUsuario">Guardar</button>
                 </div>
             </div>
         </div>
@@ -211,29 +216,34 @@ require_once("comunes/sidebar.php");
     <div class="modal fade" id="modalRol" tabindex="-1" role="dialog" aria-labelledby="modalRolLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title" id="modalRolLabel">Registrar Rol</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="text-light text-end" style="margin: 20px 20px 0px 0px;">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div style="margin: 0em 2em 0em 2em;">
+                    <h1 class="text-2xl font-bold mb-2">Registrar Rol</h1>
+
+                    <div>
+                        <div class="col-md-2 mb-4 p-1 rounded-full" style="background-color: rgb(220 38 38);">
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-body">
-                    <form id="formRol" autocomplete="off">
+                    <form id="formRol" autocomplete="off" style="margin: 0em 1em 0em 1em;">
                         <input type="hidden" id="accionRol" name="accion" value="">
                         <input type="hidden" id="idRol" name="id" value="">
                         <div class="form-group">
-                            <label for="nombreRol">Nombre del Rol</label>
-                            <input type="text" class="form-control" id="nombreRol" name="nombre" required>
+                            <label class="texto-inicio font-medium mt-2"for="nombreRol">Nombre del Rol</label>
+                            <input class="form-control bg-gray-200 rounded-lg border-white p-3 text" placeholder="Nombre del Rol" type="text" class="form-control" id="nombreRol" name="nombre" required>
                         </div>
                         <div class="form-group">
-                            <label for="descripcionRol">Descripción</label>
-                            <textarea class="form-control" id="descripcionRol" name="descripcion" rows="3"></textarea>
+                            <label class="texto-inicio font-medium mt-2"for="descripcionRol">Descripción</label>
+                            <textarea class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="descripcionRol" name="descripcion" rows="3"></textarea>
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success" id="btnGuardarRol">Guardar</button>
+                <div class="modal-footer botones">
+                    <button type="button" class="btn boton" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn botonverde" id="btnGuardarRol">Guardar</button>
                 </div>
             </div>
         </div>
