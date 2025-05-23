@@ -30,7 +30,7 @@ CREATE TABLE `areas_pasantia` (
   PRIMARY KEY (`cod_area`),
   KEY `responsable_id` (`responsable_id`),
   CONSTRAINT `areas_pasantia_ibfk_1` FOREIGN KEY (`responsable_id`) REFERENCES `personal` (`cedula_personal`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +39,37 @@ CREATE TABLE `areas_pasantia` (
 
 LOCK TABLES `areas_pasantia` WRITE;
 /*!40000 ALTER TABLE `areas_pasantia` DISABLE KEYS */;
+INSERT INTO `areas_pasantia` VALUES (1,'Fisioterapia','Area de Fisioterapia',30128924),(2,'Pediatria','Area de Pediatria',23045014);
 /*!40000 ALTER TABLE `areas_pasantia` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `asistencia`
+--
+
+DROP TABLE IF EXISTS `asistencia`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `asistencia` (
+  `fecha_inicio` date NOT NULL,
+  `fecha_fin` date NOT NULL,
+  `activo` varchar(30) DEFAULT NULL,
+  `cedula_estudiante` int NOT NULL,
+  `cod_area` int NOT NULL,
+  PRIMARY KEY (`cedula_estudiante`,`cod_area`),
+  KEY `cod_area` (`cod_area`),
+  CONSTRAINT `asistencia_ibfk_1` FOREIGN KEY (`cedula_estudiante`) REFERENCES `estudiantes_pasantia` (`cedula_estudiante`),
+  CONSTRAINT `asistencia_ibfk_2` FOREIGN KEY (`cod_area`) REFERENCES `areas_pasantia` (`cod_area`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `asistencia`
+--
+
+LOCK TABLES `asistencia` WRITE;
+/*!40000 ALTER TABLE `asistencia` DISABLE KEYS */;
+/*!40000 ALTER TABLE `asistencia` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -89,30 +119,6 @@ INSERT INTO `consultas` VALUES (9,'2024-11-18','WWWss','WWW','WWW',31111553,1234
 UNLOCK TABLES;
 
 --
--- Table structure for table `conversaciones`
---
-
-DROP TABLE IF EXISTS `conversaciones`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `conversaciones` (
-  `id_conversacion` int NOT NULL AUTO_INCREMENT,
-  `fecha_creacion` datetime DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_conversacion`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `conversaciones`
---
-
-LOCK TABLES `conversaciones` WRITE;
-/*!40000 ALTER TABLE `conversaciones` DISABLE KEYS */;
-INSERT INTO `conversaciones` VALUES (1,'2025-04-13 00:00:00');
-/*!40000 ALTER TABLE `conversaciones` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `emergencias`
 --
 
@@ -157,14 +163,8 @@ CREATE TABLE `estudiantes_pasantia` (
   `cedula_estudiante` int NOT NULL,
   `nombre` varchar(30) NOT NULL,
   `apellido` varchar(30) NOT NULL,
-  `institucion` varchar(50) DEFAULT NULL COMMENT 'Universidad o institución de origen',
-  `fecha_inicio` date NOT NULL,
-  `fecha_fin` date DEFAULT NULL,
-  `cod_area` int NOT NULL COMMENT 'Área asignada',
-  `activo` tinyint(1) DEFAULT '1' COMMENT '1=Activo, 0=Inactivo',
-  PRIMARY KEY (`cedula_estudiante`),
-  KEY `cod_area` (`cod_area`),
-  CONSTRAINT `estudiantes_pasantia_ibfk_1` FOREIGN KEY (`cod_area`) REFERENCES `areas_pasantia` (`cod_area`)
+  `institucion` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`cedula_estudiante`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -189,7 +189,7 @@ CREATE TABLE `examenes` (
   `nombre_examen` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `descripcion_examen` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`cod_examenes`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -198,7 +198,7 @@ CREATE TABLE `examenes` (
 
 LOCK TABLES `examenes` WRITE;
 /*!40000 ALTER TABLE `examenes` DISABLE KEYS */;
-INSERT INTO `examenes` VALUES (1,'orina','provee datos con la orina del paciente'),(4,'heces','examina las heces del paciente'),(7,'sangre','sangre'),(13,'resonancia','resonancia'),(14,'placa','foto del los huesos');
+INSERT INTO `examenes` VALUES (1,'orina','provee datos con la orina del paciente'),(4,'heces','examina las heces del paciente'),(7,'sangre','sangre'),(13,'resonancia','resonancia'),(14,'placa','foto del los huesos'),(15,'Examen de Orina','Examen de Orina');
 /*!40000 ALTER TABLE `examenes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -214,11 +214,11 @@ CREATE TABLE `feed` (
   `fecha` datetime NOT NULL,
   `contenido` varchar(300) DEFAULT NULL,
   `imagen` text,
-  `cedula_p` int NOT NULL,
+  `id_usuario` int NOT NULL,
   PRIMARY KEY (`cod_pub`),
-  KEY `feed_ibfk_idx` (`cedula_p`),
-  CONSTRAINT `feed_ibfk` FOREIGN KEY (`cedula_p`) REFERENCES `personal` (`cedula_personal`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `feed_ibfk_idx` (`id_usuario`),
+  CONSTRAINT `feed_ibfk` FOREIGN KEY (`id_usuario`) REFERENCES `personal` (`cedula_personal`)
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -227,7 +227,7 @@ CREATE TABLE `feed` (
 
 LOCK TABLES `feed` WRITE;
 /*!40000 ALTER TABLE `feed` DISABLE KEYS */;
-INSERT INTO `feed` VALUES (1,'2025-05-05 18:20:08','Eduin hecho por el estudio Ghibli','img/publicaciones/6818e538a3965_ChatGPT Image 29 mar 2025, 10_18_54 a.m..png',31111111),(2,'2025-05-05 18:48:11','mi cumpleaños','img/publicaciones/6818ebcb3acdd_WhatsApp Image 2025-04-30 at 6.47.06 AM.jpg',31111111);
+INSERT INTO `feed` VALUES (2,'2025-05-12 06:08:23','ATENCIÓN, Doctores atentos con la jornadas de salud que se realizará en la Av. Venezuela con Av. Bracamonte este Miercoles 12 de Mayo','img/publicaciones/682695e1be1cb_istockphoto-949812160-612x612.jpg',30128924),(3,'2025-05-20 18:59:46','ASSSAASAS','img/publicaciones/682cb5026b880_image2.png',30128924);
 /*!40000 ALTER TABLE `feed` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -268,8 +268,36 @@ CREATE TABLE `historias` (
 
 LOCK TABLES `historias` WRITE;
 /*!40000 ALTER TABLE `historias` DISABLE KEYS */;
-INSERT INTO `historias` VALUES (4234235,'LLLLLL','LLLLLL','2025-04-02',0,'CASADO','albañi','ttttttt','12354564','ddddddd','LKLLLL','LLLLLLLLLLLLLLLL','LLLLLLLLLLLL','LLLLLLLLLL','LLLLLLLLLLL','LLLLL','LLLLLLLLLLLLLLLLLLLLLLL','LLLLLLLLLLLLLLLLLLL','LLLLLLLLLLLLL'),(5465489,'LUIS MIGUEL','GALLEGO BASTERI','1970-04-19',54,'DIVORCIADO','L','MEXICO','351351351','L','L','L','L','L','L','L',NULL,NULL,NULL),(7856209,'JOE ALEX','CHACON VARGAS','1966-04-28',58,'DIVORCIADO','LOCUTOR','CERRITOS BLANCO','4125105446','NO POSEE','SOL','NO POSEE','NO POSEE','NO POSEE','NO POSEE','NO POSEE',NULL,NULL,NULL),(8564289,'JURGEN','KLINSMANN','2024-10-01',21,'','PPPPP','asdadsasdads','351351351','PPPPP','P','P','P','P','P','P',NULL,NULL,NULL),(9999999,'ANTHOAN','PATINNO','2004-04-30',258,'DIVORCIADO','B','BBBBBBBBBB','352131','B','B','B','B','B','B','B',NULL,NULL,NULL),(12345678,'CRISTIANO ','RONALDO','2024-09-03',12,'','HOLA','HOLA','133513','HOLA','HOLA','HOLA','HOLA','HOLA','HOLA','HOLA',NULL,NULL,NULL),(30128924,'SALOMON','RONDON','2024-09-02',21,'','asdas','asdsda','35135153','asddd','adsadsadsads','dsaaa','adsdasas','das','ads','dasasas',NULL,NULL,NULL),(85642892,'SHOHEI','OHTANI','2024-10-01',21,'','undefined','asdadsasdads','351351351','undefined','undefined','undefined','undefined','undefined','undefined','undefined',NULL,NULL,NULL),(88888888,'JUAN','CHACON','2024-09-03',14,'','A','AAAAAAAAA','35135131','A','A','A','A','A','A','A','null','null','null');
+INSERT INTO `historias` VALUES (4234235,'LUIS','GONZALEZ','1995-04-02',30,'CASADO','CARPINTERO','BARQUISIMETO','0412000000','NO POSEE','NO POSEE','NO POSEE','NO POSEE','NO POSEE','NO POSEE','NO POSEE','NO POSEE','NO POSEE','NO POSEE'),(5465489,'LUIS MIGUEL','GALLEGO BASTERI','1970-04-19',54,'DIVORCIADO','L','MEXICO','351351351','L','L','L','L','L','L','L',NULL,NULL,NULL),(7856209,'JOE ALEX','CHACON VARGAS','1966-04-28',58,'DIVORCIADO','LOCUTOR','CERRITOS BLANCO','4125105446','NO POSEE','SOL','NO POSEE','NO POSEE','NO POSEE','NO POSEE','NO POSEE',NULL,NULL,NULL),(8564289,'JURGEN','KLINSMANN','2024-10-01',21,'','PPPPP','asdadsasdads','351351351','PPPPP','P','P','P','P','P','P',NULL,NULL,NULL),(9999999,'ANTHONY JOSE','GONZALEZ COLINA','2004-04-30',258,'DIVORCIADO','B','BBBBBBBBBB','352131','B','B','B','B','B','B','B','null','null','null'),(12345678,'CRISTIANO ','RONALDO','2024-09-03',12,'','HOLA','HOLA','133513','HOLA','HOLA','HOLA','HOLA','HOLA','HOLA','HOLA',NULL,NULL,NULL),(30128924,'SALOMON','RONDON','2024-09-02',21,'','asdas','asdsda','35135153','asddd','adsadsadsads','dsaaa','adsdasas','das','ads','dasasas',NULL,NULL,NULL),(85642892,'SHOHEI','OHTANI','2024-10-01',21,'','undefined','asdadsasdads','351351351','undefined','undefined','undefined','undefined','undefined','undefined','undefined',NULL,NULL,NULL),(88888888,'JUAN','CHACON','2024-09-03',14,'','A','AAAAAAAAA','35135131','A','A','A','A','A','A','A','null','null','null');
 /*!40000 ALTER TABLE `historias` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `insumos`
+--
+
+DROP TABLE IF EXISTS `insumos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `insumos` (
+  `cod_transaccion` int NOT NULL,
+  `cod_medicamento` int NOT NULL,
+  `cantidad` int NOT NULL,
+  PRIMARY KEY (`cod_transaccion`,`cod_medicamento`),
+  KEY `cod_medicamento` (`cod_medicamento`),
+  CONSTRAINT `insumos_ibfk_1` FOREIGN KEY (`cod_transaccion`) REFERENCES `transaccion` (`cod_transaccion`),
+  CONSTRAINT `insumos_ibfk_2` FOREIGN KEY (`cod_medicamento`) REFERENCES `medicamentos` (`cod_medicamento`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `insumos`
+--
+
+LOCK TABLES `insumos` WRITE;
+/*!40000 ALTER TABLE `insumos` DISABLE KEYS */;
+INSERT INTO `insumos` VALUES (38,9,3),(46,10,7),(47,9,20);
+/*!40000 ALTER TABLE `insumos` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -302,7 +330,7 @@ CREATE TABLE `jornadas_medicas` (
 
 LOCK TABLES `jornadas_medicas` WRITE;
 /*!40000 ALTER TABLE `jornadas_medicas` DISABLE KEYS */;
-INSERT INTO `jornadas_medicas` VALUES (1,'2025-04-16','LLLLLLLLLLLLL','LLLLLL',15,10,5,5,31111111,'2025-04-14 15:37:56'),(2,'2025-04-14','XXXXXXX','XXXXXXX',40,20,20,10,23045014,'2025-04-14 20:38:59'),(3,'2025-04-22','TTTT','TTTTT',10,7,3,2,31111111,'2025-04-14 20:43:40');
+INSERT INTO `jornadas_medicas` VALUES (3,'2025-05-12','AV. VENEZUELA CON AV. BRACAMONTE','JORNADA DE VACUNACIÓN',10,7,3,2,31111111,'2025-04-14 20:43:40');
 /*!40000 ALTER TABLE `jornadas_medicas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -323,7 +351,7 @@ CREATE TABLE `medicamentos` (
   `lote` varchar(30) DEFAULT NULL,
   `proveedor` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`cod_medicamento`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -332,40 +360,8 @@ CREATE TABLE `medicamentos` (
 
 LOCK TABLES `medicamentos` WRITE;
 /*!40000 ALTER TABLE `medicamentos` DISABLE KEYS */;
+INSERT INTO `medicamentos` VALUES (9,'LORATADINA','es un fármaco antihistamínico',52,'mg','2028-04-30','23132231','FARMATODO'),(10,'ACETAMINOFEN','fármaco con propiedades analgésicas',25,'unidades','2026-08-25','213312','EPITRAL');
 /*!40000 ALTER TABLE `medicamentos` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `mensajes`
---
-
-DROP TABLE IF EXISTS `mensajes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `mensajes` (
-  `id_mensaje` int NOT NULL AUTO_INCREMENT,
-  `id_conversacion` int NOT NULL,
-  `cedula_remitente` int NOT NULL,
-  `mensaje` text NOT NULL,
-  `fecha_envio` datetime DEFAULT CURRENT_TIMESTAMP,
-  `visto` tinyint(1) DEFAULT '0',
-  `fecha_visto` datetime DEFAULT NULL,
-  PRIMARY KEY (`id_mensaje`),
-  KEY `id_conversacion` (`id_conversacion`),
-  KEY `cedula_remitente` (`cedula_remitente`),
-  CONSTRAINT `mensajes_ibfk_1` FOREIGN KEY (`id_conversacion`) REFERENCES `conversaciones` (`id_conversacion`),
-  CONSTRAINT `mensajes_ibfk_2` FOREIGN KEY (`cedula_remitente`) REFERENCES `personal` (`cedula_personal`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `mensajes`
---
-
-LOCK TABLES `mensajes` WRITE;
-/*!40000 ALTER TABLE `mensajes` DISABLE KEYS */;
-INSERT INTO `mensajes` VALUES (1,1,30128924,'hola','2025-04-13 00:00:00',1,'2025-04-13 00:00:00');
-/*!40000 ALTER TABLE `mensajes` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -384,7 +380,7 @@ CREATE TABLE `p_cronicos` (
   PRIMARY KEY (`cod_cronico`),
   KEY `cedula_h` (`cedula_h`),
   CONSTRAINT `p_cronicos_ibfk_1` FOREIGN KEY (`cedula_h`) REFERENCES `historias` (`cedula_historia`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -393,38 +389,8 @@ CREATE TABLE `p_cronicos` (
 
 LOCK TABLES `p_cronicos` WRITE;
 /*!40000 ALTER TABLE `p_cronicos` DISABLE KEYS */;
-INSERT INTO `p_cronicos` VALUES (1,'Cardiopatía','insulina','via sagra',7856209),(2,'Renal','insulina','sagra',7856209),(4,'Cardiopatía, Renal','lll','llll',88888888),(5,'Cardiopatía, Asmático','xxxxxxxxx','xxxxxxxxxx',85642892),(7,'Asmático, Renal','LLLL','LLLL',9999999),(8,'Hipertensión, Mental','lll','llll',7856209),(9,'Cardiopatía, Asmático','lll','lll',88888888),(10,'Hipertensión','llll','lllll',88888888);
+INSERT INTO `p_cronicos` VALUES (5,'Cardiopatía, Asmático','xxxxxxxxx','xxxxxxxxxx',85642892),(7,'Asmático, Renal','LLLL','LLLL',9999999);
 /*!40000 ALTER TABLE `p_cronicos` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `participantes_conversacion`
---
-
-DROP TABLE IF EXISTS `participantes_conversacion`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `participantes_conversacion` (
-  `id_participante` int NOT NULL AUTO_INCREMENT,
-  `id_conversacion` int NOT NULL,
-  `cedula_p` int NOT NULL,
-  `fecha_union` datetime DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_participante`),
-  KEY `id_conversacion` (`id_conversacion`),
-  KEY `cedula_p` (`cedula_p`),
-  CONSTRAINT `participantes_conversacion_ibfk_1` FOREIGN KEY (`id_conversacion`) REFERENCES `conversaciones` (`id_conversacion`),
-  CONSTRAINT `participantes_conversacion_ibfk_2` FOREIGN KEY (`cedula_p`) REFERENCES `personal` (`cedula_personal`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `participantes_conversacion`
---
-
-LOCK TABLES `participantes_conversacion` WRITE;
-/*!40000 ALTER TABLE `participantes_conversacion` DISABLE KEYS */;
-INSERT INTO `participantes_conversacion` VALUES (1,1,31111111,'2025-04-13 00:00:00');
-/*!40000 ALTER TABLE `participantes_conversacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -438,12 +404,13 @@ CREATE TABLE `participantes_jornadas` (
   `cod_participacion` int NOT NULL AUTO_INCREMENT,
   `cod_jornada` int NOT NULL,
   `cedula_personal` int NOT NULL,
+  `tipo_participante` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`cod_participacion`),
   UNIQUE KEY `cod_jornada` (`cod_jornada`,`cedula_personal`),
   KEY `cedula_personal` (`cedula_personal`),
   CONSTRAINT `participantes_jornadas_ibfk_1` FOREIGN KEY (`cod_jornada`) REFERENCES `jornadas_medicas` (`cod_jornada`),
   CONSTRAINT `participantes_jornadas_ibfk_2` FOREIGN KEY (`cedula_personal`) REFERENCES `personal` (`cedula_personal`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -452,7 +419,7 @@ CREATE TABLE `participantes_jornadas` (
 
 LOCK TABLES `participantes_jornadas` WRITE;
 /*!40000 ALTER TABLE `participantes_jornadas` DISABLE KEYS */;
-INSERT INTO `participantes_jornadas` VALUES (1,1,12345678),(3,1,23045014),(4,1,31111111),(2,1,31111553),(7,2,12345678),(5,2,31111111),(6,2,31111553),(9,3,23045014),(8,3,31111111);
+INSERT INTO `participantes_jornadas` VALUES (12,3,23045014,NULL),(13,3,31111111,NULL);
 /*!40000 ALTER TABLE `participantes_jornadas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -481,7 +448,7 @@ CREATE TABLE `personal` (
 
 LOCK TABLES `personal` WRITE;
 /*!40000 ALTER TABLE `personal` DISABLE KEYS */;
-INSERT INTO `personal` VALUES (12345678,'admin','admin','admin@gmail.com','12345678910','Doctor','12345678'),(23045014,'lll','ttt','ttt@gmail.com','04145842747','Doctor','Dinosaurio23'),(31111111,'anthoan','gonzalez','anthoangonzalez@gmail.com','0412785948','Doctor','Dinosaurio'),(31111553,'franchesco','gonzalez','franchescovernouli@gmail.com','04241875864','Enfermera','Dinosaurio');
+INSERT INTO `personal` VALUES (12345678,'admin','admin','admin@gmail.com','12345678910','Doctor','12345678'),(23045014,'Esteban','Salazar','correo@gmail.com','04145842747','Doctor','Dinosaurio123'),(30128924,'Juan','Chacon','correo@correo.com','04120754296','Doctor','Dinosaurio123'),(31111111,'Anthoan','Gonzalez','correo@gmail.com','0412785948','Doctor','Dinosaurio123'),(31111553,'Francheska','Gonzalez','correocorreo@gmail.com','04241875864','Enfermera','Dinosaurio123');
 /*!40000 ALTER TABLE `personal` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -504,7 +471,7 @@ CREATE TABLE `registro` (
   KEY `cod_examenes` (`cod_examenes`),
   CONSTRAINT `registro_ibfk_1` FOREIGN KEY (`cedula_h`) REFERENCES `historias` (`cedula_historia`),
   CONSTRAINT `registro_ibfk_2` FOREIGN KEY (`cod_examenes`) REFERENCES `examenes` (`cod_examenes`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -513,7 +480,7 @@ CREATE TABLE `registro` (
 
 LOCK TABLES `registro` WRITE;
 /*!40000 ALTER TABLE `registro` DISABLE KEYS */;
-INSERT INTO `registro` VALUES (1,'2024-10-10',9999999,1,'HOLA LOCO1',NULL),(4,'2024-11-19',7856209,1,'nada',NULL),(5,'2024-11-12',8564289,1,'nada',NULL),(20,'2024-11-12',30128924,4,'prueba',NULL);
+INSERT INTO `registro` VALUES (21,'2025-05-11',5465489,1,'Se observa un resultado normal',NULL);
 /*!40000 ALTER TABLE `registro` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -527,17 +494,11 @@ DROP TABLE IF EXISTS `transaccion`;
 CREATE TABLE `transaccion` (
   `cod_transaccion` int NOT NULL AUTO_INCREMENT,
   `tipo_transaccion` varchar(30) DEFAULT NULL,
-  `cantidad` int DEFAULT NULL,
   `fecha` date DEFAULT NULL,
   `hora` varchar(7) DEFAULT NULL,
-  `cedula_p` int DEFAULT NULL,
-  `cod_m` int DEFAULT NULL,
-  PRIMARY KEY (`cod_transaccion`),
-  KEY `cedula_p` (`cedula_p`),
-  KEY `cod_m` (`cod_m`),
-  CONSTRAINT `transaccion_ibfk_1` FOREIGN KEY (`cedula_p`) REFERENCES `personal` (`cedula_personal`),
-  CONSTRAINT `transaccion_ibfk_2` FOREIGN KEY (`cod_m`) REFERENCES `medicamentos` (`cod_medicamento`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `id_usuario` int DEFAULT NULL,
+  PRIMARY KEY (`cod_transaccion`)
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -546,6 +507,7 @@ CREATE TABLE `transaccion` (
 
 LOCK TABLES `transaccion` WRITE;
 /*!40000 ALTER TABLE `transaccion` DISABLE KEYS */;
+INSERT INTO `transaccion` VALUES (38,'ajuste_negativo','2025-05-20','11:55',30128924),(39,'entrada','2025-05-20','12:17',30128924),(40,'salida','2025-05-20','12:20',30128924),(41,'entrada','2025-05-20','12:21',30128924),(43,'salida','2025-05-20','12:25',30128924),(44,'entrada','2025-05-20','12:26',30128924),(45,'salida','2025-05-20','12:34',30128924),(46,'ajuste_negativo','2025-05-20','12:44',30128924),(47,'ajuste_positivo','2025-05-20','12:44',30128924),(48,'entrada','2025-05-20','12:44',30128924),(49,'entrada','2025-05-20','12:54',30128924),(50,'salida','2025-05-20','12:56',30128924),(51,'entrada','2025-05-20','12:56',30128924),(52,'salida','2025-05-20','12:56',30128924);
 /*!40000 ALTER TABLE `transaccion` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -558,4 +520,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-07 21:24:03
+-- Dump completed on 2025-05-21  0:21:44

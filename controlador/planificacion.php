@@ -2,93 +2,64 @@
 if (!is_file("modelo/".$pagina.".php")){
     echo "Falta definir la clase ".$pagina;
     exit;
-}
+}  
 
 require_once("modelo/".$pagina.".php");  
 
-if(is_file("vista/".$pagina.".php")){
+if(is_file("vista/".$pagina.".php")) {
+    // Instanciamos el objeto fuera del if POST
+    $o = new planificacion();
+    
     if(!empty($_POST)){
-        $o = new planificacion();   
-        $accion = $_POST['accion'];
+        // Asignar valores
+        if(isset($_POST['cod_pub'])) $o->set_cod_pub($_POST['cod_pub']);
+        if(isset($_POST['contenido'])) $o->set_contenido($_POST['contenido']);
+        if(isset($_FILES['imagen'])) $o->set_imagen($_FILES['imagen']);
         
-        switch($accion){
-            case 'guardarPublicacion':
-                $contenido = $_POST['contenido'] ?? '';
-                $imagen = $_FILES['imagen'] ?? null;
-                $cedula_p = $_SESSION['usuario'] ?? null; // Asumiendo que la cédula está en la sesión
-                
-                if(!$cedula_p) {
-                    echo json_encode(array("resultado" => "error", "mensaje" => "No se pudo identificar al usuario"));
-                    exit;
-                }
+        $o->set_id_usuario($_SESSION['usuario']); // Usuario actual
+        
+        $accion = $_POST['accion'];
 
-                if (!empty($_FILES['imagenes']['name'][0])) {
-                    $rutasImagenes = [];
-                    foreach ($_FILES['imagenes']['tmp_name'] as $key => $tmpName) {
-                        $nombreImagen = uniqid() . '_' . basename($_FILES['imagenes']['name'][$key]);
-                        $rutaImagen = 'img/publicaciones/' . $nombreImagen;
+        switch($accion) {
+            case 'consultar_publicaciones':
+                echo json_encode($o->consultar_publicaciones());
+                exit;
+            case 'obtener_publicacion':
+                echo json_encode($o->obtener_publicacion());
+                exit;
+            case 'incluir_publicacion':
+                echo json_encode($o->incluir());
+                bitacora::registrar('Registrar', 'Se ha registrado una publicación');
+                exit;
+            case 'modificar_publicacion':
+                echo json_encode($o->modificar());
+                bitacora::registrar('Modificar', 'Se ha modificado una publicación');
+                exit;
+            case 'eliminar_publicacion':
+                // Verificar propiedad primero
+                $co = $o->conecta();
+                $verificar = $co->query("SELECT id_usuario FROM feed WHERE cod_pub = '".$o->get_cod_pub()."'");
+                $publicacion = $verificar->fetch(PDO::FETCH_ASSOC);
 
-                        if (move_uploaded_file($tmpName, $rutaImagen)) {
-                            $rutasImagenes[] = $rutaImagen;
-                        } else {
-                            echo json_encode(["resultado" => "error", "mensaje" => "Error al subir las imágenes"]);
-                            exit;
-                        }
-                    }
-                    $imagenesSerializadas = json_encode($rutasImagenes);
-                    $sql .= ", imagenes = ?";
-                    $params[] = $imagenesSerializadas;
-                }
-                
-                echo json_encode($o->guardarPublicacion($cedula_p, $contenido, $imagen));
-                break;
-                
-            case 'modificarPublicacion':
-                $cod_pub = $_POST['cod_pub'] ?? null;
-                $contenido = $_POST['contenido'] ?? '';
-                $imagen = $_FILES['imagen'] ?? null;
-                
-                if(!$cod_pub) {
-                    echo json_encode(array("resultado" => "error", "mensaje" => "No se especificó la publicación a modificar"));
+                if(!$publicacion || $publicacion['id_usuario'] != $o->get_id_usuario()) {
+                    echo json_encode([
+                        'resultado' => 'error',
+                        'mensaje' => 'No tienes permisos para esta acción'
+                    ]);
                     exit;
                 }
                 
-                echo json_encode($o->modificarPublicacion($cod_pub, $contenido, $imagen));
-                break;
-                
-            case 'eliminarPublicacion':
-                $cod_pub = $_POST['cod_pub'] ?? null;
-                
-                if(!$cod_pub) {
-                    echo json_encode(array("resultado" => "error", "mensaje" => "No se especificó la publicación a eliminar"));
-                    exit;
-                }
-                
-                echo json_encode($o->eliminarPublicacion($cod_pub));
-                break;
-                
-            case 'obtenerPublicaciones':
-                echo json_encode($o->obtenerPublicaciones());
-                break;
-                
-            case 'obtenerPublicacion':
-                $cod_pub = $_POST['cod_pub'] ?? null;
-                
-                if(!$cod_pub) {
-                    echo json_encode(array("resultado" => "error", "mensaje" => "No se especificó la publicación"));
-                    exit;
-                }
-                
-                echo json_encode($o->obtenerPublicacion($cod_pub));
-                break;
-                
-            default:
-                echo json_encode(array("resultado"=>"error", "mensaje"=>"Acción no válida"));
+                echo json_encode($o->eliminar());
+                bitacora::registrar('Eliminar', 'Se ha eliminado una publicación');
+                exit;
         }
-        exit;
     }
     
-    require_once("vista/".$pagina.".php"); 
+    // Cargar datos iniciales para la vista (fuera del if POST)
+    $o->set_id_usuario($_SESSION['usuario']);
+    $publicaciones = $o->consultar_publicaciones();
+    
+    require_once("vista/".$pagina.".php");
 }
 else{
     echo "Página en construcción";

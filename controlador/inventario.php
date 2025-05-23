@@ -20,8 +20,7 @@ if(is_file("vista/".$pagina.".php")) {
         if(isset($_POST['lote'])) $o->set_lote($_POST['lote']);
         if(isset($_POST['proveedor'])) $o->set_proveedor($_POST['proveedor']);
         
-        // Asignar cedula del usuario logueado (debes adaptar esto a tu sistema de sesiones)
-        $o->set_cedula_p($_SESSION['usuario']); // Ajusta según tu sistema
+        $o->set_id_usuario($_SESSION['usuario']); // Ajusta según tu sistema
         
         $accion = $_POST['accion'];
         
@@ -36,12 +35,15 @@ if(is_file("vista/".$pagina.".php")) {
         }
         elseif($accion == 'incluir_medicamento'){
             echo json_encode($o->incluir());
+            bitacora::registrar('Registrar', 'Se ha registrado un medicamento');
         }
         elseif($accion == 'modificar_medicamento'){
             echo json_encode($o->modificar());
+            bitacora::registrar('Modificar', 'Se ha modificado un medicamento');
         }
         elseif($accion == 'eliminar_medicamento'){
             echo json_encode($o->eliminar());
+            bitacora::registrar('Eliminar', 'Se ha eliminado un medicamento');
         }
         exit;
     }

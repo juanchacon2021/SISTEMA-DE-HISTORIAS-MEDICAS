@@ -248,13 +248,20 @@ function procesarRespuesta(respuesta) {
             var html = '';
             lee.datos.forEach(function(fila) {
                 var tipo = '';
-                switch(fila.tipo_transaccion) {
-                    case 'entrada': tipo = '<span class="badge bg-success">Entrada</span>'; break;
-                    case 'salida': tipo = '<span class="badge bg-danger">Salida</span>'; break;
-                    case 'ajuste_positivo': tipo = '<span class="badge bg-primary">Ajuste +</span>'; break;
-                    case 'ajuste_negativo': tipo = '<span class="badge bg-warning text-dark">Ajuste -</span>'; break;
-                    default: tipo = fila.tipo_transaccion;
+                var tipoLower = fila.tipo_transaccion.toLowerCase();
+                
+                if (tipoLower.includes('entrada')) {
+                    tipo = '<span class="badge bg-success">Entrada</span>';
+                } else if (tipoLower.includes('salida')) {
+                    tipo = '<span class="badge bg-danger">Salida</span>';
+                } else if (tipoLower.includes('ajuste_positivo')) {
+                    tipo = '<span class="badge bg-primary">Ajuste +</span>';
+                } else if (tipoLower.includes('ajuste_negativo')) {
+                    tipo = '<span class="badge bg-warning text-dark">Ajuste -</span>';
+                } else {
+                    tipo = '<span class="badge bg-secondary">' + fila.tipo_transaccion + '</span>';
                 }
+                
                 html += `<tr>
                     <td>${fila.cod_transaccion}</td>
                     <td>${new Date(fila.fecha).toLocaleDateString()}</td>
@@ -262,7 +269,7 @@ function procesarRespuesta(respuesta) {
                     <td>${tipo}</td>
                     <td>${fila.medicamento}</td>
                     <td>${fila.cantidad}</td>
-                    <td>${fila.nombre} ${fila.apellido}</td>
+                    <td>${fila.nombre_usuario || fila.responsable || 'Usuario no disponible'}</td>
                 </tr>`;
             });
             $("#resultadoTransacciones").html(html);

@@ -1,83 +1,58 @@
 <?php 
 require_once("comunes/encabezado.php"); 
-require_once("comunes/sidebar.php");	
+require_once("comunes/sidebar.php");    
 ?>
 
 <body>
-<?php
-if ($nivel == 'Doctor' || $nivel == 'Enfermera') {
-?>
 
 <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100">
   Planificación
 </div>
+
 <div class="container espacio">
     <div class="container">
         <div class="row mt-3 botones">
-            <a href="#" class="btn-flotante" style="cursor: pointer;" id="btnNuevaPublicacion">
-                <img src="img/lapiz.svg" alt="Nueva publicación">
+            <a href="#" class="btn-flotante" style="cursor: pointer;" onclick="mostrarFormularioPublicacion()">
+                <img src="img/lapiz.svg" alt="Nueva Publicación">
             </a>
                     
-            <div class="col-md-2 recortar">	
+            <div class="col-md-2 recortar">    
                 <a href="?pagina=principal" class="boton">Volver</a>
             </div>
         </div>
     </div>
-    
-    <hr class="my-4 text-gray-600">
 
-    <!-- Contenedor de publicaciones -->
-    <div class="scroll" id="contenedorPublicaciones" style="display: flex; flex-direction: column; justify-content: between;">
-        <?php require_once 'comunes/publicaciones.php'; ?>
-    </div>
-</div>
-
-<!-- Modal para nueva publicación -->
-<div class="modal fade" tabindex="-1" role="dialog" id="modalPublicacion">
-    <div class="modal-dialog modal-lg" role="document">
-        <center><div class="modal-content mt-12" style="width: 35rem;">
-            <div class="text-light text-end" style="margin: 20px 20px 0px 0px;">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="container">
-                <form id="formPublicacion" enctype="multipart/form-data" autocomplete="off" style="margin: 0em 2em 2em 2em;">
-                    <input type="hidden" name="accion" id="accion" value="guardarPublicacion">
-                    <input type="hidden" name="usuarioActual" id="usuarioActual" value="<?= htmlspecialchars($usuario) ?>">
-                    <input type="hidden" name="cod_pub" id="cod_pub" value="">
+    <!-- Formulario para nueva publicación (oculto inicialmente) -->
+    <div class="container mt-4 mb-5" id="formPublicacion" style="display: none;">
+        <div class="card" style="width: 100%;">
+            <div class="card-body">
+                <form id="formPublicacionData" autocomplete="off" enctype="multipart/form-data">
+                    <input type="hidden" id="cod_pub" name="cod_pub">
+                    <input type="hidden" id="accion" name="accion" value="incluir_publicacion">
                     
-                    <div class="row mb-6">
-                        <h1 class="text-2xl font-bold mb-2" id="tituloModal">Crear publicación</h1>
+                    <div class="mb-3">
+                        <textarea class="form-control bg-gray-200 rounded-lg border-white p-3 text" 
+                                  id="contenido" name="contenido" 
+                                  rows="3" placeholder="¿Qué estás pensando?"></textarea>
                     </div>
                     
-                    <div class="col-md-12 position-relative">
-                        <textarea class="form-control bg-white rounded-lg border-white p-3" 
-                                  placeholder="¿Qué estás pensando?" 
-                                  style="font-size: 25px;" 
-                                  id="contenido"
-                                  name="contenido" required></textarea>
+                    <div class="mb-3">
+                        <label for="imagen" class="form-label">Imagen (opcional)</label>
+                        <input class="form-control" type="file" id="imagen" name="imagen" accept="image/*">
                     </div>
                     
-                    <div class="borde flex justify-between align-items-center border-3 border-zinc-500 p-2 mt-4">
-                        <div class="font-medium text-xl opacity-50">
-                            <span>Agregar a tu publicación</span>
-                        </div>
-                        <div class="subir">
-                            <label for="imagen" class="d-flex align-items-center cursor-pointer">
-                                <img src="img/camera.svg" alt="" style="width:30px;">
-                            </label>
-                            <input type="file" id="imagen" name="imagen" class="d-none" accept="image/*">
-                        </div>
-                    </div>
-                    
-                    <div id="previewImagen" class="mt-3 text-center"></div>
-                    <div class="mt-3 publicar">
-                        <button type="submit" id="btnGuardarPublicacion">Publicar</button>
+                    <div class="d-flex justify-content-end gap-2">
+                        <button type="button" class="btn btn-secondary" onclick="ocultarFormularioPublicacion()">Cancelar</button>
+                        <button type="button" id="procesoPublicacion" class="btn btn-primary">Publicar</button>
                     </div>
                 </form>
-                
-                <div id="mensaje" class="mt-3"></div>
             </div>
-        </div></center>
+        </div>
+    </div>
+
+    <!-- Listado de publicaciones -->
+    <div class="container" id="listadoPublicaciones">
+        <!-- Las publicaciones se cargarán aquí via AJAX -->
     </div>
 </div>
 
@@ -102,8 +77,6 @@ if ($nivel == 'Doctor' || $nivel == 'Enfermera') {
 
 <?php require_once("comunes/modal.php"); ?>
 <script src="js/planificacion.js"></script>
-<?php
-}					
-?>
+
 </body>
 </html>

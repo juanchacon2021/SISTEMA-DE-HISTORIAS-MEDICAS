@@ -1,51 +1,63 @@
 <?php
-if (!isset($o)) {
-    require_once("modelo/planificacion.php");
-    $o = new planificacion();
-}
-
-$publicaciones = $o->obtenerPublicaciones();
-
-if (count($publicaciones) > 0) {
-    foreach ($publicaciones as $publicacion) {
-        $imagenHTML = '';
-        if ($publicacion['imagen']) {
-            $imagenHTML = '<div class="text-center mt-2">
-                            <center><img src="'.$publicacion['imagen'].'" class="img-fluid rounded" style="max-height: 300px;"></center>
-                          </div>';
-        }
-        
-        $accionesHTML = '';
-        if ($publicacion['cedula_p'] == $_SESSION['usuario']) { // Asume que el usuario está en la sesión
-            $accionesHTML = '<div class="d-flex justify-content-end mt-2">
-                              <button class="btn btn-sm btn-outline-primary me-2 btn-editar" 
-                                      data-id="'.$publicacion['cod_pub'].'">
-                                  Editar
-                              </button>
-                              <button class="btn btn-sm btn-outline-danger btn-eliminar" 
-                                      data-id="'.$publicacion['cod_pub'].'">
-                                  Eliminar
-                              </button>
-                           </div>';
-        }
-        echo '<div class="card-pub" id="publicacion-'.$publicacion['cod_pub'].'">
-                <div class="card-body">
-                    <div class="d-flex align-items-center mb-2">
-                        <div class="flex-shrink-0">
-                            <img src="img/user-1.svg" alt="Usuario" class="rounded-circle" width="40">
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <h1 class="font-bold">'.$publicacion['nombre'].' '.$publicacion['apellido'].'</h1>
-                            <small class="text-muted">'.date('d/m/Y H:i', strtotime($publicacion['fecha'])).'</small>
-                        </div>
-                    </div>
-                    <p class="card-text">'.($publicacion['contenido'] ?? '').'</p>
-                    '.$imagenHTML.'
-                    '.$accionesHTML.'
-                </div>
-              </div>';
+/**
+ Eduin te dejo el código de la función para mostrar publicaciones.
+ * @param array $publicacion Datos de la publicación
+ * @param bool $esPropietario Indica si el usuario actual es el dueño de la publicación
+ */
+function mostrarPublicacion($publicacion, $esPropietario = false) {
+    // Formatear fecha
+    $fecha = new DateTime($publicacion['fecha']);
+    $fechaFormateada = $fecha->format('l, j F Y \a \l\a\s H:i');
+    
+    // Mostrar imagen si existe
+    $imagenHtml = '';
+    if (!empty($publicacion['imagen'])) {
+        $imagenHtml = '
+            <div class="publicacion-imagen">
+                <img src="'.$publicacion['imagen'].'" alt="Imagen publicación" class="img-fluid rounded">
+            </div>
+        ';
     }
-} else {
-    echo '<p class="text-center">No hay publicaciones</p>';
+    
+    // Botones de acciones (solo para el propietario)
+    $accionesHtml = '';
+    if ($esPropietario) {
+        $accionesHtml = '
+            <div class="publicacion-acciones">
+                <button class="btn btn-sm btn-primary" onclick="editarPublicacion('.$publicacion['cod_pub'].')">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-danger" onclick="confirmarEliminacion('.$publicacion['cod_pub'].')">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        ';
+    }
+    
+    echo '
+    <div class="card publicacion mb-4">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">';
+                if (!empty($publicacion['foto_perfil'])) {
+                    echo '<img src="img/perfiles/' . htmlspecialchars($publicacion['foto_perfil']) . '" class="rounded-circle me-2" style="width:40px;height:40px;object-fit:cover;" alt="Foto de perfil">';
+                } else {
+                    echo '<div class="avatar bg-primary text-white rounded-circle me-2">'
+                        .substr($publicacion['nombre_usuario'], 0, 1).
+                        '</div>';
+                }
+                echo '
+                <div>
+                    <h6 class="mb-0">'.$publicacion['nombre_usuario'].'</h6>
+                    <small class="text-muted">'.$fechaFormateada.'</small>
+                </div>
+            </div>
+            '.$accionesHtml.'
+        </div>
+        <div class="card-body">
+            <p class="card-text">'.$publicacion['contenido'].'</p>
+            '.$imagenHtml.'
+        </div>
+    </div>
+    ';
 }
 ?>

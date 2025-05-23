@@ -1,208 +1,217 @@
-$(document).ready(function() {
-    // Variables globales
-    let publicacionActual = null;
-    
-    // Mostrar modal para nueva publicación
-    $('#btnNuevaPublicacion').click(function() {
-        $('#accion').val('guardarPublicacion');
-        $('#cod_pub').val('');
-        $('#contenido').val('');
-        $('#previewImagen').html('');
-        $('#tituloModal').text('Crear publicación');
-        $('#modalPublicacion').modal('show');
-    });
-    
-    // Previsualización de imagen
-    $('#imagen').change(function() {
-        const file = this.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                $('#previewImagen').html(`<img src="${e.target.result}" class="img-fluid" style="max-height: 200px;">`);
+function muestraMensaje(mensaje) {
+    $("#contenidodemodal").html(mensaje);
+    $("#mostrarmodal").modal("show");
+    setTimeout(function() {
+        $("#mostrarmodal").modal("hide");
+    }, 2000);
+}
+
+console.log();
+
+// Variable global para guardar el código a eliminar
+let codPublicacionAEliminar = null;
+
+// Función para cargar las publicaciones
+function cargarPublicaciones() {
+    $.ajax({
+        url: '',
+        type: 'POST',
+        data: { accion: 'consultar_publicaciones' },
+        success: function(respuesta) {
+            try {
+                const data = JSON.parse(respuesta);
+                if(data.resultado === 'consultar_publicaciones') {
+                    let html = '';
+                    
+                    data.datos.forEach(publicacion => {
+                        const esPropietario = publicacion.es_propietario === 1;
+                        const fecha = new Date(publicacion.fecha).toLocaleString();
+                        
+                        html += `
+                        <div class="card mb-3">
+                            <div class="card-header d-flex justify-between">
+                                <div class="d-flex">
+                                    ${
+                                        publicacion.foto_perfil 
+                                        ? `<img src="img/perfiles/${publicacion.foto_perfil}" class="rounded-circle me-2" style="width:40px;height:40px;object-fit:cover;" alt="Foto de perfil">`
+                                        : `<i class="fas fa-user-circle fa-2x text-secondary me-2"></i>`
+                                    }
+                                    <div>
+                                        <strong>${publicacion.nombre_usuario}</strong>
+                                        <small class="text-muted">${fecha}</small>
+                                    </div>
+                                </div>
+                                <div>
+                                    ${esPropietario ? `
+                                        <div>
+                                            <button onclick="editarPublicacion(${publicacion.cod_pub})" 
+                                                    class="btn btn-sm btn-primary">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button onclick="confirmarEliminacion(${publicacion.cod_pub})" 
+                                                    class="btn btn-sm btn-danger">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                        ` : ''}
+                                </div>
+                            </div>
+                            
+                            <div class="card-body">
+                                <p>${publicacion.contenido}</p>
+                                ${publicacion.imagen ? `
+                                <img src="${publicacion.imagen}" class="img-fluid" alt="Imagen publicación">
+                                ` : ''}
+                            </div>
+                        </div>
+                        `;
+                    });
+                    
+                    $('#listadoPublicaciones').html(html || '<div class="alert alert-info">No hay publicaciones</div>');
+                }
+            } catch(e) {
+                console.error('Error procesando respuesta:', e);
             }
-            reader.readAsDataURL(file);
         }
     });
-    
-    // Validar cantidad de imágenes
-    function validarCantidadImagenes(input) {
-        const maxImagenes = 4;
-        if (input.files.length > maxImagenes) {
-            $('#errorImagenes').text(`Solo puedes subir un máximo de ${maxImagenes} imágenes.`);
-            input.value = ''; // Limpia el input
-        } else {
-            $('#errorImagenes').text('');
+}
+
+// Mostrar formulario de publicación
+function mostrarFormularioPublicacion() {
+    $("#formPublicacion").show();
+    $("#formPublicacionData")[0].reset();
+    $("#accion").val('incluir_publicacion');
+    $("#procesoPublicacion").text('Publicar');
+    window.scrollTo(0, 0);
+}
+
+// Ocultar formulario de publicación
+function ocultarFormularioPublicacion() {
+    $("#formPublicacion").hide();
+}
+
+// Editar publicación
+function editarPublicacion(cod_pub) {
+    $.ajax({
+        url: '',
+        type: 'POST',
+        data: {
+            accion: 'obtener_publicacion',
+            cod_pub: cod_pub
+        },
+        success: function(respuesta) {
+            const data = JSON.parse(respuesta);
+            if(data.resultado === 'obtener_publicacion') {
+                // Mostrar el formulario y cargar los datos
+                mostrarFormularioPublicacion();
+                $("#accion").val('modificar_publicacion');
+                $("#procesoPublicacion").text('Modificar');
+                $("#cod_pub").val(data.datos.cod_pub);
+                $("#contenido").val(data.datos.contenido);
+
+                // Mostrar imagen previa si existe
+                if (data.datos.imagen) {
+                    if ($("#imagenPrevia").length === 0) {
+                        $("#imagen").after('<div id="imagenPrevia" class="mt-2"></div>');
+                    }
+                    $("#imagenPrevia").html(
+                        `<img src="${data.datos.imagen}" alt="Imagen actual" class="img-fluid rounded" style="max-width:200px;">`
+                    );
+                } else {
+                    $("#imagenPrevia").remove();
+                }
+                window.scrollTo(0, 0);
+            } else {
+                muestraMensaje(data.mensaje || 'Error al obtener publicación');
+            }
         }
+    });
+}
+
+// Confirmar eliminación
+function confirmarEliminacion(cod_pub) {
+    codPublicacionAEliminar = cod_pub;
+    $('#modalConfirmacion').modal('show');
+}
+
+// Procesar formulario de publicación
+$(document).on('click', '#procesoPublicacion', function() {
+    var formData = new FormData($("#formPublicacionData")[0]);
+    
+    // Validar contenido
+    if (!formData.get('contenido') || formData.get('contenido').trim() === '') {
+        muestraMensaje("Debes escribir algo en la publicación");
+        return;
     }
     
-    // Envío del formulario
-    $('#formPublicacion').submit(function(e) {
-        e.preventDefault();
-        
-        const formData = new FormData(this);
-        const accion = $('#accion').val();
-        
-        $.ajax({
-            url: '',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            dataType: 'json',
-            success: function(response) {
-                if (response.resultado === 'success') {
-                    mostrarMensaje('success', response.mensaje);
-                    $('#modalPublicacion').modal('hide');
+    $.ajax({
+        url: '', 
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(respuesta) {
+            try {
+                var lee = JSON.parse(respuesta);
+                if (lee.resultado == "incluir_publicacion" || lee.resultado == "modificar_publicacion") {
+                    muestraMensaje(lee.mensaje);
+                    ocultarFormularioPublicacion();
+                    // Actualizar las publicaciones inmediatamente después de la acción
                     cargarPublicaciones();
                 } else {
-                    mostrarMensaje('error', response.mensaje);
+                    muestraMensaje(lee.mensaje);
                 }
-            },
-            error: function() {
-                mostrarMensaje('error', 'Error al procesar la solicitud');
+            } catch (e) {
+                console.error("Error al procesar la respuesta:", e);
+                muestraMensaje("Error al procesar la publicación");
             }
-        });
-    });
-    
-    // Cargar publicaciones
-    function cargarPublicaciones() {
-        $.ajax({
-            url: '',
-            type: 'POST',
-            data: { accion: 'obtenerPublicaciones' },
-            dataType: 'json',
-            success: function(response) {
-                $('#contenedorPublicaciones').html('');
-                if (response.length > 0) {
-                    response.forEach(function(publicacion) {
-                        console.log(publicacion);
-                        $('#contenedorPublicaciones').append(crearCardPublicacion(publicacion));
-                    });
-                } else {
-                    $('#contenedorPublicaciones').html('<p class="text-center">No hay publicaciones</p>');
-                }
-            },
-            error: function() {
-                mostrarMensaje('error', 'Error al cargar las publicaciones');
-            }
-        });
-    }
-    
-    // Crear HTML para una publicación
-    function crearCardPublicacion(publicacion) {
-        let imagenHTML = '';
-        if (publicacion.imagen) {
-            imagenHTML = `<div class="text-center mt-2">
-                            <center><img src="${publicacion.imagen}" class="img-fluid rounded" style="max-height: 300px;"></center>
-                          </div>`;
+        },
+        error: function(xhr, status, error) {
+            console.error("Error en la petición AJAX:", error);
+            muestraMensaje("Error al guardar la publicación");
         }
-        
-        let accionesHTML = '';
-        if (publicacion.cedula_p == $('#usuarioActual').val()) { // Asume que hay un input hidden con el usuario actual
-            accionesHTML = `<div class="d-flex justify-content-end mt-2">
-                              <button class="btn btn-sm btn-primary me-2 btn-editar" 
-                                    data-id="${publicacion.cod_pub}">
-                                    <img src="img/lapiz.svg" alt="Editar" width="16">
-                              </button>
-                              <button class="btn btn-sm btn-danger btn-eliminar" 
-                                    data-id="${publicacion.cod_pub}">
-                                    <img src="img/basura.svg" alt="Eliminar" width="16">
-                              </button>
-                           </div>`;
-        }
-        
-        return `<div class="card-pub" id="publicacion-${publicacion.cod_pub}">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center mb-2">
-                            <div class="flex-shrink-0">
-                                <img src="img/user-1.svg" alt="Usuario" class="rounded-circle" width="40">
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                                <h1 class="font-bold">${publicacion.nombre} ${publicacion.apellido}</h1>
-                                <small class="text-sm">${formatFecha(publicacion.fecha)}</small>
-                            </div>
-                            ${accionesHTML}
-                        </div>
-                        <p class="card-text">${publicacion.contenido || ''}</p>
-                        ${imagenHTML}
-                    </div>
-                </div>`;
-    }
-    
-    // Formatear fecha
-    function formatFecha(fechaStr) {
-        const fecha = new Date(fechaStr);
-        return fecha.toLocaleDateString() + ' ' + fecha.toLocaleTimeString();
-    }
-    
-    // Mostrar mensajes
-    function mostrarMensaje(tipo, mensaje) {
-        $('#contenidoMensaje').html(mensaje); // Inserta el mensaje en el cuerpo del modal
-        $('#modalMensaje').modal('show'); // Muestra el modal
-        setTimeout(() => $('#mensaje').html(''), 3000);
-    }
-    
-    // Editar publicación
-    $(document).on('click', '.btn-editar', function() {
-        const codPub = $(this).data('id');
-        
+    });
+});
+
+function confirmarEliminacion(cod_pub) {
+    codPublicacionAEliminar = cod_pub;
+    $('#modalConfirmacion').modal('show');
+}
+
+// Eliminar publicación confirmada
+$('#btnConfirmarEliminar').off('click').on('click', function() {
+    if (codPublicacionAEliminar) {
         $.ajax({
             url: '',
             type: 'POST',
-            data: { accion: 'obtenerPublicacion', cod_pub: codPub },
-            dataType: 'json',
-            success: function(response) {
-                if (response) {
-                    publicacionActual = response;
-                    $('#accion').val('modificarPublicacion');
-                    $('#cod_pub').val(response.cod_pub);
-                    $('#contenido').val(response.contenido);
-                    $('#tituloModal').text('Editar publicación');
-                    
-                    if (response.imagen) {
-                        $('#previewImagen').html(`<img src="${response.imagen}" class="img-fluid" style="max-height: 200px;">`);
-                    } else {
-                        $('#previewImagen').html('');
-                    }
-                    
-                    $('#modalPublicacion').modal('show');
-                } else {
-                    mostrarMensaje('error', 'No se pudo cargar la publicación');
-                }
+            data: {
+                accion: 'eliminar_publicacion',
+                cod_pub: codPublicacionAEliminar
             },
-            error: function() {
-                mostrarMensaje('error', 'Error al cargar la publicación');
+            success: function(respuesta) {
+                const data = JSON.parse(respuesta);
+                if(data.resultado === 'eliminar_publicacion') {
+                    cargarPublicaciones(); // Recargar listado
+                    muestraMensaje('Publicación eliminada');
+                } else {
+                    muestraMensaje(data.mensaje || 'Error al eliminar');
+                }
+                $('#modalConfirmacion').modal('hide');
+                codPublicacionAEliminar = null;
             }
         });
-    });
-    
-    // Eliminar publicación
-    $(document).on('click', '.btn-eliminar', function() {
-        publicacionActual = $(this).data('id');
-        $('#modalConfirmacion').modal('show');
-    });
-    
-    $('#btnConfirmarEliminar').click(function() {
-        $.ajax({
-            url: '',
-            type: 'POST',
-            data: { accion: 'eliminarPublicacion', cod_pub: publicacionActual },
-            dataType: 'json',
-            success: function(response) {
-                if (response.resultado === 'success') {
-                    mostrarMensaje('success', response.mensaje);
-                    $('#modalConfirmacion').modal('hide');
-                    $(`#publicacion-${publicacionActual}`).remove();
-                } else {
-                    mostrarMensaje('error', response.mensaje);
-                }
-            },
-            error: function() {
-                mostrarMensaje('error', 'Error al eliminar la publicación');
-            }
-        });
-    });
-    
-    // Cargar publicaciones al iniciar
+    }
+});
+
+// Cargar publicaciones al iniciar
+$(document).ready(function() {
     cargarPublicaciones();
+    
+    // Ocultar formulario al hacer clic fuera
+    $(document).mouseup(function(e) {
+        var container = $("#formPublicacion");
+        if (!container.is(e.target) && container.has(e.target).length === 0) {
+            ocultarFormularioPublicacion();
+        }
+    });
 });

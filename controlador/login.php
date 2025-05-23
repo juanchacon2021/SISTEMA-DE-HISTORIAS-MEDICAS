@@ -7,7 +7,6 @@ require_once("modelo/".$pagina.".php");
 if(is_file("vista/".$pagina.".php")){ 
     if(!empty($_POST)){
         $o = new entrada();
-        
         if($_POST['accion']=='entrar'){
             $o->set_email($_POST['email']);
             $o->set_clave($_POST['clave']);  

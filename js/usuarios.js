@@ -113,13 +113,13 @@ function cargarUsuarios() {
                     <td>
                         <div class="d-flex align-items-center">
                             <div class="mr-2">${foto}</div>
-                            <div>${usuario.nombre}</div>
+                            <div class="ml-2">${usuario.nombre}</div>
                         </div>
                     </td>
                     <td>${usuario.email}</td>
                     <td>${usuario.rol_nombre}</td>
                     <td>${usuario.fecha_creacion}</td>
-                    <td><span class="badge badge-success">Activo</span></td>
+                    <td><span class="badge badge-success" style="color:black;">Activo</span></td>
                 </tr>`;
                 $('#resultadoUsuarios').append(fila);
             });
