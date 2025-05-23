@@ -4,9 +4,7 @@
 	require_once("comunes/sidebar.php");	
 ?>
 <body >
-<?php
-					  if($nivel=='Doctor'){
-					?>
+<?php if(in_array('Personal', $permisos)): ?>
 <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
 Personal
 </div>
@@ -144,7 +142,6 @@ Personal
 <!--Llamada a archivo modal.php, dentro de el hay una sección modal-->
 <?php require_once("comunes/modal.php"); ?>
 
-<?php
-}					?>
+<?php endif; ?>
 </body>
 </html>

@@ -53,66 +53,11 @@ Pacientes cronicos
 		   <form method="post" id="f" autocomplete="off">
 			<input autocomplete="off" type="text" class="form-control" name="accion" id="accion" style="display: none;">
 			<div class="container">	
-				<div class="row mb-3">
-				
-					<div class="col-md-6" style="display: none;">
-					   <label class="texto-inicio font-medium" for="cod_cronico">Cod. de pacientes cronicos</label>
-					   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cod_cronico" />
-					   <span id="scod_cronico"></span>
-					</div>
-					
-					<div class="col-md-6">
-  <label class="texto-inicio font-medium" for="patologia_cronica">Patología Crónica</label>
-  <input
-    class="form-control bg-gray-200 rounded-lg border-white"
-    type="text"
-    id="patologia_cronica"
-    name="patologia_cronica"
-    readonly
-  />
-  
-  <div id="patologia_options" class="mb-2">
-  <div class="row" id="patologia_options">
-    <div class="col-md-6">
-      <label><input type="checkbox" value="Cardiopatía" onchange="actualizarCheckboxes()"> Cardiopatía</label><br>
-      <label><input type="checkbox" value="Hipertensión" onchange="actualizarCheckboxes()"> Hipertensión</label><br>
-      <label><input type="checkbox" value="Endocrinometabólico" onchange="actualizarCheckboxes()"> Endocrinometabólico</label>
-    </div>
-    <div class="col-md-6">
-      <label><input type="checkbox" value="Asmático" onchange="actualizarCheckboxes()"> Asmático</label><br>
-      <label><input type="checkbox" value="Renal" onchange="actualizarCheckboxes()"> Renal</label><br>
-      <label><input type="checkbox" value="Mental" onchange="actualizarCheckboxes()"> Mental</label>
-    </div>
-  </div>
-  </div>
 
- 
-  <span id="spatologia_cronica"></span>
-</div>
+<br>
+			<div class="row mb-3">
 
-                    <div class="col-md-6">
-					   <label class="texto-inicio font-medium" for="Tratamiento">Tratamiento</label>
-					   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="Tratamiento" />
-					   <span id="Tratamiento"></span>
-					</div>
-				</div>
-
-				<br>
-
-                <div class="row mb-3">
-				    <div class="col-md-6" >
-					   <label class="texto-inicio font-medium" for="admistracion_t">Admistracion de Tratamiento</label>
-					   <textarea rows="2" cols="25" class="form-control bg-gray-200 rounded-lg border-white" type="text" id="admistracion_t"></textarea>
-					   <span id="sadmistracion_t"></span>
-					</div>
-                    
-				</div>
-				<div class="row mb-3">
-				</div>
-
-					<br>
-
-					<label class="texto-inicio font-medium" for="cedula_h">Cedula del Paciente</label>
+				<label class="texto-inicio font-medium" for="cedula_h">Cedula del Paciente</label>
 						<div class="col-md-8 input-group">
 							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_h" name="cedula_h" />				
 							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_historia" name="cedula_historia" style="display:none"/>
@@ -126,7 +71,76 @@ Pacientes cronicos
 						
 						</div>
 					</div>
+
+			</div>
+
+			<div class="row mb-3 ms-2">
+
+
+			<div class="col-md-12" style="display: none;">
+					   <label class="texto-inicio font-medium" for="cod_cronico">Cod. de pacientes cronicos</label>
+					   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cod_cronico" />
+					   <span id="scod_cronico"></span>
+					</div>
+					
+					<div class="col-md-12">
+					<label class="texto-inicio font-medium" for="patologia_cronica">Patología Crónica</label>
+					<input
+						class="form-control bg-gray-200 rounded-lg border-white"
+						type="text"
+						id="patologia_cronica"
+						name="patologia_cronica"
+						readonly
+					/>
+
+
+
+			</div>
+				
+				<div class="row mb-3 ms-2">
+					
+					<div id="patologia_options" class="mb-2">
+					<div class="row" id="patologia_options">
+						<div class="col-md-6">
+						<label><input type="checkbox" value="Cardiopatía" onchange="actualizarCheckboxes()"> Cardiopatía</label><br>
+						<label><input type="checkbox" value="Hipertensión" onchange="actualizarCheckboxes()"> Hipertensión</label><br>
+						<label><input type="checkbox" value="Endocrinometabólico" onchange="actualizarCheckboxes()"> Endocrinometabólico</label>
+						</div>
+						<div class="col-md-6">
+						<label><input type="checkbox" value="Asmático" onchange="actualizarCheckboxes()"> Asmático</label><br>
+						<label><input type="checkbox" value="Renal" onchange="actualizarCheckboxes()"> Renal</label><br>
+						<label><input type="checkbox" value="Mental" onchange="actualizarCheckboxes()"> Mental</label>
+						</div>
+					</div>
+					</div>
+
+					
+					<span id="spatologia_cronica"></span>
+					</div>
+
+                    <div class="col-md-12">
+					   <label class="texto-inicio font-medium" for="Tratamiento">Tratamiento</label>
+					   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="Tratamiento" />
+					   <span id="Tratamiento"></span>
+					</div>
+				</div>
+
+				<br>
+
+                <div class="row mb-3 ms-2">
+				    <div class="col-md-12" >
+					   <label class="texto-inicio font-medium" for="admistracion_t">Admistracion de Tratamiento</label>
+					   <textarea rows="2" cols="25" class="form-control bg-gray-200 rounded-lg border-white" type="text" id="admistracion_t"></textarea>
+					   <span id="sadmistracion_t"></span>
+					</div>
+                    
+				</div>
+				<div class="row mb-3">
+				</div>
+
 					<br>
+
+				
 					
 				                  
 				</div>
