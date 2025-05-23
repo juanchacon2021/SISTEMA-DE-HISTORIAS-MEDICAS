@@ -2,18 +2,20 @@
 <?php 
 	require_once("comunes/encabezado.php"); 
 	require_once("comunes/sidebar.php");	
-    require_once("modelo/datos.php"); // Asegúrate de incluir el archivo de conexión a la base de datos
+    require_once("modelo/datos.php"); 
 
-    $nombre = "Usuario no encontrado"; // Valor por defecto si no se encuentra el usuario
+    $nombre = "Usuario no encontrado"; 
+
+    $usuario = isset($_SESSION['usuario']) ? $_SESSION['usuario'] : null;
 
     if (isset($usuario)) {
         try {
-            $conexion = (new datos())->conecta(); // Conexión a la base de datos
+            $conexion = (new datos())->conecta2(); // Conexión a la base de datos
             $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             // Consulta para obtener el nombre y apellido del personal
-            $stmt = $conexion->prepare("SELECT nombre FROM personal WHERE cedula_personal = :cedula");
-            $stmt->bindParam(':cedula', $usuario, PDO::PARAM_INT);
+            $stmt = $conexion->prepare("SELECT nombre FROM usuario WHERE id = :id");
+            $stmt->bindParam(':id', $usuario, PDO::PARAM_INT);
             $stmt->execute();
 
             $resultado = $stmt->fetch(PDO::FETCH_ASSOC);

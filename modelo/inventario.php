@@ -12,7 +12,7 @@ class inventario extends datos {
     private $proveedor;
     private $cod_transaccion;
     private $tipo_transaccion;
-    private $cedula_p;
+    private $id_usuario;
 
     // Setters
     public function set_cod_medicamento($valor) { $this->cod_medicamento = $valor; }
@@ -25,7 +25,7 @@ class inventario extends datos {
     public function set_proveedor($valor) { $this->proveedor = $valor; }
     public function set_cod_transaccion($valor) { $this->cod_transaccion = $valor; }
     public function set_tipo_transaccion($valor) { $this->tipo_transaccion = $valor; }
-    public function set_cedula_p($valor) { $this->cedula_p = $valor; }
+    public function set_id_usuario($valor) { $this->id_usuario = $valor; }
 
     // Getters
     public function get_cod_medicamento() { return $this->cod_medicamento; }
@@ -36,6 +36,7 @@ class inventario extends datos {
     public function get_fecha_vencimiento() { return $this->fecha_vencimiento; }
     public function get_lote() { return $this->lote; }
     public function get_proveedor() { return $this->proveedor; }
+    public function get_id_usuario() { return $this->id_usuario; }
 
     // Métodos CRUD
     public function consultar_medicamentos() {
@@ -65,12 +66,18 @@ class inventario extends datos {
         $r = array();
         
         try {
-            $resultado = $co->query("SELECT t.*, p.nombre, p.apellido, m.nombre as medicamento, i.cantidad
-                                   FROM transaccion t
-                                   JOIN personal p ON t.cedula_p = p.cedula_personal
-                                   JOIN insumos i ON t.cod_transaccion = i.cod_transaccion
-                                   JOIN medicamentos m ON i.cod_medicamento = m.cod_medicamento
-                                   ORDER BY t.fecha DESC, t.hora DESC");
+            // Consulta modificada para obtener el usuario desde la BD seguridad
+            $resultado = $co->query("SELECT 
+                    t.*, 
+                    u.nombre as nombre_usuario,
+                    m.nombre as medicamento, 
+                    i.cantidad
+                FROM transaccion t
+                JOIN seguridad.usuario u ON t.id_usuario = u.id
+                JOIN insumos i ON t.cod_transaccion = i.cod_transaccion
+                JOIN medicamentos m ON i.cod_medicamento = m.cod_medicamento
+                ORDER BY t.fecha DESC, t.hora DESC");
+                
             if($resultado) {
                 $r['resultado'] = 'consultar_transacciones';
                 $r['datos'] = $resultado->fetchAll(PDO::FETCH_ASSOC);
@@ -118,9 +125,9 @@ class inventario extends datos {
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
         try {
-            // Insertar medicamento
             $co->beginTransaction();
             
+            // Insertar medicamento (igual que antes)
             $co->query("INSERT INTO medicamentos(
                 nombre, descripcion, cantidad, unidad_medida, 
                 fecha_vencimiento, lote, proveedor
@@ -132,16 +139,16 @@ class inventario extends datos {
             
             $cod_medicamento = $co->lastInsertId();
             
-            // Registrar transacción
+            // Registrar transacción (cambiando cedula_p por id_usuario)
             $co->query("INSERT INTO transaccion(
-                tipo_transaccion, fecha, hora, cedula_p
+                tipo_transaccion, fecha, hora, id_usuario
             ) VALUES(
-                'entrada', CURDATE(), TIME_FORMAT(NOW(), '%H:%i'), '$this->cedula_p'
+                'entrada', CURDATE(), TIME_FORMAT(NOW(), '%H:%i'), '$this->id_usuario'
             )");
             
             $cod_transaccion = $co->lastInsertId();
             
-            // Registrar insumo
+            // Registrar insumo (igual que antes)
             $co->query("INSERT INTO insumos(
                 cod_transaccion, cod_medicamento, cantidad
             ) VALUES(
@@ -166,13 +173,12 @@ class inventario extends datos {
             $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             
             try {
-                // Obtener cantidad anterior
                 $cant_anterior = $co->query("SELECT cantidad FROM medicamentos WHERE cod_medicamento = '$this->cod_medicamento'")
                                     ->fetchColumn();
                 
                 $co->beginTransaction();
                 
-                // Actualizar medicamento
+                // Actualizar medicamento (igual que antes)
                 $co->query("UPDATE medicamentos SET
                     nombre = '$this->nombre',
                     descripcion = '$this->descripcion',
@@ -183,15 +189,15 @@ class inventario extends datos {
                     proveedor = '$this->proveedor'
                     WHERE cod_medicamento = '$this->cod_medicamento'");
                 
-                // Si cambió la cantidad, registrar transacción
                 if($cant_anterior != $this->cantidad) {
                     $diferencia = $this->cantidad - $cant_anterior;
                     $tipo = $diferencia > 0 ? 'ajuste_positivo' : 'ajuste_negativo';
                     
+                    // Cambiando cedula_p por id_usuario
                     $co->query("INSERT INTO transaccion(
-                        tipo_transaccion, fecha, hora, cedula_p
+                        tipo_transaccion, fecha, hora, id_usuario
                     ) VALUES(
-                        '$tipo', CURDATE(), TIME_FORMAT(NOW(), '%H:%i'), '$this->cedula_p'
+                        '$tipo', CURDATE(), TIME_FORMAT(NOW(), '%H:%i'), '$this->id_usuario'
                     )");
                     
                     $cod_transaccion = $co->lastInsertId();
@@ -226,13 +232,21 @@ class inventario extends datos {
             
             try {
                 $co->beginTransaction();
-                
-                // 1. Eliminar registros en insumos que referencian este medicamento
-                $co->query("DELETE FROM insumos WHERE cod_medicamento = '$this->cod_medicamento'");
+
+                // 1. Primero eliminar registros en insumos que referencian este medicamento
+                $co->prepare("DELETE FROM insumos WHERE cod_medicamento = ?")
+                ->execute([$this->cod_medicamento]);
                 
                 // 2. Luego eliminar el medicamento
-                $co->query("DELETE FROM medicamentos WHERE cod_medicamento = '$this->cod_medicamento'");
-                
+                $co->prepare("DELETE FROM medicamentos WHERE cod_medicamento = ?")
+                ->execute([$this->cod_medicamento]);
+
+                // Registrar transacción (cambiando cedula_p por id_usuario)
+                $co->query("INSERT INTO transaccion(
+                    tipo_transaccion, fecha, hora, id_usuario
+                ) VALUES(
+                    'salida', CURDATE(), TIME_FORMAT(NOW(), '%H:%i'), '$this->id_usuario'
+                )");
                 $co->commit();
                 
                 $r['resultado'] = 'eliminar_medicamento';

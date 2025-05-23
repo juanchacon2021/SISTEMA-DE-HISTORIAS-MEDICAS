@@ -20,6 +20,7 @@
             // Verificar si hay un usuario autenticado
             if (isset($_SESSION['usuario'])) {
                 $permisos = $_SESSION['permisos'];
+                echo $_SESSION['usuario'];
             ?>
                 <!-- Inicio siempre visible -->
                 <div class="iconos p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
