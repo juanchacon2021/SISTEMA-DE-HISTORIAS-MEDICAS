@@ -7,8 +7,9 @@ class usuarios extends datos {
     private $nombre;
     private $email;
     private $password;
+    private $foto_perfil;
     private $rol_id;
-    
+
     // Atributos para roles
     private $nombre_rol;
     private $descripcion_rol;
@@ -18,82 +19,88 @@ class usuarios extends datos {
     public function set_nombre($valor) { $this->nombre = $valor; }
     public function set_email($valor) { $this->email = $valor; }
     public function set_password($valor) { $this->password = $valor; }
+    public function set_foto_perfil($valor) { $this->foto_perfil = $valor; }
     public function set_rol_id($valor) { $this->rol_id = $valor; }
     public function set_nombre_rol($valor) { $this->nombre_rol = $valor; }
     public function set_descripcion_rol($valor) { $this->descripcion_rol = $valor; }
 
     // Métodos CRUD para usuarios
     public function incluir_usuario() {
-        $co = $this->conecta2();
-        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $r = array();
-        
-        try {
-            if(!$this->existe_email($this->email)) {
-                $stmt = $co->prepare("INSERT INTO usuario (nombre, email, password, rol_id) VALUES(
-                    :nombre, :email, :password, :rol_id)");
-                
-                $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
-                
-                $stmt->execute(array(
-                    ':nombre' => $this->nombre,
-                    ':email' => $this->email,
-                    ':password' => $password_hash,
-                    ':rol_id' => $this->rol_id
-                ));
-                
-                $r['resultado'] = 'incluir';
-                $r['mensaje'] = 'Usuario registrado exitosamente';
-            } else {
-                $r['resultado'] = 'error';
-                $r['mensaje'] = 'El email ya está registrado';
-            }
-        } catch(Exception $e) {
+    $co = $this->conecta2();
+    $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $r = array();
+    
+    try {
+        if(!$this->existe_email($this->email)) {
+            $stmt = $co->prepare("INSERT INTO usuario (nombre, email, password, rol_id, foto_perfil) VALUES(
+                :nombre, :email, :password, :rol_id, :foto_perfil)");
+            
+            $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
+            
+            $stmt->execute(array(
+                ':nombre' => $this->nombre,
+                ':email' => $this->email,
+                ':password' => $password_hash,
+                ':rol_id' => $this->rol_id,
+                ':foto_perfil' => $this->foto_perfil
+            ));
+            
+            $r['resultado'] = 'incluir';
+            $r['mensaje'] = 'Usuario registrado exitosamente';
+        } else {
             $r['resultado'] = 'error';
-            $r['mensaje'] = $e->getMessage();
+            $r['mensaje'] = 'El email ya está registrado';
         }
-        return $r;
+    } catch(Exception $e) {
+        $r['resultado'] = 'error';
+        $r['mensaje'] = $e->getMessage();
     }
+    return $r;
+}
+
     
     public function modificar_usuario() {
-        $co = $this->conecta2();
-        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $r = array();
-        
-        try {
-            // Verificar si el email ya existe en otro usuario
-            if($this->email_valido_para_edicion()) {
-                $sql = "UPDATE usuario SET nombre = :nombre, email = :email, rol_id = :rol_id";
-                $params = array(
-                    ':nombre' => $this->nombre,
-                    ':email' => $this->email,
-                    ':rol_id' => $this->rol_id,
-                    ':id' => $this->id
-                );
-                
-                // Si se proporcionó una nueva contraseña
-                if(!empty($this->password)) {
-                    $sql .= ", password = :password";
-                    $params[':password'] = password_hash($this->password, PASSWORD_DEFAULT);
-                }
-                
-                $sql .= " WHERE id = :id";
-                
-                $stmt = $co->prepare($sql);
-                $stmt->execute($params);
-                
-                $r['resultado'] = 'modificar';
-                $r['mensaje'] = 'Usuario actualizado exitosamente';
-            } else {
-                $r['resultado'] = 'error';
-                $r['mensaje'] = 'El email ya está registrado en otro usuario';
+    $co = $this->conecta2();
+    $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $r = array();
+    
+    try {
+        if($this->email_valido_para_edicion()) {
+            $sql = "UPDATE usuario SET nombre = :nombre, email = :email, rol_id = :rol_id";
+            $params = array(
+                ':nombre' => $this->nombre,
+                ':email' => $this->email,
+                ':rol_id' => $this->rol_id,
+                ':id' => $this->id
+            );
+            
+            if(!empty($this->password)) {
+                $sql .= ", password = :password";
+                $params[':password'] = password_hash($this->password, PASSWORD_DEFAULT);
             }
-        } catch(Exception $e) {
+            
+            if(!empty($this->foto_perfil)) {
+                $sql .= ", foto_perfil = :foto_perfil";
+                $params[':foto_perfil'] = $this->foto_perfil;
+            }
+            
+            $sql .= " WHERE id = :id";
+            
+            $stmt = $co->prepare($sql);
+            $stmt->execute($params);
+            
+            $r['resultado'] = 'modificar';
+            $r['mensaje'] = 'Usuario actualizado exitosamente';
+        } else {
             $r['resultado'] = 'error';
-            $r['mensaje'] = $e->getMessage();
+            $r['mensaje'] = 'El email ya está registrado en otro usuario';
         }
-        return $r;
+    } catch(Exception $e) {
+        $r['resultado'] = 'error';
+        $r['mensaje'] = $e->getMessage();
     }
+    return $r;
+}
     
     public function eliminar_usuario() {
         $co = $this->conecta2();
@@ -120,17 +127,36 @@ class usuarios extends datos {
         return $r;
     }
     
+    public function eliminar_foto_perfil($usuario_id) {
+    $co = $this->conecta2();
+    $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $r = array();
+    
+    try {
+        $stmt = $co->prepare("UPDATE usuario SET foto_perfil = NULL WHERE id = :id");
+        $stmt->bindParam(':id', $usuario_id);
+        $stmt->execute();
+        
+        $r['resultado'] = 'exito';
+        $r['mensaje'] = 'Foto de perfil eliminada correctamente';
+    } catch(Exception $e) {
+        $r['resultado'] = 'error';
+        $r['mensaje'] = $e->getMessage();
+    }
+    return $r;
+}
+
     public function consultar_usuarios() {
         $co = $this->conecta2();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
         
         try {
-            $resultado = $co->query("SELECT u.id, u.nombre, u.email, u.fecha_creacion, 
-                                    r.nombre as rol_nombre
-                                    FROM usuario u
-                                    JOIN rol r ON u.rol_id = r.id
-                                    ORDER BY u.nombre");
+            $resultado = $co->query("SELECT u.id, u.nombre, u.email, u.fecha_creacion, u.foto_perfil,
+                        r.nombre as rol_nombre
+                        FROM usuario u
+                        JOIN rol r ON u.rol_id = r.id
+                        ORDER BY u.nombre");
             
             $r['resultado'] = 'consultar';
             $r['datos'] = $resultado->fetchAll(PDO::FETCH_ASSOC);

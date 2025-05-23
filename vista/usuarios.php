@@ -182,6 +182,21 @@ require_once("comunes/sidebar.php");
                                 <option value="">Seleccione un rol</option>
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label for="fotoPerfil">Foto de Perfil</label>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="fotoPerfil" name="foto_perfil" accept="image/jpeg,image/png,image/gif">
+                                <label class="custom-file-label" for="fotoPerfil" id="fotoPerfilLabel">Seleccionar archivo (máx. 50MB)</label>
+                            </div>
+                            <small class="form-text text-muted">Formatos permitidos: JPG, PNG, GIF</small>
+                            <div id="previewFoto" class="mt-2 text-center" style="display:none;">
+                                <img id="fotoPreview" src="" alt="Vista previa" class="img-thumbnail" style="max-height: 150px;">
+                                <button type="button" class="btn btn-sm btn-danger mt-2" onclick="eliminarFoto()">
+                                    <i class="fas fa-trash"></i> Eliminar Foto
+                                </button>
+                            </div>
+                            <input type="hidden" id="fotoActual" name="foto_actual" value="">
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
