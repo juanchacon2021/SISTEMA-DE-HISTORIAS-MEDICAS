@@ -65,7 +65,6 @@ Pacientes cronicos
 						</div>
 						<span id="scedula_h"></span>
 					</div>
-					<br>
 					<div class="row">
 						<div class="col-md-12" id="datosdelpacientes">
 						
@@ -185,16 +184,7 @@ Pacientes cronicos
 		  </tr>
 		</thead>
 		<tbody id="listadopacientes">
-			<?php if ($datosPacientes['resultado'] == 'listadopacientes'): ?>
-				<?php foreach ($datosPacientes['datos'] as $fila): ?>
-					<tr onclick="colocapacientes(this)">
-						<td style="display:none;"><?= htmlspecialchars($fila['cedula_historia']) ?></td>
-						<td><?= htmlspecialchars($fila['cedula_historia']) ?></td>
-						<td><?= htmlspecialchars($fila['nombre']) ?></td>
-						<td><?= htmlspecialchars($fila['apellido']) ?></td>
-					</tr>
-				<?php endforeach; ?>
-			<?php endif; ?>
+		
 		</tbody>
 		</table>
     </div>
