@@ -148,7 +148,6 @@ CREATE TABLE `emergencias` (
 
 LOCK TABLES `emergencias` WRITE;
 /*!40000 ALTER TABLE `emergencias` DISABLE KEYS */;
-INSERT INTO `emergencias` VALUES (22,'02:49','2024-11-12','llego con un dolor de cabesa','aaaaaaaaaaaa','aaaaaaaaaaaaaaa',31111553,7856209),(24,'05:51','2024-11-12','Como modelo de lenguaje, no puedo proporcionarte un diagnóstico médico.\r\n\r\nDiagnosticar una enfermedad requiere de un profesional de la salud capacitado, quien evaluará tus síntomas, realizará un examen físico y, si es necesario, ordenará pruebas de laboratorio o de imagen.\r\n\r\n¿Por qué no puedo darte un diagnóstico?\r\n\r\nInformación limitada: A través de una conversación en línea, no tengo acceso a tu historial médico completo, resultados de exámenes o a una exploración física.\r\nComplejidad de las enfermedades: Muchas enfermedades comparten síntomas similares, lo que hace que un diagnóstico preciso requiera una evaluación exhaustiva por parte de un médico.\r\nResponsabilidad profesional: Proporcionar un diagnóstico médico es una responsabilidad seria que requiere de conocimientos y habilidades específicas.\r\n¿Qué puedo hacer si estoy enfermo?\r\n\r\nSi tienes alguna preocupación sobre tu salud, te recomiendo:\r\n\r\nConsulta a un médico: Es la persona más capacitada para evaluar tus síntomas y realizar un diagnóstico preciso.\r\nDescribe tus síntomas con claridad: Incluye cuándo comenzaron, con qué frecuencia ocurren y qué los empeora o mejora.\r\nSé honesto sobre tu historial médico: Informa a tu médico sobre cualquier enfermedad que hayas tenido, medicamentos que estés tomando y alergias.\r\nRecuerda:\r\n\r\nNo te automediques: Tomar medicamentos sin receta médica puede empeorar tu condición o interactuar negativamente con otros medicamentos.\r\nBusca información confiable: Si quieres investigar sobre alguna enfermedad, consulta fuentes confiables como la Organización Mundial de la Salud (OMS) o sitios web de instituciones médicas reconocidas.\r\n¿Te gustaría que te proporcione información sobre alguna enfermedad en particular?\r\n\r\nPuedo ofrecerte información general sobre diversas enfermedades, sus síntomas, causas y tratamientos. Sin embargo, esta información no debe reemplazar el consejo médico profesional.\r\n\r\nPor favor, ten en cuenta que mi función es proporcionar información y no reemplazar la atención médica.','aaaaaaaaaaaaa','aaaaaaaaaaaaaaaaaa',31111553,12345678),(25,'05:51','2024-11-12','Como modelo de lenguaje, no puedo proporcionarte un diagnóstico médico.\r\n\r\nDiagnosticar una enfermedad requiere de un profesional de la salud capacitado, quien evaluará tus síntomas, realizará un examen físico y, si es necesario, ordenará pruebas de laboratorio o de imagen.\r\n\r\n¿Por qué no puedo darte un diagnóstico?\r\n\r\nInformación limitada: A través de una conversación en línea, no tengo acceso a tu historial médico completo, resultados de exámenes o a una exploración física.\r\nComplejidad de las enfermedades: Muchas enfermedades comparten síntomas similares, lo que hace que un diagnóstico preciso requiera una evaluación exhaustiva por parte de un médico.\r\nResponsabilidad profesional: Proporcionar un diagnóstico médico es una responsabilidad seria que requiere de conocimientos y habilidades específicas.\r\n¿Qué puedo hacer si estoy enfermo?\r\n\r\nSi tienes alguna preocupación sobre tu salud, te recomiendo:\r\n\r\nConsulta a un médico: Es la persona más capacitada para evaluar tus síntomas y realizar un diagnóstico preciso.\r\nDescribe tus síntomas con claridad: Incluye cuándo comenzaron, con qué frecuencia ocurren y qué los empeora o mejora.\r\nSé honesto sobre tu historial médico: Informa a tu médico sobre cualquier enfermedad que hayas tenido, medicamentos que estés tomando y alergias.\r\nRecuerda:\r\n\r\nNo te automediques: Tomar medicamentos sin receta médica puede empeorar tu condición o interactuar negativamente con otros medicamentos.\r\nBusca información confiable: Si quieres investigar sobre alguna enfermedad, consulta fuentes confiables como la Organización Mundial de la Salud (OMS) o sitios web de instituciones médicas reconocidas.\r\n¿Te gustaría que te proporcione información sobre alguna enfermedad en particular?\r\n\r\nPuedo ofrecerte información general sobre diversas enfermedades, sus síntomas, causas y tratamientos. Sin embargo, esta información no debe reemplazar el consejo médico profesional.\r\n\r\nPor favor, ten en cuenta que mi función es proporcionar información y no reemplazar la atención médica.','Como modelo de lenguaje, no puedo proporcionarte un diagnóstico médico.\r\n\r\nDiagnosticar una enfermedad requiere de un profesional de la salud capacitado, quien evaluará tus síntomas, realizará un examen físico y, si es necesario, ordenará pruebas de laboratorio o de imagen.\r\n\r\n¿Por qué no puedo darte un diagnóstico?\r\n\r\nInformación limitada: A través de una conversación en línea, no tengo acceso a tu historial médico completo, resultados de exámenes o a una exploración física.\r\nComplejidad de las enfermedades: Muchas enfermedades comparten síntomas similares, lo que hace que un diagnóstico preciso requiera una evaluación exhaustiva por parte de un médico.\r\nResponsabilidad profesional: Proporcionar un diagnóstico médico es una responsabilidad seria que requiere de conocimientos y habilidades específicas.\r\n¿Qué puedo hacer si estoy enfermo?\r\n\r\nSi tienes alguna preocupación sobre tu salud, te recomiendo:\r\n\r\nConsulta a un médico: Es la persona más capacitada para evaluar tus síntomas y realizar un diagnóstico preciso.\r\nDescribe tus síntomas con claridad: Incluye cuándo comenzaron, con qué frecuencia ocurren y qué los empeora o mejora.\r\nSé honesto sobre tu historial médico: Informa a tu médico sobre cualquier enfermedad que hayas tenido, medicamentos que estés tomando y alergias.\r\nRecuerda:\r\n\r\nNo te automediques: Tomar medicamentos sin receta médica puede empeorar tu condición o interactuar negativamente con otros medicamentos.\r\nBusca información confiable: Si quieres investigar sobre alguna enfermedad, consulta fuentes confiables como la Organización Mundial de la Salud (OMS) o sitios web de instituciones médicas reconocidas.\r\n¿Te gustaría que te proporcione información sobre alguna enfermedad en particular?\r\n\r\nPuedo ofrecerte información general sobre diversas enfermedades, sus síntomas, causas y tratamientos. Sin embargo, esta información no debe reemplazar el consejo médico profesional.\r\n\r\nPor favor, ten en cuenta que mi función es proporcionar información y no reemplazar la atención médica.','Como modelo de lenguaje, no puedo proporcionarte un diagnóstico médico.\r\n\r\nDiagnosticar una enfermedad requiere de un profesional de la salud capacitado, quien evaluará tus síntomas, realizará un examen físico y, si es necesario, ordenará pruebas de laboratorio o de imagen.\r\n\r\n¿Por qué no puedo darte un diagnóstico?\r\n\r\nInformación limitada: A través de una conversación en línea, no tengo acceso a tu historial médico completo, resultados de exámenes o a una exploración física.\r\nComplejidad de las enfermedades: Muchas enfermedades comparten síntomas similares, lo que hace que un diagnóstico preciso requiera una evaluación exhaustiva por parte de un médico.\r\nResponsabilidad profesional: Proporcionar un diagnóstico médico es una responsabilidad seria que requiere de conocimientos y habilidades específicas.\r\n¿Qué puedo hacer si estoy enfermo?\r\n\r\nSi tienes alguna preocupación sobre tu salud, te recomiendo:\r\n\r\nConsulta a un médico: Es la persona más capacitada para evaluar tus síntomas y realizar un diagnóstico preciso.\r\nDescribe tus síntomas con claridad: Incluye cuándo comenzaron, con qué frecuencia ocurren y qué los empeora o mejora.\r\nSé honesto sobre tu historial médico: Informa a tu médico sobre cualquier enfermedad que hayas tenido, medicamentos que estés tomando y alergias.\r\nRecuerda:\r\n\r\nNo te automediques: Tomar medicamentos sin receta médica puede empeorar tu condición o interactuar negativamente con otros medicamentos.\r\nBusca información confiable: Si quieres investigar sobre alguna enfermedad, consulta fuentes confiables como la Organización Mundial de la Salud (OMS) o sitios web de instituciones médicas reconocidas.\r\n¿Te gustaría que te proporcione información sobre alguna enfermedad en particular?\r\n\r\nPuedo ofrecerte información general sobre diversas enfermedades, sus síntomas, causas y tratamientos. Sin embargo, esta información no debe reemplazar el consejo médico profesional.\r\n\r\nPor favor, ten en cuenta que mi función es proporcionar información y no reemplazar la atención médica.',31111553,5465489),(28,'19:02','2024-11-12','L','L','L',31111553,88888888),(33,'05:03','2025-03-26','LLLL','LKLLLL','LLLLLL',31111111,88888888),(35,'02:24','2025-03-27','wwwwwwwwwwwwwwwwwwww','wwwwwwwwwwwwwwwwwwwwwwww','wwwwwwwwwwwwwwwwwww',31111553,30128924),(36,'00:12','2025-03-27','ttttttttttttttttttttttt','ttttttttttttttttttttttt','tttttttttttttttttttttttttttttttttt',31111553,5465489),(37,'11:20','2025-03-27','lllllllllllllllllll','lllllllllllllllllllllllllll','llllllllllllllllllllllllllllllllllll',31111553,5465489),(38,'02:49','2025-04-07','holaaaaaaa','llllllllllll','lllllllllllllll',31111553,7856209),(39,'10:15','2025-04-16','LLLLLLLLLLLLLLL','LLlllllllllllllllllllll','llllllllllllllllllllllll',31111553,5465489),(40,'11:18','2025-04-15','llllllllllll','llllllllllllllll','lllllllllllllllllllllll',31111553,4234235),(41,'11:17','2025-04-16','lllllllllllll','llllllllllllllllll','llllllllllllllllllllll',31111111,5465489),(42,'20:17','2025-04-11','lllllllllllllllll','llllllllllllllllllll','lllllllllllllllllllllll',31111553,5465489),(43,'11:17','2025-04-13','lllllllllllllllll','lllllllllllllllllll','lllllllllllll',31111553,7856209);
 /*!40000 ALTER TABLE `emergencias` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -215,10 +214,8 @@ CREATE TABLE `feed` (
   `contenido` varchar(300) DEFAULT NULL,
   `imagen` text,
   `id_usuario` int NOT NULL,
-  PRIMARY KEY (`cod_pub`),
-  KEY `feed_ibfk_idx` (`id_usuario`),
-  CONSTRAINT `feed_ibfk` FOREIGN KEY (`id_usuario`) REFERENCES `personal` (`cedula_personal`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`cod_pub`)
+) ENGINE=InnoDB AUTO_INCREMENT=117 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -227,7 +224,7 @@ CREATE TABLE `feed` (
 
 LOCK TABLES `feed` WRITE;
 /*!40000 ALTER TABLE `feed` DISABLE KEYS */;
-INSERT INTO `feed` VALUES (2,'2025-05-12 06:08:23','ATENCIÓN, Doctores atentos con la jornadas de salud que se realizará en la Av. Venezuela con Av. Bracamonte este Miercoles 12 de Mayo','img/publicaciones/682695e1be1cb_istockphoto-949812160-612x612.jpg',30128924),(3,'2025-05-20 18:59:46','ASSSAASAS','img/publicaciones/682cb5026b880_image2.png',30128924);
+INSERT INTO `feed` VALUES (2,'2025-05-12 06:08:23','ATENCIÓN, Doctores atentos con la jornadas de salud que se realizará en la Av. Venezuela con Av. Bracamonte este Miercoles 12 de Mayo','img/publicaciones/682695e1be1cb_istockphoto-949812160-612x612.jpg',30128924),(105,'2025-05-22 14:17:22','Maldita sea es Silver Surfer','img/publicaciones/682f6a322e89d_513414.jpg',30128924),(107,'2025-05-22 14:25:15','Flor','img/publicaciones/682f6c0af0608_IMG_20240209_183445_945.jpg',31111513),(110,'2025-05-22 23:41:52','Jacob desata el poder del guardian del espacio tiempo','img/publicaciones/6830b81034a0a_WhatsApp Image 2025-02-16 at 5.03.47 PM (1).jpeg',32014004),(113,'2025-05-23 14:03:49','Stephen Ditko expulsa su forma final como guardian del espacio tiempo','img/publicaciones/6830b885921e7_image.jpg',32014005),(114,'2025-05-23 14:04:51','Batalla final entre el bien y el mal Stephen Ditko vs Zephyr Orion','img/publicaciones/6830b8c37ca0a_Stephen vs Zephyr.jpg',32014005),(115,'2025-05-23 14:08:50','Jacob encontrara a Anya?','img/publicaciones/6830b9b27e08a_WhatsApp Image 2025-02-16 at 5.03.47 PM.jpeg',32014007);
 /*!40000 ALTER TABLE `feed` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -296,7 +293,7 @@ CREATE TABLE `insumos` (
 
 LOCK TABLES `insumos` WRITE;
 /*!40000 ALTER TABLE `insumos` DISABLE KEYS */;
-INSERT INTO `insumos` VALUES (38,9,3),(46,10,7),(47,9,20);
+INSERT INTO `insumos` VALUES (38,9,3),(46,10,7),(47,9,20),(53,25,20),(54,25,5),(55,9,7);
 /*!40000 ALTER TABLE `insumos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -351,7 +348,7 @@ CREATE TABLE `medicamentos` (
   `lote` varchar(30) DEFAULT NULL,
   `proveedor` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`cod_medicamento`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -360,7 +357,7 @@ CREATE TABLE `medicamentos` (
 
 LOCK TABLES `medicamentos` WRITE;
 /*!40000 ALTER TABLE `medicamentos` DISABLE KEYS */;
-INSERT INTO `medicamentos` VALUES (9,'LORATADINA','es un fármaco antihistamínico',52,'mg','2028-04-30','23132231','FARMATODO'),(10,'ACETAMINOFEN','fármaco con propiedades analgésicas',25,'unidades','2026-08-25','213312','EPITRAL');
+INSERT INTO `medicamentos` VALUES (9,'LORATADINA','es un fármaco antihistamínico',45,'mg','2028-04-30','23132231','FARMATODO'),(10,'ACETAMINOFEN','fármaco con propiedades analgésicas',25,'unidades','2026-08-25','213312','EPITRAL'),(25,'BROXOL','Producto Broxol',25,'ml','2029-05-20','42451','SAN IGNACIO');
 /*!40000 ALTER TABLE `medicamentos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -419,7 +416,7 @@ CREATE TABLE `participantes_jornadas` (
 
 LOCK TABLES `participantes_jornadas` WRITE;
 /*!40000 ALTER TABLE `participantes_jornadas` DISABLE KEYS */;
-INSERT INTO `participantes_jornadas` VALUES (12,3,23045014,NULL),(13,3,31111111,NULL);
+INSERT INTO `participantes_jornadas` VALUES (12,3,23045014,NULL);
 /*!40000 ALTER TABLE `participantes_jornadas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -498,7 +495,7 @@ CREATE TABLE `transaccion` (
   `hora` varchar(7) DEFAULT NULL,
   `id_usuario` int DEFAULT NULL,
   PRIMARY KEY (`cod_transaccion`)
-) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -507,7 +504,7 @@ CREATE TABLE `transaccion` (
 
 LOCK TABLES `transaccion` WRITE;
 /*!40000 ALTER TABLE `transaccion` DISABLE KEYS */;
-INSERT INTO `transaccion` VALUES (38,'ajuste_negativo','2025-05-20','11:55',30128924),(39,'entrada','2025-05-20','12:17',30128924),(40,'salida','2025-05-20','12:20',30128924),(41,'entrada','2025-05-20','12:21',30128924),(43,'salida','2025-05-20','12:25',30128924),(44,'entrada','2025-05-20','12:26',30128924),(45,'salida','2025-05-20','12:34',30128924),(46,'ajuste_negativo','2025-05-20','12:44',30128924),(47,'ajuste_positivo','2025-05-20','12:44',30128924),(48,'entrada','2025-05-20','12:44',30128924),(49,'entrada','2025-05-20','12:54',30128924),(50,'salida','2025-05-20','12:56',30128924),(51,'entrada','2025-05-20','12:56',30128924),(52,'salida','2025-05-20','12:56',30128924);
+INSERT INTO `transaccion` VALUES (38,'ajuste_negativo','2025-05-20','11:55',30128924),(39,'entrada','2025-05-20','12:17',30128924),(40,'salida','2025-05-20','12:20',30128924),(41,'entrada','2025-05-20','12:21',30128924),(43,'salida','2025-05-20','12:25',30128924),(44,'entrada','2025-05-20','12:26',30128924),(45,'salida','2025-05-20','12:34',30128924),(46,'ajuste_negativo','2025-05-20','12:44',30128924),(47,'ajuste_positivo','2025-05-20','12:44',30128924),(48,'entrada','2025-05-20','12:44',30128924),(49,'entrada','2025-05-20','12:54',30128924),(50,'salida','2025-05-20','12:56',30128924),(51,'entrada','2025-05-20','12:56',30128924),(52,'salida','2025-05-20','12:56',30128924),(53,'entrada','2025-05-24','09:49',32014005),(54,'ajuste_positivo','2025-05-24','09:49',32014005),(55,'ajuste_negativo','2025-05-24','09:49',32014005);
 /*!40000 ALTER TABLE `transaccion` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -520,4 +517,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-21  0:21:44
+-- Dump completed on 2025-05-24 10:21:47

@@ -4,9 +4,7 @@
 	require_once("comunes/sidebar.php");	
 ?>
 <body >
-<?php
-					  if($nivel=='Doctor' or $nivel=='Enfermera'){
-					?>
+
 
 <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
 Emergencias
@@ -240,7 +238,6 @@ Emergencias
 
 <?php require_once("comunes/modal.php"); ?>
 <script type="text/javascript" src="js/emergencias.js"></script> 
-<?php
-}					?>
+
 </body>
 </html>
