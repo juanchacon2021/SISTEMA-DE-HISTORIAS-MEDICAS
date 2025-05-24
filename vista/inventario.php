@@ -4,6 +4,7 @@ require_once("comunes/sidebar.php");
 ?>
 
 <body>
+<?php if(in_array('Inventario', $permisos)): ?>
 
 <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100">
   Inventario de Medicamentos
@@ -161,5 +162,6 @@ require_once("comunes/sidebar.php");
 <?php require_once("comunes/modal.php"); ?>
 <script src="js/inventario.js"></script>
 
+<?php endif; ?>
 </body>
 </html>

@@ -56,19 +56,17 @@ class p_cronicos extends datos{
 	}
 
 
-	function listadopacientes() {
+		function listadopacientes() {
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$r = array(); // En este arreglo se enviará la respuesta a la solicitud
 		try {
-			$resultado = $co->query("SELECT * FROM historias");
-			if ($resultado) {
-				$r['resultado'] = 'listadopacientes';
-				$r['datos'] = $resultado->fetchAll(PDO::FETCH_ASSOC); // Devuelve los datos como un arreglo asociativo
-			} else {
-				$r['resultado'] = 'listadopacientes';
-				$r['datos'] = array(); // Devuelve un arreglo vacío si no hay resultados
-			}
+			$sql = "SELECT * FROM historias";
+			$stmt = $co->prepare($sql);
+			$stmt->execute();
+			$datos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$r['resultado'] = 'listadopacientes';
+			$r['datos'] = $datos ? $datos : array(); // Devuelve los datos o un arreglo vacío
 		} catch (Exception $e) {
 			$r['resultado'] = 'error';
 			$r['mensaje'] = $e->getMessage(); // Devuelve el mensaje de error en caso de excepción
@@ -78,98 +76,91 @@ class p_cronicos extends datos{
 
 
 
-	function incluir(){
-		
+		function incluir(){
 		$r = array();
 		if(!$this->existe($this->cod_cronico)){
-			
-				
-						
-					$co = $this->conecta();
-					$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-				
-					try {
-							$co->query("Insert into p_cronicos(
-								patologia_cronica,
-								Tratamiento,
-								admistracion_t,
-								cedula_h
-								) 
-								Values(
-								'$this->patologia_cronica',
-								'$this->Tratamiento',
-								'$this->admistracion_t',
-								'$this->cedula_h'
-								)");
-								$r['resultado'] = 'incluir';
-								$r['mensaje'] =  'Registro Incluido';
-					} catch(Exception $e) {
-						$r['resultado'] = 'error';
-						$r['mensaje'] =  'Un error en alguna de las cedulas';
-					}
-				
-					
-				}								
-				else{
-					$r['resultado'] = 'incluir';
-					$r['mensaje'] =  'Ya existe el Cod de Consulta';
-				}
-		
-				
-		
-
+			$co = $this->conecta();
+			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			try {
+				$sql = "INSERT INTO p_cronicos (
+							patologia_cronica,
+							Tratamiento,
+							admistracion_t,
+							cedula_h
+						) VALUES (
+							:patologia_cronica,
+							:Tratamiento,
+							:admistracion_t,
+							:cedula_h
+						)";
+				$stmt = $co->prepare($sql);
+				$stmt->bindParam(':patologia_cronica', $this->patologia_cronica);
+				$stmt->bindParam(':Tratamiento', $this->Tratamiento);
+				$stmt->bindParam(':admistracion_t', $this->admistracion_t);
+				$stmt->bindParam(':cedula_h', $this->cedula_h);
+				$stmt->execute();
+				$r['resultado'] = 'incluir';
+				$r['mensaje'] =  'Registro Incluido';
+			} catch(Exception $e) {
+				$r['resultado'] = 'error';
+				$r['mensaje'] =  'Un error en alguna de las cedulas';
+			}
+		} else {
+			$r['resultado'] = 'incluir';
+			$r['mensaje'] =  'Ya existe el Cod de Consulta';
+		}
 		return $r;
-		
 	}
 	
-	function modificar(){
+		function modificar(){
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$r = array();
 		if($this->existe($this->cod_cronico)){
 			try {
-					$co->query("Update p_cronicos set 
-					    cod_cronico = '$this->cod_cronico',
-						patologia_cronica = '$this->patologia_cronica',
-						Tratamiento = '$this->Tratamiento',
-						admistracion_t = '$this->admistracion_t',
-						cedula_h = '$this->cedula_h'
-						where
-						cod_cronico = '$this->cod_cronico'
-						");
-						$r['resultado'] = 'modificar';
-			            $r['mensaje'] =  'Registro Modificado';
+				$sql = "UPDATE p_cronicos SET 
+							patologia_cronica = :patologia_cronica,
+							Tratamiento = :Tratamiento,
+							admistracion_t = :admistracion_t,
+							cedula_h = :cedula_h
+						WHERE cod_cronico = :cod_cronico";
+				$stmt = $co->prepare($sql);
+				$stmt->bindParam(':patologia_cronica', $this->patologia_cronica);
+				$stmt->bindParam(':Tratamiento', $this->Tratamiento);
+				$stmt->bindParam(':admistracion_t', $this->admistracion_t);
+				$stmt->bindParam(':cedula_h', $this->cedula_h);
+				$stmt->bindParam(':cod_cronico', $this->cod_cronico);
+				$stmt->execute();
+				$r['resultado'] = 'modificar';
+				$r['mensaje'] =  'Registro Modificado';
 			} catch(Exception $e) {
 				$r['resultado'] = 'error';
-			    $r['mensaje'] =  $e->getMessage();
+				$r['mensaje'] =  $e->getMessage();
 			}
-		}
-		else{
+		} else {
 			$r['resultado'] = 'modificar';
 			$r['mensaje'] =  'Cedula no registrada';
 		}
 		return $r;
 	}
 	
-	function eliminar(){
+		function eliminar(){
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$r = array();
 		if($this->existe($this->cod_cronico)){
 			try {
-					$co->query("delete from p_cronicos 
-						where
-						cod_cronico = '$this->cod_cronico'
-						");
-						$r['resultado'] = 'eliminar';
-			            $r['mensaje'] =  'Registro Eliminado';
+				$sql = "DELETE FROM p_cronicos WHERE cod_cronico = :cod_cronico";
+				$stmt = $co->prepare($sql);
+				$stmt->bindParam(':cod_cronico', $this->cod_cronico);
+				$stmt->execute();
+				$r['resultado'] = 'eliminar';
+				$r['mensaje'] =  'Registro Eliminado';
 			} catch(Exception $e) {
 				$r['resultado'] = 'error';
-			    $r['mensaje'] =  $e->getMessage();
+				$r['mensaje'] =  $e->getMessage();
 			}
-		}
-		else{
+		} else {
 			$r['resultado'] = 'eliminar';
 			$r['mensaje'] =  'No existe la cedula';
 		}
@@ -178,52 +169,40 @@ class p_cronicos extends datos{
 	
 	
 	function consultar() {
-		$co = $this->conecta();
-		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$r = array();
-		try {
-			$resultado = $co->query("SELECT *, h.nombre as nombre_h, h.apellido as apellido_h  
-									FROM p_cronicos p 
-									INNER JOIN historias h ON p.cedula_h = h.cedula_historia");
-			
-			if ($resultado) {
-				$r['resultado'] = 'consultar';
-				$r['datos'] = $resultado->fetchAll(PDO::FETCH_ASSOC);
-			} else {
-				$r['resultado'] = 'consultar';
-				$r['datos'] = array();
-			}
-		} catch (Exception $e) {
-			$r['resultado'] = 'error';
-			$r['mensaje'] = $e->getMessage();
-		}
-		return $r;
-	}
+    $co = $this->conecta();
+    $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $r = array();
+    try {
+        $sql = "SELECT *, h.nombre as nombre_h, h.apellido as apellido_h  
+                FROM p_cronicos p 
+                INNER JOIN historias h ON p.cedula_h = h.cedula_historia";
+        $stmt = $co->prepare($sql);
+        $stmt->execute();
+        $datos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $r['resultado'] = 'consultar';
+        $r['datos'] = $datos ? $datos : array();
+    } catch (Exception $e) {
+        $r['resultado'] = 'error';
+        $r['mensaje'] = $e->getMessage();
+    }
+    return $r;
+}
 	
 	
 	private function existe($cod_cronico){
-		$co = $this->conecta();
-		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		try{
-			
-			$resultado = $co->query("SELECT * FROM p_cronicos p WHERE p.cod_cronico = '$cod_cronico'");
-			
-			
-			$fila = $resultado->fetchAll(PDO::FETCH_BOTH);
-			if($fila){
-
-				return true;
-			    
-			}
-			else{
-				
-				return false;;
-			}
-			
-		}catch(Exception $e){
-			return false;
-		}
-	}
+    $co = $this->conecta();
+    $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    try{
+        $sql = "SELECT * FROM p_cronicos WHERE cod_cronico = :cod_cronico";
+        $stmt = $co->prepare($sql);
+        $stmt->bindParam(':cod_cronico', $cod_cronico);
+        $stmt->execute();
+        $fila = $stmt->fetchAll(PDO::FETCH_BOTH);
+        return !empty($fila);
+    } catch(Exception $e){
+        return false;
+    }
+}
 	
 	
 
