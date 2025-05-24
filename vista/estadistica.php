@@ -5,9 +5,6 @@
 ?>
 <body>
 
-
-
-
 <h1 class="fw-bold fs-1 text-center mt-4">Estadistica</h1>
 
 <div class="container mt-4" style="margin-left: 300px;">

@@ -12,7 +12,7 @@ require_once("comunes/sidebar.php");
 Pasantías
 </div>
 
-            <div class="container-fluid">
+            <div class="container-fluid d-flex">
                 <!-- Tabs -->
                 <ul class="nav nav-tabs" id="pasantiasTabs" role="tablist">
                     <li class="nav-item" role="presentation">
@@ -26,11 +26,11 @@ Pasantías
                         </button>
                     </li>
                 </ul>
-
+            </div>
                 <div class="tab-content" id="pasantiasTabContent">
                     <!-- Tab de Estudiantes -->
                     <div class="tab-pane fade show active" id="estudiantes" role="tabpanel">
-                        <div class="card mt-3">
+                        <div class="cardd mt-3">
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -70,7 +70,7 @@ Pasantías
 
                     <!-- Tab de Áreas -->
                     <div class="tab-pane fade" id="areas" role="tabpanel">
-                        <div class="card mt-3">
+                        <div class="cardd mt-3">
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-md-6">

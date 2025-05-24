@@ -279,6 +279,10 @@ Examenes
 <!--Llamada a archivo modal.php, dentro de el hay una sección modal-->
 <?php require_once("comunes/modal.php"); ?>
 <script type="text/javascript" src="js/examenes.js"></script> 
+<<<<<<< HEAD
+
+=======
 <?php endif; ?>
+>>>>>>> 1013b25ca68067cea044e63171e152da3e69d0bd
 </body>
 </html>
