@@ -69,6 +69,7 @@ CREATE TABLE `asistencia` (
 
 LOCK TABLES `asistencia` WRITE;
 /*!40000 ALTER TABLE `asistencia` DISABLE KEYS */;
+INSERT INTO `asistencia` VALUES ('2024-02-20','2026-02-20','1',3135432,1);
 /*!40000 ALTER TABLE `asistencia` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -114,7 +115,7 @@ CREATE TABLE `consultas` (
 
 LOCK TABLES `consultas` WRITE;
 /*!40000 ALTER TABLE `consultas` DISABLE KEYS */;
-INSERT INTO `consultas` VALUES (9,'2024-11-18','WWWss','WWW','WWW',31111553,12345678,'aaaaaaaaaa','aaaaaaaaaaaaa','aaaaaaa','aaaaaaaaaaaa','aaaaaaaa','aaaaaaa','aaaaaaaaaa','aaaa','sss','aaaaaaaa','aaaaaaa','aaaaaaaaa','aaaaaaa'),(14,'2024-11-19','AAA','AAA','AAA',31111553,9999999,'','','','','','','','','','','','',''),(16,'2024-11-19','ttttttttttttttt','tttttttttttttttttt','tttttttttttttttttt',12345678,9999999,'ttttttttttttttttt','ttttttttttttttttt','ttttttttttttttt','tttttttttttttt','tttttttttttttttttt','ttttttttttttttttttt','ttttttttttttttttttttt','tttttttttttttt','ttttttttttttt','ttttttttttttt','ttttttttttttttt','ttttttttttttt','ttttttttttttttttttttt'),(17,'2024-11-03','hola','hola','hola',12345678,9999999,'hola','hola','hola','hola','hola','hola','hola','hola','hola','hola','hola','hola','hola');
+INSERT INTO `consultas` VALUES (9,'2024-11-18','WWWss','WWW','WWW',31111553,12345678,'aaaaaaaaaa','aaaaaaaaaaaaa','aaaaaaa','aaaaaaaaaaaa','aaaaaaaa','aaaaaaa','aaaaaaaaaa','aaaa','sss','aaaaaaaa','aaaaaaa','aaaaaaaaa','aaaaaaa'),(14,'2024-11-19','AAA','AAA','AAA',31111553,9999999,'','','','','','','','','','','','','');
 /*!40000 ALTER TABLE `consultas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -139,7 +140,7 @@ CREATE TABLE `emergencias` (
   KEY `cedula_h` (`cedula_h`),
   CONSTRAINT `emergencias_ibfk_1` FOREIGN KEY (`cedula_p`) REFERENCES `personal` (`cedula_personal`),
   CONSTRAINT `emergencias_ibfk_2` FOREIGN KEY (`cedula_h`) REFERENCES `historias` (`cedula_historia`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -148,6 +149,7 @@ CREATE TABLE `emergencias` (
 
 LOCK TABLES `emergencias` WRITE;
 /*!40000 ALTER TABLE `emergencias` DISABLE KEYS */;
+INSERT INTO `emergencias` VALUES (44,'02:05','2025-05-19','Dolor Estomacal','Mala Alimentacion','Purgante',30128924,4234235);
 /*!40000 ALTER TABLE `emergencias` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -173,6 +175,7 @@ CREATE TABLE `estudiantes_pasantia` (
 
 LOCK TABLES `estudiantes_pasantia` WRITE;
 /*!40000 ALTER TABLE `estudiantes_pasantia` DISABLE KEYS */;
+INSERT INTO `estudiantes_pasantia` VALUES (3135432,'Antonio','Herrera','UCLA');
 /*!40000 ALTER TABLE `estudiantes_pasantia` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -224,7 +227,7 @@ CREATE TABLE `feed` (
 
 LOCK TABLES `feed` WRITE;
 /*!40000 ALTER TABLE `feed` DISABLE KEYS */;
-INSERT INTO `feed` VALUES (2,'2025-05-12 06:08:23','ATENCIÓN, Doctores atentos con la jornadas de salud que se realizará en la Av. Venezuela con Av. Bracamonte este Miercoles 12 de Mayo','img/publicaciones/682695e1be1cb_istockphoto-949812160-612x612.jpg',30128924),(105,'2025-05-22 14:17:22','Maldita sea es Silver Surfer','img/publicaciones/682f6a322e89d_513414.jpg',30128924),(107,'2025-05-22 14:25:15','Flor','img/publicaciones/682f6c0af0608_IMG_20240209_183445_945.jpg',31111513),(110,'2025-05-22 23:41:52','Jacob desata el poder del guardian del espacio tiempo','img/publicaciones/6830b81034a0a_WhatsApp Image 2025-02-16 at 5.03.47 PM (1).jpeg',32014004),(113,'2025-05-23 14:03:49','Stephen Ditko expulsa su forma final como guardian del espacio tiempo','img/publicaciones/6830b885921e7_image.jpg',32014005),(114,'2025-05-23 14:04:51','Batalla final entre el bien y el mal Stephen Ditko vs Zephyr Orion','img/publicaciones/6830b8c37ca0a_Stephen vs Zephyr.jpg',32014005),(115,'2025-05-23 14:08:50','Jacob encontrara a Anya?','img/publicaciones/6830b9b27e08a_WhatsApp Image 2025-02-16 at 5.03.47 PM.jpeg',32014007);
+INSERT INTO `feed` VALUES (2,'2025-05-12 06:08:23','ATENCIÓN, Doctores atentos con la jornadas de salud que se realizará en la Av. Venezuela con Av. Bracamonte este Miercoles 12 de Mayo','img/publicaciones/682695e1be1cb_istockphoto-949812160-612x612.jpg',30128924),(105,'2025-05-22 14:17:22','Maldita sea es Silver Surfer','img/publicaciones/682f6a322e89d_513414.jpg',30128924),(107,'2025-05-22 14:25:15','Flor','img/publicaciones/682f6c0af0608_IMG_20240209_183445_945.jpg',31111513),(110,'2025-05-22 23:41:52','JORNADA MÉDICA GRATUITA','img/publicaciones/6831d85dc30e9_images (1).jpg',32014004),(113,'2025-05-23 14:03:49','Jornada médica integral favorece a comunidad indígena en Apure\r\nMás de 400 personas fueron atendidas en una jornada de salud integral realizada en la comunidad indígena Chaparralito, municipio Achaguas','img/publicaciones/6831d77512318_Jornada-medica-Nueva-Esparta-2-scaled.jpg',32014005),(114,'2025-05-23 14:04:51','Grupo LETI a través de su Programa “Compromiso”, ejecutó exitosamente jornada médica integral que benefició a la comunidad de San Pedro de Coche','img/publicaciones/6831d7cdbba21_images (3).jpg',32014005),(115,'2025-05-23 14:08:50','ATENCION\r\nTendremos una Jornada Medica en la zona Norte de Barquisimeto','img/publicaciones/6831d887dc0fd_images (2).jpg',32014007);
 /*!40000 ALTER TABLE `feed` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -445,7 +448,7 @@ CREATE TABLE `personal` (
 
 LOCK TABLES `personal` WRITE;
 /*!40000 ALTER TABLE `personal` DISABLE KEYS */;
-INSERT INTO `personal` VALUES (12345678,'admin','admin','admin@gmail.com','12345678910','Doctor','12345678'),(23045014,'Esteban','Salazar','correo@gmail.com','04145842747','Doctor','Dinosaurio123'),(30128924,'Juan','Chacon','correo@correo.com','04120754296','Doctor','Dinosaurio123'),(31111111,'Anthoan','Gonzalez','correo@gmail.com','0412785948','Doctor','Dinosaurio123'),(31111553,'Francheska','Gonzalez','correocorreo@gmail.com','04241875864','Enfermera','Dinosaurio123');
+INSERT INTO `personal` VALUES (23045014,'Esteban','Salazar','correo@gmail.com','04145842747','Doctor','Dinosaurio123'),(30128924,'Juan','Chacon','correo@correo.com','04120754296','Doctor','Dinosaurio123'),(31111111,'Anthoan','Gonzalez','correo@gmail.com','0412785948','Doctor','Dinosaurio123'),(31111553,'Francheska','Gonzalez','correocorreo@gmail.com','04241875864','Enfermera','Dinosaurio123');
 /*!40000 ALTER TABLE `personal` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -468,7 +471,7 @@ CREATE TABLE `registro` (
   KEY `cod_examenes` (`cod_examenes`),
   CONSTRAINT `registro_ibfk_1` FOREIGN KEY (`cedula_h`) REFERENCES `historias` (`cedula_historia`),
   CONSTRAINT `registro_ibfk_2` FOREIGN KEY (`cod_examenes`) REFERENCES `examenes` (`cod_examenes`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -477,7 +480,7 @@ CREATE TABLE `registro` (
 
 LOCK TABLES `registro` WRITE;
 /*!40000 ALTER TABLE `registro` DISABLE KEYS */;
-INSERT INTO `registro` VALUES (21,'2025-05-11',5465489,1,'Se observa un resultado normal',NULL);
+INSERT INTO `registro` VALUES (22,'2025-05-29',4234235,7,'Se observa un resultado normal',NULL);
 /*!40000 ALTER TABLE `registro` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -517,4 +520,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-24 10:21:47
+-- Dump completed on 2025-05-26 23:20:19

@@ -1,10 +1,24 @@
-<html> 
+<!DOCTYPE html>
+<html lang="es">
 <?php 
 	require_once("comunes/encabezado.php"); 
 	require_once("comunes/sidebar.php");	
 ?>
 <body >
-<?php if(in_array('Consultas', $permisos)): ?>
+<?php  // Verificar permisos
+    if (!isset($permisos)) {
+        // Si no existe $permisos, redirigir a login
+        header("Location: ?pagina=login");
+        exit();
+    } elseif (!in_array('Consultas', $permisos)) {
+        // Si existe $permisos pero no tiene acceso al módulo, mostrar error 403
+        http_response_code(403);
+        die('<div class="container text-center py-5">
+                <h1 class="text-danger">403 - Acceso prohibido</h1>
+                <p class="lead">No tienes permiso para acceder a este módulo</p>
+                <a href="?pagina=principal" class="btn btn-primary">Volver al inicio</a>
+             </div>');
+    } ?>
 
 <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
 Consultas
@@ -366,5 +380,7 @@ Consultas
 
 <?php require_once("comunes/modal.php"); ?>
 <script type="text/javascript" src="js/consultasm.js"></script> 
+<?php endif; ?>
 </body>
+
 </html>

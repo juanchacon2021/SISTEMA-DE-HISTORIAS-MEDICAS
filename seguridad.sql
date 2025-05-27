@@ -34,7 +34,7 @@ CREATE TABLE `bitacora` (
   KEY `modulo_id` (`modulo_id`),
   CONSTRAINT `bitacora_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`),
   CONSTRAINT `bitacora_ibfk_2` FOREIGN KEY (`modulo_id`) REFERENCES `modulo` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `bitacora` (
 
 LOCK TABLES `bitacora` WRITE;
 /*!40000 ALTER TABLE `bitacora` DISABLE KEYS */;
-INSERT INTO `bitacora` VALUES (1,32014004,5,'Modificar','Se ha modificado una publicación','2025-05-23 03:47:41'),(2,32014004,5,'Modificar','Se ha modificado una publicación','2025-05-23 03:48:09'),(3,32014004,5,'Modificar','Se ha modificado una publicación','2025-05-23 03:54:37'),(4,32014004,5,'Modificar','Se ha modificado una publicación','2025-05-23 03:54:43'),(5,32014004,5,'Eliminar','Se ha eliminado una publicación','2025-05-23 03:54:57'),(6,32014005,5,'Registrar','Se ha registrado una publicación','2025-05-23 03:56:05'),(7,32014005,5,'Registrar','Se ha registrado una publicación','2025-05-23 04:33:36'),(8,32014004,5,'Modificar','Se ha modificado una publicación','2025-05-23 18:01:52'),(9,32014005,5,'Eliminar','Se ha eliminado una publicación','2025-05-23 18:02:41'),(10,32014005,5,'Registrar','Se ha registrado una publicación','2025-05-23 18:03:49'),(11,32014005,5,'Eliminar','Se ha eliminado una publicación','2025-05-23 18:04:04'),(12,32014005,5,'Registrar','Se ha registrado una publicación','2025-05-23 18:04:51'),(13,32014007,5,'Registrar','Se ha registrado una publicación','2025-05-23 18:08:50'),(14,32014005,5,'Registrar','Se ha registrado una publicación','2025-05-24 02:01:35'),(15,32014005,5,'Eliminar','Se ha eliminado una publicación','2025-05-24 02:01:54'),(16,32014005,10,'Registrar','Se ha registrado un medicamento','2025-05-24 13:49:03'),(17,32014005,10,'Modificar','Se ha modificado un medicamento','2025-05-24 13:49:10'),(18,32014005,10,'Modificar','Se ha modificado un medicamento','2025-05-24 13:49:20');
+INSERT INTO `bitacora` VALUES (1,32014004,5,'Modificar','Se ha modificado una publicación','2025-05-23 03:47:41'),(2,32014004,5,'Modificar','Se ha modificado una publicación','2025-05-23 03:48:09'),(3,32014004,5,'Modificar','Se ha modificado una publicación','2025-05-23 03:54:37'),(4,32014004,5,'Modificar','Se ha modificado una publicación','2025-05-23 03:54:43'),(5,32014004,5,'Eliminar','Se ha eliminado una publicación','2025-05-23 03:54:57'),(6,32014005,5,'Registrar','Se ha registrado una publicación','2025-05-23 03:56:05'),(7,32014005,5,'Registrar','Se ha registrado una publicación','2025-05-23 04:33:36'),(8,32014004,5,'Modificar','Se ha modificado una publicación','2025-05-23 18:01:52'),(9,32014005,5,'Eliminar','Se ha eliminado una publicación','2025-05-23 18:02:41'),(10,32014005,5,'Registrar','Se ha registrado una publicación','2025-05-23 18:03:49'),(11,32014005,5,'Eliminar','Se ha eliminado una publicación','2025-05-23 18:04:04'),(12,32014005,5,'Registrar','Se ha registrado una publicación','2025-05-23 18:04:51'),(13,32014007,5,'Registrar','Se ha registrado una publicación','2025-05-23 18:08:50'),(14,32014005,5,'Registrar','Se ha registrado una publicación','2025-05-24 02:01:35'),(15,32014005,5,'Eliminar','Se ha eliminado una publicación','2025-05-24 02:01:54'),(16,32014005,10,'Registrar','Se ha registrado un medicamento','2025-05-24 13:49:03'),(17,32014005,10,'Modificar','Se ha modificado un medicamento','2025-05-24 13:49:10'),(18,32014005,10,'Modificar','Se ha modificado un medicamento','2025-05-24 13:49:20'),(19,32014005,5,'Modificar','Se ha modificado una publicación','2025-05-24 14:28:05'),(20,32014005,5,'Modificar','Se ha modificado una publicación','2025-05-24 14:29:33'),(21,32014004,5,'Modificar','Se ha modificado una publicación','2025-05-24 14:31:57'),(22,32014007,5,'Modificar','Se ha modificado una publicación','2025-05-24 14:32:39'),(23,32014007,7,'Registrar','Se ha registrado un estudiante','2025-05-24 14:33:29');
 /*!40000 ALTER TABLE `bitacora` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -154,7 +154,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (32014004,'Eduin','eduinmeneses@gmail.com','$2y$10$PgIc9yAtsajStfxliESh4.HKw8Yf0TK/Cw3trtdNDPwgd8vobqu/O',3,'2025-05-15 04:00:00','6830b9ca78933.jpeg'),(32014005,'Juan Esteban','juanchacon@gmail.com','$2y$10$x4r96.20FzIaeM75XPtiQ.v63OvvRduWOmDI85eff7hrzxq/Q39HS',3,'2025-05-19 16:49:46','6830b3c1c489e.jpeg'),(32014007,'Anthoan Gonzalez','anthoangonzalez@gmail.com','$2y$10$8UULM2PRHVZt0vF3DGegOOvUkRJjz0MazIu/d1KhbJ4tQHaVZBMP2',1,'2025-05-23 18:07:37','6830b969b021c.jpg');
+INSERT INTO `usuario` VALUES (32014004,'Miguel Torres','eduinmeneses@gmail.com','$2y$10$PgIc9yAtsajStfxliESh4.HKw8Yf0TK/Cw3trtdNDPwgd8vobqu/O',3,'2025-05-15 04:00:00','6831d82f81b40.png'),(32014005,'Juan Esteban','juanchacon@gmail.com','$2y$10$x4r96.20FzIaeM75XPtiQ.v63OvvRduWOmDI85eff7hrzxq/Q39HS',3,'2025-05-19 16:49:46','6831d84911e98.jpg'),(32014007,'Jose Mendoza','anthoangonzalez@gmail.com','$2y$10$8UULM2PRHVZt0vF3DGegOOvUkRJjz0MazIu/d1KhbJ4tQHaVZBMP2',1,'2025-05-23 18:07:37','6831d81f1adde.jpg');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -167,4 +167,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-24 10:21:30
+-- Dump completed on 2025-05-26 23:20:02

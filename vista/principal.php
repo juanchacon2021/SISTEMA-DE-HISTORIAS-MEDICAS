@@ -3,6 +3,7 @@
 	require_once("comunes/encabezado.php"); 
 	require_once("comunes/sidebar.php");	
     require_once("modelo/datos.php"); 
+    require_once("comunes/notificaciones.php");
 
     $nombre = "Usuario no encontrado"; 
 
@@ -68,7 +69,6 @@
     </style>
 </head>
 <body class="bg-stone-100">
-    <a href="MANUAL DE USUARIO.pdf" id="helpButton" target="blank">Ayuda</a>
 
     <article class="inicio bg-white py-8 px-4">
         <h1 class="texto-inicio">Hola, Bienvenido <?php echo htmlspecialchars($nombre); ?></h1>

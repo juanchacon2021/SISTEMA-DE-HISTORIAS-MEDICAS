@@ -4,7 +4,21 @@
 	require_once("comunes/sidebar.php");	
 ?>
 <body >
-<?php if(in_array('Personal', $permisos)): ?>
+<?php  // Verificar permisos
+    if (!isset($permisos)) {
+        // Si no existe $permisos, redirigir a login
+        header("Location: ?pagina=login");
+        exit();
+    } elseif (!in_array('Personal', $permisos)) {
+        // Si existe $permisos pero no tiene acceso al módulo, mostrar error 403
+        http_response_code(403);
+        die('<div class="container text-center py-5">
+                <h1 class="text-danger">403 - Acceso prohibido</h1>
+                <p class="lead">No tienes permiso para acceder a este módulo</p>
+                <a href="?pagina=principal" class="btn btn-primary">Volver al inicio</a>
+             </div>');
+    } ?>
+
 <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
 Personal
 </div>
@@ -142,9 +156,6 @@ Personal
 <!--Llamada a archivo modal.php, dentro de el hay una sección modal-->
 <?php require_once("comunes/modal.php"); ?>
 
-<<<<<<< HEAD
-=======
-<?php endif; ?>
->>>>>>> 1013b25ca68067cea044e63171e152da3e69d0bd
+
 </body>
 </html>
