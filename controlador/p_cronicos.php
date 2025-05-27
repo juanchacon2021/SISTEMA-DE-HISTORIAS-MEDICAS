@@ -44,9 +44,7 @@ require_once("modelo/".$pagina.".php");
 		  exit;
 	  }
 	  
-	  $o = new p_cronicos();
-	$datos = $o->consultar();
-	$datosPacientes = $o->listadopacientes();
+	
 	  require_once("vista/".$pagina.".php"); 
   }
   else{

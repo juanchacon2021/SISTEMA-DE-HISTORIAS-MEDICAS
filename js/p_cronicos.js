@@ -391,6 +391,15 @@ function enviaAjax(datos) {
         }
 		else if(lee.resultado=='listadopacientes'){
 			destruyeDT1();
+			var html = '';
+			lee.datos.forEach(function(fila) {
+				html += `<tr onclick="colocapacientes(this)">
+					<td style="display:none;">${fila.cedula_historia}</td>
+					<td>${fila.cedula_historia}</td>
+					<td>${fila.nombre}</td>
+					<td>${fila.apellido}</td>
+				</tr>`;
+			});
 			$("#listadopacientes").html(html);
 			crearDT1();
 		}

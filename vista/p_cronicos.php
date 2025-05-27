@@ -5,7 +5,21 @@
 ?>
 <body >
 
-<?php if(in_array('Pacientes crónicos', $permisos)): ?>
+<?php  // Verificar permisos
+    if (!isset($permisos)) {
+        // Si no existe $permisos, redirigir a login
+        header("Location: ?pagina=login");
+        exit();
+    } elseif (!in_array('Pacientes crónicos', $permisos)) {
+        // Si existe $permisos pero no tiene acceso al módulo, mostrar error 403
+        http_response_code(403);
+        die('<div class="container text-center py-5">
+                <h1 class="text-danger">403 - Acceso prohibido</h1>
+                <p class="lead">No tienes permiso para acceder a este módulo</p>
+                <a href="?pagina=principal" class="btn btn-primary">Volver al inicio</a>
+             </div>');
+    } ?>
+
 <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
 Pacientes cronicos
 </div>
@@ -65,7 +79,6 @@ Pacientes cronicos
 						</div>
 						<span id="scedula_h"></span>
 					</div>
-					<br>
 					<div class="row">
 						<div class="col-md-12" id="datosdelpacientes">
 						
@@ -185,16 +198,7 @@ Pacientes cronicos
 		  </tr>
 		</thead>
 		<tbody id="listadopacientes">
-			<?php if ($datosPacientes['resultado'] == 'listadopacientes'): ?>
-				<?php foreach ($datosPacientes['datos'] as $fila): ?>
-					<tr onclick="colocapacientes(this)">
-						<td style="display:none;"><?= htmlspecialchars($fila['cedula_historia']) ?></td>
-						<td><?= htmlspecialchars($fila['cedula_historia']) ?></td>
-						<td><?= htmlspecialchars($fila['nombre']) ?></td>
-						<td><?= htmlspecialchars($fila['apellido']) ?></td>
-					</tr>
-				<?php endforeach; ?>
-			<?php endif; ?>
+		
 		</tbody>
 		</table>
     </div>
@@ -206,10 +210,6 @@ Pacientes cronicos
 
 <?php require_once("comunes/modal.php"); ?>
 <script type="text/javascript" src="js/p_cronicos.js"></script> 
-<<<<<<< HEAD
 
-=======
- <?php endif; ?>
->>>>>>> 1013b25ca68067cea044e63171e152da3e69d0bd
 </body>
 </html>
