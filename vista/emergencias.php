@@ -1,8 +1,8 @@
-<html> 
-<?php 
-	require_once("comunes/encabezado.php"); 
-	require_once("comunes/sidebar.php");	
+<?php
+require_once("comunes/encabezado.php");
+require_once("comunes/sidebar.php");
 ?>
+<html>
 <body >
 <?php if(in_array('Emergencias', $permisos)): ?>
 
@@ -71,10 +71,10 @@ Emergencias
 					   <span id="shoraingreso"></span>
 					</div>
 
-                    <div class="col-md-6">
+					<div class="col-md-6">
 					   <label class="texto-inicio font-medium" for="fechaingreso">Fecha de Ingreso</label>
 					   <input class="form-control bg-gray-200 rounded-lg border-white" type="date" id="fechaingreso" />
-					   <span id="fechaingreso"></span>
+					   <span id="sfechaingreso"></span>
 					</div>
 				</div>
 
@@ -238,7 +238,6 @@ Emergencias
 
 <?php require_once("comunes/modal.php"); ?>
 <script type="text/javascript" src="js/emergencias.js"></script> 
-<?php
-}					?>
+<?php endif; ?>
 </body>
 </html>
