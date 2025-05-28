@@ -20,13 +20,18 @@ $(document).ready(function(){
     });
     
     $("#clave").on("keyup",function(){
-    if($(this).val().length > 0) {
-        validarkeyup(/^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,}$/,
-        $(this),$("#sclave"),"Mínimo 8 caracteres, puede incluir símbolos");
-    } else {
-        $("#sclave").text("");
-    }
-});
+        if($(this).val().length > 0) {
+            validarkeyup(/^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,}$/,
+            $(this),$("#sclave"),"Mínimo 8 caracteres, puede incluir símbolos");
+        } else {
+            $("#sclave").text("");
+        }
+    });
+    
+    // Validación CAPTCHA
+    $("#captcha").on("keypress",function(e){
+        validarkeypress(/^[A-Za-z0-9\b]*$/,e);
+    });
     
     //CONTROL DE BOTONES
     $("#entrar").on("click",function(){
@@ -37,20 +42,50 @@ $(document).ready(function(){
     });
 });
 
-//Validación de todos los campos antes del envio
+// Función para refrescar CAPTCHA
+// function refreshCaptcha() {
+//     $.ajax({
+//         url: 'comunes/generar_capcha.php', 
+//         type: 'GET',
+//         dataType: 'text',
+//         success: function(code) {
+//             $("#captcha-code").text(code.trim());
+//             $("#captcha").val('');
+//             $("#scaptcha").text('');
+//         },
+//         error: function(xhr, status, error) {
+//             console.error("Error al actualizar CAPTCHA:", error);
+//             muestraMensaje("Error al actualizar CAPTCHA. Por favor recarga la página.");
+//         }
+//     });
+// }
+
+// Validación de CAPTCHA mejorada
 function validarenvio(){
+    let valido = true;
+    
+    // Validar email
     if(validarkeyup(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,$("#email"),
         $("#semail"),"Ingrese un email válido")==0){
         muestraMensaje("El email debe ser válido");    
-        return false;                    
+        valido = false;                    
     }    
-    else if(validarkeyup(/^[A-Za-z0-9]{7,15}$/,
-        $("#clave"),$("#sclave"),"Solo letras y numeros entre 7 y 15 caracteres")==0){
-        muestraMensaje("Contraseña<br/>Solo letras y numeros entre 7 y 15 caracteres");
-        return false;
+    
+    // Validar contraseña
+    else if(validarkeyup(/^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,}$/,
+        $("#clave"),$("#sclave"),"Mínimo 8 caracteres, puede incluir símbolos")==0){
+        muestraMensaje("Contraseña<br/>Mínimo 8 caracteres, puede incluir símbolos");
+        valido = false;
     }
     
-    return true;
+    // Validar CAPTCHA
+    else if($("#captcha").val().trim().length !== 6) {
+        $("#scaptcha").text("El CAPTCHA debe tener exactamente 6 caracteres");
+        muestraMensaje("Por favor ingrese el código CAPTCHA correctamente");
+        valido = false;
+    }
+    
+    return valido;
 }
 
 //Funcion que muestra el modal con un mensaje

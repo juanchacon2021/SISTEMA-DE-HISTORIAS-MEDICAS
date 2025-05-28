@@ -18,5 +18,21 @@ class verifica {
     function tiene_permiso($modulo) {
         return isset($_SESSION['permisos']) && in_array($modulo, $_SESSION['permisos']);
     }
+    
+    // Función para validar el CAPTCHA (opcional, ya que se hace en el controlador)
+    function validar_captcha($captcha_ingresado) {
+        if(empty($_SESSION)) {
+            session_start();
+        }
+        
+        if(!isset($_SESSION['captcha_code'])) {
+            return false;
+        }
+        
+        $resultado = strtolower($captcha_ingresado) === strtolower($_SESSION['captcha_code']);
+        unset($_SESSION['captcha_code']);
+        
+        return $resultado;
+    }
 }
 ?>

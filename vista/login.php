@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <?php 
     require_once("comunes/encabezado.php"); 
+    // Generar código CAPTCHA
+    $captcha_code = substr(md5(uniqid(rand(), true)), 0, 6);
+    $_SESSION['captcha_code'] = $captcha_code;
 ?>
 <?php require_once("comunes/modal.php"); ?>
 <!--Div oculta para colocar el mensaje a mostrar-->
@@ -12,6 +15,33 @@
 ?>    
 </div>
 <head>
+    <style>
+        .captcha-container {
+            margin: 50px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .captcha-code {
+            background: #f0f0f0;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            user-select: none;
+            flex-grow: 1;
+            text-align: center;
+        }
+        /* .refresh-captcha {
+            cursor: pointer;
+            color: #007bff;
+            margin-left: 10rem;
+            
+        } */
+        /* .refresh-captcha:hover {
+            text-decoration: underline;
+        } */
+    </style>
 </head>
 
 <body id="fond">
@@ -44,8 +74,19 @@
                     <span id="sclave"></span>
                 </div>
             </div>
-
             
+            <!-- CAPTCHA Section -->
+            <div class="input-div">
+                <div class="captcha-container">
+                    <div class="captcha-code" id="captcha-code"><?php echo $captcha_code; ?></div>
+                    <!-- <span class="refresh-captcha" onclick="refreshCaptcha()">↻ Actualizar</span> -->
+                </div>
+                <div class="div">
+                    <input type="text" id="captcha" class="input form-control" name="captcha" placeholder="Ingrese el código CAPTCHA">
+                    <span id="scaptcha"></span>
+                </div>
+            </div>
+
             <input id="entrar" name="btningresar" class="btn botoncito" type="submit" value="INICIAR SESION">
          </form>
       </div>
