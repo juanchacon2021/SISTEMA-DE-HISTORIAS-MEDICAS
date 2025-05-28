@@ -469,7 +469,7 @@ function cargarPermisos() {
             });
             
             // Habilitar/deshabilitar checkboxes según el rol seleccionado
-            if(rol_id == 1) { // Rol admin (todos los permisos)
+            if(rol_id == 3) { // Rol admin (todos los permisos)
                 $('.modulo-check').prop('disabled', true).prop('checked', true);
                 $('#btnGuardarPermisos').prop('disabled', true);
                 muestraMensaje('El rol Administrador tiene todos los permisos y no puede ser modificado', 'info');
@@ -483,7 +483,7 @@ function cargarPermisos() {
 
 function guardarPermisos() {
     var rol_id = $('#selectRolPermisos').val();
-    if(!rol_id || rol_id == 1) {
+    if(!rol_id || rol_id == 3) {
         muestraMensaje('Seleccione un rol válido para asignar permisos');
         return;
     }
