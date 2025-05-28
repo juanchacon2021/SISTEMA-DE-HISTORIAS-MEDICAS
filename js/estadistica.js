@@ -93,7 +93,24 @@ function enviaAjax(datos, tipo) {
                             }
                         }
                     });
-                }
+
+                         // Calcular el rango con mayor cantidad y su color
+                    const rangos = [
+                        { nombre: 'Niños (0-12)', valor: lee.distribucionEdad.Ninos, color: '#36A2EB' },
+                        { nombre: 'Adolescentes (13-17)', valor: lee.distribucionEdad.Adolescentes, color: '#FF6384' },
+                        { nombre: 'Adultos (18-64)', valor: lee.distribucionEdad.Adultos, color: '#FFCE56' },
+                        { nombre: 'Adultos Mayores (65+)', valor: lee.distribucionEdad.AdultosMayores, color: '#4BC0C0' }
+                    ];
+                    const mayor = rangos.reduce((a, b) => a.valor > b.valor ? a : b);
+                    
+                    // Mostrarlo en el elemento de la página con el color
+                    document.getElementById('rango_mayor').innerHTML =
+                        `El rango con más registros es: 
+                        <strong>${mayor.nombre} </strong>
+                        <span style="display:inline-block;width:18px;height:18px;vertical-align:middle;background:${mayor.color};border-radius:4px;margin-right:6px;"></span>
+                        con <strong>${mayor.valor}</strong> registros.`;
+
+                 }
 
                 if (tipo === "cronicos") {
                     // Gráfico de distribución por padecimiento crónico
@@ -124,6 +141,25 @@ function enviaAjax(datos, tipo) {
 							}
 						}
 					});
+                    // Calcular el padecimiento crónico con mayor cantidad
+                        const cronicos = [
+                        { nombre: 'Cardiopatía', valor: lee.distribucionCronicos.Cardiopatia, color: '#36A2EB' },
+                        { nombre: 'Hipertensión', valor: lee.distribucionCronicos.Hipertension, color: '#FF6384' },
+                        { nombre: 'Endocrinometabólico', valor: lee.distribucionCronicos.Endocrinometabolico, color: '#9966FF' },
+                        { nombre: 'Asmático', valor: lee.distribucionCronicos.Asmatico, color: '#FFCE56' },
+                        { nombre: 'Renal', valor: lee.distribucionCronicos.Renal, color: '#4BC0C0' },
+                        { nombre: 'Mental', valor: lee.distribucionCronicos.Mental, color: '#FF9F40' }
+                    ];
+                    const mayorCronico = cronicos.reduce((a, b) => a.valor > b.valor ? a : b);
+
+                    // Mostrarlo en el elemento de la página
+                                       document.getElementById('cronico_mayor').innerHTML =
+                        `El padecimiento crónico con más registros es: 
+                        <strong>${mayorCronico.nombre} </strong> 
+                        <span style="display:inline-block;width:18px;height:18px;vertical-align:middle;background:${mayorCronico.color};border-radius:4px;margin-right:6px;"></span>
+                        con <strong>${mayorCronico.valor}</strong> registros.`;
+
+                    
                 }
                 if (tipo === 'emergencias_mes') {
                     const datos = lee.datos;

@@ -38,6 +38,7 @@
             <h2 class="fw-bold text-center">Distribución por Rango de Edad</h2>
             <canvas class="mt-3" id="graficoEdad"></canvas>
           </div>
+          <p class="fw-bold text-center" id="rango_mayor"></p>
         </div>
       </div>
     </div>
@@ -57,6 +58,7 @@
             <h3 class="fw-bold text-center">Distribución por Padecimiento Crónico</h3>
             <canvas class="mt-3" id="graficoCronicos"></canvas>
           </div>
+          <p class="fw-bold text-center" id="cronico_mayor"></p>
         </div>
       </div>
     </div>
@@ -78,10 +80,7 @@
             <h2 class="fw-bold text-center">Estadisticas de emergencias al mes</h2>
             <canvas class="mt-3" id="graficolinealemergencias"></canvas>
           </div>
-          
-
-
-          
+               
 
         </div>
       </div>
