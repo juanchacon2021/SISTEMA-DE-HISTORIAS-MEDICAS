@@ -1,9 +1,13 @@
 $(document).ready(function() {
     function cargarNotificaciones() {
+        var datos = new FormData();
+        datos.append('accion', 'obtener_notificaciones');
         $.ajax({
-            url: 'controlador/notificaciones.php',
+            url: '',
             type: 'POST',
-            data: { accion: 'obtener_notificaciones' },
+            data: datos,
+            contentType: false,
+            processData: false,
             dataType: 'json',
             success: function(res) {
                 if(res.resultado === 'exito') {
@@ -22,6 +26,11 @@ $(document).ready(function() {
                     $("#listaNotificaciones").html('<div class="dropdown-item">No hay notificaciones</div>');
                     $("#notificacionCounter").hide();
                 }
+            },
+            error: function(xhr, status, error) {
+                console.log(xhr.responseText);
+                $("#listaNotificaciones").html('<div class="dropdown-item text-danger">Error al cargar notificaciones</div>');
+                $("#notificacionCounter").hide();
             }
         });
     }
