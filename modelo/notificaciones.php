@@ -8,7 +8,7 @@ class notificaciones extends datos {
         $r = array();
         try {
             $limite = intval($limite); // Seguridad: asegurarse que sea entero
-            $stmt = $co->prepare("SELECT descripcion FROM bitacora ORDER BY fecha_hora DESC LIMIT $limite");
+            $stmt = $co->prepare("SELECT descripcion FROM bitacora ORDER BY fecha_hora ASC LIMIT $limite");
             $stmt->execute();
             $r['resultado'] = 'exito';
             $r['datos'] = $stmt->fetchAll(PDO::FETCH_ASSOC);

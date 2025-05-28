@@ -1,6 +1,6 @@
-<div class="notificaciones-container position-fixed top-0 end-0 m-3">
+<div class="notificaciones-container position-fixed top-0 end-0 m-3" style="z-index: 9999;">
     <button class="btn-notificacion" id="btnMostrarNotificaciones">
-        <i class="fas fa-bell"></i>
+        <img src="img/bell.svg" alt="Campana" style="width:24px;height:24px;">
         <span id="notificacionCounter" class="badge bg-danger" style="display:none"></span>
     </button>
     <div id="notificacionesDropdown" class="dropdown-menu dropdown-menu-end" style="width: 350px; max-height: 400px; overflow-y: auto;">
