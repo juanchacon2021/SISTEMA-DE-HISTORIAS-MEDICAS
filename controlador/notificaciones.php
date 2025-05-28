@@ -1,9 +1,9 @@
 <?php
-if (!is_file("modelo/notificaciones.php")){
+if (!is_file("../modelo/notificaciones.php")){
     echo "Falta definir la clase notificaciones";
     exit;
 }
-require_once("modelo/notificaciones.php");
+require_once("../modelo/notificaciones.php");
 
 if (!empty($_POST)) {
     $o = new notificaciones();

@@ -1,5 +1,5 @@
 <?php
-require_once('modelo/datos.php');
+require_once('../modelo/datos.php');
 
 class notificaciones extends datos {
     public function obtener_notificaciones($limite = 10) {
