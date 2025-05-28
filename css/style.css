@@ -412,6 +412,11 @@ background: linear-gradient(90deg, #ff0000,#ff8080);/* W3C, IE 10+/ Edge, Firefo
 }
 
 /* Estilos para el componente de notificaciones */
+#notificacionesDropdown {
+    right: 0;
+    left: auto;
+}
+
 .notificaciones-container {
     position: relative;
 }

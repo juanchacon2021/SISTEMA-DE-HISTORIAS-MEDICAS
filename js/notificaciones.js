@@ -3,7 +3,7 @@ $(document).ready(function() {
         var datos = new FormData();
         datos.append('accion', 'obtener_notificaciones');
         $.ajax({
-            url: '',
+            url: 'controlador/notificaciones.php',
             type: 'POST',
             data: datos,
             contentType: false,
@@ -28,7 +28,6 @@ $(document).ready(function() {
                 }
             },
             error: function(xhr, status, error) {
-                console.log(xhr.responseText);
                 $("#listaNotificaciones").html('<div class="dropdown-item text-danger">Error al cargar notificaciones</div>');
                 $("#notificacionCounter").hide();
             }
