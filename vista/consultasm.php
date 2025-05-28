@@ -1,4 +1,5 @@
-<html> 
+<!DOCTYPE html>
+<html lang="es">
 <?php 
 	require_once("comunes/encabezado.php"); 
 	require_once("comunes/sidebar.php");	
@@ -379,6 +380,7 @@ Consultas
 
 <?php require_once("comunes/modal.php"); ?>
 <script type="text/javascript" src="js/consultasm.js"></script> 
+<?php endif; ?>
 </body>
 
 </html>

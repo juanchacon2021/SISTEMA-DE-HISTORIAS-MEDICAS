@@ -1,8 +1,8 @@
-<html> 
-<?php 
-	require_once("comunes/encabezado.php"); 
-	require_once("comunes/sidebar.php");	
+<?php
+require_once("comunes/encabezado.php");
+require_once("comunes/sidebar.php");
 ?>
+<html>
 <body >
 <?php 
     // Verificar permisos
@@ -86,10 +86,10 @@ Emergencias
 					   <span id="shoraingreso"></span>
 					</div>
 
-                    <div class="col-md-6">
+					<div class="col-md-6">
 					   <label class="texto-inicio font-medium" for="fechaingreso">Fecha de Ingreso</label>
 					   <input class="form-control bg-gray-200 rounded-lg border-white" type="date" id="fechaingreso" />
-					   <span id="fechaingreso"></span>
+					   <span id="sfechaingreso"></span>
 					</div>
 				</div>
 
@@ -253,6 +253,10 @@ Emergencias
 
 <?php require_once("comunes/modal.php"); ?>
 <script type="text/javascript" src="js/emergencias.js"></script> 
+<<<<<<< HEAD
+<?php endif; ?>
+=======
 
+>>>>>>> 5f7ddcf1c196efe1457e85914fcd354ffb7e8e1b
 </body>
 </html>
