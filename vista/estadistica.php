@@ -9,7 +9,7 @@
         // Si no existe $permisos, redirigir a login
         header("Location: ?pagina=login");
         exit();
-    } elseif (!in_array('Pacientes crónicos', $permisos)) {
+    } elseif (!in_array('Estadística', $permisos)) {
         // Si existe $permisos pero no tiene acceso al módulo, mostrar error 403
         http_response_code(403);
         die('<div class="container text-center py-5">
@@ -19,7 +19,7 @@
              </div>');
     } ?>
 
-<h1 class="fw-bold fs-1 text-center mt-4">Estadistica</h1>
+<h1 class="fw-bold fs-1 text-center mt-4">Estadística</h1>
 
 <div class="container mt-4" style="margin-left: 300px;">
   <div class="row align-items-stretc">
