@@ -253,10 +253,7 @@ Emergencias
 
 <?php require_once("comunes/modal.php"); ?>
 <script type="text/javascript" src="js/emergencias.js"></script> 
-<<<<<<< HEAD
-<?php endif; ?>
-=======
 
->>>>>>> 5f7ddcf1c196efe1457e85914fcd354ffb7e8e1b
+
 </body>
 </html>
