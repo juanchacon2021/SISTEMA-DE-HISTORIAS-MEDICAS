@@ -380,7 +380,10 @@ Consultas
 
 <?php require_once("comunes/modal.php"); ?>
 <script type="text/javascript" src="js/consultasm.js"></script> 
+<<<<<<< HEAD
+=======
 
+>>>>>>> 04a24d033aa7447aa9168f471d1eedccffe6ae3c
 </body>
 
 </html>

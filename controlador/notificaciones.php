@@ -1,43 +1,16 @@
 <?php
-// Verificar autenticación
-if(!isset($_SESSION['usuario'])) {
-    echo json_encode([
-        'resultado' => 'error',
-        'mensaje' => 'Usuario no autenticado'
-    ]);
+if (!is_file("modelo/notificaciones.php")){
+    echo "Falta definir la clase notificaciones";
     exit;
 }
+require_once("modelo/notificaciones.php");
 
-// Verificar que el modelo exista
-$ruta_modelo = __DIR__.'/../modelo/notificaciones.php';
-if (!file_exists($ruta_modelo)) {
-    echo json_encode([
-        'resultado' => 'error',
-        'mensaje' => 'Archivo del modelo no encontrado: '.$ruta_modelo
-    ]);
-    exit;
-}
-
-require_once($ruta_modelo);
-
-header('Content-Type: application/json');
-
-try {
+if (!empty($_POST)) {
     $o = new notificaciones();
-    
-    if(isset($_GET['accion']) && $_GET['accion'] == 'obtener_notificaciones') {
-        $resultado = $o->obtener_notificaciones();
-        echo json_encode($resultado);
+    $accion = $_POST['accion'] ?? '';
+    if ($accion == 'obtener_notificaciones') {
+        echo json_encode($o->obtener_notificaciones());
         exit;
     }
-    
-    throw new Exception("Acción no especificada o no válida");
-    
-} catch(Exception $e) {
-    error_log("Error en controlador: ".$e->getMessage());
-    echo json_encode([
-        'resultado' => 'error',
-        'mensaje' => $e->getMessage()
-    ]);
 }
 ?>
