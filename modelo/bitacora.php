@@ -93,7 +93,8 @@ class bitacora extends datos {
             'planificacion' => 5,
             'bitacora' => 11,
             'login' => 0,
-            'salida' => 0
+            'salida' => 0,
+            'usuarios' => 12
         );
         
         return $modulos[$pagina] ?? 0;
