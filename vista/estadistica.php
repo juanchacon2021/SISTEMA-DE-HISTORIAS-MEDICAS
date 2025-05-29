@@ -2,6 +2,7 @@
 <?php 
     require_once("comunes/encabezado.php"); 
     require_once("comunes/sidebar.php");    
+	require_once("comunes/notificaciones.php");
 ?>
 <body>
 <?php  // Verificar permisos
@@ -9,7 +10,7 @@
         // Si no existe $permisos, redirigir a login
         header("Location: ?pagina=login");
         exit();
-    } elseif (!in_array('Estadisticas', $permisos)) {
+    } elseif (!in_array('Estadística', $permisos)) {
         // Si existe $permisos pero no tiene acceso al módulo, mostrar error 403
         http_response_code(403);
         die('<div class="container text-center py-5">
@@ -19,7 +20,7 @@
              </div>');
     } ?>
 
-<h1 class="fw-bold fs-1 text-center mt-4">Estadistica</h1>
+<h1 class="fw-bold fs-1 text-center mt-4">Estadística</h1>
 
 <div class="container mt-4" style="margin-left: 300px;">
   <div class="row align-items-stretc">
@@ -38,6 +39,7 @@
             <h2 class="fw-bold text-center">Distribución por Rango de Edad</h2>
             <canvas class="mt-3" id="graficoEdad"></canvas>
           </div>
+          <p class="fw-bold text-center" id="rango_mayor"></p>
         </div>
       </div>
     </div>
@@ -57,6 +59,7 @@
             <h3 class="fw-bold text-center">Distribución por Padecimiento Crónico</h3>
             <canvas class="mt-3" id="graficoCronicos"></canvas>
           </div>
+          <p class="fw-bold text-center" id="cronico_mayor"></p>
         </div>
       </div>
     </div>
@@ -78,10 +81,7 @@
             <h2 class="fw-bold text-center">Estadisticas de emergencias al mes</h2>
             <canvas class="mt-3" id="graficolinealemergencias"></canvas>
           </div>
-          
-
-
-          
+               
 
         </div>
       </div>

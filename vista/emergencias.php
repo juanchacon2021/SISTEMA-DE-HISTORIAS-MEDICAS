@@ -1,6 +1,7 @@
 <?php
 require_once("comunes/encabezado.php");
 require_once("comunes/sidebar.php");
+	require_once("comunes/notificaciones.php");
 ?>
 <html>
 <body >
@@ -254,9 +255,9 @@ Emergencias
 <?php require_once("comunes/modal.php"); ?>
 <script type="text/javascript" src="js/emergencias.js"></script> 
 <<<<<<< HEAD
-<?php endif; ?>
 =======
 
->>>>>>> 5f7ddcf1c196efe1457e85914fcd354ffb7e8e1b
+
+>>>>>>> 04a24d033aa7447aa9168f471d1eedccffe6ae3c
 </body>
 </html>

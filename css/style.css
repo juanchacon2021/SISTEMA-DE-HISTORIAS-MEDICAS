@@ -411,33 +411,53 @@ background: linear-gradient(90deg, #ff0000,#ff8080);/* W3C, IE 10+/ Edge, Firefo
     margin: 20px 10px;
 }
 
-/* Estilos para notificaciones */
+/* Estilos para el componente de notificaciones */
 #notificacionesDropdown {
+    right: 0;
+    left: auto;
+}
+
+.notificaciones-container {
     position: relative;
 }
 
-#contadorNotificaciones {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    font-size: 0.7rem;
-    border-radius: 50%;
-    padding: 3px 6px;
+.btn-notificacion {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    color: #6c757d;
+    padding: 0.5rem;
+    position: relative;
 }
 
-.dropdown-menu {
-    max-height: 400px;
-    overflow-y: auto;
-    width: 350px;
+.btn-notificacion:hover {
+    color: #0d6efd;
 }
 
-.dropdown-item {
-    white-space: normal;
+#notificacionCounter {
+    font-size: 0.65rem;
+    padding: 0.25rem 0.4rem;
+}
+
+.dropdown-menu .dropdown-header {
+    font-size: 0.85rem;
     padding: 0.5rem 1rem;
 }
 
-.dropdown-item div {
-    margin: 0.2rem 0;
+.dropdown-menu .dropdown-item {
+    padding: 0.75rem 1rem;
+    white-space: normal;
+}
+
+.dropdown-menu .dropdown-footer {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+}
+
+/* Efecto para notificaciones no leídas */
+.notificacion-item.unread {
+    border-left: 3px solid #0d6efd;
+    background-color: #f8f9fa;
 }
 
 /* Estilos para el módulo de planificación */
