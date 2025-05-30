@@ -2,6 +2,8 @@
 require_once('modelo/datos.php');
 
 class bitacora extends datos {
+
+    
     public static function registrar($accion, $descripcion = null) {
         if(!isset($_SESSION['usuario'])) return false;
         
