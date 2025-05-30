@@ -24,8 +24,31 @@ class jornadas extends datos {
     public function set_cedula_responsable($valor) { $this->cedula_responsable = $valor; }
     public function set_participantes($valor) { $this->participantes = $valor; }
 
-    // Métodos CRUD
+     private function validarPacientes() {
+        $total = $this->total_pacientes;
+        $masculinos = $this->pacientes_masculinos;
+        $femeninos = $this->pacientes_femeninos;
+        $embarazadas = $this->pacientes_embarazadas;
+        
+        if(($masculinos + $femeninos) != $total) {
+            throw new Exception("La suma de pacientes masculinos ($masculinos) y femeninos ($femeninos) debe ser igual al total ($total)");
+        }
+        
+        if($embarazadas > $femeninos) {
+            throw new Exception("El número de embarazadas ($embarazadas) no puede ser mayor al número de pacientes femeninos ($femeninos)");
+        }
+        
+        if($total == 0 && ($masculinos > 0 || $femeninos > 0)) {
+            throw new Exception("Si hay pacientes registrados, el total no puede ser cero");
+        }
+        
+        return true;
+    }
+
+
     public function incluir() {
+        $this->validarPacientes();
+        
         $co = $this->conecta();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
@@ -33,7 +56,6 @@ class jornadas extends datos {
         try {
             $co->beginTransaction();
             
-            // Insertar jornada
             $stmt = $co->prepare("INSERT INTO jornadas_medicas (
                 fecha_jornada, ubicacion, descripcion, total_pacientes, 
                 pacientes_masculinos, pacientes_femeninos, pacientes_embarazadas, 
@@ -57,7 +79,6 @@ class jornadas extends datos {
             
             $cod_jornada = $co->lastInsertId();
             
-            // Insertar participantes
             foreach($this->participantes as $participante) {
                 $stmt = $co->prepare("INSERT INTO participantes_jornadas (
                     cod_jornada, cedula_personal
@@ -84,6 +105,8 @@ class jornadas extends datos {
     }
     
     public function modificar() {
+        $this->validarPacientes();
+        
         $co = $this->conecta();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
@@ -91,7 +114,6 @@ class jornadas extends datos {
         try {
             $co->beginTransaction();
             
-            // Actualizar jornada
             $stmt = $co->prepare("UPDATE jornadas_medicas SET
                 fecha_jornada = :fecha,
                 ubicacion = :ubicacion,
@@ -115,10 +137,8 @@ class jornadas extends datos {
                 ':codigo' => $this->cod_jornada
             ));
             
-            // Eliminar participantes existentes
             $co->query("DELETE FROM participantes_jornadas WHERE cod_jornada = '$this->cod_jornada'");
             
-            // Insertar nuevos participantes
             foreach($this->participantes as $participante) {
                 $stmt = $co->prepare("INSERT INTO participantes_jornadas (
                     cod_jornada, cedula_personal
