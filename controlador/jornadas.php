@@ -16,9 +16,9 @@ if(is_file("vista/".$pagina.".php")){
                 echo json_encode($o->consultar());
                 break;
                 
-            case 'consultar_jornada':
-                echo json_encode($o->consultar_jornada($_POST['cod_jornada']));
-                break;
+            // case 'consultar_jornada':
+            //     echo json_encode($o->consultar_jornada($_POST['cod_jornada']));
+            //     break;
                 
             case 'incluir':
                 $o->set_fecha_jornada($_POST['fecha_jornada']);
@@ -31,6 +31,7 @@ if(is_file("vista/".$pagina.".php")){
                 $o->set_cedula_responsable($_POST['cedula_responsable']);
                 $o->set_participantes(isset($_POST['participantes']) ? $_POST['participantes'] : array());
                 echo json_encode($o->incluir());
+                bitacora::registrar('incluir', 'Incluyó una nueva jornada con ubicacion: '.$_POST['ubicacion'].' y fecha: '.$_POST['fecha_jornada']);
                 break;
                 
             case 'modificar':
@@ -45,11 +46,13 @@ if(is_file("vista/".$pagina.".php")){
                 $o->set_cedula_responsable($_POST['cedula_responsable']);
                 $o->set_participantes(isset($_POST['participantes']) ? $_POST['participantes'] : array());
                 echo json_encode($o->modificar());
+                bitacora::registrar('modificar', 'Modificó una jornada con código: '.$_POST['cod_jornada'].' y ubicacion: '.$_POST['ubicacion']);
                 break;
                 
             case 'eliminar':
                 $o->set_cod_jornada($_POST['cod_jornada']);
                 echo json_encode($o->eliminar());
+                bitacora::registrar('eliminar', 'Eliminó una jornada con código: '.$_POST['cod_jornada']);
                 break;
                 
             case 'obtener_personal':

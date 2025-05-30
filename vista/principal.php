@@ -11,10 +11,9 @@
 
     if (isset($usuario)) {
         try {
-            $conexion = (new datos())->conecta2(); // Conexión a la base de datos
+            $conexion = (new datos())->conecta2(); 
             $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            // Consulta para obtener el nombre y apellido del personal
             $stmt = $conexion->prepare("SELECT nombre FROM usuario WHERE id = :id");
             $stmt->bindParam(':id', $usuario, PDO::PARAM_INT);
             $stmt->execute();

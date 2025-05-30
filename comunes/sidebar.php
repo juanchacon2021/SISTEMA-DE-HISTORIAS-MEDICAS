@@ -104,7 +104,18 @@
                     <a href="?pagina=inventario"><span class="text-[15px] ml-4 text-lg hover:text-white">Inventario</span></a>
                 </div>
                 <?php endif; ?>
-                
+                <?php if(in_array('Estadistica', $permisos)): ?>
+                <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
+                    <img class="w-6 h-8 imagen" src="img/chart.svg" alt="">
+                    <a href="?pagina=estadistica"><span class="text-[15px] ml-4 text-lg hover:text-white">Estadísticas</span></a>
+                </div>
+                <?php endif; ?>
+                 <?php if(in_array('Bitácora', $permisos)): ?>
+                <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
+                    <img class="w-6 h-8 imagen" src="img/bitacora.svg" alt="">
+                    <a href="?pagina=bitacora"><span class="text-[15px] ml-4 text-lg hover:text-white">Bitácora</span></a>
+                </div>
+                <?php endif; ?>
                 <!-- Cerrar Sesión -->
                 <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
                     <img class="w-6 h-8 imagen" src="img/bracket.svg" alt="">

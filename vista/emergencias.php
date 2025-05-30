@@ -6,13 +6,13 @@ require_once("comunes/sidebar.php");
 <html>
 <body >
 <?php 
-    // Verificar permisos
+    
     if (!isset($permisos)) {
-        // Si no existe $permisos, redirigir a login
+       
         header("Location: ?pagina=login");
         exit();
     } elseif (!in_array('Emergencias', $permisos)) {
-        // Si existe $permisos pero no tiene acceso al módulo, mostrar error 403
+       
         http_response_code(403);
         die('<div class="container text-center py-5">
                 <h1 class="text-danger">403 - Acceso prohibido</h1>
@@ -254,10 +254,5 @@ Emergencias
 
 <?php require_once("comunes/modal.php"); ?>
 <script type="text/javascript" src="js/emergencias.js"></script> 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 04a24d033aa7447aa9168f471d1eedccffe6ae3c
 </body>
 </html>

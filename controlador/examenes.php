@@ -24,11 +24,13 @@ require_once("modelo/".$pagina.".php");
 		  elseif($accion=='eliminar'){
 			 $o->set_cod_registro($_POST['cod_registro']);
 			 echo  json_encode($o->eliminar());
+			 bitacora::registrar('eliminar', 'Eliminó un registro de examen con código: '.$_POST['cod_registro']);
 		  }
 		  elseif($accion=='incluir'){
 				$o->set_nombre_examen($_POST['nombre_examen']);
 			  $o->set_descripcion_examen($_POST['descripcion_examen']);
 				echo  json_encode($o->incluir());
+				bitacora::registrar('incluir', 'Incluyó un nuevo tipo de examen con nombre: '.$_POST['nombre_examen']);
 			  }
 		  elseif($accion=='incluir1'){
 				$o->set_cedula_h($_POST['cedula_h']);
@@ -44,6 +46,7 @@ require_once("modelo/".$pagina.".php");
 					} 
 				}
 				echo  json_encode($o->incluir1());
+				bitacora::registrar('incluir', 'Incluyó un nuevo registro de examen con cédula: '.$_POST['cedula_h'].' y examen: '.$_POST['cod_examenes1']);
 			  }
 			  elseif($accion=='modificar'){
 				$o->set_cod_registro($_POST['cod_registro']);
@@ -61,6 +64,7 @@ require_once("modelo/".$pagina.".php");
 					} 
 				}
 				echo  json_encode($o->modificar());
+				bitacora::registrar('modificar', 'Modificó un registro de examen con cédula: '.$_POST['cedula_h'].' y examen: '.$_POST['cod_examenes1']);
 			  }
 		  
 		  exit;

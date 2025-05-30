@@ -1,19 +1,20 @@
 $(document).ready(function() {
     var tabla = $('#tablaBitacora').DataTable({
         language: {
-            url: '//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json'
+            url: ''
         },
         processing: true,
-        serverSide: true,
+        serverSide: false,
         ajax: {
-            url: '',
+            url: '', 
             type: 'POST',
             data: function(d) {
                 return {
                     accion: 'consultar',
                     filtro: $('#filtroBitacora').val()
                 };
-            }
+            },
+            dataSrc: 'datos' // Especificar la propiedad que contiene los datos
         },
         columns: [
             { 

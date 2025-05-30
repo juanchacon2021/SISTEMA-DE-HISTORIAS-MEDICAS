@@ -1,8 +1,7 @@
 <?php
 
 if (!is_file("modelo/".$pagina.".php")){
-	//alli pregunte que si no es archivo se niega //con !
-	//si no existe envio mensaje y me salgo
+	
 	echo "Falta definir la clase ".$pagina;
 	exit;
 }  
@@ -29,6 +28,7 @@ require_once("modelo/".$pagina.".php");
 		  elseif($accion=='eliminar'){
 			 $o->set_cod_emergencia($_POST['cod_emergencia']);
 			 echo  json_encode($o->eliminar());
+			 bitacora::registrar('eliminar', 'Eliminó una emergencia con código: '.$_POST['cod_emergencia']);	
 		  }
 		  else{		  
 			  
@@ -42,10 +42,12 @@ require_once("modelo/".$pagina.".php");
 			  $o->set_cedula_h($_POST['cedula_h']);
 			  if($accion=='incluir'){
 				echo  json_encode($o->incluir());
+				bitacora::registrar('incluir', 'Incluyó una nueva emergencia con código: '.$_POST['cod_emergencia']);
 				
 			  }
 			  elseif($accion=='modificar'){
 				echo  json_encode($o->modificar());
+				bitacora::registrar('modificar', 'Modificó una emergencia con código: '.$_POST['cod_emergencia']);
 			  }
 		  }
 		  exit;
