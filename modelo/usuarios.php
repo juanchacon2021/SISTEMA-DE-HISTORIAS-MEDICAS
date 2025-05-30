@@ -2,7 +2,6 @@
 require_once('modelo/datos.php');
 
 class usuarios extends datos {
-    // Atributos para usuarios
     private $id;
     private $nombre;
     private $email;
@@ -10,11 +9,9 @@ class usuarios extends datos {
     private $foto_perfil;
     private $rol_id;
 
-    // Atributos para roles
     private $nombre_rol;
     private $descripcion_rol;
     
-    // Setters
     public function set_id($valor) { $this->id = $valor; }
     public function set_nombre($valor) { $this->nombre = $valor; }
     public function set_email($valor) { $this->email = $valor; }
@@ -24,7 +21,6 @@ class usuarios extends datos {
     public function set_nombre_rol($valor) { $this->nombre_rol = $valor; }
     public function set_descripcion_rol($valor) { $this->descripcion_rol = $valor; }
 
-    // Métodos CRUD para usuarios
     public function incluir_usuario() {
     $co = $this->conecta2();
     $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -108,7 +104,6 @@ class usuarios extends datos {
         $r = array();
         
         try {
-            // No permitir eliminar al usuario admin principal
             if($this->id == 3) {
                 $r['resultado'] = 'error';
                 $r['mensaje'] = 'No se puede eliminar el usuario administrador principal';
@@ -167,7 +162,6 @@ class usuarios extends datos {
         return $r;
     }
     
-    // Métodos CRUD para roles
     public function incluir_rol() {
         $co = $this->conecta2();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -202,14 +196,12 @@ class usuarios extends datos {
         $r = array();
         
         try {
-            // No permitir modificar el rol admin principal
             if($this->id == 3) {
                 $r['resultado'] = 'error';
                 $r['mensaje'] = 'No se puede modificar el rol administrador principal';
                 return $r;
             }
             
-            // Verificar si el nombre ya existe en otro rol
             if($this->nombre_rol_valido_para_edicion()) {
                 $stmt = $co->prepare("UPDATE rol SET nombre = :nombre, descripcion = :descripcion
                                     WHERE id = :id");
@@ -239,23 +231,19 @@ class usuarios extends datos {
         $r = array();
         
         try {
-            // No permitir eliminar el rol admin principal
             if($this->id == 3) {
                 $r['resultado'] = 'error';
                 $r['mensaje'] = 'No se puede eliminar el rol administrador principal';
                 return $r;
             }
             
-            // Verificar si hay usuarios con este rol
             $stmt = $co->prepare("SELECT COUNT(*) as total FROM usuario WHERE rol_id = :id");
             $stmt->execute(array(':id' => $this->id));
             $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
             
             if($resultado['total'] == 0) {
-                // Primero eliminar los permisos asociados
                 $co->query("DELETE FROM permiso WHERE rol_id = $this->id");
                 
-                // Luego eliminar el rol
                 $co->query("DELETE FROM rol WHERE id = $this->id");
                 
                 $r['resultado'] = 'eliminar';
@@ -288,7 +276,6 @@ class usuarios extends datos {
         return $r;
     }
     
-    // Métodos para permisos
     public function consultar_modulos() {
         $co = $this->conecta2();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -335,21 +322,17 @@ class usuarios extends datos {
         $r = array();
         
         try {
-            // No permitir modificar permisos del rol admin principal
             if($rol_id == 3) {
                 $r['resultado'] = 'error';
                 $r['mensaje'] = 'No se pueden modificar los permisos del rol administrador principal';
                 return $r;
             }
             
-            // Iniciar transacción
             $co->beginTransaction();
             
-            // Eliminar todos los permisos actuales del rol
             $stmt = $co->prepare("DELETE FROM permiso WHERE rol_id = :rol_id");
             $stmt->execute(array(':rol_id' => $rol_id));
             
-            // Insertar los nuevos permisos
             if(!empty($modulos)) {
                 $stmt = $co->prepare("INSERT INTO permiso (rol_id, modulo_id) VALUES (:rol_id, :modulo_id)");
                 
@@ -361,13 +344,11 @@ class usuarios extends datos {
                 }
             }
             
-            // Confirmar transacción
             $co->commit();
             
             $r['resultado'] = 'modificar';
             $r['mensaje'] = 'Permisos actualizados exitosamente';
         } catch(Exception $e) {
-            // Revertir transacción en caso de error
             $co->rollBack();
             $r['resultado'] = 'error';
             $r['mensaje'] = $e->getMessage();
@@ -375,7 +356,6 @@ class usuarios extends datos {
         return $r;
     }
     
-    // Métodos auxiliares
     public function obtener_roles_select() {
         $co = $this->conecta2();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -393,7 +373,6 @@ class usuarios extends datos {
         return $r;
     }
     
-    // Métodos de validación
     private function existe_email($email) {
         $co = $this->conecta2();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

@@ -2,14 +2,11 @@
 require_once('modelo/datos.php');
 
 class bitacora extends datos {
-    // Método para registrar acciones en la bitácora
     public static function registrar($accion, $descripcion = null) {
         if(!isset($_SESSION['usuario'])) return false;
         
-        // Crear instancia para acceder a métodos no estáticos
         $obj = new self();
-        $co = $obj->conecta2(); // Ahora llamamos al método de instancia correctamente
-        
+        $co = $obj->conecta2(); 
         if(!$co) return false;
         
         try {
@@ -37,7 +34,6 @@ class bitacora extends datos {
         }
     }
     
-    // Método para consultar registros de bitácora
     public static function consultar($filtro = '', $limit = 100) {
         $obj = new self();
         $co = $obj->conecta2();
@@ -77,7 +73,6 @@ class bitacora extends datos {
         }
     }
     
-    // Mapeo de páginas a módulos
     private static function mapearModulo($pagina) {
         $modulos = array(
             'principal' => 0,
@@ -94,7 +89,8 @@ class bitacora extends datos {
             'bitacora' => 11,
             'login' => 0,
             'salida' => 0,
-            'usuarios' => 12
+            'usuarios' => 12,
+            'estadistica' => 13
         );
         
         return $modulos[$pagina] ?? 0;

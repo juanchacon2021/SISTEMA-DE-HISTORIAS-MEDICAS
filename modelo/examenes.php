@@ -79,9 +79,7 @@ class examenes extends datos{
 	function listadopacientes(){
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$r = array(); // en este arreglo
-			// se enviara la respuesta a la solicitud y el
-			// contenido de la respuesta
+		$r = array();
 		try{
 			$resultado = $co->query("Select * from historias");
 			$respuesta = '';
@@ -119,9 +117,7 @@ class examenes extends datos{
 	function listadoexamenes(){
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$r = array(); // en este arreglo
-			// se enviara la respuesta a la solicitud y el
-			// contenido de la respuesta
+		$r = array();
 		try{
 			$resultado = $co->query("Select * from examenes");
 			$respuesta = '';
@@ -164,7 +160,6 @@ class examenes extends datos{
 			 
 			$co = $this->conecta();
 			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			//2 Se ejecuta el sql
 			try {
 					$co->query("Insert into examenes(
 						

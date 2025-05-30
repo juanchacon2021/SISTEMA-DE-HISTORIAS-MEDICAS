@@ -5,13 +5,11 @@
 	require_once("comunes/notificaciones.php");
 ?>
 <body>
-<?php  // Verificar permisos
+<?php  
     if (!isset($permisos)) {
-        // Si no existe $permisos, redirigir a login
         header("Location: ?pagina=login");
         exit();
-    } elseif (!in_array('Estadística', $permisos)) {
-        // Si existe $permisos pero no tiene acceso al módulo, mostrar error 403
+    } elseif (!in_array('Estadistica', $permisos)) {
         http_response_code(403);
         die('<div class="container text-center py-5">
                 <h1 class="text-danger">403 - Acceso prohibido</h1>
@@ -39,6 +37,7 @@
             <h2 class="fw-bold text-center">Distribución por Rango de Edad</h2>
             <canvas class="mt-3" id="graficoEdad"></canvas>
           </div>
+          <p class="fw-bold text-center" id="rango_mayor"></p>
         </div>
       </div>
     </div>
@@ -58,6 +57,7 @@
             <h3 class="fw-bold text-center">Distribución por Padecimiento Crónico</h3>
             <canvas class="mt-3" id="graficoCronicos"></canvas>
           </div>
+          <p class="fw-bold text-center" id="cronico_mayor"></p>
         </div>
       </div>
     </div>
@@ -65,48 +65,100 @@
 
   <div class="row align-items-stretc">
     <!-- Tarjeta 1 -->
-    <div class="col-md-5 mt-4">
-      <div class="h-100 border border-secondary p-4 rounded shadow-sm">
-        <h1 class="fw-bold fs-3">Información sobre las emergencias</h1>
+        <div class="col-md-5 mt-4">
+        <div class="h-100 border border-secondary p-4 rounded shadow-sm">
+            <h1 class="fw-bold fs-3">Información sobre las emergencias</h1>
 
-        <div>
-          <h2 class="fw-bold mt-3">
-            Número total de emergencias registradas: 
-            <span id="total_emergencias">...</span>
-          </h2>
+            <div>
+                <h2 class="fw-bold mt-3">
+                    Número total de emergencias registradas: 
+                    <span id="total_emergencias">...</span>
+                </h2>
 
-          <div class="mt-4">
-            <h2 class="fw-bold text-center">Estadisticas de emergencias al mes</h2>
-            <canvas class="mt-3" id="graficolinealemergencias"></canvas>
-          </div>
-          
-
-
-          
-
+                <div class="mt-4">
+                    <h2 class="fw-bold text-center">Estadisticas de emergencias al mes</h2>
+                    
+                    <!-- Selectores de mes y año -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="selectMes" class="form-label">Mes:</label>
+                            <select id="selectMes" class="form-select">
+                                <option value="1">Enero</option>
+                                <option value="2">Febrero</option>
+                                <option value="3">Marzo</option>
+                                <option value="4">Abril</option>
+                                <option value="5">Mayo</option>
+                                <option value="6">Junio</option>
+                                <option value="7">Julio</option>
+                                <option value="8">Agosto</option>
+                                <option value="9">Septiembre</option>
+                                <option value="10">Octubre</option>
+                                <option value="11">Noviembre</option>
+                                <option value="12">Diciembre</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="selectAnio" class="form-label">Año:</label>
+                          <input id="selectAnio" class="form-control" type="number" min="1900" max="2100" value="<?php echo date('Y'); ?>">
+                      </div>
+                    </div>
+                    
+                    <button id="btnActualizarGrafico" class="btn btn-primary mb-3">Actualizar Gráfico</button>
+                    
+                    <canvas class="mt-3" id="graficolinealemergencias"></canvas>
+                    <p id="mes_mayor_emergencias"></p>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
     <!-- Tarjeta 2 -->
     <div class="col-md-5 mt-4">
-      <div class="h-100 border border-secondary p-4 rounded shadow-sm">
-        <h1 class="fw-bold fs-3">Información sobre las consultas</h1>
+  <div class="h-100 border border-secondary p-4 rounded shadow-sm">
+    <h1 class="fw-bold fs-3">Información sobre las consultas</h1>
 
-        <div>
-          <h2 class="fw-bold mt-3">
-            Número total de consultas registradas: 
-            <span id="total_consultas">...</span>
-          </h2>
+    <div>
+      <h2 class="fw-bold mt-3">
+        Número total de consultas registradas: 
+        <span id="total_consultas">...</span>
+      </h2>
 
-          <div class="mt-4">
-            <h3 class="fw-bold text-center">Estadisticas de consultas al mes</h3>
-            <canvas class="mt-3" id="graficolinealconsultas"></canvas>
+      <div class="mt-4">
+        <h3 class="fw-bold text-center">Estadísticas de consultas al mes</h3>
+        
+        <!-- Selectores de mes y año para consultas -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="selectMesConsultas" class="form-label">Mes:</label>
+            <select id="selectMesConsultas" class="form-select">
+              <option value="1">Enero</option>
+              <option value="2">Febrero</option>
+              <option value="3">Marzo</option>
+              <option value="4">Abril</option>
+              <option value="5">Mayo</option>
+              <option value="6">Junio</option>
+              <option value="7">Julio</option>
+              <option value="8">Agosto</option>
+              <option value="9">Septiembre</option>
+              <option value="10">Octubre</option>
+              <option value="11">Noviembre</option>
+              <option value="12">Diciembre</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="selectAnioConsultas" class="form-label">Año:</label>
+            <input id="selectAnioConsultas" class="form-control" type="number" min="1900" max="2100" value="<?php echo date('Y'); ?>">
           </div>
         </div>
+        
+        <button id="btnActualizarGraficoConsultas" class="btn btn-primary mb-3">Actualizar Gráfico</button>
+        
+        <canvas class="mt-3" id="graficolinealconsultas"></canvas>
+        <p id="mes_mayor_consultas"></p>
       </div>
     </div>
   </div>
+</div>
 </div>
 
 

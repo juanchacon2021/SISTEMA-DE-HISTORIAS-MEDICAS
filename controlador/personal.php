@@ -15,6 +15,7 @@ require_once("modelo/".$pagina.".php");
 		  elseif($accion=='eliminar'){
 			 $o->set_cedula_personal($_POST['cedula_personal']);
 			 echo  json_encode($o->eliminar());
+			 bitacora::registrar('eliminar', 'Eliminó un personal con cédula: '.$_POST['cedula_personal']);
 		  }
 		  else{		  
 			  $o->set_cedula_personal($_POST['cedula_personal']);
@@ -26,9 +27,11 @@ require_once("modelo/".$pagina.".php");
 			  $o->set_clave($_POST['clave']);
 			  if($accion=='incluir'){
 				echo  json_encode($o->incluir());
+				bitacora::registrar('incluir', 'Incluyó un nuevo personal con cédula: '.$_POST['cedula_personal']);
 			  }
 			  elseif($accion=='modificar'){
 				echo  json_encode($o->modificar());
+				bitacora::registrar('modificar', 'Modificó un personal con cédula: '.$_POST['cedula_personal']);
 			  }
 		  }
 		  exit;

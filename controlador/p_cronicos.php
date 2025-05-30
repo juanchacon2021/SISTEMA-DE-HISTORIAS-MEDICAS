@@ -1,8 +1,6 @@
 <?php
 
 if (!is_file("modelo/".$pagina.".php")){
-	//alli pregunte que si no es archivo se niega //con !
-	//si no existe envio mensaje y me salgo
 	echo "Falta definir la clase ".$pagina;
 	exit;
 }  
@@ -25,6 +23,7 @@ require_once("modelo/".$pagina.".php");
 		  elseif($accion=='eliminar'){
 			 $o->set_cod_cronico($_POST['cod_cronico']);
 			 echo  json_encode($o->eliminar());
+			 bitacora::registrar('eliminar', 'Eliminó un registro de patología crónica con código: '.$_POST['cod_cronico']);
 		  }
 		  else{		  
 			  
@@ -35,10 +34,12 @@ require_once("modelo/".$pagina.".php");
 			  $o->set_cedula_h($_POST['cedula_h']);
 			  if($accion=='incluir'){
 				echo  json_encode($o->incluir());
+				bitacora::registrar('incluir', 'Incluyó un nuevo registro de patología crónica con cédula: '.$_POST['cedula_h'].' y patología: '.$_POST['patologia_cronica']);
 				
 			  }
 			  elseif($accion=='modificar'){
 				echo  json_encode($o->modificar());
+				bitacora::registrar('modificar', 'Modificó un registro de patología crónica con código: '.$_POST['cod_cronico']);
 			  }
 		  }
 		  exit;

@@ -10,7 +10,6 @@ if (is_file("modelo/verifica.php")) {
     require_once("modelo/verifica.php");    
     $v = new verifica();
     if ($pagina == 'salida') {
-        // Registrar cierre de sesión
         if(isset($_SESSION['usuario'])) {
             require_once("modelo/bitacora.php");
             bitacora::registrar('Cierre de sesión', 'Usuario cerró sesión');
@@ -19,7 +18,6 @@ if (is_file("modelo/verifica.php")) {
     } else {
         $nivel = $v->leesesion();
         
-        // Registrar acceso a la página
         if($nivel && !in_array($pagina, ['login', 'bitacora'])) {
             require_once("modelo/bitacora.php");
             

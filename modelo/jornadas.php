@@ -2,7 +2,6 @@
 require_once('modelo/datos.php');
 
 class jornadas extends datos {
-    // Atributos
     private $cod_jornada;
     private $fecha_jornada;
     private $ubicacion;
@@ -14,7 +13,6 @@ class jornadas extends datos {
     private $cedula_responsable;
     private $participantes = array();
     
-    // Setters
     public function set_cod_jornada($valor) { $this->cod_jornada = $valor; }
     public function set_fecha_jornada($valor) { $this->fecha_jornada = $valor; }
     public function set_ubicacion($valor) { $this->ubicacion = $valor; }
@@ -193,39 +191,39 @@ class jornadas extends datos {
         return $r;
     }
     
-    public function consultar_jornada($codigo) {
-        $co = $this->conecta();
-        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $r = array();
+    // public function consultar_jornada($codigo) {
+    //     $co = $this->conecta();
+    //     $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    //     $r = array();
         
-        try {
-            // Datos de la jornada
-            $stmt = $co->prepare("SELECT * FROM jornadas_medicas WHERE cod_jornada = :codigo");
-            $stmt->execute(array(':codigo' => $codigo));
-            $jornada = $stmt->fetch(PDO::FETCH_ASSOC);
+    //     try {
+    //         // Datos de la jornada
+    //         $stmt = $co->prepare("SELECT * FROM jornadas_medicas WHERE cod_jornada = :codigo");
+    //         $stmt->execute(array(':codigo' => $codigo));
+    //         $jornada = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            if($jornada) {
-                // Participantes
-                $stmt = $co->prepare("SELECT pj.cedula_personal, CONCAT(p.nombre, ' ', p.apellido) as nombre_completo
-                                    FROM participantes_jornadas pj
-                                    JOIN personal p ON pj.cedula_personal = p.cedula_personal
-                                    WHERE pj.cod_jornada = :codigo");
-                $stmt->execute(array(':codigo' => $codigo));
-                $participantes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    //         if($jornada) {
+    //             // Participantes
+    //             $stmt = $co->prepare("SELECT pj.cedula_personal, CONCAT(p.nombre, ' ', p.apellido) as nombre_completo
+    //                                 FROM participantes_jornadas pj
+    //                                 JOIN personal p ON pj.cedula_personal = p.cedula_personal
+    //                                 WHERE pj.cod_jornada = :codigo");
+    //             $stmt->execute(array(':codigo' => $codigo));
+    //             $participantes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 
-                $r['resultado'] = 'consultar';
-                $r['jornada'] = $jornada;
-                $r['participantes'] = $participantes;
-            } else {
-                $r['resultado'] = 'error';
-                $r['mensaje'] = 'Jornada no encontrada';
-            }
-        } catch(Exception $e) {
-            $r['resultado'] = 'error';
-            $r['mensaje'] = $e->getMessage();
-        }
-        return $r;
-    }
+    //             $r['resultado'] = 'consultar';
+    //             $r['jornada'] = $jornada;
+    //             $r['participantes'] = $participantes;
+    //         } else {
+    //             $r['resultado'] = 'error';
+    //             $r['mensaje'] = 'Jornada no encontrada';
+    //         }
+    //     } catch(Exception $e) {
+    //         $r['resultado'] = 'error';
+    //         $r['mensaje'] = $e->getMessage();
+    //     }
+    //     return $r;
+    // }
     
     public function obtener_personal() {
         $co = $this->conecta();

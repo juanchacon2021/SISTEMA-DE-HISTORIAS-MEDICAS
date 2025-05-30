@@ -8,21 +8,18 @@ class planificacion extends datos {
     private $id_usuario;
     private $ruta_imagen;
 
-    // Setters
     public function set_cod_pub($valor) { $this->cod_pub = $valor; }
     public function set_contenido($valor) { $this->contenido = $valor; }
     public function set_imagen($valor) { $this->imagen = $valor; }
     public function set_id_usuario($valor) { $this->id_usuario = $valor; }
     public function set_ruta_imagen($valor) { $this->ruta_imagen = $valor; }
 
-    // Getters
     public function get_cod_pub() { return $this->cod_pub; }
     public function get_contenido() { return $this->contenido; }
     public function get_imagen() { return $this->imagen; }
     public function get_id_usuario() { return $this->id_usuario; }
     public function get_ruta_imagen() { return $this->ruta_imagen; }
 
-    // Métodos CRUD
     public function consultar_publicaciones() {
     $co = $this->conecta();
     $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -166,7 +163,6 @@ class planificacion extends datos {
                 }
             }
             
-            // Actualizar publicación
             $co->query("
                 UPDATE feed SET
                     contenido = '$this->contenido',

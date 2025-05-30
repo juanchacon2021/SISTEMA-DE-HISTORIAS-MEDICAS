@@ -14,12 +14,10 @@ class verifica {
         header("Location: . ");
     }
     
-    // Función opcional para verificar permisos desde la sesión
     function tiene_permiso($modulo) {
         return isset($_SESSION['permisos']) && in_array($modulo, $_SESSION['permisos']);
     }
     
-    // Función para validar el CAPTCHA (opcional, ya que se hace en el controlador)
     function validar_captcha($captcha_ingresado) {
         if(empty($_SESSION)) {
             session_start();

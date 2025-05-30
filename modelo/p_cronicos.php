@@ -59,17 +59,17 @@ class p_cronicos extends datos{
 		function listadopacientes() {
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$r = array(); // En este arreglo se enviará la respuesta a la solicitud
+		$r = array(); 
 		try {
 			$sql = "SELECT * FROM historias";
 			$stmt = $co->prepare($sql);
 			$stmt->execute();
 			$datos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			$r['resultado'] = 'listadopacientes';
-			$r['datos'] = $datos ? $datos : array(); // Devuelve los datos o un arreglo vacío
+			$r['datos'] = $datos ? $datos : array(); 
 		} catch (Exception $e) {
 			$r['resultado'] = 'error';
-			$r['mensaje'] = $e->getMessage(); // Devuelve el mensaje de error en caso de excepción
+			$r['mensaje'] = $e->getMessage(); 
 		}
 		return $r;
 	}

@@ -7,16 +7,16 @@ if (!is_file("modelo/".$pagina.".php")){
 require_once("modelo/".$pagina.".php");  
 
 if(is_file("vista/".$pagina.".php")) {
-    // Instanciamos el objeto fuera del if POST
+    
     $o = new planificacion();
     
     if(!empty($_POST)){
-        // Asignar valores
+       
         if(isset($_POST['cod_pub'])) $o->set_cod_pub($_POST['cod_pub']);
         if(isset($_POST['contenido'])) $o->set_contenido($_POST['contenido']);
         if(isset($_FILES['imagen'])) $o->set_imagen($_FILES['imagen']);
         
-        $o->set_id_usuario($_SESSION['usuario']); // Usuario actual
+        $o->set_id_usuario($_SESSION['usuario']);
         
         $accion = $_POST['accion'];
 
@@ -29,14 +29,15 @@ if(is_file("vista/".$pagina.".php")) {
                 exit;
             case 'incluir_publicacion':
                 echo json_encode($o->incluir());
-                bitacora::registrar('Registrar', 'Se ha registrado una publicación');
+                bitacora::registrar('Registrar', 'Se ha registrado una publicación con codigo: '.$o->get_cod_pub());
+                
                 exit;
             case 'modificar_publicacion':
                 echo json_encode($o->modificar());
-                bitacora::registrar('Modificar', 'Se ha modificado una publicación');
+                bitacora::registrar('Modificar', 'Se ha modificado una publicación con codigo: '.$o->get_cod_pub());
                 exit;
             case 'eliminar_publicacion':
-                // Verificar propiedad primero
+                
                 $co = $o->conecta();
                 $verificar = $co->query("SELECT id_usuario FROM feed WHERE cod_pub = '".$o->get_cod_pub()."'");
                 $publicacion = $verificar->fetch(PDO::FETCH_ASSOC);
@@ -50,7 +51,7 @@ if(is_file("vista/".$pagina.".php")) {
                 }
                 
                 echo json_encode($o->eliminar());
-                bitacora::registrar('Eliminar', 'Se ha eliminado una publicación');
+                bitacora::registrar('Eliminar', 'Se ha eliminado una publicación con codigo: '.$o->get_cod_pub());
                 exit;
         }
     }

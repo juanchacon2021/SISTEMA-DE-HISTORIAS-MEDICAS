@@ -19,13 +19,12 @@ class historias extends datos{
 	private $transsanguineo;
 	private $psicosocial;
 
-	// antcEDENTES
 	private $antc_madre;
 	private $antc_padre;
 	private $antc_hermano;
 
 	 function __construct() {
-		$this->conexion = $this->conecta(); // Initialize the conexion property
+		$this->conexion = $this->conecta(); 
 	}
 	function set_cedula_historia($valor){
 		$this->cedula_historia = $valor; 
@@ -91,7 +90,6 @@ class historias extends datos{
 		$this->psicosocial = $valor;
 	}
 	
-	// antcEDENTES
 
 	function set_antc_madre($valor){
 		$this->antc_madre = $valor;
@@ -106,7 +104,6 @@ class historias extends datos{
 	}
 	
 	
-	//ahora la misma cosa pero para leer, es decir get
 	
 	function get_cedula_historia(){
 		return $this->cedula_historia;
@@ -172,7 +169,6 @@ class historias extends datos{
 		$this->psicosocial = $valor;
 	}
 
-	// antcEDENTES	
 	
 	function get_antc_madre($valor){
 		$this->antc_madre = $valor;
@@ -192,10 +188,8 @@ class historias extends datos{
 		  	$co = $this->conecta();
 		  	$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		  	try {
-				// Aqui inicia la transaccion
 				$co->beginTransaction();
 			
-				// Aqui hice la primera consulta INSERT
 				$stmt1 = $co->prepare("INSERT INTO historias(
 					cedula_historia, apellido, nombre, fecha_nac, edad, telefono, estadocivil, direccion, ocupacion, hda, habtoxico,
 					alergias, quirurgico, transsanguineo, alergias_med, psicosocial, antc_madre, antc_padre, antc_hermano
@@ -227,7 +221,6 @@ class historias extends datos{
 				]);
 			
 			
-				// esto es para confirmar la transaccion
 				$co->commit();
 
 				return ["resultado" => "incluir", "mensaje" => "Registro Incluido"];

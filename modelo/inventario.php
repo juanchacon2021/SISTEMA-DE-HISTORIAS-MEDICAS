@@ -66,7 +66,6 @@ class inventario extends datos {
         $r = array();
         
         try {
-            // Consulta modificada para obtener el usuario desde la BD seguridad
             $resultado = $co->query("SELECT 
                     t.*, 
                     u.nombre as nombre_usuario,
@@ -127,7 +126,6 @@ class inventario extends datos {
         try {
             $co->beginTransaction();
             
-            // Insertar medicamento (igual que antes)
             $co->query("INSERT INTO medicamentos(
                 nombre, descripcion, cantidad, unidad_medida, 
                 fecha_vencimiento, lote, proveedor
@@ -139,7 +137,6 @@ class inventario extends datos {
             
             $cod_medicamento = $co->lastInsertId();
             
-            // Registrar transacción (cambiando cedula_p por id_usuario)
             $co->query("INSERT INTO transaccion(
                 tipo_transaccion, fecha, hora, id_usuario
             ) VALUES(
@@ -148,7 +145,6 @@ class inventario extends datos {
             
             $cod_transaccion = $co->lastInsertId();
             
-            // Registrar insumo (igual que antes)
             $co->query("INSERT INTO insumos(
                 cod_transaccion, cod_medicamento, cantidad
             ) VALUES(
@@ -178,7 +174,6 @@ class inventario extends datos {
                 
                 $co->beginTransaction();
                 
-                // Actualizar medicamento (igual que antes)
                 $co->query("UPDATE medicamentos SET
                     nombre = '$this->nombre',
                     descripcion = '$this->descripcion',
@@ -193,7 +188,7 @@ class inventario extends datos {
                     $diferencia = $this->cantidad - $cant_anterior;
                     $tipo = $diferencia > 0 ? 'ajuste_positivo' : 'ajuste_negativo';
                     
-                    // Cambiando cedula_p por id_usuario
+                
                     $co->query("INSERT INTO transaccion(
                         tipo_transaccion, fecha, hora, id_usuario
                     ) VALUES(
@@ -241,7 +236,6 @@ class inventario extends datos {
                 $co->prepare("DELETE FROM medicamentos WHERE cod_medicamento = ?")
                 ->execute([$this->cod_medicamento]);
 
-                // Registrar transacción (cambiando cedula_p por id_usuario)
                 $co->query("INSERT INTO transaccion(
                     tipo_transaccion, fecha, hora, id_usuario
                 ) VALUES(
