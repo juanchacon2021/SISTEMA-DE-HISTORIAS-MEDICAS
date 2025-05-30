@@ -13,7 +13,6 @@ class personal extends datos{
 	private $correo;
 	private $telefono;
 	private $cargo;
-	private $clave;
 	
 	
 	
@@ -43,9 +42,6 @@ class personal extends datos{
 		$this->cargo = $valor;
 	}
 
-	function set_clave($valor){
-		$this->clave = $valor;
-	}
 	
 	
 	function get_cedula_personal(){
@@ -72,84 +68,75 @@ class personal extends datos{
 		return $this->cargo;
 	}
 
-	function get_clave(){
-		return $this->clave;
-	}
 	
 	
 	
 	function incluir(){
-		
-		$r = array();
-		if(!$this->existe($this->cedula_personal)){
-			
-			$co = $this->conecta();
-			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		
-			try {
-					$co->query("Insert into personal(
-						cedula_personal,
-						apellido,
-						nombre,
-						correo,
-						telefono,
-						cargo,
-						clave
-						)
-						Values(
-						'$this->cedula_personal',
-						'$this->apellido',
-						'$this->nombre',
-						'$this->correo',
-						'$this->telefono',
-						'$this->cargo',
-						'$this->clave'
-						)");
-						$r['resultado'] = 'incluir';
-			            $r['mensaje'] =  'Registro Incluido';
-			} catch(Exception $e) {
-				$r['resultado'] = 'error';
-			    $r['mensaje'] =  $e->getMessage();
-			}
-		}
-		else{
-			$r['resultado'] = 'incluir';
-			$r['mensaje'] =  'Ya existe la cedula';
-		}
-		return $r;
-		
-	}
+        $r = array();
+        if(!$this->existe($this->cedula_personal)){
+            $co = $this->conecta();
+            $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        
+            try {
+                $co->query("Insert into personal(
+                    cedula_personal,
+                    apellido,
+                    nombre,
+                    correo,
+                    telefono,
+                    cargo
+                    )
+                    Values(
+                    '$this->cedula_personal',
+                    '$this->apellido',
+                    '$this->nombre',
+                    '$this->correo',
+                    '$this->telefono',
+                    '$this->cargo'
+                    )");
+                $r['resultado'] = 'incluir';
+                $r['mensaje'] = 'Registro Incluido';
+            } catch(Exception $e) {
+                $r['resultado'] = 'error';
+                $r['mensaje'] = $e->getMessage();
+            }
+        }
+        else{
+            $r['resultado'] = 'incluir';
+            $r['mensaje'] = 'Ya existe la cedula';
+        }
+        return $r;
+    }
 	
 	function modificar(){
-		$co = $this->conecta();
-		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$r = array();
-		if($this->existe($this->cedula_personal)){
-			try {
-					$co->query("Update personal set 
-					    cedula_personal = '$this->cedula_personal',
-						apellido = '$this->apellido',
-						nombre = '$this->nombre',
-						correo = '$this->correo',
-						telefono = '$this->telefono',
-						cargo = '$this->cargo',
-						clave = '$this->clave'
-						where
-						cedula_personal = '$this->cedula_personal'
-						");
-						$r['resultado'] = 'modificar';
-			            $r['mensaje'] =  'Registro Modificado';
-			} catch(Exception $e) {
-				$r['resultado'] = 'error';
-			    $r['mensaje'] =  $e->getMessage();
-			}
-		}
-		else{
-			$r['resultado'] = 'modificar';
-			$r['mensaje'] =  'Cedula no registrada';
-		}
-		return $r;
-	}
+        $co = $this->conecta();
+        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $r = array();
+        if($this->existe($this->cedula_personal)){
+            try {
+                $co->query("Update personal set 
+                    cedula_personal = '$this->cedula_personal',
+                    apellido = '$this->apellido',
+                    nombre = '$this->nombre',
+                    correo = '$this->correo',
+                    telefono = '$this->telefono',
+                    cargo = '$this->cargo'
+                    where
+                    cedula_personal = '$this->cedula_personal'
+                    ");
+                $r['resultado'] = 'modificar';
+                $r['mensaje'] = 'Registro Modificado';
+            } catch(Exception $e) {
+                $r['resultado'] = 'error';
+                $r['mensaje'] = $e->getMessage();
+            }
+        }
+        else{
+            $r['resultado'] = 'modificar';
+            $r['mensaje'] = 'Cedula no registrada';
+        }
+        return $r;
+    }
 	
 	function eliminar(){
 		$co = $this->conecta();

@@ -24,7 +24,6 @@ require_once("modelo/".$pagina.".php");
 			  $o->set_correo($_POST['correo']);
 			  $o->set_telefono($_POST['telefono']);
 			  $o->set_cargo($_POST['cargo']);
-			  $o->set_clave($_POST['clave']);
 			  if($accion=='incluir'){
 				echo  json_encode($o->incluir());
 				bitacora::registrar('incluir', 'Incluyó un nuevo personal con cédula: '.$_POST['cedula_personal']);
