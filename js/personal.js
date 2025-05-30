@@ -78,14 +78,6 @@ $(document).ready(function () {
         validarkeyup(/^\d{11}$/, $(this), $("#stelefono"), "Formato del teléfono incorrecto");
     });
 
-    // Validación para la clave (ejemplo con al menos 8 caracteres, una mayúscula, una minúscula y un número)
-    $("#clave").on("keypress", function (e) {
-        validarkeypress(/^[a-zA-Z0-9]*$/, e); // Corrected regex for keypress validation
-    });
-
-    $("#clave").on("keyup", function () {
-        validarkeyup(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, $(this), $("#sclave"), "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número");
-    });
 
     // FIN DE VALIDACION DE DATOS
 
@@ -100,7 +92,6 @@ $(document).ready(function () {
                 datos.append("correo", $("#correo").val());
                 datos.append("telefono", $("#telefono").val());
                 datos.append("cargo", $("#cargo").val());
-                datos.append("clave", $("#clave").val());
                 enviaAjax(datos);
             }
         } else if ($(this).text() == "MODIFICAR") {
@@ -113,7 +104,6 @@ $(document).ready(function () {
                 datos.append("correo", $("#correo").val());
                 datos.append("telefono", $("#telefono").val());
                 datos.append("cargo", $("#cargo").val());
-                datos.append("clave", $("#clave").val());
                 enviaAjax(datos);
             }
         }
@@ -153,11 +143,6 @@ function validarenvio(){
 	else if(validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
 		$("#nombre"),$("#snombre"),"Solo letras  entre 3 y 30 caracteres")==0){
 		muestraMensaje("nombre <br/>Solo letras  entre 3 y 30 caracteres");
-		return false;
-	}
-	else if(validarkeyup(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
-		$("#clave"),$("#sclave"),"La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número")==0){
-		muestraMensaje("La clave no cumple con el formato");
 		return false;
 	}
 	
@@ -228,99 +213,95 @@ function pone(pos,accion){
 	$("#correo").val($(linea).find("td:eq(4)").text());
 	$("#telefono").val($(linea).find("td:eq(5)").text());
 	$("#cargo").val($(linea).find("td:eq(6)").text());
-	$("#clave").val(accion === 0 || accion === 1 ? '**********' : $(linea).find("td:eq(7)").text());
 	
 	$("#modal1").modal("show");
 }
 
 
 function enviaAjax(datos) {
-	$.ajax({
-	  async: true,
-	  url: "",
-	  type: "POST",
-	  contentType: false,
-	  data: datos,
-	  processData: false,
-	  cache: false,
-	  beforeSend: function () {},
-	  timeout: 10000, 
-	  success: function (respuesta) {
-	  console.log(respuesta);
-		try {
-		  var lee = JSON.parse(respuesta);
-		  if (lee.resultado == "consultar") {
-			destruyeDT();	
-			var html = '';
-			
-			lee.datos.forEach(function (fila) {
-				html += `<tr>
-					<td>
-						<div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
-							<button type='button' class='btn btn-success' onclick='pone(this,0)'>
+    $.ajax({
+      async: true,
+      url: "",
+      type: "POST",
+      contentType: false,
+      data: datos,
+      processData: false,
+      cache: false,
+      beforeSend: function () {},
+      timeout: 10000, 
+      success: function (respuesta) {
+      console.log(respuesta);
+        try {
+          var lee = JSON.parse(respuesta);
+          if (lee.resultado == "consultar") {
+            destruyeDT();	
+            var html = '';
+            
+            lee.datos.forEach(function (fila) {
+                html += `<tr>
+                    <td>
+                        <div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
+                            <button type='button' class='btn btn-success' onclick='pone(this,0)'>
                                 <img src='img/lapiz.svg' style='width: 20px'>
                              </button>
-							<a class='btn btn-danger' onclick='pone(this,1)'>
+                            <a class='btn btn-danger' onclick='pone(this,1)'>
                                <img src='img/trash-can-solid.svg' style='width: 20px;'>
                         </a>
-						</div>
-					</td>
-					
-					<td>${fila.cedula_personal}</td>
-					<td>${fila.apellido}</td>
-					<td>${fila.nombre}</td>
-					<td>${fila.correo}</td>
-					<td>${fila.telefono}</td>
-					<td>${fila.cargo}</td>
-					
-				</tr>`;
-			});
-			$("#resultadoconsulta").html(html);
-			
-			 $("#resultadoconsulta").html(lee.mensaje);
-			 crearDT();
-		  }
-		  else if (lee.resultado == "incluir") {
-			 muestraMensaje(lee.mensaje);
-			 if (lee.mensaje == 'Registro Incluido') {
-				$("#modal1").modal("hide");
-			consultar();
-			}
-		  }
-		  else if (lee.resultado == "modificar") {
-			 muestraMensaje(lee.mensaje);
-			 if(lee.mensaje=='Registro Modificado'){
-				 $("#modal1").modal("hide");
-				 consultar();
-			 }
-		  }
-		  else if (lee.resultado == "eliminar") {
-			 muestraMensaje(lee.mensaje);
-			 if(lee.mensaje=='Registro Eliminado'){
-				 $("#modal1").modal("hide");
-				 consultar();
-			 }
-		  }
-		  else if (lee.resultado == "error") {
-			 muestraMensaje(lee.mensaje);
-		  }
-		} catch (e) {
-		  alert("Error en JSON " + e.name);
-		}
-
-		
-
-	  },
-	  error: function (request, status, err) {
-		if (status == "timeout") {
-		  muestraMensaje("Servidor ocupado, intente de nuevo");
-		} else {
-		  muestraMensaje("ERROR: <br/>" + request + status + err);
-		}
-	  },
-	  complete: function () {},
-	});
-  }
+                        </div>
+                    </td>
+                    
+                    <td>${fila.cedula_personal}</td>
+                    <td>${fila.apellido}</td>
+                    <td>${fila.nombre}</td>
+                    <td>${fila.correo}</td>
+                    <td>${fila.telefono}</td>
+                    <td>${fila.cargo}</td>
+                    
+                </tr>`;
+            });
+            $("#resultadoconsulta").html(html);
+            
+             $("#resultadoconsulta").html(lee.mensaje);
+             crearDT();
+          }
+          else if (lee.resultado == "incluir") {
+             muestraMensaje(lee.mensaje);
+             if (lee.mensaje == 'Registro Incluido') {
+                $("#modal1").modal("hide");
+            consultar();
+            }
+          }
+          else if (lee.resultado == "modificar") {
+             muestraMensaje(lee.mensaje);
+             if(lee.mensaje=='Registro Modificado'){
+                 $("#modal1").modal("hide");
+                 consultar();
+             }
+          }
+          else if (lee.resultado == "eliminar") {
+             muestraMensaje(lee.mensaje);
+             if(lee.mensaje=='Registro Eliminado'){
+                 $("#modal1").modal("hide");
+                 consultar();
+             }
+          }
+          else if (lee.resultado == "error") {
+             muestraMensaje(lee.mensaje);
+          }
+        } catch (e) {
+          alert("Error en JSON " + e.name);
+        }
+      },
+      error: function (request, status, err) {
+        if (status == "timeout") {
+          muestraMensaje("Servidor ocupado, intente de nuevo");
+        } else {
+          muestraMensaje("ERROR: <br/>" + request + status + err);
+        }
+      },
+      complete: function () {},
+    });
+}
 
 function limpia(){
 	$("#cedula_personal").val("");
@@ -329,5 +310,4 @@ function limpia(){
 	$("#correo").val("");
 	$("#telefono").val("");
 	$("#cargo").prop("selectedIndex",0);
-	$("#clave").val("");
 }
