@@ -5,9 +5,8 @@ require_once("comunes/notificaciones.php");
 ?>
 
 <body>
-<?php  // Verificar permisos
+<?php
     if (!isset($permisos)) {
-        // Si no existe $permisos, redirigir a login
         header("Location: ?pagina=login");
         exit();
     } elseif (!in_array('Consultas', $permisos)) {
@@ -57,7 +56,7 @@ require_once("comunes/notificaciones.php");
                     </tr>
                 </thead>
                 <tbody id="resultadoMedicamentos">
-                    <!-- Los datos se cargarán via AJAX -->
+                    <!-- Los datos se cargaran via AJAX -->
                 </tbody>
             </table>
         </div>
