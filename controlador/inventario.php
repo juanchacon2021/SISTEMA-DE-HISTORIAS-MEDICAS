@@ -10,7 +10,6 @@ if(is_file("vista/".$pagina.".php")) {
     if(!empty($_POST)){
         $o = new inventario();
         
-        // Asignar valores comunes
         if(isset($_POST['cod_medicamento'])) $o->set_cod_medicamento($_POST['cod_medicamento']);
         if(isset($_POST['nombre'])) $o->set_nombre($_POST['nombre']);
         if(isset($_POST['descripcion'])) $o->set_descripcion($_POST['descripcion']);
