@@ -133,11 +133,12 @@ class estadisticas extends datos {
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$r = array();
-	
+
 		try {
-			$mesActual = date('m');
-			$anioActual = date('Y');
-	
+			// Obtener mes y año de los parámetros POST o usar el actual
+			$mes = isset($_POST['mes']) ? $_POST['mes'] : date('m');
+			$anio = isset($_POST['anio']) ? $_POST['anio'] : date('Y');
+
 			$stmt = $co->prepare("
 				SELECT DAY(fechaingreso) AS dia, COUNT(*) AS total
 				FROM emergencias
@@ -145,31 +146,34 @@ class estadisticas extends datos {
 				GROUP BY dia
 				ORDER BY dia ASC
 			");
-			$stmt->bindParam(':mes', $mesActual);
-			$stmt->bindParam(':anio', $anioActual);
+			$stmt->bindParam(':mes', $mes);
+			$stmt->bindParam(':anio', $anio);
 			$stmt->execute();
 			$resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	
+
 			$r['resultado'] = 'ok';
 			$r['datos'] = $resultados;
-	
+			$r['mes'] = $mes; // Enviar el mes usado para mostrarlo en el título
+			$r['anio'] = $anio; // Enviar el año usado
+
 		} catch (Exception $e) {
 			$r['resultado'] = 'error';
 			$r['mensaje'] = $e->getMessage();
 		}
-	
+
 		return $r;
 	}
 
 	public function consultasPorDiaMesActual() {
-		$co = $this->conecta();
-		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$r = array();
-	
+    $co = $this->conecta();
+    $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $r = array();
+
 		try {
-			$mesActual = date('m');
-			$anioActual = date('Y');
-	
+			// Obtener mes y año de los parámetros POST o usar el actual
+			$mes = isset($_POST['mes']) ? $_POST['mes'] : date('m');
+			$anio = isset($_POST['anio']) ? $_POST['anio'] : date('Y');
+
 			$stmt = $co->prepare("
 				SELECT DAY(fechaconsulta) AS dia, COUNT(*) AS total
 				FROM consultas
@@ -177,21 +181,91 @@ class estadisticas extends datos {
 				GROUP BY dia
 				ORDER BY dia ASC
 			");
-			$stmt->bindParam(':mes', $mesActual);
-			$stmt->bindParam(':anio', $anioActual);
+			$stmt->bindParam(':mes', $mes);
+			$stmt->bindParam(':anio', $anio);
 			$stmt->execute();
 			$resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	
+
 			$r['resultado'] = 'ok';
 			$r['datos'] = $resultados;
-	
+			$r['mes'] = $mes; // Enviar el mes usado para mostrarlo en el título
+			$r['anio'] = $anio; // Enviar el año usado
+
 		} catch (Exception $e) {
 			$r['resultado'] = 'error';
 			$r['mensaje'] = $e->getMessage();
 		}
-	
+
 		return $r;
 	}
+	
+	public function mesConMasEmergencias() {
+		$co = $this->conecta();
+		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$r = array();
+		try {
+			$stmt = $co->prepare("
+				SELECT YEAR(fechaingreso) AS anio, MONTH(fechaingreso) AS mes, COUNT(*) AS total
+				FROM emergencias
+				GROUP BY anio, mes
+				ORDER BY total DESC
+				LIMIT 1
+			");
+			$stmt->execute();
+			$resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+	
+			if ($resultado) {
+				$r['resultado'] = 'ok';
+				$r['mes'] = $resultado['mes'];
+				$r['anio'] = $resultado['anio'];
+				$r['total'] = $resultado['total'];
+			} else {
+				$r['resultado'] = 'ok';
+				$r['mes'] = null;
+				$r['anio'] = null;
+				$r['total'] = 0;
+			}
+		} catch (Exception $e) {
+			$r['resultado'] = 'error';
+			$r['mensaje'] = $e->getMessage();
+		}
+		return $r;
+	}
+
+	public function mesConMasConsultas() {
+		$co = $this->conecta();
+		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$r = array();
+		try {
+			$stmt = $co->prepare("
+				SELECT YEAR(fechaconsulta) AS anio, MONTH(fechaconsulta) AS mes, COUNT(*) AS total
+				FROM consultas
+				GROUP BY anio, mes
+				ORDER BY total DESC
+				LIMIT 1
+			");
+			$stmt->execute();
+			$resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+			if ($resultado) {
+				$r['resultado'] = 'ok';
+				$r['mes'] = $resultado['mes'];
+				$r['anio'] = $resultado['anio'];
+				$r['total'] = $resultado['total'];
+			} else {
+				$r['resultado'] = 'ok';
+				$r['mes'] = null;
+				$r['anio'] = null;
+				$r['total'] = 0;
+			}
+		} catch (Exception $e) {
+			$r['resultado'] = 'error';
+			$r['mensaje'] = $e->getMessage();
+		}
+		return $r;
+	}
+
+
 	
 }
 ?>

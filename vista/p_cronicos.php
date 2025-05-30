@@ -44,7 +44,7 @@ Pacientes cronicos
                     <th>Nombre</th>
                     <th>Apellido</th>
                     <th>Patologia Cronica</th>
-                    <th>Nombre del Paciente</th>
+                    <th>Cedula del Paciente</th>
                 </tr>
             </thead>
             <tbody id="resultadoconsulta">

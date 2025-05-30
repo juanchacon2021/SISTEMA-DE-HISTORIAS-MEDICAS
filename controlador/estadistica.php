@@ -35,6 +35,12 @@ if(is_file("vista/".$pagina.".php")){
         elseif($accion == 'consultas_mes') {
             echo json_encode($o->consultasPorDiaMesActual());
         }
+        elseif($accion == 'mes_con_mas_emergencias') {
+            echo json_encode($o->mesConMasEmergencias());
+        }
+        elseif($accion == 'mes_con_mas_consultas') {
+            echo json_encode($o->mesConMasConsultas());
+        }
         
         exit;
     }
