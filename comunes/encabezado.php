@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="dist/style.css">
     <link rel="stylesheet" href="dist/styles.css">
     <link rel="stylesheet" href="css/style.css">
-    <script src="https://kit.fontawesome.com/3cb14f89ed.js" crossorigin="anonymous"></script>
+    <script src="js/fontawesome2.js" crossorigin="anonymous"></script>
 
     <title>Sistema de Historia Medica</title>
 
@@ -25,7 +25,7 @@
     <script src="js/bootstrap.min.js" ></script>
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/jquery.jscroll.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="chartjs/dist/chart.umd.js"></script>
     <!--Lineas para usar el DataTblet-->
     <link rel="stylesheet" type="text/css" href="datatables/datatables.css"/> 
     <script type="text/javascript" src="datatables/datatables.min.js"></script>

@@ -10,7 +10,6 @@ if(is_file("vista/".$pagina.".php")) {
     if(!empty($_POST)){
         $o = new inventario();
         
-        // Asignar valores comunes
         if(isset($_POST['cod_medicamento'])) $o->set_cod_medicamento($_POST['cod_medicamento']);
         if(isset($_POST['nombre'])) $o->set_nombre($_POST['nombre']);
         if(isset($_POST['descripcion'])) $o->set_descripcion($_POST['descripcion']);
@@ -26,24 +25,30 @@ if(is_file("vista/".$pagina.".php")) {
         
         if($accion == 'consultar_medicamentos'){
             echo json_encode($o->consultar_medicamentos());
+            exit;
         }
         elseif($accion == 'consultar_transacciones'){
             echo json_encode($o->consultar_transacciones());
+            exit;
         }
         elseif($accion == 'obtener_medicamento'){
             echo json_encode($o->obtener_medicamento());
+            exit;
         }
         elseif($accion == 'incluir_medicamento'){
             echo json_encode($o->incluir());
-            bitacora::registrar('Registrar', 'Se ha registrado un medicamento con codigo: '.$_POST['codigo_medicamento']);
+            bitacora::registrar('Registrar', 'Se ha registrado un medicamento con codigo: '.$_POST['cod_medicamento']);
+            exit;
         }
         elseif($accion == 'modificar_medicamento'){
             echo json_encode($o->modificar());
-            bitacora::registrar('Modificar', 'Se ha modificado un medicamento con codigo: '.$_POST['codigo_medicamento']);
+            bitacora::registrar('Modificar', 'Se ha modificado un medicamento con codigo: '.$_POST['cod_medicamento']);
+            exit;
         }
         elseif($accion == 'eliminar_medicamento'){
             echo json_encode($o->eliminar());
-            bitacora::registrar('Eliminar', 'Se ha eliminado un medicamento con codigo: '.$_POST['codigo_medicamento']);
+            bitacora::registrar('Eliminar', 'Se ha eliminado un medicamento con codigo: '.$_POST['cod_medicamento']);
+            exit;
         }
         exit;
     }
