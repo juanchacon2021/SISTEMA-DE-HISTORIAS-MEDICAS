@@ -26,24 +26,30 @@ if(is_file("vista/".$pagina.".php")) {
         
         if($accion == 'consultar_medicamentos'){
             echo json_encode($o->consultar_medicamentos());
+            exit;
         }
         elseif($accion == 'consultar_transacciones'){
             echo json_encode($o->consultar_transacciones());
+            exit;
         }
         elseif($accion == 'obtener_medicamento'){
             echo json_encode($o->obtener_medicamento());
+            exit;
         }
         elseif($accion == 'incluir_medicamento'){
             echo json_encode($o->incluir());
-            bitacora::registrar('Registrar', 'Se ha registrado un medicamento con codigo: '.$_POST['codigo_medicamento']);
+            bitacora::registrar('Registrar', 'Se ha registrado un medicamento con codigo: '.$_POST['cod_medicamento']);
+            exit;
         }
         elseif($accion == 'modificar_medicamento'){
             echo json_encode($o->modificar());
-            bitacora::registrar('Modificar', 'Se ha modificado un medicamento con codigo: '.$_POST['codigo_medicamento']);
+            bitacora::registrar('Modificar', 'Se ha modificado un medicamento con codigo: '.$_POST['cod_medicamento']);
+            exit;
         }
         elseif($accion == 'eliminar_medicamento'){
             echo json_encode($o->eliminar());
-            bitacora::registrar('Eliminar', 'Se ha eliminado un medicamento con codigo: '.$_POST['codigo_medicamento']);
+            bitacora::registrar('Eliminar', 'Se ha eliminado un medicamento con codigo: '.$_POST['cod_medicamento']);
+            exit;
         }
         exit;
     }

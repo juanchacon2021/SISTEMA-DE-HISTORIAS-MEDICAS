@@ -212,6 +212,7 @@ function enviaAjax(datos) {
 }
 
 function procesarRespuesta(respuesta) {
+    console.log('RESPUESTA DEL SERVIDOR:', respuesta); // <-- Agrega esto
     try {
         var lee = JSON.parse(respuesta);
 
