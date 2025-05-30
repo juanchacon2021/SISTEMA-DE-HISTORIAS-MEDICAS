@@ -22,6 +22,8 @@ function consultarTotalCronicos() {
     enviaAjax(datos, 'total_p');
 }
 
+let graficoEmergencias = null;
+
 function consultarTotalemergencias() {
     var datos = new FormData();
     datos.append('accion', 'total_emergencias');
@@ -34,27 +36,68 @@ function consultarTotalconsultas() {
     enviaAjax(datos, 'consultas');
 }
 
-function consultarEmergenciasMes() {
+function consultarEmergenciasMes(mes, anio) {
     var datos = new FormData();
     datos.append('accion', 'emergencias_mes');
+    datos.append('mes', mes);
+    datos.append('anio', anio);
     enviaAjax(datos, 'emergencias_mes');
 }
 
-function consultarconsultasMes() {
+function consultarConsultasMes(mes, anio) {
     var datos = new FormData();
     datos.append('accion', 'consultas_mes');
+    datos.append('mes', mes);
+    datos.append('anio', anio);
     enviaAjax(datos, 'consultas_mes');
 }
 
+function actualizarGrafico() {
+    const mes = document.getElementById('selectMes').value;
+    const anio = document.getElementById('selectAnio').value;
+    consultarEmergenciasMes(mes, anio);
+}
+
+function actualizarGraficoConsultas() {
+    const mes = document.getElementById('selectMesConsultas').value;
+    const anio = document.getElementById('selectAnioConsultas').value;
+    consultarConsultasMes(mes, anio);
+}
+function consultarMesMayorEmergencias() {
+    var datos = new FormData();
+    datos.append('accion', 'mes_con_mas_emergencias');
+    enviaAjax(datos, 'mes_con_mas_emergencias');
+}
+
+function consultarMesMayorConsultas() {
+    var datos = new FormData();
+    datos.append('accion', 'mes_con_mas_consultas');
+    enviaAjax(datos, 'mes_con_mas_consultas');
+}
+
 $(document).ready(function(){
+    // Establecer el mes y año actual por defecto
+    const mesActual = new Date().getMonth() + 1;
+    const anioActual = new Date().getFullYear();
+    
+    document.getElementById('selectMes').value = mesActual;
+    document.getElementById('selectAnio').value = anioActual;
+    
+    // Configurar el evento del botón
+    document.getElementById('btnActualizarGrafico').addEventListener('click', actualizarGrafico);
+    document.getElementById('btnActualizarGraficoConsultas').addEventListener('click', actualizarGraficoConsultas);
+    
+    // Cargar datos iniciales
     consultar();
     consultarCronicos();
-	consultarTotalHistorias();
-	consultarTotalCronicos();
+    consultarTotalHistorias();
+    consultarTotalCronicos();
     consultarTotalemergencias();
     consultarTotalconsultas();
-    consultarEmergenciasMes();
-    consultarconsultasMes();
+    actualizarGrafico(); // Usamos la nueva función que incluye mes y año
+    actualizarGraficoConsultas(); // Usamos la nueva función que incluye mes y año
+    consultarMesMayorEmergencias();
+    consultarMesMayorConsultas();
 });
 
 function enviaAjax(datos, tipo) {
@@ -154,7 +197,7 @@ function enviaAjax(datos, tipo) {
 
                     // Mostrarlo en el elemento de la página
                                        document.getElementById('cronico_mayor').innerHTML =
-                        `El padecimiento crónico con más registros es: 
+                        `De las enfermedades crónicas registradas, la de mayor incidencia es: 
                         <strong>${mayorCronico.nombre} </strong> 
                         <span style="display:inline-block;width:18px;height:18px;vertical-align:middle;background:${mayorCronico.color};border-radius:4px;margin-right:6px;"></span>
                         con <strong>${mayorCronico.valor}</strong> registros.`;
@@ -163,13 +206,19 @@ function enviaAjax(datos, tipo) {
                 }
                 if (tipo === 'emergencias_mes') {
                     const datos = lee.datos;
-                
+                    
                     // Extraer días y totales
                     const labels = datos.map(d => `Día ${d.dia}`);
                     const valores = datos.map(d => d.total);
-                
+                    
                     const ctx = document.getElementById('graficolinealemergencias').getContext('2d');
-                    const graficoLineaEmergencias = new Chart(ctx, {
+                    
+                    // Destruir el gráfico anterior si existe
+                    if (graficoEmergencias) {
+                        graficoEmergencias.destroy();
+                    }
+                    
+                    graficoEmergencias = new Chart(ctx, {
                         type: 'line',
                         data: {
                             labels: labels,
@@ -190,7 +239,7 @@ function enviaAjax(datos, tipo) {
                                 legend: { position: 'top' },
                                 title: {
                                     display: true,
-                                    text: 'Emergencias durante el mes actual'
+                                    text: `Emergencias durante ${getNombreMes(lee.mes)} ${lee.anio}`
                                 }
                             },
                             scales: {
@@ -206,18 +255,21 @@ function enviaAjax(datos, tipo) {
                 }
                 if (tipo === 'consultas_mes') {
                     const datos = lee.datos;
-                
-                    // Extraer días y totales
                     const labels = datos.map(d => `Día ${d.dia}`);
                     const valores = datos.map(d => d.total);
-                
+
+                    // Destruir el gráfico anterior si existe
+                    if (window.graficoConsultas) {
+                        window.graficoConsultas.destroy();
+                    }
+
                     const ctx = document.getElementById('graficolinealconsultas').getContext('2d');
-                    const graficoLineaEmergencias = new Chart(ctx, {
+                    window.graficoConsultas = new Chart(ctx, {
                         type: 'line',
                         data: {
                             labels: labels,
                             datasets: [{
-                                label: 'consultas por Día',
+                                label: 'Consultas por Día',
                                 data: valores,
                                 backgroundColor: 'rgba(54, 162, 235, 0.6)', // Azul
                                 borderColor: 'rgba(54, 162, 235, 1)',       // Azul más fuerte
@@ -233,7 +285,7 @@ function enviaAjax(datos, tipo) {
                                 legend: { position: 'top' },
                                 title: {
                                     display: true,
-                                    text: 'Emergencias durante el mes actual'
+                                    text: `Consultas durante ${getNombreMes(lee.mes)} ${lee.anio}`
                                 }
                             },
                             scales: {
@@ -259,6 +311,24 @@ function enviaAjax(datos, tipo) {
                 if (tipo === 'consultas') {
 					document.getElementById('total_consultas').textContent = lee.total;
 				}
+                if (tipo === 'mes_con_mas_emergencias') {
+                    if (lee.mes && lee.anio) {
+                        document.getElementById('mes_mayor_emergencias').innerHTML =
+                            `El mes con más emergencias históricamente fue <strong>${getNombreMes(lee.mes)} ${lee.anio}</strong> con <strong>${lee.total}</strong> emergencias.`;
+                    } else {
+                        document.getElementById('mes_mayor_emergencias').innerHTML =
+                            "No hay datos de emergencias.";
+                    }
+                }
+                if (tipo === 'mes_con_mas_consultas') {
+                    if (lee.mes && lee.anio) {
+                        document.getElementById('mes_mayor_consultas').innerHTML =
+                            `El mes con más consultas históricamente fue <strong>${getNombreMes(lee.mes)} ${lee.anio}</strong> con <strong>${lee.total}</strong> consultas.`;
+                    } else {
+                        document.getElementById('mes_mayor_consultas').innerHTML =
+                            "No hay datos de consultas.";
+                    }
+                }
             } catch (e) {
                 alert("Error en JSON " + e.name);
                 console.error("Respuesta mal formada:", respuesta);
@@ -269,4 +339,11 @@ function enviaAjax(datos, tipo) {
             alert("ERROR: " + request + status + err);
         }
     });
+}
+function getNombreMes(numeroMes) {
+    const meses = [
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+    return meses[numeroMes - 1];
 }
