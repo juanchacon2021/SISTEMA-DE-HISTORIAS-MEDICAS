@@ -17,7 +17,6 @@ class entrada extends datos{
         $r = array();
         
         try {
-            // Primero obtenemos el usuario por email
             $stmt = $co->prepare("SELECT id, nombre, email, password, rol_id FROM usuario WHERE email = :email");
             $stmt->bindParam(':email', $this->email);
             $stmt->execute();
@@ -25,9 +24,7 @@ class entrada extends datos{
             $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
             
             if ($usuario) {
-                // Verificamos la contraseña hasheada
                 if (password_verify($this->clave, $usuario['password'])) {
-                    // Obtenemos los permisos del rol
                     $permisos = $this->obtener_permisos_rol($usuario['rol_id']);
                     
                     $r['resultado'] = 'existe';

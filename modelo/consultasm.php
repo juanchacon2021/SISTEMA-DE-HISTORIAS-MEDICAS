@@ -109,7 +109,6 @@ class consultasm extends datos{
 	   $this->cardiovascular = $valor;
    }
 
-	//sssssssssss
 	
 	
 	function get_cod_consulta(){
@@ -193,19 +192,19 @@ class consultasm extends datos{
    function listadopersonal() {
 	$co = $this->conecta();
 	$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	$r = array(); // En este arreglo se enviará la respuesta a la solicitud
+	$r = array();
 	try {
 		$resultado = $co->query("SELECT * FROM personal");
 		if ($resultado) {
 			$r['resultado'] = 'listadopersonal';
-			$r['datos'] = $resultado->fetchAll(PDO::FETCH_ASSOC); // Devuelve los datos como un arreglo asociativo
+			$r['datos'] = $resultado->fetchAll(PDO::FETCH_ASSOC);
 		} else {
 			$r['resultado'] = 'listadopersonal';
-			$r['datos'] = array(); // Devuelve un arreglo vacío si no hay resultados
+			$r['datos'] = array(); 
 		}
 	} catch (Exception $e) {
 		$r['resultado'] = 'error';
-		$r['mensaje'] = $e->getMessage(); // Devuelve el mensaje de error en caso de excepción
+		$r['mensaje'] = $e->getMessage(); 
 	}
 	return $r;
 }
@@ -213,19 +212,19 @@ class consultasm extends datos{
 function listadopacientes() {
 	$co = $this->conecta();
 	$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	$r = array(); // En este arreglo se enviará la respuesta a la solicitud
+	$r = array(); 
 	try {
 		$resultado = $co->query("SELECT * FROM historias");
 		if ($resultado) {
 			$r['resultado'] = 'listadopacientes';
-			$r['datos'] = $resultado->fetchAll(PDO::FETCH_ASSOC); // Devuelve los datos como un arreglo asociativo
+			$r['datos'] = $resultado->fetchAll(PDO::FETCH_ASSOC); 
 		} else {
 			$r['resultado'] = 'listadopacientes';
-			$r['datos'] = array(); // Devuelve un arreglo vacío si no hay resultados
+			$r['datos'] = array(); 
 		}
 	} catch (Exception $e) {
 		$r['resultado'] = 'error';
-		$r['mensaje'] = $e->getMessage(); // Devuelve el mensaje de error en caso de excepción
+		$r['mensaje'] = $e->getMessage();
 	}
 	return $r;
 }

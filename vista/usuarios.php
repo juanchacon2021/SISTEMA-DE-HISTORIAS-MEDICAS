@@ -4,13 +4,11 @@ require_once("comunes/sidebar.php");
 require_once("comunes/notificaciones.php");
 ?>
 <body class="hold-transition sidebar-mini layout-fixed">
-    <?php  // Verificar permisos
+    <?php 
     if (!isset($permisos)) {
-        // Si no existe $permisos, redirigir a login
         header("Location: ?pagina=login");
         exit();
     } elseif (!in_array('Usuarios', $permisos)) {
-        // Si existe $permisos pero no tiene acceso al módulo, mostrar error 403
         http_response_code(403);
         die('<div class="container text-center py-5">
                 <h1 class="text-danger">403 - Acceso prohibido</h1>

@@ -4,16 +4,14 @@ require_once('modelo/datos.php');
 
 class estadisticas extends datos {
     
-    // Consultar estadísticas generales
+ 
     function consultar() {
         $co = $this->conecta();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
         try {
-            // Consultamos la cantidad total de historias
             $totalHistorias = $co->query("SELECT COUNT(*) as total FROM historias")->fetch(PDO::FETCH_ASSOC)['total'];
 
-            // Consultar la distribución por rangos de edad
             $distribucionEdad = $co->query("
                 SELECT 
                     SUM(CASE WHEN edad BETWEEN 0 AND 12 THEN 1 ELSE 0 END) AS Ninos,
@@ -34,16 +32,13 @@ class estadisticas extends datos {
         return $r;
     }
 
-    // Consultar estadísticas de pacientes crónicos
 	function consultarCronicos() {
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$r = array();
 		try {
-			// Total de pacientes crónicos únicos
 			$totalCronicos = $co->query("SELECT COUNT(DISTINCT cedula_h) as totalCronicos FROM p_cronicos")->fetch(PDO::FETCH_ASSOC)['totalCronicos'];
 	
-			// Distribución por tipo de patología usando LIKE para coincidencias parciales
 			$distribucion = $co->query("
 				SELECT 
 					SUM(CASE WHEN patologia_cronica LIKE '%Cardiopatía%' THEN 1 ELSE 0 END) AS Cardiopatia,

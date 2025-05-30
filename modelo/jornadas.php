@@ -2,7 +2,6 @@
 require_once('modelo/datos.php');
 
 class jornadas extends datos {
-    // Atributos
     private $cod_jornada;
     private $fecha_jornada;
     private $ubicacion;
@@ -14,7 +13,6 @@ class jornadas extends datos {
     private $cedula_responsable;
     private $participantes = array();
     
-    // Setters
     public function set_cod_jornada($valor) { $this->cod_jornada = $valor; }
     public function set_fecha_jornada($valor) { $this->fecha_jornada = $valor; }
     public function set_ubicacion($valor) { $this->ubicacion = $valor; }

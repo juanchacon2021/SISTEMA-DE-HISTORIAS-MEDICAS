@@ -2,7 +2,6 @@
 require_once('modelo/datos.php');
 
 class pasantias extends datos {
-    // Atributos para estudiantes
     private $cedula_estudiante;
     private $nombre;
     private $apellido;
@@ -13,12 +12,10 @@ class pasantias extends datos {
     private $fecha_fin;
     private $activo;
     
-    // Atributos para áreas
     private $nombre_area;
     private $descripcion;
     private $responsable_id;
     
-    // Setters
     public function set_cedula_estudiante($valor) { $this->cedula_estudiante = $valor; }
     public function set_nombre($valor) { $this->nombre = $valor; }
     public function set_apellido($valor) { $this->apellido = $valor; }
@@ -32,7 +29,6 @@ class pasantias extends datos {
     public function set_descripcion($valor) { $this->descripcion = $valor; }
     public function set_responsable_id($valor) { $this->responsable_id = $valor; }
 
-    // Métodos CRUD para estudiantes
     public function incluir_estudiante() {
         $co = $this->conecta();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -40,7 +36,6 @@ class pasantias extends datos {
         
         try {
             if(!$this->existe_estudiante($this->cedula_estudiante)) {
-                // Primero insertamos en estudiantes_pasantia
                 $stmt = $co->prepare("INSERT INTO estudiantes_pasantia VALUES(
                     :cedula, :nombre, :apellido, :institucion)");
                 
@@ -51,7 +46,6 @@ class pasantias extends datos {
                     ':institucion' => $this->institucion
                 ));
                 
-                // Luego insertamos en asistencia
                 $stmt = $co->prepare("INSERT INTO asistencia VALUES(
                     :inicio, :fin, :activo, :cedula, :area)");
                 
@@ -83,7 +77,6 @@ class pasantias extends datos {
         
         try {
             if($this->existe_estudiante($this->cedula_estudiante)) {
-                // Actualizar datos básicos del estudiante
                 $stmt = $co->prepare("UPDATE estudiantes_pasantia SET
                     nombre = :nombre, apellido = :apellido, institucion = :institucion
                     WHERE cedula_estudiante = :cedula");
@@ -95,7 +88,6 @@ class pasantias extends datos {
                     ':cedula' => $this->cedula_estudiante
                 ));
                 
-                // Actualizar datos de asistencia
                 $stmt = $co->prepare("UPDATE asistencia SET
                     fecha_inicio = :inicio, fecha_fin = :fin, activo = :activo, cod_area = :area
                     WHERE cedula_estudiante = :cedula");
@@ -128,10 +120,8 @@ class pasantias extends datos {
         
         try {
             if($this->existe_estudiante($this->cedula_estudiante)) {
-                // Primero eliminamos de asistencia
                 $co->query("DELETE FROM asistencia WHERE cedula_estudiante = '$this->cedula_estudiante'");
                 
-                // Luego eliminamos de estudiantes_pasantia
                 $co->query("DELETE FROM estudiantes_pasantia WHERE cedula_estudiante = '$this->cedula_estudiante'");
                 
                 $r['resultado'] = 'eliminar';
@@ -172,7 +162,6 @@ class pasantias extends datos {
         return $r;
     }
     
-    // Métodos CRUD para áreas
     public function incluir_area() {
         $co = $this->conecta();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -230,7 +219,6 @@ class pasantias extends datos {
         $r = array();
         
         try {
-            // Verificar si hay estudiantes en esta área
             $resultado = $co->query("SELECT COUNT(*) as total FROM asistencia 
                                    WHERE cod_area = '$this->cod_area'");
             $fila = $resultado->fetch(PDO::FETCH_ASSOC);
@@ -270,7 +258,6 @@ class pasantias extends datos {
         return $r;
     }
     
-    // Métodos auxiliares
     public function obtener_areas_select() {
         $co = $this->conecta();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

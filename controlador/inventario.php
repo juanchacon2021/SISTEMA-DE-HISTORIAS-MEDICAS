@@ -20,7 +20,7 @@ if(is_file("vista/".$pagina.".php")) {
         if(isset($_POST['lote'])) $o->set_lote($_POST['lote']);
         if(isset($_POST['proveedor'])) $o->set_proveedor($_POST['proveedor']);
         
-        $o->set_id_usuario($_SESSION['usuario']); // Ajusta según tu sistema
+        $o->set_id_usuario($_SESSION['usuario']); 
         
         $accion = $_POST['accion'];
         
@@ -35,20 +35,20 @@ if(is_file("vista/".$pagina.".php")) {
         }
         elseif($accion == 'incluir_medicamento'){
             echo json_encode($o->incluir());
-            bitacora::registrar('Registrar', 'Se ha registrado un medicamento');
+            bitacora::registrar('Registrar', 'Se ha registrado un medicamento con codigo: '.$_POST['codigo_medicamento']);
         }
         elseif($accion == 'modificar_medicamento'){
             echo json_encode($o->modificar());
-            bitacora::registrar('Modificar', 'Se ha modificado un medicamento');
+            bitacora::registrar('Modificar', 'Se ha modificado un medicamento con codigo: '.$_POST['codigo_medicamento']);
         }
         elseif($accion == 'eliminar_medicamento'){
             echo json_encode($o->eliminar());
-            bitacora::registrar('Eliminar', 'Se ha eliminado un medicamento');
+            bitacora::registrar('Eliminar', 'Se ha eliminado un medicamento con codigo: '.$_POST['codigo_medicamento']);
         }
         exit;
     }
     
-    // Cargar datos iniciales para la vista
+ 
     $o = new inventario();
     $medicamentos = $o->consultar_medicamentos();
     $transacciones = $o->consultar_transacciones();

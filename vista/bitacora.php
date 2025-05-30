@@ -3,13 +3,13 @@ require_once("comunes/encabezado.php");
 require_once("comunes/sidebar.php");    
 ?>
 <body class="hold-transition sidebar-mini layout-fixed">
-    <?php  // Verificar permisos
+    <?php  
     if (!isset($permisos)) {
-        // Si no existe $permisos, redirigir a login
+      
         header("Location: ?pagina=login");
         exit();
     } elseif (!in_array('Bitácora', $permisos)) {
-        // Si existe $permisos pero no tiene acceso al módulo, mostrar error 403
+      
         http_response_code(403);
         die('<div class="container text-center py-5">
                 <h1 class="text-danger">403 - Acceso prohibido</h1>
@@ -27,11 +27,11 @@ require_once("comunes/sidebar.php");
             </div>
 
             <div class="container-fluid">
-                <div class="card">
+                <div class="container">
                     <div class="card-header bg-primary text-white">
                         <div class="row">
                             <div class="col-md-6">
-                                <h3 class="card-title mb-0">Registros de Actividad</h3>
+                                <h3 class="card-title mb-0" style="text-align: center;">Registros de Actividad</h3>
                             </div>
                             <div class="col-md-6">
                                 <div class="input-group">

@@ -1,8 +1,7 @@
 <?php
 
 if (!is_file("modelo/".$pagina.".php")){
-	//alli pregunte que si no es archivo se niega //con !
-	//si no existe envio mensaje y me salgo
+	
 	echo "Falta definir la clase ".$pagina;
 	exit;
 }  
@@ -29,6 +28,7 @@ require_once("modelo/".$pagina.".php");
 		  elseif($accion=='eliminar'){
 			 $o->set_cod_consulta($_POST['cod_consulta']);
 			 echo  json_encode($o->eliminar());
+			 bitacora::registrar('eliminar', 'Eliminó una consulta médica con código: '.$_POST['cod_consulta']);
 		  }
 		  else{		  
 			  
@@ -54,10 +54,12 @@ require_once("modelo/".$pagina.".php");
 			    $o->set_cardiovascular($_POST['cardiovascular']);
 			  if($accion=='incluir'){
 				echo  json_encode($o->incluir());
+				bitacora::registrar('incluir', 'Incluyó una nueva consulta médica con código: '.$_POST['cod_consulta']);
 				
 			  }
 			  elseif($accion=='modificar'){
 				echo  json_encode($o->modificar());
+				bitacora::registrar('modificar', 'Modificó una consulta médica con código: '.$_POST['cod_consulta']);
 			  }
 		  }
 		  exit;

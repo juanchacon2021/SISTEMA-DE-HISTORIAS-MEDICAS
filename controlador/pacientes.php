@@ -37,9 +37,12 @@ require_once("modelo/".$pagina.".php");
         $o->set_antc_madre($_POST['antc_madre']);
           if($accion=='incluir'){
           echo  json_encode($o->incluir());
+          bitacora::registrar('incluir', 'Incluyó una nueva historia clínica con cédula: '.$_POST['cedula_historia']);
           }
           elseif($accion=='modificar'){
           echo  json_encode($o->modificar());
+          bitacora::registrar('modificar', 'Modificó una historia clínica con cédula: '.$_POST['cedula_historia']);
+          
 			  }
 		  }
 		  exit;

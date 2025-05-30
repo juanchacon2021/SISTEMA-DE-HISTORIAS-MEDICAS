@@ -197,70 +197,7 @@ class personal extends datos{
 		}
 		return $r;
 	}
-		// $co = $this->conecta();
-		// $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
-		// $datos=$co->query("Select * from personal");
-		
-		// return $datos->fetchAll(PDO::FETCH_ASSOC);
-		
-		// $r = array();
-		// try{
-			
-		// 	$resultado = $co->query("Select * from personal");
-			
-		// 	if($resultado){
-				
-		// 		$respuesta = '';
-		// 		foreach($resultado as $r){
-		// 			$respuesta = $respuesta."<tr>";
-		// 			    $respuesta = $respuesta."<td>";
-		// 					$respuesta = $respuesta."<div class='button-container' style='display: flex; justify-content: center; gap: 10px; margin-top: 10px'>
-                        
-        //                     <button type='button' class='btn btn-success' onclick='pone(this,0)'>
-        //                         <img src='img/lapiz.svg' style='width: 20px'>
-        //                     </button>";
-		// 					$respuesta = $respuesta."<a class='btn btn-danger' onclick='pone(this,1)'>
-        //                         <img src='img/trash-can-solid.svg' style='width: 20px;'>
-        //                     </a>";
-		// 				$respuesta = $respuesta."</td>";
-		// 				$respuesta = $respuesta."<td>";
-		// 					$respuesta = $respuesta.$r['cedula_personal'];
-		// 				$respuesta = $respuesta."</td>";
-		// 				$respuesta = $respuesta."<td>";
-		// 					$respuesta = $respuesta.$r['apellido'];
-		// 				$respuesta = $respuesta."</td>";
-		// 				$respuesta = $respuesta."<td>";
-		// 					$respuesta = $respuesta.$r['nombre'];
-		// 				$respuesta = $respuesta."</td>";
-		// 				$respuesta = $respuesta."<td>";
-		// 					$respuesta = $respuesta.$r['correo'];
-		// 				$respuesta = $respuesta."</td>";
-		// 				$respuesta = $respuesta."<td>";
-		// 					$respuesta = $respuesta.$r['telefono'];
-		// 				$respuesta = $respuesta."</td>";
-		// 				$respuesta = $respuesta."<td>";
-		// 					$respuesta = $respuesta.$r['cargo'];
-		// 				$respuesta = $respuesta."</td>";
-		// 			$respuesta = $respuesta."<td style= display:none;>";
-		// 			$respuesta = $respuesta.$r['clave'];
-		// 			$respuesta = $respuesta."</td>";
-		// 		$respuesta = $respuesta."</tr>";
-		// 		}
-				
-		// 	    $r['resultado'] = 'consultar';
-		// 		$r['mensaje'] =  $respuesta;
-		// 	}
-		// 	else{
-		// 		$r['resultado'] = 'consultar';
-		// 		$r['mensaje'] =  '';
-		// 	}
-			
-		// }catch(Exception $e){
-		// 	$r['resultado'] = 'error';
-		// 	$r['mensaje'] =  $e->getMessage();
-		// }
-		// return $r;
 		private function existe($cedula_personal){
 			$co = $this->conecta();
 			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
