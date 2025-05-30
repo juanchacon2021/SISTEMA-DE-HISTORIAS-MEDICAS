@@ -269,4 +269,3 @@ class inventario extends datos {
         }
     }
 }
-?>
