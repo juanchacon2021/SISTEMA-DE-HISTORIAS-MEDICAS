@@ -108,22 +108,22 @@ $(document).ready(function(){
 	});
 
 	//Validar
-	$("#cedula_h").on("keypress",function(e){
+	$("#cedula_paciente").on("keypress",function(e){
 		validarkeypress(/^[0-9-\b]*$/,e);
 	});
 	
-	$("#cedula_h").on("keyup",function(){
+	$("#cedula_paciente").on("keyup",function(){
 		validarkeyup(/^[0-9]{7,8}$/,$(this),
-		$("#scedula_h"),"El formato debe ser 12345678 ");
+		$("#scedula_paciente"),"El formato debe ser 12345678 ");
 	});
 
-	$("#cedula_p").on("keypress",function(e){
+	$("#cedula_personal").on("keypress",function(e){
 		validarkeypress(/^[0-9-\b]*$/,e);
 	});
 	
-	$("#cedula_p").on("keyup",function(){
+	$("#cedula_personal").on("keyup",function(){
 		validarkeyup(/^[0-9]{7,8}$/,$(this),
-		$("#scedula_p"),"El formato debe ser 12345678 ");
+		$("#scedula_personal"),"El formato debe ser 12345678 ");
 	});
 
 	$("#motingreso").on("keypress",function(e){
@@ -155,7 +155,7 @@ $(document).ready(function(){
 	
 	//validar
 
-	$("#cedula_p").on("keyup",function(){
+	$("#cedula_personal").on("keyup",function(){
 		var cedula = $(this).val();
 		var encontro = false;
 		$("#listadopersonal tr").on("click", function () {
@@ -166,7 +166,7 @@ $(document).ready(function(){
 		}
 	});
 
-	$("#cedula_h").on("keyup",function(){
+	$("#cedula_paciente").on("keyup",function(){
 		var cedula = $(this).val();
 		var encontro = false;
 		$("#listadopacientes tr").each(function(){
@@ -188,14 +188,14 @@ $("#proceso").on("click",function(){
 		if(validarenvio()){
 			var datos = new FormData();
 			datos.append('accion','incluir');
-			datos.append('cod_emergencia',$("#cod_emergencia").val());
+
 			datos.append('horaingreso',$("#horaingreso").val());
 			datos.append('fechaingreso',$("#fechaingreso").val());
 			datos.append('motingreso',$("#motingreso").val());
 			datos.append('diagnostico_e',$("#diagnostico_e").val());
 			datos.append('tratamientos',$("#tratamientos").val());
-			datos.append('cedula_p',$("#cedula_p").val());
-			datos.append('cedula_h',$("#cedula_h").val());
+			datos.append('cedula_personal',$("#cedula_personal").val());
+			datos.append('cedula_paciente',$("#cedula_paciente").val());
 			enviaAjax(datos);
 		}
 	}
@@ -203,14 +203,19 @@ $("#proceso").on("click",function(){
 		if(validarenvio()){
 			var datos = new FormData();
 			datos.append('accion','modificar');
-			datos.append('cod_emergencia',$("#cod_emergencia").val());
+
 			datos.append('horaingreso',$("#horaingreso").val());
 			datos.append('fechaingreso',$("#fechaingreso").val());
 			datos.append('motingreso',$("#motingreso").val());
 			datos.append('diagnostico_e',$("#diagnostico_e").val());
 			datos.append('tratamientos',$("#tratamientos").val());
-			datos.append('cedula_p',$("#cedula_p").val());
-			datos.append('cedula_h',$("#cedula_h").val());
+			datos.append('cedula_personal',$("#cedula_personal").val());
+			datos.append('cedula_paciente',$("#cedula_paciente").val());
+
+			datos.append('old_cedula_paciente', $("#old_cedula_paciente").val());
+			datos.append('old_cedula_personal', $("#old_cedula_personal").val());
+			datos.append('old_fechaingreso', $("#old_fechaingreso").val());
+			datos.append('old_horaingreso', $("#old_horaingreso").val());
 			enviaAjax(datos);
 		}
 	}
@@ -222,7 +227,10 @@ $("#proceso").on("click",function(){
 	else{
 		    var datos = new FormData();
 			datos.append('accion','eliminar');
-			datos.append('cod_emergencia',$("#cod_emergencia").val());
+			datos.append('horaingreso', $("#horaingreso").val());
+			datos.append('fechaingreso', $("#fechaingreso").val());
+			datos.append('cedula_personal', $("#cedula_personal").val());
+			datos.append('cedula_paciente', $("#cedula_paciente").val());
 			enviaAjax(datos);
 		}
 	
@@ -246,8 +254,7 @@ function carga_personal(){
 	var datos = new FormData();
 
 	datos.append('accion','listadopersonal'); 
-	// destruyeDT1();
-	// crearDT1();
+
 
 	enviaAjax(datos);
 }
@@ -273,15 +280,15 @@ function limpiarm(){
 
 function validarenvio(){
 
-	if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula_h"),
-		$("#scedula_h"),"El formato debe ser 12345678")==0){
+	if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula_paciente"),
+		$("#scedula_paciente"),"El formato debe ser 12345678")==0){
 	    muestraMensaje("La cedula del paciente debe coincidir con el formato <br/>"+ 
 						"12345678");	
 		return false;					
 	}
 
-	else if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula_p"),
-	$("#scedula_p"),"El formato debe ser 12345678")==0){
+	else if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula_personal"),
+	$("#scedula_personal"),"El formato debe ser 12345678")==0){
 	muestraMensaje("La cedula del personal debe coincidir con el formato <br/>"+ 
 					"12345678");	
 	return false;					
@@ -342,7 +349,7 @@ function colocapersonal(linea) {
     const cargo = $(linea).find("td:eq(4)").text();
 
     // Coloca los datos en los campos correspondientes
-    $("#cedula_p").val(cedula);
+    $("#cedula_personal").val(cedula);
     $("#datosdelpersonal").html(
         `Nombre: ${nombre} / Apellido: ${apellido} / Cargo: ${cargo}`
     );
@@ -358,7 +365,7 @@ function colocapacientes(linea) {
     const apellido = $(linea).find("td:eq(3)").text();
 
     // Coloca los datos en los campos correspondientes
-    $("#cedula_h").val(cedula);
+    $("#cedula_paciente").val(cedula);
     $("#datosdelpacientes").html(
         `Nombre: ${nombre} / Apellido: ${apellido}`
     );
@@ -376,8 +383,8 @@ function pone(pos,accion){
 	$("#motingreso").prop("readonly",false);
 	$("#diagnostico_e").prop("readonly",false);
 	$("#tratamientos").prop("readonly",false);
-	$("#cedula_p").prop("readonly",false);
-	$("#cedula_h").prop("readonly",false);
+	$("#cedula_personal").prop("readonly",false);
+	$("#cedula_paciente").prop("readonly",false);
 	$("#proceso1").prop("cerrar",false); 
 	const boton_h = document.querySelector('#listadodepacientes');
 	const boton_p = document.querySelector('#listadodepersonal');
@@ -391,8 +398,21 @@ function pone(pos,accion){
 		boton_h.style.display = '';
 		boton_p.style.display = '';
 		limpiarm();
-		colocapacientes(linea)
-		colocapersonal(linea)
+		 // Asigna los datos del paciente
+        $("#cedula_paciente").val($(pos).attr('cedula_paciente'));
+        $("#datosdelpacientes").html(
+            `Nombre: ${$(pos).attr('nombre_h')} / Apellido: ${$(pos).attr('apellido_h')}`
+        );
+
+        // Asigna los datos del personal
+        $("#cedula_personal").val($(pos).attr('cedula_personal'));
+        $("#datosdelpersonal").html(
+            `Nombre: ${$(pos).attr('nombre')} / Apellido: ${$(pos).attr('apellido')} / Cargo: ${$(pos).attr('cargo')}`
+        );
+		$("#old_cedula_paciente").val($(pos).attr('cedula_paciente'));
+		$("#old_cedula_personal").val($(pos).attr('cedula_personal'));
+		$("#old_fechaingreso").val($(pos).attr('fechaingreso'));
+		$("#old_horaingreso").val($(pos).attr('horaingreso'));
 	}
 	else if (accion==1){
 		$("#horaingreso").prop("readonly",true);
@@ -400,8 +420,8 @@ function pone(pos,accion){
 		$("#motingreso").prop("readonly",true);
 		$("#diagnostico_e").prop("readonly",true);
 		$("#tratamientos").prop("readonly",true);
-		$("#cedula_p").prop("readonly",true);
-		$("#cedula_h").prop("readonly",true);
+		$("#cedula_personal").prop("readonly",true);
+		$("#cedula_paciente").prop("readonly",true);
 		$("#proceso").text("ELIMINAR");
 
 		
@@ -409,9 +429,18 @@ function pone(pos,accion){
 		boton_p.style.display = 'none';
 
 		limpiarm();
-		colocapacientes(linea)
-		colocapersonal(linea)
 		console.log($(pos).attr('cargo'))
+		 // Asigna los datos del paciente
+        $("#cedula_paciente").val($(pos).attr('cedula_paciente'));
+        $("#datosdelpacientes").html(
+            `Nombre: ${$(pos).attr('nombre_h')} / Apellido: ${$(pos).attr('apellido_h')}`
+        );
+
+        // Asigna los datos del personal
+        $("#cedula_personal").val($(pos).attr('cedula_personal'));
+        $("#datosdelpersonal").html(
+            `Nombre: ${$(pos).attr('nombre')} / Apellido: ${$(pos).attr('apellido')} / Cargo: ${$(pos).attr('cargo')}`
+        );
 
 		
 	}
@@ -421,8 +450,8 @@ function pone(pos,accion){
 		$("#motingreso").prop("readonly",true);
 		$("#diagnostico_e").prop("readonly",true);
 		$("#tratamientos").prop("readonly",true);
-		$("#cedula_p").prop("readonly",true);
-		$("#cedula_h").prop("readonly",true);
+		$("#cedula_personal").prop("readonly",true);
+		$("#cedula_paciente").prop("readonly",true);
 		$("#proceso").text("CERRAR");
 
 		
@@ -431,8 +460,17 @@ function pone(pos,accion){
 
 
 		limpiarm();
-		colocapacientes(linea)
-		colocapersonal(linea)
+		 // Asigna los datos del paciente
+        $("#cedula_paciente").val($(pos).attr('cedula_paciente'));
+        $("#datosdelpacientes").html(
+            `Nombre: ${$(pos).attr('nombre_h')} / Apellido: ${$(pos).attr('apellido_h')}`
+        );
+
+        // Asigna los datos del personal
+        $("#cedula_personal").val($(pos).attr('cedula_personal'));
+        $("#datosdelpersonal").html(
+            `Nombre: ${$(pos).attr('nombre')} / Apellido: ${$(pos).attr('apellido')} / Cargo: ${$(pos).attr('cargo')}`
+        );
 		
 	}
 	else{
@@ -441,14 +479,14 @@ function pone(pos,accion){
 		boton_p.style.display = '';
 		
 	}
-	$("#cod_emergencia").val($(linea).find("td:eq(1)").text());
+
 	$("#horaingreso").val( $(pos).attr('horaingreso') );
 	$("#fechaingreso").val( $(pos).attr('fechaingreso') );
 	$("#motingreso").val( $(pos).attr('motingreso') );
 	$("#diagnostico_e").val( $(pos).attr('diagnostico_e') );
 	$("#tratamientos").val( $(pos).attr('tratamientos') );
-	$("#cedula_p").val( $(pos).attr('cedula_p') );
-	$("#cedula_h").val( $(pos).attr('cedula_h') );
+	$("#cedula_personal").val( $(pos).attr('cedula_personal') );
+	$("#cedula_paciente").val( $(pos).attr('cedula_paciente') );
 
 
 	
@@ -478,6 +516,16 @@ function enviaAjax(datos) {
 
 		   lee.datos.forEach(function (fila) {
 			   html += `<tr>
+
+				   <td>${fila.nombre_h}</td>
+				   <td>${fila.apellido_h}</td>
+				   <td>${fila.horaingreso}</td>
+				   <td>${fila.fechaingreso}</td>
+				   <td>${fila.cedula_paciente}</td>
+				   <td>${fila.nombre}</td>
+				   <td>${fila.apellido}</td>
+				   <td>${fila.cedula_personal}</td>
+
 				   <td>
 					   <div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
 						   <a type="button" class="btn btn-success" onclick="pone(this,0)"
@@ -486,11 +534,13 @@ function enviaAjax(datos) {
 							   motingreso="${fila.motingreso}"
 							   diagnostico_e="${fila.diagnostico_e}"
 							   tratamientos="${fila.tratamientos}"
-							   cedula_p="${fila.cedula_p}"
-							   cedula_h="${fila.cedula_h}"
+							   cedula_personal="${fila.cedula_personal}"
+							   cedula_paciente="${fila.cedula_paciente}"
 							   cargo="${fila.cargo}"
 							   nombre="${fila.nombre}"
-							   apellido="${fila.apellido}">
+							   apellido="${fila.apellido}"
+							   nombre_h="${fila.nombre_h}"
+							   apellido_h="${fila.apellido_h}">
 							   <img src="img/lapiz.svg" style="width: 20px">
 						   </a>
 						   <a type="button" class="btn btn-danger" onclick="pone(this,1)"
@@ -499,11 +549,13 @@ function enviaAjax(datos) {
 							   motingreso="${fila.motingreso}"
 							   diagnostico_e="${fila.diagnostico_e}"
 							   tratamientos="${fila.tratamientos}"
-							   cedula_p="${fila.cedula_p}"
-							   cedula_h="${fila.cedula_h}"
+							   cedula_personal="${fila.cedula_personal}"
+							   cedula_paciente="${fila.cedula_paciente}"
 							   cargo="${fila.cargo}"
 							   nombre="${fila.nombre}"
-							   apellido="${fila.apellido}">
+							   apellido="${fila.apellido}"
+							   nombre_h="${fila.nombre_h}"
+							   apellido_h="${fila.apellido_h}">
 							   <img src="img/basura.svg" style="width: 20px">
 						   </a>
 						   <a type="button" class="btn btn-primary" onclick="pone(this,2)"
@@ -512,29 +564,24 @@ function enviaAjax(datos) {
 							   motingreso="${fila.motingreso}"
 							   diagnostico_e="${fila.diagnostico_e}"
 							   tratamientos="${fila.tratamientos}"
-							   cedula_p="${fila.cedula_p}"
-							   cedula_h="${fila.cedula_h}"
+							   cedula_personal="${fila.cedula_personal}"
+							   cedula_paciente="${fila.cedula_paciente}"
 							   cargo="${fila.cargo}"
 							   nombre="${fila.nombre}"
-							   apellido="${fila.apellido}">
+							   apellido="${fila.apellido}"
+							   nombre_h="${fila.nombre_h}"
+							   apellido_h="${fila.apellido_h}">
 							   <img src="img/ojo.svg" style="width: 20px">
 						   </a>
 						   
-						    <a class="btn btn-danger" href="vista/fpdf/emergencias.php?cod_emergencia=${fila.cod_emergencia}" target="_blank">
-								<img src="img/descarga.svg" style="width: 20px;">
-							</a>					
+						    <a class="btn btn-danger" 
+								href="vista/fpdf/emergencias.php?cedula_paciente=${fila.cedula_paciente}&cedula_personal=${fila.cedula_personal}&fechaingreso=${fila.fechaingreso}&horaingreso=${fila.horaingreso}"  
+								target="_blank">
+									<img src="img/descarga.svg" style="width: 20px;">
+							</a>				
 						   <!-- Agrega los demás botones aquí -->
 					   </div>
 				   </td>
-				   <td style="display:none;">${fila.cod_emergencia}</td>
-				   <td>${fila.nombre_h}</td>
-				   <td>${fila.apellido_h}</td>
-				   <td>${fila.horaingreso}</td>
-				   <td>${fila.fechaingreso}</td>
-				   <td>${fila.cedula_h}</td>
-				   <td>${fila.nombre}</td>
-				   <td>${fila.apellido}</td>
-				   <td>${fila.cedula_p}</td>
 			   </tr>`;
 		   });
 		   
@@ -544,13 +591,31 @@ function enviaAjax(datos) {
 		
 		else if(lee.resultado=='listadopersonal'){
 			destruyeDT2();
-			
-			$('#listadopersonal').html(lee.mensaje);
+			var html = '';
+			lee.datos.forEach(function(fila) {
+				html += `<tr onclick="colocapersonal(this)">
+					<td style="display:none;">${fila.cedula_personal}</td>
+					<td>${fila.cedula_personal}</td>
+					<td>${fila.nombre}</td>
+					<td>${fila.apellido}</td>
+					<td>${fila.cargo}</td>
+				</tr>`;
+			});
+			$("#listadopersonal").html(html);
 			crearDT2();
 			
 		}
 		else if(lee.resultado=='listadopacientes'){
-			destruyeDT1();
+			 destruyeDT1();
+			var html = '';
+			lee.datos.forEach(function(fila) {
+				html += `<tr onclick="colocapacientes(this)">
+					<td style="display:none;">${fila.cedula_paciente}</td>
+					<td>${fila.cedula_paciente}</td>
+					<td>${fila.nombre}</td>
+					<td>${fila.apellido}</td>
+				</tr>`;
+			});
 			$("#listadopacientes").html(html);
 			crearDT1();
 		}
@@ -600,13 +665,13 @@ function enviaAjax(datos) {
 }
 
 function limpia(){
-	$("#cod_emergencia").val("");
+	
 	$("#horaingreso").val("");
 	$("#fechaingreso").val("");
 	$("#motingreso").val("");
 	$("#diagnostico_e").val("");
 	$("#tratamientos").val("");
-	$("#cedula_p").val("");
-	$("#cedula_h").val("");
+	$("#cedula_personal").val("");
+	$("#cedula_paciente").val("");
 
 }

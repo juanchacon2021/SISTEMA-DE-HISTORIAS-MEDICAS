@@ -70,7 +70,7 @@ class PDF extends FPDF
 include '../../modelo/datos.php'; 
 
 function conexion() {
-    return new PDO('mysql:host=localhost;dbname=shm-cdi.2', 'root', '123456');
+    return new PDO('mysql:host=localhost;dbname=prueva', 'root', '123456');
 }
 
 $pdf = new PDF();
@@ -82,18 +82,30 @@ $pdf->SetFont('Arial', '', 9);
 $pdf->SetDrawColor(163, 163, 163); // colorBorde
 
 $bd = conexion();
-$cod_emergencia = isset($_GET['cod_emergencia']) ? $_GET['cod_emergencia'] : '';
 
-if (empty($cod_emergencia)) {
-    die('No se proporcionó una emergencia');
+$cedula_paciente = isset($_GET['cedula_paciente']) ? $_GET['cedula_paciente'] : '';
+$cedula_personal = isset($_GET['cedula_personal']) ? $_GET['cedula_personal'] : '';
+$fechaingreso = isset($_GET['fechaingreso']) ? $_GET['fechaingreso'] : '';
+$horaingreso = isset($_GET['horaingreso']) ? $_GET['horaingreso'] : '';
+
+if (empty($cedula_paciente) || empty($cedula_personal) || empty($fechaingreso) || empty($horaingreso)) {
+    die('Faltan datos de la emergencia');
 }
-echo "Valor de cod_emergencia: " . $cod_emergencia;
-$consulta_reporte_emergencia = $bd->prepare("SELECT *, h.nombre AS nombre_h, h.apellido AS apellido_h  
-                                            FROM emergencias e 
-                                            INNER JOIN historias h ON e.cedula_h = h.cedula_historia
-                                            INNER JOIN personal p ON e.cedula_p = p.cedula_personal
-                                            WHERE cod_emergencia = :cod_emergencia");
-$consulta_reporte_emergencia->bindParam(':cod_emergencia', $cod_emergencia, PDO::PARAM_STR);
+
+$consulta_reporte_emergencia = $bd->prepare("
+    SELECT *, h.nombre AS nombre_h, h.apellido AS apellido_h  
+    FROM emergencia e 
+    INNER JOIN paciente h ON e.cedula_paciente = h.cedula_paciente 
+    INNER JOIN personal p ON e.cedula_personal = p.cedula_personal
+    WHERE e.cedula_paciente = :cedula_paciente
+      AND e.cedula_personal = :cedula_personal
+      AND e.fechaingreso = :fechaingreso
+      AND e.horaingreso = :horaingreso
+");
+$consulta_reporte_emergencia->bindParam(':cedula_paciente', $cedula_paciente, PDO::PARAM_STR);
+$consulta_reporte_emergencia->bindParam(':cedula_personal', $cedula_personal, PDO::PARAM_STR);
+$consulta_reporte_emergencia->bindParam(':fechaingreso', $fechaingreso, PDO::PARAM_STR);
+$consulta_reporte_emergencia->bindParam(':horaingreso', $horaingreso, PDO::PARAM_STR);
 $consulta_reporte_emergencia->execute();
 
 $datos_reporte = $consulta_reporte_emergencia->fetch(PDO::FETCH_OBJ);
@@ -121,7 +133,7 @@ if ($datos_reporte) {
     $pdf->SetFont('Arial', '', 8);
     $pdf->Cell(38, 8, utf8_decode($datos_reporte->nombre_h), 1, 0, 'C', 0);
     $pdf->Cell(38, 8, utf8_decode($datos_reporte->apellido_h), 1, 0, 'C', 0);
-    $pdf->Cell(38, 8, utf8_decode($datos_reporte->cedula_h), 1, 0, 'C', 0);
+    $pdf->Cell(38, 8, utf8_decode($datos_reporte->cedula_paciente), 1, 0, 'C', 0);
     $pdf->Cell(38, 8, utf8_decode($datos_reporte->fechaingreso), 1, 0, 'C', 0);
     $pdf->Cell(38, 8, utf8_decode($datos_reporte->horaingreso), 1, 1, 'C', 0);
    
@@ -184,7 +196,7 @@ if ($datos_reporte) {
     $pdf->Cell(40, 8, utf8_decode($datos_reporte->cargo), 1, 0, 'C', 0);
     $pdf->Cell(50, 8, utf8_decode($datos_reporte->nombre), 1, 0, 'C', 0);
     $pdf->Cell(50, 8, utf8_decode($datos_reporte->apellido), 1, 0, 'C', 0);
-    $pdf->Cell(50, 8, utf8_decode($datos_reporte->cedula_p), 1, 1, 'C', 0);
+    $pdf->Cell(50, 8, utf8_decode($datos_reporte->cedula_personal), 1, 1, 'C', 0);
     
 
     ob_end_clean();

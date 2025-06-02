@@ -25,38 +25,45 @@ require_once("modelo/".$pagina.".php");
 			$respuesta = $o->listadopacientes();
 			echo json_encode($respuesta);
 		}
-		  elseif($accion=='eliminar'){
-			 $o->set_cod_emergencia($_POST['cod_emergencia']);
-			 echo  json_encode($o->eliminar());
-			 bitacora::registrar('eliminar', 'Eliminó una emergencia con código: '.$_POST['cod_emergencia']);	
-		  }
-		  else{		  
-			  
-			  $o->set_cod_emergencia($_POST['cod_emergencia']);
+		 elseif ($accion == 'eliminar') {
+			// Asignar los valores de la llave compuesta
+			$o->set_cedula_paciente($_POST['cedula_paciente']);
+			$o->set_cedula_personal($_POST['cedula_personal']);
+			$o->set_fechaingreso($_POST['fechaingreso']);
+			$o->set_horaingreso($_POST['horaingreso']);
+
+			// Ejecutar eliminación
+			echo json_encode($o->eliminar());	
+		}
+		  else{		    
 			  $o->set_horaingreso($_POST['horaingreso']);
 			  $o->set_fechaingreso($_POST['fechaingreso']);
 			  $o->set_motingreso($_POST['motingreso']);
 			  $o->set_diagnostico_e($_POST['diagnostico_e']);
 			  $o->set_tratamientos($_POST['tratamientos']);
-			  $o->set_cedula_p($_POST['cedula_p']);
-			  $o->set_cedula_h($_POST['cedula_h']);
+			  $o->set_cedula_personal($_POST['cedula_personal']);
+			  $o->set_cedula_paciente($_POST['cedula_paciente']);
+
+			  
 			  if($accion=='incluir'){
 				echo  json_encode($o->incluir());
-				bitacora::registrar('incluir', 'Incluyó una nueva emergencia con código: '.$_POST['cod_emergencia']);
+
 				
 			  }
 			  elseif($accion=='modificar'){
+				$o->set_old_cedula_paciente($_POST['old_cedula_paciente']);
+				$o->set_old_cedula_personal($_POST['old_cedula_personal']);
+				$o->set_old_fechaingreso($_POST['old_fechaingreso']);
+				$o->set_old_horaingreso($_POST['old_horaingreso']);
+
+
 				echo  json_encode($o->modificar());
-				bitacora::registrar('modificar', 'Modificó una emergencia con código: '.$_POST['cod_emergencia']);
+				
 			  }
 		  }
 		  exit;
 	  }
-	  
-	  $o = new emergencias();
-	$datos = $o->consultar();
-	$datosPacientes = $o->listadopacientes();
-	$datosPersonal = $o->listadopersonal();
+	
 	  require_once("vista/".$pagina.".php"); 
   }
   else{
