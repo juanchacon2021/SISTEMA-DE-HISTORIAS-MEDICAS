@@ -1,6 +1,6 @@
 <?php
 $pagina = "principal";
-
+require_once("vendor/autoload.php");
 if (!empty($_GET['pagina'])){
     $pagina = $_GET['pagina'];  
 }

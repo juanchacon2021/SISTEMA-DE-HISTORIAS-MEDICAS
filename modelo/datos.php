@@ -1,10 +1,10 @@
 <?php
 class datos{
 	private $ip = "localhost";
-    private $bd = "SGM";
+    private $bd = "sgm";
     private $bd2 = "seguridad";
     private $usuario = "root";
-    private $contrasena = "123456";
+    private $contrasena = "";
    
     
     
