@@ -80,7 +80,7 @@ class PDF extends FPDF
 include '../../modelo/datos.php'; 
 
 function conexion() {
-    return new PDO('mysql:host=localhost;dbname=shm-cdi.2', 'root', '123456');
+    return new PDO('mysql:host=localhost;dbname=sgm', 'root', '123456');
 }
 
 $pdf = new PDF();
@@ -92,25 +92,26 @@ $pdf->SetFont('Arial', '', 9);
 $pdf->SetDrawColor(163, 163, 163); // colorBorde
 
 $bd = conexion();
-$cedula_historia = isset($_GET['cedula_historia']) ? $_GET['cedula_historia'] : '';
+$cedula_paciente = isset($_GET['cedula_paciente']) ? $_GET['cedula_paciente'] : '';
 
-if (empty($cedula_historia)) {
+if (empty($cedula_paciente)) {
     die('No se proporcionó una cédula válida.');
 }
 
-$consulta_reporte_historia = $bd->prepare("SELECT * FROM historias WHERE cedula_historia = :cedula_historia");
-$consulta_reporte_historia->bindParam(':cedula_historia', $cedula_historia, PDO::PARAM_STR);
+$consulta_reporte_historia = $bd->prepare("SELECT * FROM paciente WHERE cedula_paciente = :cedula_paciente");
+$consulta_reporte_historia->bindParam(':cedula_paciente', $cedula_paciente, PDO::PARAM_STR);
 $consulta_reporte_historia->execute();
 
-$consulta_reporte = $bd->prepare("SELECT * FROM consultas WHERE cedula_h = :cedula_historia");
-$consulta_reporte->bindParam(':cedula_historia', $cedula_historia, PDO::PARAM_STR);
-$consulta_reporte->execute();
+$ante_reporte = $bd->prepare("SELECT * FROM antecedentes_familiares WHERE cedula_paciente = :cedula_paciente");
+$ante_reporte->bindParam(':cedula_paciente', $cedula_paciente, PDO::PARAM_STR);
+$ante_reporte->execute();
+$antecedente = $ante_reporte->fetch(PDO::FETCH_OBJ);
 
 $datos_reporte = $consulta_reporte_historia->fetch(PDO::FETCH_OBJ);
 
 if ($datos_reporte) {
     /* TABLA */
-    $pdf->Cell(20, 8, utf8_decode($datos_reporte->cedula_historia), 1, 0, 'C', 0);
+    $pdf->Cell(20, 8, utf8_decode($datos_reporte->cedula_paciente), 1, 0, 'C', 0);
     $pdf->Cell(30, 8, utf8_decode($datos_reporte->nombre), 1, 0, 'C', 0);
     $pdf->Cell(30, 8, utf8_decode($datos_reporte->apellido), 1, 0, 'C', 0);
     $pdf->Cell(35, 8, utf8_decode($datos_reporte->fecha_nac), 1, 0, 'C', 0);
@@ -166,16 +167,11 @@ if ($datos_reporte) {
     $pdf->SetTextColor(255, 255, 255); // colorTexto
     $pdf->SetDrawColor(0, 0, 0); // colorBorde
     $pdf->SetFont('Arial', 'B', 7);
-    $pdf->Cell(65, 7, utf8_decode('ANTECEDENTES PATERNOS'), 1, 0, 'C', 1);
-    $pdf->Cell(65, 7, utf8_decode('ANTECEDENTES MATERNOS'), 1, 0, 'C', 1);
-    $pdf->Cell(65, 7, utf8_decode('ANTECEDENTES DE HERMANOS'), 1, 1, 'C', 1);
-
+    $pdf->Cell(65, 7, utf8_decode('ANTECEDENTES'), 1, 0, 'C', 1);
     // Datos de la tercera tabla
     $pdf->SetTextColor(0, 0, 0); // colorTexto
     $pdf->SetFont('Arial', '', 8);
-    $pdf->Cell(65, 8, utf8_decode($datos_reporte->antc_padre), 1, 0, 'C', 0);
-    $pdf->Cell(65, 8, utf8_decode($datos_reporte->antc_madre), 1, 0, 'C', 0);
-    $pdf->Cell(65, 8, utf8_decode($datos_reporte->antc_hermano), 1, 1, 'C', 0);
+    $pdf->Cell(65, 8, utf8_decode($antecedente ? $antecedente->observaciones : 'Sin antecedentes'), 1, 0, 'C', 0);
 
     $pdf->Ln(5);
 

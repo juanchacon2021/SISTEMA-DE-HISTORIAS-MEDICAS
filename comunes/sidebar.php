@@ -21,6 +21,12 @@
             if (isset($_SESSION['usuario'])) {
                 $permisos = $_SESSION['permisos'];
             ?>
+
+            <?php if (isset($_SESSION['usuario'])): ?>
+                <script>
+                    console.log("Usuario logueado: ID=<?php echo $_SESSION['usuario']; ?>, Nombre=<?php echo $_SESSION['nombre']; ?>");
+                </script>
+            <?php endif; ?>
                 <!-- Inicio siempre visible -->
                 <div class="iconos p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
                     <img class="w-6 h-8 imagen" src="img/home.svg" alt="">
@@ -148,3 +154,4 @@ function toggleAccordion(id) {
     }
 }
 </script>
+

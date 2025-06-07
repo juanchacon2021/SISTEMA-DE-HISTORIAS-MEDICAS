@@ -17,7 +17,7 @@ class entrada extends datos{
         $r = array();
         
         try {
-            $stmt = $co->prepare("SELECT id, nombre, email, password, rol_id FROM usuario WHERE email = :email");
+            $stmt = $co->prepare("SELECT id, nombre, email, password, rol_id, cedula_personal FROM usuario WHERE email = :email");
             $stmt->bindParam(':email', $this->email);
             $stmt->execute();
             
@@ -31,7 +31,11 @@ class entrada extends datos{
                     $r['mensaje'] = $usuario['rol_id'];
                     $r['usuario'] = $usuario['id'];
                     $r['nombre'] = $usuario['nombre'];
+                    $r['cedula_personal'] = $usuario['cedula_personal'];
                     $r['permisos'] = $permisos;
+                    
+                    // Al autenticar:
+                    $_SESSION['usuario'] = $usuario['cedula_personal']; // NO el id, sino la cédula
                 } else {
                     $r['resultado'] = 'noexiste';
                     $r['mensaje'] = "Credenciales incorrectas";

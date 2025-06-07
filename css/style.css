@@ -274,6 +274,31 @@ canvas { max-width: 400px; margin: auto; }
     color: white
 }
 
+
+
+
+.botonrojo {
+    font-family: 'Sora';
+    background-color: rgb(220 38 38);
+    width: auto;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+.botonrojo a {
+  text-decoration: none;
+  color: white;
+}
+
+.botonrojo:hover {
+    background-color: rgb(153, 27, 27);
+    cursor: pointer;
+    color: white
+}
+
+
 .botonazul:hover {
     background-color: rgb(0, 0, 146);
     border: 0.5rem solid rgb(0, 0, 146);

@@ -40,9 +40,10 @@ if(is_file("vista/".$pagina.".php")){
                     session_regenerate_id(true);
                     
                     $_SESSION['nivel'] = $m['mensaje'];
-                    $_SESSION['usuario'] = $m['usuario'];
+                    $_SESSION['usuario'] = $m['cedula_personal'];
                     $_SESSION['nombre'] = $m['nombre'];
                     $_SESSION['permisos'] = $m['permisos'];
+                    $_SESSION['cedula_personal'] = $m['cedula_personal']; // El id es la cédula
                     
                     // Registrar inicio de sesión en bitácora
                     if(is_file("modelo/bitacora.php")) {
