@@ -11,6 +11,11 @@ $(document).ready(function() {
     cargarPersonal();
     cargarResponsables();
 
+$('#total_pacientes, #pacientes_masculinos, #pacientes_femeninos, #pacientes_embarazadas').on('change keyup', function() {
+        actualizarContadores();
+        validarTotales();
+    });
+
     // Eventos para el modal de jornadas
     $('#btnGuardarJornada').click(function() {
         guardarJornada();
@@ -25,6 +30,25 @@ $(document).ready(function() {
     $('#total_pacientes, #pacientes_masculinos, #pacientes_femeninos, #pacientes_embarazadas').on('change', function() {
         validarTotales();
     });
+   
+    $('#total_pacientes').on('change keyup', function() {
+    var total = parseInt($(this).val()) || 0;
+    var participantesCount = participantes.length;
+    
+    if(total > 0) {
+        $('#participantes-info').removeClass('d-none');
+        $('#participantes-requeridos').text(total);
+        $('#participantes-actuales').text(participantesCount);
+        
+        if(participantesCount < total) {
+            $('#participantes-info').removeClass('alert-success').addClass('alert-warning');
+        } else {
+            $('#participantes-info').removeClass('alert-warning').addClass('alert-success');
+        }
+    } else {
+        $('#participantes-info').addClass('d-none');
+    }
+});
 });
 
 // Funciones para jornadas
@@ -268,6 +292,16 @@ function actualizarListaParticipantes() {
         </tr>`;
         $('#listaParticipantes').append(fila);
     });
+     var total = parseInt($('#total_pacientes').val()) || 0;
+    if(total > 0) {
+        $('#participantes-actuales').text(participantes.length);
+        
+        if(participantes.length < total) {
+            $('#participantes-info').removeClass('alert-success').addClass('alert-warning');
+        } else {
+            $('#participantes-info').removeClass('alert-warning').addClass('alert-success');
+        }
+    }
 }
 
 // Funciones auxiliares
@@ -293,25 +327,58 @@ function validarFormularioJornada() {
     
     return true;
 }
-
 function validarTotales() {
     var total = parseInt($('#total_pacientes').val()) || 0;
     var masculinos = parseInt($('#pacientes_masculinos').val()) || 0;
     var femeninos = parseInt($('#pacientes_femeninos').val()) || 0;
     var embarazadas = parseInt($('#pacientes_embarazadas').val()) || 0;
+    var suma = masculinos + femeninos;
     
-    if(masculinos + femeninos > total) {
-        muestraMensaje("La suma de pacientes masculinos y femeninos no puede ser mayor al total");
+    $('#mensaje-validacion').text('');
+    
+    if(suma != total) {
+        var mensaje = `La suma de pacientes (${suma}) debe ser igual al total (${total})`;
+        $('#mensaje-validacion').text(mensaje);
+        $('#contador-container').removeClass('alert-info').addClass('alert-danger');
         return false;
     }
     
     if(embarazadas > femeninos) {
-        muestraMensaje("El número de embarazadas no puede ser mayor al número de pacientes femeninos");
+        var mensaje = `Embarazadas (${embarazadas}) no puede ser mayor a pacientes femeninos (${femeninos})`;
+        $('#mensaje-validacion').text(mensaje);
+        $('#contador-container').removeClass('alert-info').addClass('alert-danger');
         return false;
     }
     
+    if(total === 0 && (masculinos > 0 || femeninos > 0)) {
+        var mensaje = "Si hay pacientes registrados, el total no puede ser cero";
+        $('#mensaje-validacion').text(mensaje);
+        $('#contador-container').removeClass('alert-info').addClass('alert-danger');
+        return false;
+    }
+    
+    $('#contador-container').removeClass('alert-danger').addClass('alert-info');
     return true;
 }
+
+function actualizarContadores() {
+    var total = parseInt($('#total_pacientes').val()) || 0;
+    var masculinos = parseInt($('#pacientes_masculinos').val()) || 0;
+    var femeninos = parseInt($('#pacientes_femeninos').val()) || 0;
+    var suma = masculinos + femeninos;
+    var diferencia = total - suma;
+    
+    $('#suma-mf').text(suma);
+    $('#diferencia-total').text(diferencia);
+    
+    if(suma != total) {
+        $('#contador-container').removeClass('alert-info').addClass('alert-danger');
+    } else {
+        $('#contador-container').removeClass('alert-danger').addClass('alert-info');
+        $('#mensaje-validacion').text('');
+    }
+}
+
 
 function formatearFecha(fecha) {
     if(!fecha) return '';
@@ -323,7 +390,6 @@ function formatearFecha(fecha) {
     return fecha;
 }
 
-// Funciones comunes (manteniendo tu estilo original)
 function enviaAjax(datos, callback) {
     $.ajax({
         async: true,
@@ -335,7 +401,6 @@ function enviaAjax(datos, callback) {
         cache: false,
         timeout: 10000,
         beforeSend: function() {
-            // Mostrar loader si es necesario
         },
         success: function(respuesta) {
             try {
@@ -377,6 +442,5 @@ function muestraMensaje(mensaje, tipo = 'error') {
 
 function limpia() {
     $('#formJornada')[0].reset();
-    // $('#formArea')[0].reset();
     $('.invalid-feedback').text('');
 }

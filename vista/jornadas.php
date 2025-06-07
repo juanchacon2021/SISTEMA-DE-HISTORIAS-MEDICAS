@@ -137,7 +137,15 @@ require_once("comunes/notificaciones.php");
                                 </div>
                             </div>
                         </div>
-                        
+                        <div class="row mt-2">
+                            <div class="col-md-12">
+                                <div class="alert alert-info p-2 small" id="contador-container">
+                                    <div>Suma Hombres + Mujeres: <strong><span id="suma-mf">0</span></strong></div>
+                                    <div>Diferencia con el total: <strong><span id="diferencia-total">0</span></strong></div>
+                                    <div class="text-danger font-weight-bold" id="mensaje-validacion"></div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="card mt-3">
                             <div class="card-header">
                                 <h5 class="card-title">Participantes</h5>

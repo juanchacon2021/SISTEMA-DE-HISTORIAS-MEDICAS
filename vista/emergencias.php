@@ -40,19 +40,18 @@ Emergencias
 	<div class="container">
     <div class="table-responsive">
         <table class="table table-striped table-hover" id="tablapersonal">
-            <thead>
+            <thead class="table-dark">
                 <tr>
-                    <th>Acciones</th>
-                    <th style="display:none;">Cod. de emergencia</th> 
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Hora de Ingreso</th>
-                    <th>Fecha de Ingreso</th>               
-                    <th>Cédula del Paciente</th>
-                    <th>Nombre del Personal</th>
-                    <th>Apellido del Personal</th>
-                    <th>Cédula del Personal</th>
-                </tr>
+					<th class="text-center">Nombre</th>
+					<th class="text-center">Apellido</th>
+					<th class="text-center">Hora de Ingreso</th>
+					<th class="text-center">Fecha de Ingreso</th>               
+					<th class="text-center">Cédula del Paciente</th>
+					<th class="text-center">Nombre del Personal</th>
+					<th class="text-center">Apellido del Personal</th>
+					<th class="text-center">Cédula del Personal</th>
+					<th class="text-center">Acciones</th>
+				</tr>
             </thead>
             <tbody id="resultadoconsulta">
                 
@@ -74,12 +73,10 @@ Emergencias
 			<input autocomplete="off" type="text" class="form-control" name="accion" id="accion" style="display: none;">
 			<div class="container">	
 				<div class="row mb-3">
-				
-					<div class="col-md-6" style="display: none;">
-					   <label class="texto-inicio font-medium" for="cod_emergencia">Cod. de Emergencia</label>
-					   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cod_emergencia" />
-					   <span id="scod_emergencia"></span>
-					</div>
+					<input type="hidden" id="old_cedula_paciente">
+					<input type="hidden" id="old_cedula_personal">
+					<input type="hidden" id="old_fechaingreso">
+					<input type="hidden" id="old_horaingreso">
 					
 					<div class="col-md-6">
 					   <label class="texto-inicio font-medium" for="horaingreso">Hora de Ingreso</label>
@@ -120,13 +117,13 @@ Emergencias
 				</div>
 
 					<div class="col-md-12">
-						<label class="texto-inicio font-medium" for="cedula_p">Cedula del Personal</label>
+						<label class="texto-inicio font-medium" for="cedula_personal">Cedula del Personal</label>
 						<div class="col-md-8 input-group">
-							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_p" name="cedula_p" />				
+							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_personal" name="cedula_personal" />				
 							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_personal" name="cedula_personal" style="display:none"/>
 							<button type="button" class="btn btn-primary" id="listadodepersonal" name="listadodepersonal">LISTADO DE PERSONAL</button>
 						</div>
-						<span id="scedula_p"></span>
+						<span id="scedula_personal"></span>
 					</div>
 					<div class="row">
 						<div class="col-md-12" id="datosdelpersonal">
@@ -135,13 +132,13 @@ Emergencias
 					</div>
 					<br>
 
-					<label class="texto-inicio font-medium" for="cedula_h">Cedula del Paciente</label>
+					<label class="texto-inicio font-medium" for="cedula_paciente">Cedula del Paciente</label>
 						<div class="col-md-8 input-group">
-							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_h" name="cedula_h" />				
-							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_historia" name="cedula_historia" style="display:none"/>
+							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_paciente" name="cedula_paciente" />				
+							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_paciente" name="cedula_paciente" style="display:none"/>
 							<button type="button" class="btn btn-primary" id="listadodepacientes" name="listadodepacientes">LISTADO DE PACIENTES</button>
 						</div>
-						<span id="scedula_h"></span>
+						<span id="scedula_paciente"></span>
 					</div>
 					<br>
 					<div class="row">
@@ -195,17 +192,7 @@ Emergencias
 		  </tr>
 		</thead>
 		<tbody id="listadopersonal">
-			<?php if ($datosPersonal['resultado'] == 'listadopersonal'): ?>
-				<?php foreach ($datosPersonal['datos'] as $fila): ?>
-					<tr onclick="colocapersonal(this)">
-						<td style="display:none;"><?= htmlspecialchars($fila['cedula_personal']) ?></td>
-						<td><?= htmlspecialchars($fila['cedula_personal']) ?></td>
-						<td><?= htmlspecialchars($fila['nombre']) ?></td>
-						<td><?= htmlspecialchars($fila['apellido']) ?></td>
-						<td><?= htmlspecialchars($fila['cargo']) ?></td>
-					</tr>
-				<?php endforeach; ?>
-			<?php endif; ?>
+
 		 
 		</tbody>
 		</table>
@@ -233,16 +220,7 @@ Emergencias
 		  </tr>
 		</thead>
 		<tbody id="listadopacientes">
-			<?php if ($datosPacientes['resultado'] == 'listadopacientes'): ?>
-				<?php foreach ($datosPacientes['datos'] as $fila): ?>
-					<tr onclick="colocapacientes(this)">
-						<td style="display:none;"><?= htmlspecialchars($fila['cedula_historia']) ?></td>
-						<td><?= htmlspecialchars($fila['cedula_historia']) ?></td>
-						<td><?= htmlspecialchars($fila['nombre']) ?></td>
-						<td><?= htmlspecialchars($fila['apellido']) ?></td>
-					</tr>
-				<?php endforeach; ?>
-			<?php endif; ?>
+		
 		</tbody>
 		</table>
     </div>

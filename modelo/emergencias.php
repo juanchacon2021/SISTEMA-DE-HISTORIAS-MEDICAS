@@ -6,19 +6,22 @@ require_once('modelo/datos.php');
 class emergencias extends datos{
 	
 	
-	private $cod_emergencia; 
+	
 	private $horaingreso;
 	private $fechaingreso;
 	private $motingreso;
 	private $diagnostico_e;
 	private $tratamientos;
-	private $cedula_p;
-	private $cedula_h;
+	private $cedula_personal;
+	private $cedula_paciente;
+
+	private $old_cedula_paciente;
+	private $old_cedula_personal;
+	private $old_fechaingreso;
+	private $old_horaingreso;
 
 	
-	function set_cod_emergencia($valor){
-		$this->cod_emergencia = $valor;
-	}
+	
 	
 	
 	function set_horaingreso($valor){
@@ -41,19 +44,33 @@ class emergencias extends datos{
 		$this->tratamientos = $valor;
 	}
 	
-	function set_cedula_p($valor){
-		$this->cedula_p = $valor;
+	function set_cedula_personal($valor){
+		$this->cedula_personal = $valor;
 	}
 	
 	
-	function set_cedula_h($valor){
-		$this->cedula_h = $valor;
+	function set_cedula_paciente($valor){
+		$this->cedula_paciente = $valor;
 	}
+
+	function set_old_cedula_paciente($valor){ 
+		$this->old_cedula_paciente = $valor; 
+	}
+
+	function set_old_cedula_personal($valor){ 
+		$this->old_cedula_personal = $valor; 
+	}
+
+	function set_old_fechaingreso($valor){ 
+		$this->old_fechaingreso = $valor; 
+	}
+
+	function set_old_horaingreso($valor){ 
+		$this->old_horaingreso = $valor; 
+	}
+
 	
 	
-	function get_cod_emergencia(){
-		return $this->cod_emergencia;
-	}
 	
 	function get_horaingreso(){
 		return $this->horaingreso;
@@ -75,12 +92,12 @@ class emergencias extends datos{
 		return $this->tratamientos;
 	}
 
-	function get_cedula_p(){
-		return $this->cedula_p;
+	function get_cedula_personal(){
+		return $this->cedula_personal;
 	}
 	
-	function get_cedula_h(){
-		return $this->cedula_h;
+	function get_cedula_paciente(){
+		return $this->cedula_paciente;
 	}
 
 	function listadopersonal() {
@@ -109,7 +126,7 @@ class emergencias extends datos{
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$r = array();
 		try {
-			$resultado = $co->query("SELECT * FROM historias");
+			$resultado = $co->query("SELECT * FROM paciente");
 			if ($resultado) {
 				$r['resultado'] = 'listadopacientes';
 				$r['datos'] = $resultado->fetchAll(PDO::FETCH_ASSOC); 
@@ -129,7 +146,7 @@ class emergencias extends datos{
 	function incluir(){
 		
 		$r = array();
-		if(!$this->existe($this->cod_emergencia)){
+		if(!$this->existe($this->cedula_paciente, $this->cedula_personal, $this->fechaingreso, $this->horaingreso)){
 			
 				
 						
@@ -138,14 +155,14 @@ class emergencias extends datos{
 
 				
 					try {
-							$co->query("Insert into emergencias(
+							$co->query("Insert into emergencia(
 								horaingreso,
 								fechaingreso,
 								motingreso,
 								diagnostico_e,
 								tratamientos,
-								cedula_p,
-								cedula_h
+								cedula_personal,
+								cedula_paciente
 								) 
 								Values(
 								'$this->horaingreso',
@@ -153,8 +170,8 @@ class emergencias extends datos{
 								'$this->motingreso',
 								'$this->diagnostico_e',
 								'$this->tratamientos',
-								'$this->cedula_p',
-								'$this->cedula_h'
+								'$this->cedula_personal',
+								'$this->cedula_paciente'
 								)");
 								$r['resultado'] = 'incluir';
 								$r['mensaje'] =  'Registro Incluido';
@@ -178,58 +195,90 @@ class emergencias extends datos{
 	}
 	
 	function modificar(){
-		$co = $this->conecta();
-		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$r = array();
-		if($this->existe($this->cod_emergencia)){
-			try {
-					$co->query("Update emergencias set 
-					    cod_emergencia = '$this->cod_emergencia',
-						horaingreso = '$this->horaingreso',
-						fechaingreso = '$this->fechaingreso',
-						motingreso = '$this->motingreso',
-						diagnostico_e = '$this->diagnostico_e',
-						tratamientos= '$this->tratamientos',
-						cedula_p = '$this->cedula_p',
-						cedula_h = '$this->cedula_h'
-						where
-						cod_emergencia = '$this->cod_emergencia'
-						");
-						$r['resultado'] = 'modificar';
-			            $r['mensaje'] =  'Registro Modificado';
-			} catch(Exception $e) {
-				$r['resultado'] = 'error';
-			    $r['mensaje'] =  $e->getMessage();
-			}
-		}
-		else{
-			$r['resultado'] = 'modificar';
-			$r['mensaje'] =  'Cedula no registrada';
-		}
-		return $r;
-	}
+    $co = $this->conecta();
+    $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $r = array();
+
+    // Usa los valores originales para buscar el registro
+    if($this->existe($this->old_cedula_paciente, $this->old_cedula_personal, $this->old_fechaingreso, $this->old_horaingreso)){
+        try {
+            $stmt = $co->prepare("
+                UPDATE emergencia SET 
+                    motingreso = :motingreso,
+                    diagnostico_e = :diagnostico_e,
+                    tratamientos = :tratamientos,
+                    cedula_paciente = :cedula_paciente,
+                    cedula_personal = :cedula_personal,
+                    fechaingreso = :fechaingreso,
+                    horaingreso = :horaingreso
+                WHERE cedula_paciente = :old_cedula_paciente
+                  AND cedula_personal = :old_cedula_personal
+                  AND fechaingreso = :old_fechaingreso
+                  AND horaingreso = :old_horaingreso
+            ");
+
+            $stmt->bindParam(':motingreso', $this->motingreso);
+            $stmt->bindParam(':diagnostico_e', $this->diagnostico_e);
+            $stmt->bindParam(':tratamientos', $this->tratamientos);
+            $stmt->bindParam(':cedula_paciente', $this->cedula_paciente);
+            $stmt->bindParam(':cedula_personal', $this->cedula_personal);
+            $stmt->bindParam(':fechaingreso', $this->fechaingreso);
+            $stmt->bindParam(':horaingreso', $this->horaingreso);
+
+            $stmt->bindParam(':old_cedula_paciente', $this->old_cedula_paciente);
+            $stmt->bindParam(':old_cedula_personal', $this->old_cedula_personal);
+            $stmt->bindParam(':old_fechaingreso', $this->old_fechaingreso);
+            $stmt->bindParam(':old_horaingreso', $this->old_horaingreso);
+
+            $stmt->execute();
+
+            $r['resultado'] = 'modificar';
+            $r['mensaje'] = 'Registro Modificado';
+        } catch(Exception $e) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $e->getMessage();
+        }
+    } else {
+        $r['resultado'] = 'modificar';
+        $r['mensaje'] = 'Registro no encontrado';
+    }
+
+    return $r;
+}
 	
 	function eliminar(){
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$r = array();
-		if($this->existe($this->cod_emergencia)){
+
+		if($this->existe($this->cedula_paciente, $this->cedula_personal, $this->fechaingreso, $this->horaingreso)){
 			try {
-					$co->query("delete from emergencias 
-						where
-						cod_emergencia = '$this->cod_emergencia'
-						");
-						$r['resultado'] = 'eliminar';
-			            $r['mensaje'] =  'Registro Eliminado';
+				$stmt = $co->prepare("
+					DELETE FROM emergencia 
+					WHERE cedula_paciente = :cedula_paciente
+					AND cedula_personal = :cedula_personal
+					AND fechaingreso = :fechaingreso
+					AND horaingreso = :horaingreso
+				");
+
+				$stmt->bindParam(':cedula_paciente', $this->cedula_paciente);
+				$stmt->bindParam(':cedula_personal', $this->cedula_personal);
+				$stmt->bindParam(':fechaingreso', $this->fechaingreso);
+				$stmt->bindParam(':horaingreso', $this->horaingreso);
+
+				$stmt->execute();
+
+				$r['resultado'] = 'eliminar';
+				$r['mensaje'] = 'Registro Eliminado';
 			} catch(Exception $e) {
 				$r['resultado'] = 'error';
-			    $r['mensaje'] =  $e->getMessage();
+				$r['mensaje'] = $e->getMessage();
 			}
-		}
-		else{
+		} else {
 			$r['resultado'] = 'eliminar';
-			$r['mensaje'] =  'No existe la cedula';
+			$r['mensaje'] = 'Registro no encontrado';
 		}
+
 		return $r;
 	}
 	
@@ -240,9 +289,9 @@ class emergencias extends datos{
 		$r = array();
 		try {
 			$resultado = $co->query("SELECT *, h.nombre as nombre_h, h.apellido as apellido_h  
-									FROM emergencias e 
-									INNER JOIN historias h ON e.cedula_h = h.cedula_historia
-									INNER JOIN personal p ON e.cedula_p = p.cedula_personal");
+									FROM emergencia e 
+									INNER JOIN paciente h ON e.cedula_paciente = h.cedula_paciente
+									INNER JOIN personal p ON e.cedula_personal = p.cedula_personal");
 			
 			if ($resultado) {
 				$r['resultado'] = 'consultar';
@@ -259,29 +308,32 @@ class emergencias extends datos{
 	}
 	
 	
-	private function existe($cod_emergencia){
-		$co = $this->conecta();
-		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		try{
-			
-			$resultado = $co->query("SELECT * FROM emergencias e WHERE e.cod_emergencia = '$cod_emergencia'");
-			
-			
-			$fila = $resultado->fetchAll(PDO::FETCH_BOTH);
-			if($fila){
+	private function existe($cedula_paciente, $cedula_personal, $fechaingreso, $horaingreso){
+    $co = $this->conecta();
+    $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-				return true;
-			    
-			}
-			else{
-				
-				return false;;
-			}
-			
-		}catch(Exception $e){
-			return false;
-		}
-	}
+    try {
+        $stmt = $co->prepare("
+            SELECT * FROM emergencia 
+            WHERE cedula_paciente = :cedula_paciente 
+              AND cedula_personal = :cedula_personal 
+              AND fechaingreso = :fechaingreso 
+              AND horaingreso = :horaingreso
+        ");
+
+        $stmt->bindParam(':cedula_paciente', $cedula_paciente);
+        $stmt->bindParam(':cedula_personal', $cedula_personal);
+        $stmt->bindParam(':fechaingreso', $fechaingreso);
+        $stmt->bindParam(':horaingreso', $horaingreso);
+        $stmt->execute();
+
+        $fila = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $fila !== false;
+    } catch(Exception $e) {
+        return false;
+    }
+}
 	
 	
 

@@ -16,9 +16,9 @@ if(is_file("vista/".$pagina.".php")){
                 echo json_encode($o->consultar());
                 break;
                 
-            // case 'consultar_jornada':
-            //     echo json_encode($o->consultar_jornada($_POST['cod_jornada']));
-            //     break;
+            case 'consultar_jornada':
+                echo json_encode($o->consultar_jornada($_POST['cod_jornada']));
+               break;
                 
             case 'incluir':
                 $o->set_fecha_jornada($_POST['fecha_jornada']);
