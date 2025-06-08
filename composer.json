@@ -1,15 +1,3 @@
 {
-    "name": "shm/shm",
-    "autoload": {
-        "psr-4": {
-            "Shm\\Shm\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Eduin",
-            "email": "eduinmeneses86@gmail.com"
-        }
-    ],
-    "require": {}
+  "require": {}
 }

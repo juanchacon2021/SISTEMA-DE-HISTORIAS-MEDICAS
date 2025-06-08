@@ -442,7 +442,7 @@ function procesarRespuesta(respuesta) {
                     <td>${fila.hora}</td>
                     <td>${tipo}</td>
                     <td>${fila.medicamento}</td>
-                    <td>${fila.cantidad} ${fila.unidad_medida}</td>
+                    <td>${fila.cantidad}</td>
                     <td>${fila.nombre_personal} ${fila.apellido_personal}</td>
                     <td>${detalles}</td>
                 </tr>`;
