@@ -5,14 +5,14 @@ $(document).ready(function(){
         muestraMensaje($("#mensajes").html());
     }
     //Fin de seccion de mostrar envio en modal mensaje//        
-        
-    $("#email").on("keypress",function(e){
-        validarkeypress(/^[A-Za-z0-9@.\-\b]*$/,e);
+    
+    $("#cedula").on("keypress",function(e){
+        validarkeypress(/^[0-9\b]*$/,e);
     });
     
-    $("#email").on("keyup",function(){
-        validarkeyup(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,$(this),
-        $("#semail"),"Ingrese un email válido");
+    $("#cedula").on("keyup",function(){
+        validarkeyup(/^[0-9]{7,8}$/,$(this),
+        $("#scedula"),"La cédula debe tener 7 u 8 dígitos");
     });
     
     $("#clave").on("keypress",function(e){
@@ -42,32 +42,13 @@ $(document).ready(function(){
     });
 });
 
-// Función para refrescar CAPTCHA
-// function refreshCaptcha() {
-//     $.ajax({
-//         url: 'comunes/generar_capcha.php', 
-//         type: 'GET',
-//         dataType: 'text',
-//         success: function(code) {
-//             $("#captcha-code").text(code.trim());
-//             $("#captcha").val('');
-//             $("#scaptcha").text('');
-//         },
-//         error: function(xhr, status, error) {
-//             console.error("Error al actualizar CAPTCHA:", error);
-//             muestraMensaje("Error al actualizar CAPTCHA. Por favor recarga la página.");
-//         }
-//     });
-// }
-
-// Validación de CAPTCHA mejorada
 function validarenvio(){
     let valido = true;
     
-    // Validar email
-    if(validarkeyup(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,$("#email"),
-        $("#semail"),"Ingrese un email válido")==0){
-        muestraMensaje("El email debe ser válido");    
+    // Validar cédula
+    if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula"),
+        $("#scedula"),"La cédula debe tener 7 u 8 dígitos")==0){
+        muestraMensaje("La cédula debe tener 7 u 8 dígitos");    
         valido = false;                    
     }    
     

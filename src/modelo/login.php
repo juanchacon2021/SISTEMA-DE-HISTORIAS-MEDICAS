@@ -1,7 +1,10 @@
 <?php
-require_once('modelo/datos.php');
+namespace Shm\Shm\modelo;
+use Shm\Shm\modelo\datos;
+use PDO;
+use Exception;
 
-class entrada extends datos{
+class login extends datos{
     private $cedula; 
     private $clave;
     

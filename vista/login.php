@@ -50,8 +50,8 @@
                     <img src="img/user.svg" alt="">
                 </div>
                 <div class="div">
-                    <input id="email" type="email" class="input border-0 form-control" name="email" placeholder="Email">
-                    <span id="semail"></span>
+                    <input id="cedula" type="text" class="input border-0 form-control" name="cedula" placeholder="Cédula">
+                    <span id="scedula"></span>
                 </div>
             </div>
             <div class="input-div pass">
