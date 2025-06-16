@@ -7,18 +7,21 @@ class planificacion extends datos {
     private $imagen;
     private $id_usuario;
     private $ruta_imagen;
+    private $cedula_personal;
 
     public function set_cod_pub($valor) { $this->cod_pub = $valor; }
     public function set_contenido($valor) { $this->contenido = $valor; }
     public function set_imagen($valor) { $this->imagen = $valor; }
     public function set_id_usuario($valor) { $this->id_usuario = $valor; }
     public function set_ruta_imagen($valor) { $this->ruta_imagen = $valor; }
+    public function set_cedula_personal($valor) { $this->cedula_personal = $valor; }
 
     public function get_cod_pub() { return $this->cod_pub; }
     public function get_contenido() { return $this->contenido; }
     public function get_imagen() { return $this->imagen; }
     public function get_id_usuario() { return $this->id_usuario; }
     public function get_ruta_imagen() { return $this->ruta_imagen; }
+    public function get_cedula_personal() { return $this->cedula_personal; }
 
     public function consultar_publicaciones() {
     $co = $this->conecta();
@@ -29,15 +32,9 @@ class planificacion extends datos {
         $resultado = $co->query("
             SELECT 
                 f.*,
-                u.nombre as nombre_usuario,
-                u.email,
-                u.foto_perfil,
-                CASE 
-                    WHEN f.id_usuario = {$this->id_usuario} THEN 1
-                    ELSE 0
-                END as es_propietario
+                CONCAT(p.nombre, ' ', p.apellido) AS nombre_usuario
             FROM feed f
-            JOIN seguridad.usuario u ON f.id_usuario = u.id
+            JOIN personal p ON f.cedula_personal = p.cedula_personal
             ORDER BY f.fecha DESC
         ");
         
@@ -110,9 +107,9 @@ class planificacion extends datos {
             // Insertar publicación
             $co->query("
                 INSERT INTO feed(
-                    fecha, contenido, imagen, id_usuario
+                    fecha, contenido, imagen, cedula_personal
                 ) VALUES(
-                    NOW(), '$this->contenido', '$ruta_imagen', '$this->id_usuario'
+                    NOW(), '$this->contenido', '$ruta_imagen', '$this->cedula_personal'
                 )
             ");
             

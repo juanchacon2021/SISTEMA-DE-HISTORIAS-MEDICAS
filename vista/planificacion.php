@@ -65,7 +65,7 @@ require_once("comunes/notificaciones.php");
     </div>
 
     <!-- Listado de publicaciones -->
-    <div class="container" id="listadoPublicaciones">
+    <div class="container d-flex col-md-9" id="listadoPublicaciones">
         <!-- Las publicaciones se cargarán aquí via AJAX -->
     </div>
 </div>
@@ -91,6 +91,9 @@ require_once("comunes/notificaciones.php");
 
 <?php require_once("comunes/modal.php"); ?>
 <script src="js/planificacion.js"></script>
+<script>
+    const cedulaUsuarioLogueado = "<?php echo $_SESSION['usuario']; ?>";
+</script>
 
 </body>
 </html>
