@@ -24,27 +24,20 @@ class jornadas extends datos {
     public function set_cedula_responsable($valor) { $this->cedula_responsable = $valor; }
     public function set_participantes($valor) { $this->participantes = $valor; }
 
-     private function validarPacientes() {
-        $total = $this->total_pacientes;
+    private function validarPacientes() {
         $masculinos = $this->pacientes_masculinos;
         $femeninos = $this->pacientes_femeninos;
         $embarazadas = $this->pacientes_embarazadas;
         
-        if(($masculinos + $femeninos) != $total) {
-            throw new Exception("La suma de pacientes masculinos ($masculinos) y femeninos ($femeninos) debe ser igual al total ($total)");
-        }
+        // Calcular el total automáticamente
+        $this->total_pacientes = $masculinos + $femeninos;
         
         if($embarazadas > $femeninos) {
             throw new Exception("El número de embarazadas ($embarazadas) no puede ser mayor al número de pacientes femeninos ($femeninos)");
         }
         
-        if($total == 0 && ($masculinos > 0 || $femeninos > 0)) {
-            throw new Exception("Si hay pacientes registrados, el total no puede ser cero");
-        }
-        
         return true;
     }
-
 
     public function incluir() {
         $this->validarPacientes();
@@ -59,11 +52,11 @@ class jornadas extends datos {
             $stmt = $co->prepare("INSERT INTO jornadas_medicas (
                 fecha_jornada, ubicacion, descripcion, total_pacientes, 
                 pacientes_masculinos, pacientes_femeninos, pacientes_embarazadas, 
-                cedula_responsable, created_at
+                created_at
             ) VALUES (
                 :fecha, :ubicacion, :descripcion, :total, 
                 :masculinos, :femeninos, :embarazadas, 
-                :responsable, NOW()
+                NOW()
             )");
             
             $stmt->execute(array(
@@ -73,23 +66,36 @@ class jornadas extends datos {
                 ':total' => $this->total_pacientes,
                 ':masculinos' => $this->pacientes_masculinos,
                 ':femeninos' => $this->pacientes_femeninos,
-                ':embarazadas' => $this->pacientes_embarazadas,
-                ':responsable' => $this->cedula_responsable
+                ':embarazadas' => $this->pacientes_embarazadas
             ));
             
             $cod_jornada = $co->lastInsertId();
             
+            // Insertar responsable como participante
+            $stmt = $co->prepare("INSERT INTO participantes_jornadas (
+                cod_jornada, cedula_personal, tipo_participante
+            ) VALUES (
+                :jornada, :personal, 'responsable'
+            )");
+            $stmt->execute(array(
+                ':jornada' => $cod_jornada,
+                ':personal' => $this->cedula_responsable
+            ));
+            
+            // Insertar otros participantes
             foreach($this->participantes as $participante) {
-                $stmt = $co->prepare("INSERT INTO participantes_jornadas (
-                    cod_jornada, cedula_personal
-                ) VALUES (
-                    :jornada, :personal
-                )");
-                
-                $stmt->execute(array(
-                    ':jornada' => $cod_jornada,
-                    ':personal' => $participante
-                ));
+                if($participante != $this->cedula_responsable) { // Evitar duplicar al responsable
+                    $stmt = $co->prepare("INSERT INTO participantes_jornadas (
+                        cod_jornada, cedula_personal, tipo_participante
+                    ) VALUES (
+                        :jornada, :personal, 'participante'
+                    )");
+                    
+                    $stmt->execute(array(
+                        ':jornada' => $cod_jornada,
+                        ':personal' => $participante
+                    ));
+                }
             }
             
             $co->commit();
@@ -121,8 +127,7 @@ class jornadas extends datos {
                 total_pacientes = :total,
                 pacientes_masculinos = :masculinos,
                 pacientes_femeninos = :femeninos,
-                pacientes_embarazadas = :embarazadas,
-                cedula_responsable = :responsable
+                pacientes_embarazadas = :embarazadas
                 WHERE cod_jornada = :codigo");
             
             $stmt->execute(array(
@@ -133,23 +138,37 @@ class jornadas extends datos {
                 ':masculinos' => $this->pacientes_masculinos,
                 ':femeninos' => $this->pacientes_femeninos,
                 ':embarazadas' => $this->pacientes_embarazadas,
-                ':responsable' => $this->cedula_responsable,
                 ':codigo' => $this->cod_jornada
             ));
             
+            // Eliminar participantes existentes
             $co->query("DELETE FROM participantes_jornadas WHERE cod_jornada = '$this->cod_jornada'");
             
+            // Insertar responsable como participante
+            $stmt = $co->prepare("INSERT INTO participantes_jornadas (
+                cod_jornada, cedula_personal, tipo_participante
+            ) VALUES (
+                :jornada, :personal, 'responsable'
+            )");
+            $stmt->execute(array(
+                ':jornada' => $this->cod_jornada,
+                ':personal' => $this->cedula_responsable
+            ));
+            
+            // Insertar otros participantes
             foreach($this->participantes as $participante) {
-                $stmt = $co->prepare("INSERT INTO participantes_jornadas (
-                    cod_jornada, cedula_personal
-                ) VALUES (
-                    :jornada, :personal
-                )");
-                
-                $stmt->execute(array(
-                    ':jornada' => $this->cod_jornada,
-                    ':personal' => $participante
-                ));
+                if($participante != $this->cedula_responsable) { // Evitar duplicar al responsable
+                    $stmt = $co->prepare("INSERT INTO participantes_jornadas (
+                        cod_jornada, cedula_personal, tipo_participante
+                    ) VALUES (
+                        :jornada, :personal, 'participante'
+                    )");
+                    
+                    $stmt->execute(array(
+                        ':jornada' => $this->cod_jornada,
+                        ':personal' => $participante
+                    ));
+                }
             }
             
             $co->commit();
@@ -175,7 +194,6 @@ class jornadas extends datos {
             // Eliminar participantes
             $co->query("DELETE FROM participantes_jornadas WHERE cod_jornada = '$this->cod_jornada'");
             
-            
             // Eliminar jornada
             $co->query("DELETE FROM jornadas_medicas WHERE cod_jornada = '$this->cod_jornada'");
             
@@ -197,10 +215,14 @@ class jornadas extends datos {
         $r = array();
         
         try {
-            $resultado = $co->query("SELECT j.*, CONCAT(p.nombre, ' ', p.apellido) as responsable
-                                   FROM jornadas_medicas j
-                                   JOIN personal p ON j.cedula_responsable = p.cedula_personal
-                                   ORDER BY j.fecha_jornada DESC");
+            $resultado = $co->query("SELECT 
+                j.*, 
+                (SELECT CONCAT(p.nombre, ' ', p.apellido) 
+                 FROM participantes_jornadas pj 
+                 JOIN personal p ON pj.cedula_personal = p.cedula_personal 
+                 WHERE pj.cod_jornada = j.cod_jornada AND pj.tipo_participante = 'responsable' LIMIT 1) as responsable
+               FROM jornadas_medicas j
+               ORDER BY j.fecha_jornada DESC");
             
             $r['resultado'] = 'consultar';
             $r['datos'] = $resultado->fetchAll(PDO::FETCH_ASSOC);
@@ -211,38 +233,47 @@ class jornadas extends datos {
         return $r;
     }
     
-     public function consultar_jornada($codigo) {
-         $co = $this->conecta();
-         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-         $r = array();
-        
-         try {
-             // Datos de la jornada
-             $stmt = $co->prepare("SELECT * FROM jornadas_medicas WHERE cod_jornada = :codigo");
-             $stmt->execute(array(':codigo' => $codigo));
-             $jornada = $stmt->fetch(PDO::FETCH_ASSOC);
-            
+    public function consultar_jornada($codigo) {
+        $co = $this->conecta();
+        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $r = array();
+       
+        try {
+            // Datos de la jornada
+            $stmt = $co->prepare("SELECT * FROM jornadas_medicas WHERE cod_jornada = :codigo");
+            $stmt->execute(array(':codigo' => $codigo));
+            $jornada = $stmt->fetch(PDO::FETCH_ASSOC);
+           
             if($jornada) {
-                 // Participantes
+                // Obtener responsable
+                $stmt = $co->prepare("SELECT pj.cedula_personal 
+                                    FROM participantes_jornadas pj 
+                                    WHERE pj.cod_jornada = :codigo AND pj.tipo_participante = 'responsable' LIMIT 1");
+                $stmt->execute(array(':codigo' => $codigo));
+                $responsable = $stmt->fetch(PDO::FETCH_ASSOC);
+                
+                $jornada['cedula_responsable'] = $responsable ? $responsable['cedula_personal'] : null;
+                
+                // Participantes (excluyendo al responsable)
                 $stmt = $co->prepare("SELECT pj.cedula_personal, CONCAT(p.nombre, ' ', p.apellido) as nombre_completo
                                     FROM participantes_jornadas pj
-                                     JOIN personal p ON pj.cedula_personal = p.cedula_personal
-                                     WHERE pj.cod_jornada = :codigo");
-                 $stmt->execute(array(':codigo' => $codigo));
-                 $participantes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                
+                                    JOIN personal p ON pj.cedula_personal = p.cedula_personal
+                                    WHERE pj.cod_jornada = :codigo AND pj.tipo_participante = 'participante'");
+                $stmt->execute(array(':codigo' => $codigo));
+                $participantes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+               
                 $r['resultado'] = 'consultar';
-                 $r['jornada'] = $jornada;
-                 $r['participantes'] = $participantes;
-             } else {
-                 $r['resultado'] = 'error';
-                 $r['mensaje'] = 'Jornada no encontrada';
-             }
-         } catch(Exception $e) {
+                $r['jornada'] = $jornada;
+                $r['participantes'] = $participantes;
+            } else {
+                $r['resultado'] = 'error';
+                $r['mensaje'] = 'Jornada no encontrada';
+            }
+        } catch(Exception $e) {
             $r['resultado'] = 'error';
-             $r['mensaje'] = $e->getMessage();
-         }
-         return $r;
+            $r['mensaje'] = $e->getMessage();
+        }
+        return $r;
     }
     
     public function obtener_personal() {

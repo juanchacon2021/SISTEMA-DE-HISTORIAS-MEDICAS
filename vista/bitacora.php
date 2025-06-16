@@ -4,19 +4,18 @@ require_once("comunes/sidebar.php");
 ?>
 <body class="hold-transition sidebar-mini layout-fixed">
     <?php  
-    if (!isset($permisos)) {
-      
+    if (!isset($_SESSION['permisos']) || !is_array($_SESSION['permisos'])) {
         header("Location: ?pagina=login");
         exit();
-    } elseif (!in_array('Bitácora', $permisos)) {
-      
+    } elseif (!isset($_SESSION['permisos']['modulos']) || !in_array('Bitácora', $_SESSION['permisos']['modulos'])) {
         http_response_code(403);
         die('<div class="container text-center py-5">
                 <h1 class="text-danger">403 - Acceso prohibido</h1>
                 <p class="lead">No tienes permiso para acceder a este módulo</p>
                 <a href="?pagina=principal" class="btn btn-primary">Volver al inicio</a>
              </div>');
-    } ?>
+    }
+?>
 
 <div class="wrapper">
     

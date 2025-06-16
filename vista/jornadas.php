@@ -4,20 +4,19 @@ require_once("comunes/sidebar.php");
 require_once("comunes/notificaciones.php"); 
 ?>
 <body class="hold-transition sidebar-mini layout-fixed">
-    <?php  
-    if (!isset($permisos)) {
-       
+<?php  
+    if (!isset($_SESSION['permisos']) || !is_array($_SESSION['permisos'])) {
         header("Location: ?pagina=login");
         exit();
-    } elseif (!in_array('Jornadas', $permisos)) {
-       
+    } elseif (!isset($_SESSION['permisos']['modulos']) || !in_array('Jornadas', $_SESSION['permisos']['modulos'])) {
         http_response_code(403);
         die('<div class="container text-center py-5">
                 <h1 class="text-danger">403 - Acceso prohibido</h1>
                 <p class="lead">No tienes permiso para acceder a este módulo</p>
                 <a href="?pagina=principal" class="btn btn-primary">Volver al inicio</a>
              </div>');
-    } ?>
+    }
+?>
 
 <div class="wrapper">
    
@@ -112,10 +111,10 @@ require_once("comunes/notificaciones.php");
                         </div>
                         
                         <div class="row">
-                            <div class="col-md-3">
+                            <div style="display: none;" >
                                 <div class="form-group">
                                     <label for="total_pacientes">Total Pacientes</label>
-                                    <input type="number" class="form-control" id="total_pacientes" name="total_pacientes" min="0" value="0">
+                                    <input type="number" class="form-control" id="total_pacientes" name="total_pacientes" min="0" value="0" readonly>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -140,8 +139,7 @@ require_once("comunes/notificaciones.php");
                         <div class="row mt-2">
                             <div class="col-md-12">
                                 <div class="alert alert-info p-2 small" id="contador-container">
-                                    <div>Suma Hombres + Mujeres: <strong><span id="suma-mf">0</span></strong></div>
-                                    <div>Diferencia con el total: <strong><span id="diferencia-total">0</span></strong></div>
+                                    <div>Total de Pacientes: <strong><span id="suma-mf">0</span></strong></div>
                                     <div class="text-danger font-weight-bold" id="mensaje-validacion"></div>
                                 </div>
                             </div>
