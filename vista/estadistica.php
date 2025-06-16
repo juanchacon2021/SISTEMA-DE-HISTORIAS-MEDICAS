@@ -6,18 +6,18 @@
 ?>
 <body>
 <?php  
-    if (!isset($permisos)) {
+    if (!isset($_SESSION['permisos']) || !is_array($_SESSION['permisos'])) {
         header("Location: ?pagina=login");
         exit();
-    } elseif (!in_array('Estadistica', $permisos)) {
+    } elseif (!isset($_SESSION['permisos']['modulos']) || !in_array('Estadistica', $_SESSION['permisos']['modulos'])) {
         http_response_code(403);
         die('<div class="container text-center py-5">
                 <h1 class="text-danger">403 - Acceso prohibido</h1>
                 <p class="lead">No tienes permiso para acceder a este módulo</p>
                 <a href="?pagina=principal" class="btn btn-primary">Volver al inicio</a>
              </div>');
-    } ?>
-
+    }
+?>
 <h1 class="fw-bold fs-1 text-center mt-4">Estadística</h1>
 
 <div class="container mt-4" style="margin-left: 300px;">

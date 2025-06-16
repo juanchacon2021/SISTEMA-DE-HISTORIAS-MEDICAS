@@ -54,26 +54,45 @@ class login extends datos{
         return $r;
     }
 
-    private function obtener_permisos_rol($rol_id) {
-        $co = $this->conecta2();
-        $permisos = array();
+private function obtener_permisos_rol($rol_id) {
+    $co = $this->conecta2();
+    $permisos = array(
+        'modulos' => array(),
+        'acciones' => array()
+    );
+    
+    try {
+        // Obtener módulos a los que tiene acceso
+        $stmt = $co->prepare("SELECT m.nombre 
+                             FROM permiso p
+                             JOIN modulo m ON p.modulo_id = m.id
+                             WHERE p.rol_id = :rol_id");
+        $stmt->bindParam(':rol_id', $rol_id);
+        $stmt->execute();
         
-        try {
-            $stmt = $co->prepare("SELECT m.nombre 
-                                 FROM permiso p
-                                 JOIN modulo m ON p.modulo_id = m.id
-                                 WHERE p.rol_id = :rol_id");
-            $stmt->bindParam(':rol_id', $rol_id);
-            $stmt->execute();
-            
-            while($fila = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $permisos[] = $fila['nombre'];
-            }
-        } catch (Exception $e) {
-            error_log("Error al obtener permisos: " . $e->getMessage());
+        while($fila = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $permisos['modulos'][] = $fila['nombre'];
         }
         
-        return $permisos;
+        // Obtener permisos específicos (registrar, modificar, eliminar)
+        $stmt = $co->prepare("SELECT m.nombre, p.registrar, p.modificar, p.eliminar
+                             FROM permiso p
+                             JOIN modulo m ON p.modulo_id = m.id
+                             WHERE p.rol_id = :rol_id");
+        $stmt->bindParam(':rol_id', $rol_id);
+        $stmt->execute();
+        
+        while($fila = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $permisos['acciones'][$fila['nombre']] = array(
+                'registrar' => $fila['registrar'],
+                'modificar' => $fila['modificar'],
+                'eliminar' => $fila['eliminar']
+            );
+        }
+    } catch (Exception $e) {
+        error_log("Error al obtener permisos: " . $e->getMessage());
     }
-}
+    
+    return $permisos;
+}}
 ?>

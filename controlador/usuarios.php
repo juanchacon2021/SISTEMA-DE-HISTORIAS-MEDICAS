@@ -19,7 +19,7 @@ if (is_file("vista/" . $pagina . ".php")) {
 
             case 'incluir_usuario':
                 $o->set_nombre($_POST['nombre']);
-                $o->set_email($_POST['email']);
+                $o->set_cedula($_POST['cedula']);
                 $o->set_password($_POST['password']);
                 $o->set_rol_id($_POST['rol_id']);
                 if (!empty($_POST['foto_perfil'])) {
@@ -31,7 +31,7 @@ if (is_file("vista/" . $pagina . ".php")) {
             case 'modificar_usuario':
                 $o->set_id($_POST['id']);
                 $o->set_nombre($_POST['nombre']);
-                $o->set_email($_POST['email']);
+                $o->set_cedula($_POST['cedula']);
                 if (!empty($_POST['password'])) {
                     $o->set_password($_POST['password']);
                 }
@@ -79,13 +79,36 @@ if (is_file("vista/" . $pagina . ".php")) {
                 echo json_encode($o->consultar_modulos());
                 break;
 
+            case 'consultar_modulos_tabla':
+                echo json_encode($o->consultar_modulos_tabla());
+                break;
+
             case 'consultar_permisos_rol':
                 echo json_encode($o->consultar_permisos_rol($_POST['rol_id']));
                 break;
 
-            case 'actualizar_permisos':
-                $modulos = isset($_POST['modulos']) ? json_decode($_POST['modulos']) : array();
-                echo json_encode($o->actualizar_permisos($_POST['rol_id'], $modulos));
+           case 'actualizar_permisos':
+                $permisos = isset($_POST['permisos']) ? json_decode($_POST['permisos'], true) : array();
+                echo json_encode($o->actualizar_permisos($_POST['rol_id'], $permisos));
+                break;
+
+            // Acciones para módulos
+            case 'incluir_modulo':
+                $o->set_nombre_modulo($_POST['nombre']);
+                $o->set_descripcion_modulo($_POST['descripcion']);
+                echo json_encode($o->incluir_modulo());
+                break;
+
+            case 'modificar_modulo':
+                $o->set_id_modulo($_POST['id']);
+                $o->set_nombre_modulo($_POST['nombre']);
+                $o->set_descripcion_modulo($_POST['descripcion']);
+                echo json_encode($o->modificar_modulo());
+                break;
+
+            case 'eliminar_modulo':
+                $o->set_id_modulo($_POST['id']);
+                echo json_encode($o->eliminar_modulo());
                 break;
 
             // Acciones para fotos de perfil
@@ -97,7 +120,9 @@ if (is_file("vista/" . $pagina . ".php")) {
                 $o->set_id($_POST['id']);
                 echo json_encode($o->eliminar_foto_perfil($_POST['id']));
                 break;
-
+            case 'obtener_personal':
+                 echo json_encode($o->obtener_personal());
+                 break;
             default:
                 echo json_encode(array("resultado" => "error", "mensaje" => "Acción no válida"));
         }
@@ -109,8 +134,7 @@ if (is_file("vista/" . $pagina . ".php")) {
     echo "Página en construcción";
 }
 
-function subirFotoUsuario()
-{
+function subirFotoUsuario() {
     $r = array();
 
     // Verificar si se subió un archivo
@@ -160,6 +184,4 @@ function subirFotoUsuario()
 
     return $r;
 }
-
-
 ?>
