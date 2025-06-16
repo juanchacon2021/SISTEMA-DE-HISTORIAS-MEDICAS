@@ -133,7 +133,7 @@ require_once("comunes/notificaciones.php");
     </div>
 </div>
 
-<!-- Modal para entrada/salida de medicamentos -->
+<!-- Modal para entrada de medicamentos -->
 <div class="modal fade" id="modalEntradaSalida" tabindex="-1" aria-labelledby="modalEntradaSalidaLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content" style="padding: 25px 25px 0px 25px;">
@@ -152,7 +152,7 @@ require_once("comunes/notificaciones.php");
                         </div>
                         <div class="col-md-6">
                             <label for="cantidad" class="texto-inicio font-medium mb-2">Cantidad</label>
-                            <input type="number" class="form-control" id="cantidad" name="cantidad" min="1" required>
+                            <input type="number" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="cantidad" name="cantidad" min="1" required>
                         </div>
                     </div>
                     
@@ -172,7 +172,7 @@ require_once("comunes/notificaciones.php");
                     
                     <div class="modal-footer">
                         <button type="button" class="btn boton" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" id="btnProcesarEntradaSalida" class="btn">Procesar</button>
+                        <button type="button" id="btnProcesarEntradaSalida" class="btn botonverde">Procesar</button>
                     </div>
                 </form>
             </div>

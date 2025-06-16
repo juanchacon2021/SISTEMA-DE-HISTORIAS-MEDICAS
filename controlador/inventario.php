@@ -1,14 +1,11 @@
 <?php
-error_reporting(0);
-ini_set('display_errors', 0);
-
-if (!is_file("modelo/".$pagina.".php")){
+if (!is_file("src/modelo/".$pagina.".php")){
     echo "Falta definir la clase ".$pagina;
     exit;
 }  
 
-require_once("modelo/".$pagina.".php");  
 
+use Shm\Shm\modelo\inventario;
 if(is_file("vista/".$pagina.".php")) {
     if(!empty($_POST)){
         $o = new inventario();
