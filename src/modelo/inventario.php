@@ -1,5 +1,8 @@
 <?php
-require_once('modelo/datos.php');
+namespace Shm\Shm\modelo;
+use Shm\Shm\modelo\datos;
+use PDO;
+use Exception;
 
 class inventario extends datos {
     private $cod_medicamento;

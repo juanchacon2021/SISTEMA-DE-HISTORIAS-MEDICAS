@@ -295,10 +295,13 @@ $(document).ready(function() {
                         if (lee.resultado == "consultar_lotes") {
                             let html = '';
                             lee.datos.forEach(function(lote) {
-                                html += `<div>
-                                    <input type="checkbox" class="chkLoteSalida" value="${lote.cod_lote}" data-max="${lote.cantidad}">
-                                    Lote ${lote.cod_lote} - Vence: ${new Date(lote.fecha_vencimiento).toLocaleDateString()} - Stock: ${lote.cantidad}
-                                    <input type="number" min="1" max="${lote.cantidad}" class="inputCantidadLoteSalida" data-cod="${lote.cod_lote}" placeholder="Cantidad a retirar" style="width:120px;">
+                                html += `<div class="d-flex justify-between aling-items-center">
+                                            <div class="m-2">
+                                                <input type="checkbox" class="chkLoteSalida" value="${lote.cod_lote}" data-max="${lote.cantidad}">
+                                                Lote ${lote.cod_lote} - Vence: ${new Date(lote.fecha_vencimiento).toLocaleDateString()} - Stock: ${lote.cantidad}
+                                            </div>
+                                    
+                                            <input type="number" min="1" max="${lote.cantidad}" class="inputCantidadLoteSalida bg-gray-200 rounded-lg border-white p-2 m-2 text" data-cod="${lote.cod_lote}" placeholder="Cantidad a retirar" style="width:200px;">
                                 </div>`;
                             });
                             $("#lotesDisponiblesSalida").html(html);
