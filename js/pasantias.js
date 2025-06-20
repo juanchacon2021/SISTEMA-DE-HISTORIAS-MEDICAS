@@ -1,14 +1,25 @@
 // Variables globales
 var modoActual = '';
 var idActual = '';
+var fechaInicioActual = '';
 var tablaEstudiantes = null;
 var tablaAreas = null;
+var tablaAsistencia = null;
 
 $(document).ready(function() {
     // Inicializar tabs
     $('#pasantiasTabs a').on('click', function(e) {
         e.preventDefault();
         $(this).tab('show');
+        
+        // Cargar datos según la pestaña activa
+        if($(this).attr('id') === 'estudiantes-tab') {
+            cargarEstudiantes();
+        } else if($(this).attr('id') === 'areas-tab') {
+            cargarAreas();
+        } else if($(this).attr('id') === 'asistencia-tab') {
+            cargarAsistencia();
+        }
     });
 
     // Cargar datos iniciales
@@ -26,6 +37,11 @@ $(document).ready(function() {
     $('#btnGuardarArea').click(function() {
         guardarArea();
     });
+    
+    // Eventos para el modal de asistencia
+    $('#btnGuardarAsistencia').click(function() {
+        guardarAsistencia();
+    });
 
     // Evento para confirmación de eliminación
     $('#btnConfirmarEliminar').click(function() {
@@ -33,7 +49,14 @@ $(document).ready(function() {
             eliminarEstudianteConfirmado();
         } else if(modoActual == 'area') {
             eliminarAreaConfirmado();
+        } else if(modoActual == 'asistencia') {
+            eliminarAsistenciaConfirmado();
         }
+    });
+    
+    // Filtros para asistencia
+    $('#filtroAreaAsistencia, #filtroFechaAsistencia, #filtroEstadoAsistencia').change(function() {
+        cargarAsistencia();
     });
 
     // Validaciones de formulario
@@ -100,9 +123,7 @@ function cargarEstudiantes() {
                     <td>${estudiante.apellido}</td>
                     <td>${estudiante.nombre}</td>
                     <td>${estudiante.institucion}</td>
-                    <td>${estudiante.nombre_area}</td>
-                    <td>${estudiante.responsable}</td>
-                    <td>${estudiante.activo == 1 ? '<span class="badge badge-success" style="background-color: green;">Activo</span>' : '<span class="badge badge-secondary" style="background-color: red;">Inactivo</span>'}</td>
+                    <td>${estudiante.telefono || 'N/A'}</td>
                 </tr>`;
                 $('#resultadoEstudiantes').append(fila);
             });
@@ -125,7 +146,7 @@ function cargarEstudiantes() {
                 responsive: true,
                 autoWidth: false,
                 columnDefs: [
-                    { orderable: false, targets: [0, 7] }
+                    { orderable: false, targets: [0, 5] }
                 ]
             });
         }
@@ -138,6 +159,9 @@ function mostrarModalEstudiante(modo, datos = null) {
     $('#modalEstudianteLabel').text(modo == 'incluir' ? 'Registrar Estudiante' : 'Editar Estudiante');
     $('#btnGuardarEstudiante').text(modo == 'incluir' ? 'Registrar' : 'Actualizar');
     
+    // Cargar áreas en el select
+    cargarSelectAreas();
+    
     if(modo == 'incluir') {
         $('#formEstudiante')[0].reset();
         $('#cedula_estudiante').prop('readonly', false);
@@ -148,11 +172,8 @@ function mostrarModalEstudiante(modo, datos = null) {
         $('#nombre').val(datos.nombre);
         $('#apellido').val(datos.apellido);
         $('#institucion').val(datos.institucion);
-        $('#telefono').val(datos.telefono);
-        $('#cod_area').val(datos.cod_area);
-        $('#fecha_inicio').val(datos.fecha_inicio);
-        $('#fecha_fin').val(datos.fecha_fin);
-        $('#activo').prop('checked', datos.activo == 1);
+        $('#telefono').val(datos.telefono || '');
+        $('#cod_area').val(datos.cod_area || '');
     }
     
     $('#modalEstudiante').modal('show');
@@ -166,6 +187,11 @@ function guardarEstudiante() {
     var datos = new FormData($('#formEstudiante')[0]);
     datos.append('accion', $('#accionEstudiante').val());
     
+    // Solo incluir el área si estamos creando un nuevo estudiante
+    if($('#accionEstudiante').val() == 'incluir_estudiante') {
+        datos.append('cod_area', $('#cod_area').val());
+    }
+    
     enviaAjax(datos, function(respuesta) {
         muestraMensaje(respuesta.mensaje, respuesta.resultado == 'error' ? 'error' : 'success');
         if(respuesta.resultado != 'error') {
@@ -177,19 +203,6 @@ function guardarEstudiante() {
 
 function editarEstudiante(estudiante) {
     mostrarModalEstudiante('editar', estudiante);
-}
-
-function confirmarEliminar(tipo, id) {
-    modoActual = tipo;
-    idActual = id;
-    
-    if(tipo == 'estudiante') {
-        $('#mensajeConfirmacion').html('¿Está seguro de eliminar este estudiante?<br>Esta acción no se puede deshacer.');
-    } else if(tipo == 'area') {
-        $('#mensajeConfirmacion').html('¿Está seguro de eliminar esta área?<br>Solo se puede eliminar si no tiene estudiantes asignados.');
-    }
-    
-    $('#modalConfirmacion').modal('show');
 }
 
 function eliminarEstudianteConfirmado() {
@@ -290,11 +303,10 @@ function guardarArea() {
     if(!validarFormularioArea()) {
         return;
     }
-    var cod_area = $('#cod_area').val()
 
     var datos = new FormData($('#formArea')[0]);
     datos.append('accion', $('#accionArea').val());
-    datos.append('cod_area', cod_area);
+    
     enviaAjax(datos, function(respuesta) {
         muestraMensaje(respuesta.mensaje, respuesta.resultado == 'error' ? 'error' : 'success');
         if(respuesta.resultado != 'error') {
@@ -318,6 +330,149 @@ function eliminarAreaConfirmado() {
     });
 }
 
+// Funciones para asistencia
+function cargarAsistencia() {
+    var datos = new FormData();
+    datos.append('accion', 'consultar_asistencia');
+    
+    // Aplicar filtros
+    var area = $('#filtroAreaAsistencia').val();
+    var fecha = $('#filtroFechaAsistencia').val();
+    var estado = $('#filtroEstadoAsistencia').val();
+    
+    if(area) datos.append('filtro_area', area);
+    if(fecha) datos.append('filtro_fecha', fecha);
+    if(estado) datos.append('filtro_estado', estado);
+    
+    enviaAjax(datos, function(respuesta) {
+        if(respuesta.resultado == 'consultar') {
+            if(tablaAsistencia != null) {
+                tablaAsistencia.destroy();
+            }
+            
+            $('#resultadoAsistencia').html('');
+            
+            respuesta.datos.forEach(function(asistencia) {
+                var fila = `
+                <tr>
+                    <td>${asistencia.estudiante}</td>
+                    <td>${asistencia.nombre_area}</td>
+                    <td>${asistencia.fecha_inicio}</td>
+                    <td>${asistencia.fecha_fin || 'En curso'}</td>
+                    <td>${asistencia.activo == 1 ? '<span class="badge badge-success" style="background-color: green;">Activo</span>' : '<span class="badge badge-secondary" style="background-color: red;">Inactivo</span>'}</td>
+                    <td>
+                        <button class='btn btn-sm btn-info mr-1' onclick='editarAsistencia(${JSON.stringify(asistencia)})'>
+                            <img src="img/lapiz.svg" style="width: 20px">
+                        </button>
+                        <button class='btn btn-sm btn-danger' onclick='confirmarEliminar("asistencia", "${asistencia.cedula_estudiante}", "${asistencia.fecha_inicio}")'>
+                            <img src='img/trash-can-solid.svg' style='width: 20px;'>
+                        </button>
+                    </td>
+                </tr>`;
+                $('#resultadoAsistencia').append(fila);
+            });
+            
+            tablaAsistencia = $('#tablaAsistencia').DataTable({
+                language: {
+                    lengthMenu: "Mostrar _MENU_ por página",
+                    zeroRecords: "No se encontraron registros",
+                    info: "Mostrando página _PAGE_ de _PAGES_",
+                    infoEmpty: "No hay registros disponibles",
+                    infoFiltered: "(filtrado de _MAX_ registros totales)",
+                    search: "Buscar:",
+                    paginate: {
+                      first: "Primera",
+                      last: "Última",
+                      next: "Siguiente",
+                      previous: "Anterior",
+                    },
+                  },
+                responsive: true,
+                autoWidth: false,
+                columnDefs: [
+                    { orderable: false, targets: [0, 5] }
+                ]
+            });
+        }
+    });
+}
+
+function mostrarModalAsistencia(datos = null) {
+    $('#modalAsistenciaLabel').text(datos ? 'Editar Asistencia' : 'Registrar Asistencia');
+    $('#btnGuardarAsistencia').text(datos ? 'Actualizar' : 'Registrar');
+    
+    // Cargar estudiantes en el select
+    var selectEstudiante = $('#asistenciaEstudiante');
+    selectEstudiante.empty().append('<option value="">Seleccione un estudiante</option>');
+    
+    var datosEstudiantes = new FormData();
+    datosEstudiantes.append('accion', 'consultar_estudiantes');
+    
+    enviaAjax(datosEstudiantes, function(respuesta) {
+        if(respuesta.resultado == 'consultar') {
+            respuesta.datos.forEach(function(estudiante) {
+                selectEstudiante.append($('<option>', {
+                    value: estudiante.cedula_estudiante,
+                    text: estudiante.nombre + ' ' + estudiante.apellido
+                }));
+            });
+            
+            if(datos) {
+                $('#asistenciaEstudiante').val(datos.cedula_estudiante);
+                $('#asistenciaArea').val(datos.cod_area);
+                $('#asistenciaFechaInicio').val(datos.fecha_inicio);
+                $('#asistenciaFechaFin').val(datos.fecha_fin || '');
+                $('#asistenciaActivo').prop('checked', datos.activo == 1);
+            }
+        }
+    });
+    
+    $('#modalAsistencia').modal('show');
+}
+
+function editarAsistencia(asistencia) {
+    mostrarModalAsistencia(asistencia);
+}
+
+function guardarAsistencia() {
+    // Validación básica
+    if($('#asistenciaEstudiante').val() === "" || $('#asistenciaArea').val() === "" || $('#asistenciaFechaInicio').val() === "") {
+        muestraMensaje("Debe completar todos los campos requeridos", "error");
+        return;
+    }
+    
+    var datos = new FormData();
+    var accion = $('#modalAsistenciaLabel').text().includes('Editar') ? 'modificar_asistencia' : 'incluir_asistencia';
+    
+    datos.append('accion', accion);
+    datos.append('cedula_estudiante', $('#asistenciaEstudiante').val());
+    datos.append('cod_area', $('#asistenciaArea').val());
+    datos.append('fecha_inicio', $('#asistenciaFechaInicio').val());
+    datos.append('fecha_fin', $('#asistenciaFechaFin').val());
+    datos.append('activo', $('#asistenciaActivo').is(':checked') ? 1 : 0);
+    
+    enviaAjax(datos, function(respuesta) {
+        muestraMensaje(respuesta.mensaje, respuesta.resultado == 'error' ? 'error' : 'success');
+        if(respuesta.resultado != 'error') {
+            $('#modalAsistencia').modal('hide');
+            cargarAsistencia();
+        }
+    });
+}
+
+function eliminarAsistenciaConfirmado() {
+    var datos = new FormData();
+    datos.append('accion', 'eliminar_asistencia');
+    datos.append('cedula_estudiante', idActual);
+    datos.append('fecha_inicio', fechaInicioActual);
+    
+    enviaAjax(datos, function(respuesta) {
+        muestraMensaje(respuesta.mensaje, respuesta.resultado == 'error' ? 'error' : 'success');
+        $('#modalConfirmacion').modal('hide');
+        cargarAsistencia();
+    });
+}
+
 // Funciones auxiliares
 function cargarSelectAreas() {
     var datos = new FormData();
@@ -325,11 +480,32 @@ function cargarSelectAreas() {
     
     enviaAjax(datos, function(respuesta) {
         if(respuesta.resultado == 'consultar') {
-            var select = $('#cod_area');
-            select.empty().append('<option value="">Seleccione un área</option>');
+            // Select en formulario de estudiante
+            var selectEstudiante = $('#cod_area');
+            selectEstudiante.empty().append('<option value="">Seleccione un área</option>');
+            
+            // Select en formulario de asistencia
+            var selectAsistencia = $('#asistenciaArea');
+            selectAsistencia.empty().append('<option value="">Seleccione un área</option>');
             
             respuesta.datos.forEach(function(area) {
-                select.append($('<option>', {
+                selectEstudiante.append($('<option>', {
+                    value: area.cod_area,
+                    text: area.nombre_area
+                }));
+                
+                selectAsistencia.append($('<option>', {
+                    value: area.cod_area,
+                    text: area.nombre_area
+                }));
+            });
+            
+            // También cargar en el filtro de asistencia
+            var filtroArea = $('#filtroAreaAsistencia');
+            filtroArea.empty().append('<option value="">Todas las áreas</option>');
+            
+            respuesta.datos.forEach(function(area) {
+                filtroArea.append($('<option>', {
                     value: area.cod_area,
                     text: area.nombre_area
                 }));
@@ -357,6 +533,22 @@ function cargarSelectDoctores() {
     });
 }
 
+function confirmarEliminar(tipo, id, fechaInicio = '') {
+    modoActual = tipo;
+    idActual = id;
+    fechaInicioActual = fechaInicio;
+    
+    if(tipo == 'estudiante') {
+        $('#mensajeConfirmacion').html('¿Está seguro de eliminar este estudiante?<br>Esta acción no se puede deshacer.');
+    } else if(tipo == 'area') {
+        $('#mensajeConfirmacion').html('¿Está seguro de eliminar esta área?<br>Solo se puede eliminar si no tiene estudiantes asignados.');
+    } else if(tipo == 'asistencia') {
+        $('#mensajeConfirmacion').html('¿Está seguro de eliminar este registro de asistencia?');
+    }
+    
+    $('#modalConfirmacion').modal('show');
+}
+
 function validarFormularioEstudiante() {
     let valido = true;
     
@@ -372,13 +564,8 @@ function validarFormularioEstudiante() {
         valido = false;
     }
     
-    if($("#cod_area").val() == ""){
-        muestraMensaje("Debe seleccionar un área de pasantía");
-        valido = false;
-    }
-    
-    if($("#fecha_inicio").val() == ""){
-        muestraMensaje("Debe especificar la fecha de inicio");
+    if($("#institucion").val() == ""){
+        muestraMensaje("Debe especificar la institución");
         valido = false;
     }
     
@@ -399,7 +586,7 @@ function validarFormularioArea() {
     return true;
 }
 
-// Funciones de validación (manteniendo tu estilo original)
+// Funciones de validación
 function validarkeypress(er, e) {
     const key = e.keyCode || e.which;
     const tecla = String.fromCharCode(key);
@@ -424,7 +611,7 @@ function validarkeyup(er, etiqueta, etiquetamensaje, mensaje) {
 function enviaAjax(datos, callback) {
     $.ajax({
         async: true,
-        url: '',
+        url: '?pagina=pasantias', 
         type: 'POST',
         contentType: false,
         data: datos,
@@ -432,20 +619,26 @@ function enviaAjax(datos, callback) {
         cache: false,
         timeout: 10000,
         beforeSend: function() {
-            // Mostrar loader si es necesario
         },
         success: function(respuesta) {
             try {
-                const json = JSON.parse(respuesta);
-                if(typeof callback === 'function') {
-                    callback(json);
+                if(typeof respuesta === 'object') {
+                    if(typeof callback === 'function') {
+                        callback(respuesta);
+                    }
+                } else {
+                    const json = JSON.parse(respuesta);
+                    if(typeof callback === 'function') {
+                        callback(json);
+                    }
                 }
             } catch(e) {
-                console.error('Error parsing JSON:', e);
-                muestraMensaje('Error al procesar la respuesta del servidor');
+                console.error('Error parsing JSON:', e, respuesta);
+                muestraMensaje('Error al procesar la respuesta del servidor: ' + e.message);
             }
         },
         error: function(xhr, status, err) {
+            console.error('Error en la petición AJAX:', status, err);
             if (status == "timeout") {
                 muestraMensaje("Servidor ocupado, intente de nuevo");
             } else {
@@ -454,7 +647,6 @@ function enviaAjax(datos, callback) {
         }
     });
 }
-
 function muestraMensaje(mensaje, tipo = 'error') {
     const modal = $('#mostrarmodal');
     const contenido = $('#contenidodemodal');
@@ -477,5 +669,6 @@ function muestraMensaje(mensaje, tipo = 'error') {
 function limpia() {
     $('#formEstudiante')[0].reset();
     $('#formArea')[0].reset();
+    $('#formAsistencia')[0].reset();
     $('.invalid-feedback').text('');
 }

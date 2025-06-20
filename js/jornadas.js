@@ -11,7 +11,7 @@ $(document).ready(function() {
     cargarPersonal();
     cargarResponsables();
 
-$('#total_pacientes, #pacientes_masculinos, #pacientes_femeninos, #pacientes_embarazadas').on('change keyup', function() {
+    $('#pacientes_masculinos, #pacientes_femeninos, #pacientes_embarazadas').on('change keyup', function() {
         actualizarContadores();
         validarTotales();
     });
@@ -25,30 +25,6 @@ $('#total_pacientes, #pacientes_masculinos, #pacientes_femeninos, #pacientes_emb
     $('#btnConfirmarEliminar').click(function() {
         eliminarJornadaConfirmado();
     });
-
-    // Validaciones
-    $('#total_pacientes, #pacientes_masculinos, #pacientes_femeninos, #pacientes_embarazadas').on('change', function() {
-        validarTotales();
-    });
-   
-    $('#total_pacientes').on('change keyup', function() {
-    var total = parseInt($(this).val()) || 0;
-    var participantesCount = participantes.length;
-    
-    if(total > 0) {
-        $('#participantes-info').removeClass('d-none');
-        $('#participantes-requeridos').text(total);
-        $('#participantes-actuales').text(participantesCount);
-        
-        if(participantesCount < total) {
-            $('#participantes-info').removeClass('alert-success').addClass('alert-warning');
-        } else {
-            $('#participantes-info').removeClass('alert-warning').addClass('alert-success');
-        }
-    } else {
-        $('#participantes-info').addClass('d-none');
-    }
-});
 });
 
 // Funciones para jornadas
@@ -123,8 +99,14 @@ function mostrarModalJornada(modo, codigo = null) {
     if(modo == 'incluir') {
         $('#formJornada')[0].reset();
         $('#cod_jornada').val('');
+        $('#total_pacientes').val(0);
+        $('#pacientes_masculinos').val(0);
+        $('#pacientes_femeninos').val(0);
+        $('#pacientes_embarazadas').val(0);
         participantes = [];
         actualizarListaParticipantes();
+        $('#mensaje-validacion').text('');
+        $('#contador-container').removeClass('alert-danger').addClass('alert-info');
     } else {
         cargarDatosJornada(codigo);
     }
@@ -157,6 +139,7 @@ function cargarDatosJornada(codigo) {
                 participantes.push(part.cedula_personal);
             });
             actualizarListaParticipantes();
+            actualizarContadores();
         }
     });
 }
@@ -292,16 +275,6 @@ function actualizarListaParticipantes() {
         </tr>`;
         $('#listaParticipantes').append(fila);
     });
-     var total = parseInt($('#total_pacientes').val()) || 0;
-    if(total > 0) {
-        $('#participantes-actuales').text(participantes.length);
-        
-        if(participantes.length < total) {
-            $('#participantes-info').removeClass('alert-success').addClass('alert-warning');
-        } else {
-            $('#participantes-info').removeClass('alert-warning').addClass('alert-success');
-        }
-    }
 }
 
 // Funciones auxiliares
@@ -327,32 +300,13 @@ function validarFormularioJornada() {
     
     return true;
 }
+
 function validarTotales() {
-    var total = parseInt($('#total_pacientes').val()) || 0;
-    var masculinos = parseInt($('#pacientes_masculinos').val()) || 0;
     var femeninos = parseInt($('#pacientes_femeninos').val()) || 0;
     var embarazadas = parseInt($('#pacientes_embarazadas').val()) || 0;
-    var suma = masculinos + femeninos;
-    
-    $('#mensaje-validacion').text('');
-    
-    if(suma != total) {
-        var mensaje = `La suma de pacientes (${suma}) debe ser igual al total (${total})`;
-        $('#mensaje-validacion').text(mensaje);
-        $('#contador-container').removeClass('alert-info').addClass('alert-danger');
-        return false;
-    }
     
     if(embarazadas > femeninos) {
-        var mensaje = `Embarazadas (${embarazadas}) no puede ser mayor a pacientes femeninos (${femeninos})`;
-        $('#mensaje-validacion').text(mensaje);
-        $('#contador-container').removeClass('alert-info').addClass('alert-danger');
-        return false;
-    }
-    
-    if(total === 0 && (masculinos > 0 || femeninos > 0)) {
-        var mensaje = "Si hay pacientes registrados, el total no puede ser cero";
-        $('#mensaje-validacion').text(mensaje);
+        $('#mensaje-validacion').text(`Embarazadas (${embarazadas}) no puede ser mayor a pacientes femeninos (${femeninos})`);
         $('#contador-container').removeClass('alert-info').addClass('alert-danger');
         return false;
     }
@@ -362,23 +316,23 @@ function validarTotales() {
 }
 
 function actualizarContadores() {
-    var total = parseInt($('#total_pacientes').val()) || 0;
     var masculinos = parseInt($('#pacientes_masculinos').val()) || 0;
     var femeninos = parseInt($('#pacientes_femeninos').val()) || 0;
     var suma = masculinos + femeninos;
-    var diferencia = total - suma;
     
+    $('#total_pacientes').val(suma);
     $('#suma-mf').text(suma);
-    $('#diferencia-total').text(diferencia);
     
-    if(suma != total) {
+    // Validar que embarazadas no supere a femeninos
+    var embarazadas = parseInt($('#pacientes_embarazadas').val()) || 0;
+    if(embarazadas > femeninos) {
+        $('#mensaje-validacion').text(`Embarazadas (${embarazadas}) no puede ser mayor a pacientes femeninos (${femeninos})`);
         $('#contador-container').removeClass('alert-info').addClass('alert-danger');
     } else {
-        $('#contador-container').removeClass('alert-danger').addClass('alert-info');
         $('#mensaje-validacion').text('');
+        $('#contador-container').removeClass('alert-danger').addClass('alert-info');
     }
 }
-
 
 function formatearFecha(fecha) {
     if(!fecha) return '';
@@ -421,6 +375,7 @@ function enviaAjax(datos, callback) {
         }
     });
 }
+
 function muestraMensaje(mensaje, tipo = 'error') {
     const modal = $('#mostrarmodal');
     const contenido = $('#contenidodemodal');
@@ -438,9 +393,4 @@ function muestraMensaje(mensaje, tipo = 'error') {
     setTimeout(function() {
         modal.modal('hide');
     }, 5000);
-}
-
-function limpia() {
-    $('#formJornada')[0].reset();
-    $('.invalid-feedback').text('');
 }

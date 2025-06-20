@@ -1,23 +1,22 @@
 <?php 
 require_once("comunes/encabezado.php"); 
 require_once("comunes/sidebar.php");    
-require_once("comunes/notificaciones.php");
 ?>
 
 <body>
 <?php  
-    if (!isset($permisos)) {
-       
+    if (!isset($_SESSION['permisos']) || !is_array($_SESSION['permisos'])) {
         header("Location: ?pagina=login");
         exit();
-    } elseif (!in_array('Planificacion', $permisos)) {
+    } elseif (!isset($_SESSION['permisos']['modulos']) || !in_array('Planificacion', $_SESSION['permisos']['modulos'])) {
         http_response_code(403);
         die('<div class="container text-center py-5">
                 <h1 class="text-danger">403 - Acceso prohibido</h1>
                 <p class="lead">No tienes permiso para acceder a este módulo</p>
                 <a href="?pagina=principal" class="btn btn-primary">Volver al inicio</a>
              </div>');
-    } ?>
+    }
+?>
 
 <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100">
   Planificación
@@ -65,7 +64,7 @@ require_once("comunes/notificaciones.php");
     </div>
 
     <!-- Listado de publicaciones -->
-    <div class="container" id="listadoPublicaciones">
+    <div class="container d-flex col-md-9" id="listadoPublicaciones">
         <!-- Las publicaciones se cargarán aquí via AJAX -->
     </div>
 </div>
@@ -91,6 +90,9 @@ require_once("comunes/notificaciones.php");
 
 <?php require_once("comunes/modal.php"); ?>
 <script src="js/planificacion.js"></script>
+<script>
+    const cedulaUsuarioLogueado = "<?php echo $_SESSION['usuario']; ?>";
+</script>
 
 </body>
 </html>

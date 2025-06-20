@@ -13,64 +13,50 @@ let codPublicacionAEliminar = null;
 
 // Función para cargar las publicaciones
 function cargarPublicaciones() {
+    var datos = new FormData();
+    datos.append('accion', 'consultar_publicaciones');
     $.ajax({
         url: '',
         type: 'POST',
-        data: { accion: 'consultar_publicaciones' },
-        success: function(respuesta) {
-            try {
-                const data = JSON.parse(respuesta);
-                if(data.resultado === 'consultar_publicaciones') {
-                    let html = '';
-                    
-                    data.datos.forEach(publicacion => {
-                        const esPropietario = publicacion.es_propietario === 1;
-                        const fecha = new Date(publicacion.fecha).toLocaleString();
-                        
-                        html += `
-                        <div class="card mb-3">
-                            <div class="card-header d-flex justify-between">
-                                <div class="d-flex">
-                                    ${
-                                        publicacion.foto_perfil 
-                                        ? `<img src="img/perfiles/${publicacion.foto_perfil}" class="rounded-circle me-2" style="width:40px;height:40px;object-fit:cover;" alt="Foto de perfil">`
-                                        : `<i class="fas fa-user-circle fa-2x text-secondary me-2"></i>`
-                                    }
-                                    <div>
-                                        <strong>${publicacion.nombre_usuario}</strong>
-                                        <small class="text-muted">${fecha}</small>
-                                    </div>
-                                </div>
+        data: datos,
+        processData: false,
+        contentType: false,
+        dataType: 'json',
+        success: function(res) {
+            if (res.resultado === 'consultar_publicaciones') {
+                let html = '';
+                let cedulaActual = res.cedula_actual; // <-- la cédula del usuario logueado
+                res.datos.forEach(function(pub) {
+                    html += `<div class="publicacion cardd mb-3" style="padding:30px; height: 600px; width: 900px">
+                        <div class="card-body">
+                            <div class="d-flex justify-between">
                                 <div>
-                                    ${esPropietario ? `
-                                        <div>
-                                            <button onclick="editarPublicacion(${publicacion.cod_pub})" 
-                                                    class="btn btn-sm btn-primary">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button onclick="confirmarEliminacion(${publicacion.cod_pub})" 
-                                                    class="btn btn-sm btn-danger">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                        ` : ''}
+                                    <h5 class="card-title mb-1"><strong>${pub.nombre_usuario || ''}</strong></h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">${pub.fecha}</h6>
                                 </div>
+                                 <div class="d-flex gap-2">`;
+                                // Mostrar botones solo si la publicación es del usuario logueado
+                                if (pub.cedula_personal == cedulaActual) {
+                                    html += `
+                                        <button class="btn btn-sm btn-warning me-2" onclick="editarPublicacion('${pub.cod_pub}')" style="height:40px;">
+                                            <img src="img/lapiz.svg" alt="Editar" style="width:20px;">
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" onclick="eliminarPublicacion('${pub.cod_pub}')" style="height:40px;">
+                                            <img src="img/basura.svg" alt="Eliminar" style="width:20px;">
+                                        </button>
+                                    `;
+                                }
+                                html += `</div>
                             </div>
                             
-                            <div class="card-body">
-                                <p>${publicacion.contenido}</p>
-                                ${publicacion.imagen ? `
-                                <img src="${publicacion.imagen}" class="img-fluid" alt="Imagen publicación">
-                                ` : ''}
-                            </div>
+                           
+                            <p class="card-text my-2">${pub.contenido}</p>
+                            <center>${pub.imagen ? `<img src="${pub.imagen}" class="img-fluid rounded mb-2" style="max-width:300px; max-height:500px;">` : ''}</center>
+                            
                         </div>
-                        `;
-                    });
-                    
-                    $('#listadoPublicaciones').html(html || '<div class="alert alert-info">No hay publicaciones</div>');
-                }
-            } catch(e) {
-                console.error('Error procesando respuesta:', e);
+                    </div>`;
+                });
+                $("#listadoPublicaciones").html(html);
             }
         }
     });

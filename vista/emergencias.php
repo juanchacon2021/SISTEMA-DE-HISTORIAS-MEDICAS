@@ -1,18 +1,14 @@
 <?php
 require_once("comunes/encabezado.php");
 require_once("comunes/sidebar.php");
-	require_once("comunes/notificaciones.php");
 ?>
 <html>
 <body >
-<?php 
-    
-    if (!isset($permisos)) {
-       
+<?php  
+    if (!isset($_SESSION['permisos']) || !is_array($_SESSION['permisos'])) {
         header("Location: ?pagina=login");
         exit();
-    } elseif (!in_array('Emergencias', $permisos)) {
-       
+    } elseif (!isset($_SESSION['permisos']['modulos']) || !in_array('Emergencias', $_SESSION['permisos']['modulos'])) {
         http_response_code(403);
         die('<div class="container text-center py-5">
                 <h1 class="text-danger">403 - Acceso prohibido</h1>
@@ -21,7 +17,6 @@ require_once("comunes/sidebar.php");
              </div>');
     }
 ?>
-
 <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
 Emergencias
 </div>

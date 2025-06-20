@@ -1,14 +1,14 @@
 function consultar(){
-	var datos = new FormData();
-	datos.append('accion','consultar');
-	
-	enviaAjax(datos);
-		
+    var datos = new FormData();
+    datos.append('accion','consultar');
+    
+    enviaAjax(datos);
+        
 }
 function destruyeDT(){
-	if ($.fn.DataTable.isDataTable("#tablapersonal")) {
+    if ($.fn.DataTable.isDataTable("#tablapersonal")) {
             $("#tablapersonal").DataTable().destroy();
-			
+            
     }
 }
 function crearDT(){
@@ -33,8 +33,39 @@ function crearDT(){
             });
     }         
 }
+
+function agregarCampoTelefono(valor = '') {
+    const container = $('#telefonos-container');
+    const nuevoInput = $(`
+        <div class="input-group mb-2">
+            <input class="form-control bg-gray-200 rounded-lg border-white telefono-input" type="text" value="${valor}" />
+            <button type="button" class="btn btn-danger btn-remove-phone">-</button>
+        </div>
+    `);
+    container.append(nuevoInput);
+    
+    // Validación para el nuevo campo de teléfono
+    nuevoInput.find('input').on("keypress", function (e) {
+        validarkeypress(/^[0-9]*$/, e);
+    });
+
+    nuevoInput.find('input').on("keyup", function () {
+        validarkeyup(/^\d{11}$/, $(this), $("#stelefono"), "Formato del teléfono incorrecto");
+    });
+}
+
 $(document).ready(function () {
     consultar();
+
+    // Manejar clic en botón para agregar teléfono
+    $('#btn-add-phone').click(function() {
+        agregarCampoTelefono();
+    });
+
+    // Manejar clic en botón para eliminar teléfono (delegación de eventos)
+    $(document).on('click', '.btn-remove-phone', function() {
+        $(this).closest('.input-group').remove();
+    });
 
     // VALIDACION DE DATOS
     $("#cedula_personal").on("keypress", function (e) {
@@ -69,15 +100,14 @@ $(document).ready(function () {
         validarkeyup(/^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/, $(this), $("#scorreo"), "Formato incorrecto");
     });
 
-    // Validación para el teléfono (ejemplo con formato 04124578987)
-    $("#telefono").on("keypress", function (e) {
-        validarkeypress(/^[0-9]*$/, e); // Corrected regex for keypress validation
+    // Validación inicial para el primer campo de teléfono
+    $(".telefono-input").on("keypress", function (e) {
+        validarkeypress(/^[0-9]*$/, e);
     });
 
-    $("#telefono").on("keyup", function () {
+    $(".telefono-input").on("keyup", function () {
         validarkeyup(/^\d{11}$/, $(this), $("#stelefono"), "Formato del teléfono incorrecto");
     });
-
 
     // FIN DE VALIDACION DE DATOS
 
@@ -90,8 +120,13 @@ $(document).ready(function () {
                 datos.append("apellido", $("#apellido").val());
                 datos.append("nombre", $("#nombre").val());
                 datos.append("correo", $("#correo").val());
-                datos.append("telefono", $("#telefono").val());
                 datos.append("cargo", $("#cargo").val());
+                
+                // Agregar todos los teléfonos
+                $(".telefono-input").each(function(index) {
+                    datos.append("telefonos[]", $(this).val());
+                });
+                
                 enviaAjax(datos);
             }
         } else if ($(this).text() == "MODIFICAR") {
@@ -102,8 +137,13 @@ $(document).ready(function () {
                 datos.append("apellido", $("#apellido").val());
                 datos.append("nombre", $("#nombre").val());
                 datos.append("correo", $("#correo").val());
-                datos.append("telefono", $("#telefono").val());
                 datos.append("cargo", $("#cargo").val());
+                
+                // Agregar todos los teléfonos
+                $(".telefono-input").each(function(index) {
+                    datos.append("telefonos[]", $(this).val());
+                });
+                
                 enviaAjax(datos);
             }
         }
@@ -129,92 +169,116 @@ $(document).ready(function () {
 });
 
 function validarenvio(){
-	if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula_personal"),
-		$("#scedula_personal"),"El formato debe ser 12345678")==0){
-	    muestraMensaje("La cedula debe coincidir con el formato <br/>"+ 
-						"12345678");	
-		return false;					
-	}	
-	else if(validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$("#apellido"),$("#sapellido"),"Solo letras  entre 3 y 30 caracteres")==0){
-		muestraMensaje("apellido <br/>Solo letras  entre 3 y 30 caracteres");
-		return false;
-	}
-	else if(validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$("#nombre"),$("#snombre"),"Solo letras  entre 3 y 30 caracteres")==0){
-		muestraMensaje("nombre <br/>Solo letras  entre 3 y 30 caracteres");
-		return false;
-	}
-	
-	return true;
+    if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula_personal"),
+        $("#scedula_personal"),"El formato debe ser 12345678")==0){
+        muestraMensaje("La cedula debe coincidir con el formato <br/>"+ 
+                        "12345678");    
+        return false;                    
+    }    
+    else if(validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+        $("#apellido"),$("#sapellido"),"Solo letras  entre 3 y 30 caracteres")==0){
+        muestraMensaje("apellido <br/>Solo letras  entre 3 y 30 caracteres");
+        return false;
+    }
+    else if(validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+        $("#nombre"),$("#snombre"),"Solo letras  entre 3 y 30 caracteres")==0){
+        muestraMensaje("nombre <br/>Solo letras  entre 3 y 30 caracteres");
+        return false;
+    }
+    
+    // Validar que al menos un teléfono esté completo
+    let telefonosValidos = false;
+    $(".telefono-input").each(function() {
+        if(validarkeyup(/^\d{11}$/, $(this), $("#stelefono"), "Formato del teléfono incorrecto") == 1) {
+            telefonosValidos = true;
+        }
+    });
+    
+    if(!telefonosValidos) {
+        muestraMensaje("Debe ingresar al menos un teléfono válido (11 dígitos)");
+        return false;
+    }
+    
+    return true;
 }
 
 
 function muestraMensaje(mensaje){
-	
-	$("#contenidodemodal").html(mensaje);
-			$("#mostrarmodal").modal("show");
-			setTimeout(function() {
-			$("#mostrarmodal").modal("hide");
-			},5000);
+    
+    $("#contenidodemodal").html(mensaje);
+            $("#mostrarmodal").modal("show");
+            setTimeout(function() {
+            $("#mostrarmodal").modal("hide");
+            },5000);
 }
 
 
 function validarkeypress(er,e){
-	
-	key = e.keyCode;
-	
-	
+    
+    key = e.keyCode;
+    
+    
     tecla = String.fromCharCode(key);
-	
-	
+    
+    
     a = er.test(tecla);
-	
+    
     if(!a){
-	
-		e.preventDefault();
+    
+        e.preventDefault();
     }
-	
     
 }
 
 
-
 function validarkeyup(er,etiqueta,etiquetamensaje,
 mensaje){
-	a = er.test(etiqueta.val());
-	if(a){
-		etiquetamensaje.text("");
-		return 1;
-	}
-	else{
-		etiquetamensaje.text(mensaje);
-		return 0;
-	}
+    a = er.test(etiqueta.val());
+    if(a){
+        etiquetamensaje.text("");
+        return 1;
+    }
+    else{
+        etiquetamensaje.text(mensaje);
+        return 0;
+    }
 }
 
 function pone(pos,accion){
-	
-	linea=$(pos).closest('tr');
+    
+    linea=$(pos).closest('tr');
 
 
-	if(accion==0){
-		$("#proceso").text("MODIFICAR");
-	}
-	else if(accion==1){
-		$("#proceso").text("ELIMINAR"); 
-	}
-	else{
-		$("#proceso").text("INCLUIR");
-	}
-	$("#cedula_personal").val($(linea).find("td:eq(1)").text());
-	$("#apellido").val($(linea).find("td:eq(2)").text());
-	$("#nombre").val($(linea).find("td:eq(3)").text());
-	$("#correo").val($(linea).find("td:eq(4)").text());
-	$("#telefono").val($(linea).find("td:eq(5)").text());
-	$("#cargo").val($(linea).find("td:eq(6)").text());
-	
-	$("#modal1").modal("show");
+    if(accion==0){
+        $("#proceso").text("MODIFICAR");
+    }
+    else if(accion==1){
+        $("#proceso").text("ELIMINAR"); 
+    }
+    else{
+        $("#proceso").text("INCLUIR");
+    }
+    $("#cedula_personal").val($(linea).find("td:eq(1)").text());
+    $("#apellido").val($(linea).find("td:eq(2)").text());
+    $("#nombre").val($(linea).find("td:eq(3)").text());
+    $("#correo").val($(linea).find("td:eq(4)").text());
+    $("#cargo").val($(linea).find("td:eq(6)").text());
+    
+    // Limpiar y cargar teléfonos
+    $("#telefonos-container").empty();
+    const telefonos = $(linea).find("td:eq(5)").text().split(", ");
+    telefonos.forEach(tel => {
+        if(tel.trim() !== '') {
+            agregarCampoTelefono(tel);
+        }
+    });
+    
+    // Si no hay teléfonos, agregar un campo vacío
+    if(telefonos.length === 0 || (telefonos.length === 1 && telefonos[0] === '')) {
+        agregarCampoTelefono();
+    }
+    
+    $("#modal1").modal("show");
 }
 
 
@@ -234,7 +298,7 @@ function enviaAjax(datos) {
         try {
           var lee = JSON.parse(respuesta);
           if (lee.resultado == "consultar") {
-            destruyeDT();	
+            destruyeDT();    
             var html = '';
             
             lee.datos.forEach(function (fila) {
@@ -254,14 +318,13 @@ function enviaAjax(datos) {
                     <td>${fila.apellido}</td>
                     <td>${fila.nombre}</td>
                     <td>${fila.correo}</td>
-                    <td>${fila.telefono}</td>
+                    <td>${fila.telefonos || 'N/A'}</td>
                     <td>${fila.cargo}</td>
                     
                 </tr>`;
             });
             $("#resultadoconsulta").html(html);
             
-             $("#resultadoconsulta").html(lee.mensaje);
              crearDT();
           }
           else if (lee.resultado == "incluir") {
@@ -304,10 +367,11 @@ function enviaAjax(datos) {
 }
 
 function limpia(){
-	$("#cedula_personal").val("");
-	$("#apellido").val("");
-	$("#nombre").val("");
-	$("#correo").val("");
-	$("#telefono").val("");
-	$("#cargo").prop("selectedIndex",0);
+    $("#cedula_personal").val("");
+    $("#apellido").val("");
+    $("#nombre").val("");
+    $("#correo").val("");
+    $("#telefonos-container").empty();
+    agregarCampoTelefono(); // Agregar un campo de teléfono vacío
+    $("#cargo").prop("selectedIndex",0);
 }

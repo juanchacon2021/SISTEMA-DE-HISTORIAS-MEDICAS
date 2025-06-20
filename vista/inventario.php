@@ -1,23 +1,22 @@
 <?php 
 require_once("comunes/encabezado.php"); 
 require_once("comunes/sidebar.php");    
-require_once("comunes/notificaciones.php");
 ?>
 
 <body>
-<?php
-    if (!isset($permisos)) {
+<?php  
+    if (!isset($_SESSION['permisos']) || !is_array($_SESSION['permisos'])) {
         header("Location: ?pagina=login");
         exit();
-    } elseif (!in_array('Consultas', $permisos)) {
+    } elseif (!isset($_SESSION['permisos']['modulos']) || !in_array('Inventario', $_SESSION['permisos']['modulos'])) {
         http_response_code(403);
         die('<div class="container text-center py-5">
                 <h1 class="text-danger">403 - Acceso prohibido</h1>
                 <p class="lead">No tienes permiso para acceder a este módulo</p>
                 <a href="?pagina=principal" class="btn btn-primary">Volver al inicio</a>
              </div>');
-    } ?>
-
+    }
+?>
 
 <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100">
   Inventario de Medicamentos
@@ -25,13 +24,17 @@ require_once("comunes/notificaciones.php");
 
 <div class="container espacio">
     <div class="container">
-        <div class="row mt-3 botones">
-            <a href="#" class="btn-flotante" style="cursor: pointer;" onclick="mostrarFormularioMedicamento()">
-                <img src="img/lapiz.svg" alt="Agregar Medicamento">
+        <div class="row mt-9 botones">
+            <a href="#" class="btn botonverde d-flex" style="cursor: pointer;" onclick="mostrarFormularioMedicamento()">
+                Registrar Medicamento
             </a>
-                    
-            <div class="col-md-2 recortar">    
-                <a href="?pagina=principal" class="boton">Volver</a>
+
+            <button type="button" class="btn botonrojo d-flex" onclick="mostrarFormularioSalidaGlobal()">
+                Registrar Salida
+            </button>
+            
+            <div class="btn botonrojo">    
+                <a href="?pagina=principal">Volver</a>
             </div>
         </div>
     </div>
@@ -44,14 +47,11 @@ require_once("comunes/notificaciones.php");
                 <thead class="table-dark">
                     <tr>
                         <th>Acciones</th>
-                        <th>Codigo</th>
+                        <th>Código</th>
                         <th>Nombre</th>
                         <th>Descripción</th>
-                        <th>Cantidad</th>
+                        <th>Stock</th>
                         <th>Unidad</th>
-                        <th>Vencimiento</th>
-                        <th>Lote</th>
-                        <th>Proveedor</th>
                     </tr>
                 </thead>
                 <tbody id="resultadoMedicamentos">
@@ -61,23 +61,24 @@ require_once("comunes/notificaciones.php");
         </div>
     </div>
 
-    <!-- Tabla de Transacciones -->
+    <!-- Tabla de Movimientos -->
     <div class="container mt-5">
-        <h3 class="mb-3">Historial de Transacciones</h3>
+        <h3 class="mb-3">Historial de Movimientos</h3>
         <div class="table-responsive">
-            <table id="tablaTransacciones" class="table table-striped table-bordered" style="width:100%">
+            <table id="tablaMovimientos" class="table table-striped table-bordered" style="width:100%">
                 <thead class="table-dark">
                     <tr>
-                        <th>Codigo</th>
+                        <th>Código</th>
                         <th>Fecha</th>
                         <th>Hora</th>
                         <th>Tipo</th>
                         <th>Medicamento</th>
                         <th>Cantidad</th>
                         <th>Responsable</th>
+                        <th>Detalles</th>
                     </tr>
                 </thead>
-                <tbody id="resultadoTransacciones">
+                <tbody id="resultadoMovimientos">
                     <!-- Los datos se cargarán via AJAX -->
                 </tbody>
             </table>
@@ -103,13 +104,6 @@ require_once("comunes/notificaciones.php");
                             <input type="text" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="nombre" name="nombre" placeholder="Nombre del Medicamento" required>
                         </div>
                         <div class="col-md-6">
-                            <label for="cantidad" class="texto-inicio font-medium mb-2">Cantidad</label>
-                            <input type="number" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="cantidad" name="cantidad" min="0" required>
-                        </div>
-                    </div>
-                    
-                    <div class="row mb-3">
-                        <div class="col-md-6">
                             <label for="unidad_medida" class="texto-inicio font-medium mb-2">Unidad de Medida</label>
                             <select class="form-select bg-gray-200 rounded-lg border-white p-3 text" id="unidad_medida" name="unidad_medida" required>
                                 <option value="">Seleccione...</option>
@@ -120,21 +114,6 @@ require_once("comunes/notificaciones.php");
                                 <option value="ampollas">ampollas</option>
                                 <option value="comprimidos">comprimidos</option>
                             </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="fecha_vencimiento" class="texto-inicio font-medium mb-2">Fecha de Vencimiento</label>
-                            <input type="date" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="fecha_vencimiento" name="fecha_vencimiento">
-                        </div>
-                    </div>
-                    
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="lote" class="texto-inicio font-medium mb-2">Lote</label>
-                            <input type="text" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="lote" name="lote">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="proveedor" class="texto-inicio font-medium mb-2">Proveedor</label>
-                            <input type="text" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="proveedor" name="proveedor">
                         </div>
                     </div>
                     
@@ -153,6 +132,78 @@ require_once("comunes/notificaciones.php");
     </div>
 </div>
 
+<!-- Modal para entrada de medicamentos -->
+<div class="modal fade" id="modalEntradaSalida" tabindex="-1" aria-labelledby="modalEntradaSalidaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="padding: 25px 25px 0px 25px;">
+            <div class="text-light text-end" style="margin: 20px 20px 0px 0px;">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formEntradaSalida" autocomplete="off">
+                    <input type="hidden" id="cod_medicamento_es" name="cod_medicamento">
+                    <input type="hidden" id="accion_es" name="accion">
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="nombre_medicamento_es" class="texto-inicio font-medium mb-2">Medicamento</label>
+                            <input type="text" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="nombre_medicamento_es" readonly>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="cantidad" class="texto-inicio font-medium mb-2">Cantidad</label>
+                            <input type="number" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="cantidad" name="cantidad" min="1" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3" id="camposEntrada">
+                        <div class="col-md-6">
+                            <label for="fecha_vencimiento" class="texto-inicio font-medium mb-2">Fecha de Vencimiento</label>
+                            <input type="date" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="fecha_vencimiento" name="fecha_vencimiento">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="proveedor" class="texto-inicio font-medium mb-2">Proveedor</label>
+                            <input type="text" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="proveedor" name="proveedor">
+                        </div>
+                    </div>
+                    
+                    <div id="lotesMultiples"></div>
+                    <button type="button" class="btn btn-secondary mb-2" onclick="agregarLoteTemporal()">Agregar Lote</button>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn boton" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" id="btnProcesarEntradaSalida" class="btn botonverde">Procesar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para salida global de medicamentos -->
+<div class="modal fade" id="modalSalidaGlobal" tabindex="-1" aria-labelledby="modalSalidaGlobalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="padding: 25px 25px 0px 25px;">
+            <div class="modal-body">
+                <form id="formSalidaGlobal" autocomplete="off">
+                    <div class="mb-3">
+                        <label for="selectMedicamentoSalida" class="form-label">Medicamento</label>
+                        <select class="form-select" id="selectMedicamentoSalida">
+                            <!-- Opciones cargadas por JS -->
+                        </select>
+                    </div>
+                    <div id="lotesDisponiblesSalida"></div>
+                    <button type="button" class="btn btn-secondary mb-2" id="btnAgregarLoteSalida">Agregar Lote a Salida</button>
+                    <div id="salidasMultiples"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn boton" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" id="btnProcesarSalidaGlobal" class="btn botonverde">Registrar Salida</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal de confirmación para eliminar -->
 <div class="modal fade" tabindex="-1" role="dialog" id="modalConfirmacion">
     <div class="modal-dialog" role="document">
@@ -162,7 +213,7 @@ require_once("comunes/notificaciones.php");
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>¿Estás seguro de que deseas eliminar esta publicación?</p>
+                <p>¿Estás seguro de que deseas eliminar este medicamento?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -174,7 +225,6 @@ require_once("comunes/notificaciones.php");
 
 <?php require_once("comunes/modal.php"); ?>
 <script src="js/inventario.js"></script>
-
 
 </body>
 </html>

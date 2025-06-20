@@ -2,13 +2,13 @@
 require_once('modelo/datos.php');
 
 class entrada extends datos{
-    private $email; 
+    private $cedula; 
     private $clave;
     
-    function set_email($valor) { $this->email = $valor; }
+    function set_cedula($valor) { $this->cedula = $valor; }
     function set_clave($valor) { $this->clave = $valor; }
     
-    function get_email() { return $this->email; }
+    function get_cedula() { return $this->cedula; }
     function get_clave() { return $this->clave; }
 
     function existe() {
@@ -17,8 +17,8 @@ class entrada extends datos{
         $r = array();
         
         try {
-            $stmt = $co->prepare("SELECT id, nombre, email, password, rol_id FROM usuario WHERE email = :email");
-            $stmt->bindParam(':email', $this->email);
+            $stmt = $co->prepare("SELECT id, nombre, password, rol_id, cedula_personal FROM usuario WHERE cedula_personal = :cedula");
+            $stmt->bindParam(':cedula', $this->cedula);
             $stmt->execute();
             
             $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -31,7 +31,11 @@ class entrada extends datos{
                     $r['mensaje'] = $usuario['rol_id'];
                     $r['usuario'] = $usuario['id'];
                     $r['nombre'] = $usuario['nombre'];
+                    $r['cedula_personal'] = $usuario['cedula_personal'];
                     $r['permisos'] = $permisos;
+                    
+                    // Al autenticar:
+                    $_SESSION['usuario'] = $usuario['cedula_personal'];
                 } else {
                     $r['resultado'] = 'noexiste';
                     $r['mensaje'] = "Credenciales incorrectas";

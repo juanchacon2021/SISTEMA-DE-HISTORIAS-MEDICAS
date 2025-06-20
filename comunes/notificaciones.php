@@ -1,14 +1,30 @@
-<div class="notificaciones-container position-fixed top-0 end-0 m-3" style="z-index: 9999;">
-    <button class="btn-notificacion" id="btnMostrarNotificaciones">
-        <img src="img/bell.svg" alt="Campana" style="width:24px;height:24px;">
-        <span id="notificacionCounter" class="badge bg-danger" style="display:none"></span>
-    </button>
-    <div id="notificacionesDropdown" class="dropdown-menu dropdown-menu-end" style="width: 350px; max-height: 400px; overflow-y: auto;">
-        <div class="dropdown-header">Notificaciones recientes</div>
-        <div id="listaNotificaciones"></div>
-        <div class="dropdown-footer text-center">
-            <a href="?pagina=bitacora">Ver todas</a>
-        </div>
+<body>
+    <!-- Icono de notificación -->
+    <div id="notificacionIcono" style="position:fixed;top:20px;right:30px;z-index:9999;cursor:pointer;">
+        <img src="img/bell.svg" alt="Notificaciones" style="width:32px;">
+        <span id="notificacionBadge" style="display:none;position:absolute;top:0;right:0;background:red;color:white;border-radius:50%;padding:2px 6px;font-size:12px;">0</span>
     </div>
-</div>
-<script src="js/notificaciones.js"></script>
+
+    <!-- Panel de notificaciones -->
+    <div id="panelNotificaciones" style="display:none;position:fixed;top:60px;right:30px;width:300px;max-height:400px;overflow-y:auto;background:white;border:1px solid #ccc;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.2);z-index:10000;">
+        <div style="padding:10px;font-weight:bold;border-bottom:1px solid #eee;">Notificaciones</div>
+        <ul id="listaNotificaciones" style="list-style:none;padding:0;margin:0;"></ul>
+    </div>
+
+    <!-- Toast flotante -->
+    <div id="toastNotificacion" style="
+        display:none;
+        position:fixed;
+        bottom:30px;
+        right:30px;
+        background:#323232;
+        color:white;
+        padding:12px 24px;
+        border-radius:6px;
+        box-shadow:0 2px 8px rgba(0,0,0,0.2);
+        z-index:10001;
+        font-size:16px;
+    "></div>
+
+    <script src="js/notificaciones.js"></script>
+</body>

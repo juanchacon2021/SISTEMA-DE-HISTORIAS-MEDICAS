@@ -1,14 +1,13 @@
 <?php
-if(!is_file("modelo/".$pagina.".php")){
+if(!is_file("src/modelo/".$pagina.".php")){
     echo "Falta el modelo";
     exit;
 }
 
-require_once("modelo/".$pagina.".php"); 
-
+use Shm\Shm\modelo\login;
 if(is_file("vista/".$pagina.".php")){ 
     if(!empty($_POST)){
-        $o = new entrada();
+        $o = new login();
         if($_POST['accion']=='entrar'){
             // Iniciar sesión para validar CAPTCHA
             if (session_status() === PHP_SESSION_NONE) {
@@ -28,7 +27,7 @@ if(is_file("vista/".$pagina.".php")){
                 // Regenerar CAPTCHA después de un intento fallido
                 $_SESSION['captcha_code'] = substr(md5(uniqid(rand(), true)), 0, 6);
             } else {
-                $o->set_email($_POST['email']);
+                $o->set_cedula($_POST['cedula']);
                 $o->set_clave($_POST['clave']);  
                 $m = $o->existe();
                 
@@ -40,9 +39,10 @@ if(is_file("vista/".$pagina.".php")){
                     session_regenerate_id(true);
                     
                     $_SESSION['nivel'] = $m['mensaje'];
-                    $_SESSION['usuario'] = $m['usuario'];
+                    $_SESSION['usuario'] = $m['cedula_personal'];
                     $_SESSION['nombre'] = $m['nombre'];
                     $_SESSION['permisos'] = $m['permisos'];
+                    $_SESSION['cedula_personal'] = $m['cedula_personal'];
                     
                     // Registrar inicio de sesión en bitácora
                     if(is_file("modelo/bitacora.php")) {
