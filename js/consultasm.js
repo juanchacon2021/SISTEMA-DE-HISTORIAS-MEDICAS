@@ -3,6 +3,38 @@ function consultar(){
 	datos.append('accion','consultar');
 	enviaAjax(datos);	
 }
+function carga_personal(){
+
+	var datos = new FormData();
+
+	datos.append('accion','listadopersonal'); 
+
+	enviaAjax(datos);
+}
+function carga_pacientes(){
+	
+	var datos = new FormData();
+
+	datos.append('accion','listadopacientes'); 
+
+	enviaAjax(datos);
+}
+function carga_observaciones(){
+	
+	var datos = new FormData();
+
+	datos.append('accion','listado_observaciones'); 
+
+	enviaAjax(datos);
+}
+
+function cargarObservacionesConsulta(cod_consulta) {
+    var datos = new FormData();
+    datos.append('accion', 'obtener_observaciones_consulta');
+    datos.append('cod_consulta', cod_consulta);
+    enviaAjax(datos);
+}
+
 function destruyeDT(){
 	if ($.fn.DataTable.isDataTable("#tablapersonal")) {
             $("#tablapersonal").DataTable().destroy();
@@ -45,9 +77,9 @@ function crearDT1(){
             $("#tablahistorias").DataTable({
               language: {
                 lengthMenu: "Mostrar _MENU_ por página",
-                zeroRecords: "No se encontró ninguna Emergencia",
+                zeroRecords: "No se encontró ninguna paciente",
                 info: "Mostrando página _PAGE_ de _PAGES_",
-                infoEmpty: "No hay emergencias registradas",
+                infoEmpty: "No hay pacientes registrados",
                 infoFiltered: "(filtrado de _MAX_ registros totales)",
                 search: "Buscar:",
                 paginate: {
@@ -64,8 +96,8 @@ function crearDT1(){
 }
 //77
 function destruyeDT2(){
-	if ($.fn.DataTable.isDataTable("#tablahistorias")) {
-            $("#tablahistorias").DataTable().destroy();
+	if ($.fn.DataTable.isDataTable("#tabladelpersonal")) {
+            $("#tabladelpersonal").DataTable().destroy();
     }
 	console.log('listo');
 	// crearDT1()
@@ -76,9 +108,9 @@ function crearDT2(){
             $("#tabladelpersonal").DataTable({
               language: {
                 lengthMenu: "Mostrar _MENU_ por página",
-                zeroRecords: "No se encontró ninguna Emergencia",
+                zeroRecords: "No se encontró ninguna personal",
                 info: "Mostrando página _PAGE_ de _PAGES_",
-                infoEmpty: "No hay emergencias registradas",
+                infoEmpty: "No hay personal registrado",
                 infoFiltered: "(filtrado de _MAX_ registros totales)",
                 search: "Buscar:",
                 paginate: {
@@ -94,15 +126,34 @@ function crearDT2(){
     }         
 }
 
-function limpiarm(){
-
-	const limpia = document.querySelector('#datosdelpacientes');
-	const limpia1 = document.querySelector('#datosdelpersonal');
-	limpia.textContent = "";
-	limpia1.textContent = "";
+function destruyeDT3(){
+	if ($.fn.DataTable.isDataTable("#tabla_Observaciones")) {
+            $("#tabla_Observaciones").DataTable().destroy();
+    }
 	
-
-
+}
+function crearDT3(){
+	console.log('listo1');
+    if (!$.fn.DataTable.isDataTable("#tabla_Observaciones")) {
+            $("#tabla_Observaciones").DataTable({
+              language: {
+                lengthMenu: "Mostrar _MENU_ por página",
+                zeroRecords: "No se encontró ninguna Observación",
+                info: "Mostrando página _PAGE_ de _PAGES_",
+                infoEmpty: "No hay observaciones registradas",
+                infoFiltered: "(filtrado de _MAX_ registros totales)",
+                search: "Buscar:",
+                paginate: {
+                  first: "Primera",
+                  last: "Última",
+                  next: "Siguiente",
+                  previous: "Anterior",
+                },
+              },
+              autoWidth: false,
+              order: [[1, "asc"]],
+            });
+    }         
 }
 
 
@@ -112,6 +163,8 @@ $(document).ready(function(){
 	consultar();
 	carga_personal();
 	carga_pacientes();
+	carga_observaciones();
+	
 
 	$("#listadodepersonal").on("click",function(){
 		$("#modalpersonal").modal("show");
@@ -121,149 +174,27 @@ $(document).ready(function(){
 		$("#modalpacientes").modal("show");
 	});
 
+	$("#listado_observaciones").on("click",function(){
+		$("#modalobservacion").modal("show");
+	});
+
 	//Validar
-	$("#cedula_h").on("keypress",function(e){
+	$("#cedula_paciente").on("keypress",function(e){
 		validarkeypress(/^[0-9-\b]*$/,e);
 	});
 	
-	$("#cedula_h").on("keyup",function(){
+	$("#cedula_paciente").on("keyup",function(){
 		validarkeyup(/^[0-9]{7,8}$/,$(this),
-		$("#scedula_h"),"El formato debe ser 12345678 ");
+		$("#scedula_paciente"),"El formato debe ser 12345678 ");
 	});
 
-	$("#cedula_p").on("keypress",function(e){
+	$("#cedula_personal").on("keypress",function(e){
 		validarkeypress(/^[0-9-\b]*$/,e);
 	});
 	
-	$("#cedula_p").on("keyup",function(){
+	$("#cedula_personal").on("keyup",function(){
 		validarkeyup(/^[0-9]{7,8}$/,$(this),
-		$("#scedula_p"),"El formato debe ser 12345678 ");
-	});
-	
-	$("#psicosocial").on("keypress",function(e){
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
-	});
-   
-	$("#psicosocial").on("keyup",function(){
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#spsicosocial"),"Solo letras  entre 3 y 300 caracteres");
-	});
-   
-	$("#oidos").on("keypress",function(e){
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
-	});
-   
-	$("#oidos").on("keyup",function(){
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#soidos"),"Solo letras  entre 3 y 300 caracteres");
-	});
-
-	$("#cabeza_craneo").on("keypress",function(e){
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
-	});
-   
-	$("#cabeza_craneo").on("keyup",function(){
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#scabeza_craneo"),"Solo letras  entre 3 y 300 caracteres");
-	});
-
-	$("#ojos").on("keypress",function(e){
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
-	});
-   
-	$("#ojos").on("keyup",function(){
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#sojos"),"Solo letras  entre 3 y 300 caracteres");
-	});
-
-	$("#nariz").on("keypress",function(e){
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
-	});
-   
-	$("#nariz").on("keyup",function(){
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#snariz"),"Solo letras  entre 3 y 300 caracteres");
-	});
-
-	$("#boca_abierta").on("keypress",function(e){
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
-	});
-   
-	$("#boca_abierta").on("keyup",function(){
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#sboca_abierta"),"Solo letras  entre 3 y 300 caracteres");
-	});
-
-	$("#boca_cerrada").on("keypress",function(e){
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
-	});
-   
-	$("#boca_cerrada").on("keyup",function(){
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#sboca_cerrada"),"Solo letras  entre 3 y 300 caracteres");
-	});
-
-	$("#cardiovascular").on("keypress",function(e){
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
-	});
-   
-	$("#cardiovascular").on("keyup",function(){
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#scardiovascular"),"Solo letras  entre 3 y 300 caracteres");
-	});
-
-	$("#respiratorio").on("keypress",function(e){
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
-	});
-   
-	$("#respiratorio").on("keyup",function(){
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#srespiratorio"),"Solo letras  entre 3 y 300 caracteres");
-	});
-
-	$("#abdomen").on("keypress",function(e){
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
-	});
-   
-	$("#abdomen").on("keyup",function(){
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#sabdomen"),"Solo letras  entre 3 y 300 caracteres");
-	});
-
-	$("#extremidades_s").on("keypress",function(e){
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
-	});
-   
-	$("#extremidades_s").on("keyup",function(){
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#sextremidades_s"),"Solo letras  entre 3 y 300 caracteres");
-	});
-
-	$("#extremidades_r").on("keypress",function(e){
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
-	});
-   
-	$("#extremidades_r").on("keyup",function(){
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#sextremidades_r"),"Solo letras  entre 3 y 300 caracteres");
-	});
-
-	$("#neurologicos").on("keypress",function(e){
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
-	});
-   
-	$("#neurologicos").on("keyup",function(){
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#sneurologicos"),"Solo letras  entre 3 y 300 caracteres");
-	});
-
-	$("#general").on("keypress",function(e){
-		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
-	});
-   
-	$("#general").on("keyup",function(){
-		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-		$(this),$("#sgeneral"),"Solo letras  entre 3 y 300 caracteres");
+		$("#scedula_personal"),"El formato debe ser 12345678 ");
 	});
 
 	$("#consulta").on("keypress",function(e){
@@ -294,7 +225,7 @@ $(document).ready(function(){
 	
 	//validar
 
-	$("#cedula_p").on("keyup",function(){
+	$("#cedula_personal").on("keyup",function(){
 		var cedula = $(this).val();
 		var encontro = false;
 		$("#listadopersonal tr").each(function(){
@@ -308,7 +239,7 @@ $(document).ready(function(){
 		}
 	});
 
-	$("#cedula_h").on("keyup",function(){
+	$("#cedula_paciente").on("keyup",function(){
 		var cedula = $(this).val();
 		var encontro = false;
 		$("#listadopacientes tr").each(function(){
@@ -322,7 +253,42 @@ $(document).ready(function(){
 		}
 	});
 
+$("#proceso2").on("click", function() {
+    if ($(this).text() == "agregar") {
+        // Validar y enviar datos
+        if (validarenvio2()) {
+            var datos = new FormData();
+            datos.append('accion', 'agregar');
+            datos.append('cod_observacion', $("#cod_observacion").val());
+            datos.append('nom_observaciones', $("#nom_observaciones").val());
+            enviaAjax(datos);
+        }
+    }
 
+		else if($(this).text()=="actualizar"){
+		if(validarenvio2()){
+			var datos = new FormData();
+			datos.append('accion','actualizar');
+			datos.append('cod_observacion',$("#cod_observacion").val());
+			datos.append('nom_observaciones',$("#nom_observaciones").val());
+			enviaAjax(datos);
+		}
+	}
+
+	else{
+		    var datos = new FormData();
+			datos.append('accion','descartar');
+			datos.append('cod_observacion',$("#cod_observacion").val());
+			enviaAjax(datos);
+		}
+
+	$("#agregar").on("click",function(){
+		limpia();
+		$("#proceso2").text("agregar");
+		$("#modal2").modal("show");
+	});
+
+});
 
 
 $("#proceso").on("click",function(){
@@ -332,24 +298,21 @@ $("#proceso").on("click",function(){
 			datos.append('accion','incluir');
 			datos.append('cod_consulta',$("#cod_consulta").val());
 			datos.append('fechaconsulta',$("#fechaconsulta").val());
+			datos.append('Horaconsulta',$("#Horaconsulta").val());
 			datos.append('consulta',$("#consulta").val());
 			datos.append('diagnostico',$("#diagnostico").val());
 			datos.append('tratamientos',$("#tratamientos").val());
-			datos.append('cedula_p',$("#cedula_p").val());
-			datos.append('cedula_h',$("#cedula_h").val());
-			datos.append('boca_abierta',$("#boca_abierta").val());
-			datos.append('boca_cerrada',$("#boca_cerrada").val());
-			datos.append('oidos',$("#oidos").val());
-			datos.append('cabeza_craneo',$("#cabeza_craneo").val());
-			datos.append('ojos',$("#ojos").val());
-			datos.append('nariz',$("#nariz").val());
-			datos.append('respiratorio',$("#respiratorio").val());
-			datos.append('abdomen',$("#abdomen").val());
-			datos.append('extremidades_s',$("#extremidades_s").val());
-			datos.append('extremidades_r',$("#extremidades_r").val());
-			datos.append('neurologicos',$("#neurologicos").val());
-			datos.append('general',$("#general").val());
-			datos.append('cardiovascular',$("#cardiovascular").val());
+			datos.append('cedula_personal',$("#cedula_personal").val());
+			datos.append('cedula_paciente',$("#cedula_paciente").val());
+
+
+			 $("#observaciones_container input[name='cod_observacion[]']").each(function() {
+                var cod_observacion = $(this).val();
+                var observacion = $(`textarea[name='observacion_${cod_observacion}']`).val();
+                datos.append('cod_observacion[]', cod_observacion);
+                datos.append('observacion_' + cod_observacion, observacion);
+            });
+
 			enviaAjax(datos);
 			
 		}
@@ -360,24 +323,21 @@ $("#proceso").on("click",function(){
 			datos.append('accion','modificar');
 			datos.append('cod_consulta',$("#cod_consulta").val());
 			datos.append('fechaconsulta',$("#fechaconsulta").val());
+			datos.append('Horaconsulta',$("#Horaconsulta").val());
 			datos.append('consulta',$("#consulta").val());
 			datos.append('diagnostico',$("#diagnostico").val());
 			datos.append('tratamientos',$("#tratamientos").val());
-			datos.append('cedula_p',$("#cedula_p").val());
-			datos.append('cedula_h',$("#cedula_h").val());
-			datos.append('boca_abierta',$("#boca_abierta").val());
-			datos.append('boca_cerrada',$("#boca_cerrada").val());
-			datos.append('oidos',$("#oidos").val());
-			datos.append('cabeza_craneo',$("#cabeza_craneo").val());
-			datos.append('ojos',$("#ojos").val());
-			datos.append('nariz',$("#nariz").val());
-			datos.append('respiratorio',$("#respiratorio").val());
-			datos.append('abdomen',$("#abdomen").val());
-			datos.append('extremidades_s',$("#extremidades_s").val());
-			datos.append('extremidades_r',$("#extremidades_r").val());
-			datos.append('neurologicos',$("#neurologicos").val());
-			datos.append('general',$("#general").val());
-			datos.append('cardiovascular',$("#cardiovascular").val());
+			datos.append('cedula_personal',$("#cedula_personal").val());
+			datos.append('cedula_paciente',$("#cedula_paciente").val());
+
+			  // Agrega todas las observaciones dinámicas
+            $("#observaciones_container input[name='cod_observacion[]']").each(function() {
+                var cod_observacion = $(this).val();
+                var observacion = $(`textarea[name='observacion_${cod_observacion}']`).val();
+                datos.append('cod_observacion[]', cod_observacion);
+                datos.append('observacion_' + cod_observacion, observacion);
+            });
+
 			enviaAjax(datos);
 		}
 	}
@@ -401,52 +361,49 @@ $("#incluir").on("click",function(){
 });
 
 
-
-
-
 	
 	
 });
 
-function carga_personal(){
-
-	var datos = new FormData();
-
-	datos.append('accion','listadopersonal'); 
-
-	enviaAjax(datos);
-}
-function carga_pacientes(){
-	
-	var datos = new FormData();
-
-	datos.append('accion','listadopacientes'); 
-
-	enviaAjax(datos);
-}
 
 
 function validarenvio(){
 
-	if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula_h"),
-		$("#scedula_h"),"El formato debe ser 12345678")==0){
+	if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula_paciente"),
+		$("#scedula_paciente"),"El formato debe ser 12345678")==0){
 	    muestraMensaje("La cedula del paciente debe coincidir con el formato <br/>"+ 
 						"12345678");	
 		return false;					
 	}
 
-	else if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula_p"),
-	$("#scedula_p"),"El formato debe ser 12345678")==0){
+	else if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula_personal"),
+	$("#scedula_personal"),"El formato debe ser 12345678")==0){
 	muestraMensaje("La cedula del personal debe coincidir con el formato <br/>"+ 
 					"12345678");	
 	return false;					
-}
+	}
 
 	
 	return true;
 }
 
+function validarenvio2(){
 
+
+	function validarObservacion(){
+		if(validarkeyup(/^[A-Za-z0-9\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+			$("#nom_observaciones"),
+			$("#snom_observaciones"),
+			"Debe ingresar una observación válida (3-30 letras o números)") == 0){
+			muestraMensaje("Debe ingresar una observación válida (3-30 letras o números)");
+			return false;
+		}
+		return true;
+	}
+
+	
+	return true;
+}
 
 function muestraMensaje(mensaje){
 	
@@ -456,8 +413,6 @@ function muestraMensaje(mensaje){
 					$("#mostrarmodal").modal("hide");
 			},5000);
 }
-
-
 
 function validarkeypress(er,e){
 	
@@ -489,6 +444,7 @@ mensaje){
 		return 0;
 	}
 }
+
 function colocapersonal(linea) {
     // Obtiene los datos de la fila seleccionada
     const cedula = $(linea).find("td:eq(1)").text();
@@ -497,7 +453,7 @@ function colocapersonal(linea) {
     const cargo = $(linea).find("td:eq(4)").text();
 
     // Coloca los datos en los campos correspondientes
-    $("#cedula_p").val(cedula);
+    $("#cedula_personal").val(cedula);
     $("#datosdelpersonal").html(
         `Nombre: ${nombre} / Apellido: ${apellido} / Cargo: ${cargo}`
     );
@@ -513,7 +469,7 @@ function colocapacientes(linea) {
     const apellido = $(linea).find("td:eq(3)").text();
 
     // Coloca los datos en los campos correspondientes
-    $("#cedula_h").val(cedula);
+    $("#cedula_paciente").val(cedula);
     $("#datosdelpacientes").html(
         `Nombre: ${nombre} / Apellido: ${apellido}`
     );
@@ -522,135 +478,170 @@ function colocapacientes(linea) {
     $("#modalpacientes").modal("hide");
 }
 
-function pone(pos,accion){
-	$("#fechaconsulta").prop("readonly",false);
-	$("#consulta").prop("readonly",false);
-	$("#diagnostico").prop("readonly",false);
-	$("#tratamientos").prop("readonly",false);
-	$("#cedula_p").prop("readonly",false);
-	$("#cedula_h").prop("readonly",false);
-	$("#boca_abierta").prop("readonly",false);
-	$("#boca_cerrada").prop("readonly",false);
-	$("#oidos").prop("readonly",false);
-	$("#cabeza_craneo").prop("readonly",false);
-	$("#ojos").prop("readonly",false);
-	$("#nariz").prop("readonly",false);
-	$("#respiratorio").prop("readonly",false);
-	$("#abdomen").prop("readonly",false);
-	$("#extremidades_r").prop("readonly",false);
-	$("#extremidades_s").prop("readonly",false);
-	$("#neurologicos").prop("readonly",false);
-	$("#general").prop("readonly",false);
-	$("#cardiovascular").prop("readonly",false);
-	$("#proceso1").prop("cerrar",false); 
-	const boton_h = document.querySelector('#listadodepacientes');
-	const boton_p = document.querySelector('#listadodepersonal');
-	
-	linea=$(pos).closest('tr');
 
+$("#agregar_observacion").on("click", function() {
+    var select = $("#select_observacion");
+    var cod_observacion = select.val();
+    var texto = select.find("option:selected").text();
 
-	if(accion==0){
+    if (cod_observacion && $("#obs_" + cod_observacion).length === 0) {
+        var html = `
+        <div class="mb-3" id="obs_${cod_observacion}">
+            <label><b>${texto}</b></label>
+            <textarea class="form-control mb-1" name="observacion_${cod_observacion}" placeholder="Detalle de la observación"></textarea>
+            <button type="button" class="btn btn-danger btn-sm" onclick="$('#obs_${cod_observacion}').remove()">Quitar</button>
+            <input type="hidden" name="cod_observacion[]" value="${cod_observacion}">
+        </div>
+        `;
+        $("#observaciones_container").append(html);
+    }
+});
 
-		$("#proceso").text("MODIFICAR");
-		boton_h.style.display = '';
-		boton_p.style.display = '';
+function pone(pos, accion) {
+    // Habilitar/deshabilitar campos según la acción
+    const readonly = accion === 1 || accion === 2; // Solo editable para modificar (acción 0) e incluir (acción 3)
+    
+    $("#fechaconsulta").prop("readonly", readonly);
+    $("#Horaconsulta").prop("readonly", readonly);
+    $("#consulta").prop("readonly", readonly);
+    $("#diagnostico").prop("readonly", readonly);
+    $("#tratamientos").prop("readonly", readonly);
+    $("#cedula_personal").prop("readonly", readonly);
+    $("#cedula_paciente").prop("readonly", readonly);
+    $("#nom_observaciones").prop("readonly", readonly);
+    $("#proceso1").prop("cerrar", false);
 
-		limpiarm();
-		colocapacientes(linea)
-		colocapersonal(linea)
-	}
-	else if (accion==1){
-		$("#fechaconsulta").prop("readonly",true);
-		$("#consulta").prop("readonly",true);
-		$("#diagnostico").prop("readonly",true);
-		$("#tratamientos").prop("readonly",true);
-		$("#cedula_p").prop("readonly",true);
-		$("#cedula_h").prop("readonly",true);
-		$("#boca_abierta").prop("readonly",true);
-		$("#boca_cerrada").prop("readonly",true);
-		$("#oidos").prop("readonly",true);
-		$("#cabeza_craneo").prop("readonly",true);
-		$("#ojos").prop("readonly",true);
-		$("#nariz").prop("readonly",true);
-		$("#respiratorio").prop("readonly",true);
-		$("#abdomen").prop("readonly",true);
-		$("#extremidades_r").prop("readonly",true);
-		$("#extremidades_s").prop("readonly",true);
-		$("#neurologicos").prop("readonly",true);
-		$("#general").prop("readonly",true);
-		$("#cardiovascular").prop("readonly",true);
-		$("#proceso").text("ELIMINAR");
-		boton_h.style.display = 'none';
-		boton_p.style.display = 'none';
+    // Elementos del DOM
+    const boton_h = document.querySelector('#listadodepacientes');
+    const boton_p = document.querySelector('#listadodepersonal');
+    const linea = $(pos).closest('tr');
 
-		limpiarm();
-		colocapacientes(linea)
-		colocapersonal(linea)
-	}
-	else if (accion==2){
-		$("#fechaconsulta").prop("readonly",true);
-		$("#consulta").prop("readonly",true);
-		$("#diagnostico").prop("readonly",true);
-		$("#tratamientos").prop("readonly",true);
-		$("#cedula_p").prop("readonly",true);
-		$("#cedula_h").prop("readonly",true);
-		$("#boca_abierta").prop("readonly",true);
-		$("#boca_cerrada").prop("readonly",true);
-		$("#oidos").prop("readonly",true);
-		$("#cabeza_craneo").prop("readonly",true);
-		$("#ojos").prop("readonly",true);
-		$("#nariz").prop("readonly",true);
-		$("#respiratorio").prop("readonly",true);
-		$("#abdomen").prop("readonly",true);
-		$("#extremidades_r").prop("readonly",true);
-		$("#extremidades_s").prop("readonly",true);
-		$("#neurologicos").prop("readonly",true);
-		$("#general").prop("readonly",true);
-		$("#cardiovascular").prop("readonly",true);
-		$("#proceso").text("CERRAR");
+    // Configuración según el tipo de acción
+    switch (accion) {
+        case 0: // MODIFICAR
+            $("#proceso").text("MODIFICAR");
+            boton_h.style.display = '';
+            boton_p.style.display = '';
+            limpiarm();
+            
+            // Datos del paciente
+            $("#cedula_paciente").val($(pos).attr('cedula_paciente'));
+            $("#datosdelpacientes").html(
+                `Nombre: ${$(pos).attr('nombre_h')} / Apellido: ${$(pos).attr('apellido_h')}`
+            );
 
-		boton_h.style.display = 'none';
-		boton_p.style.display = 'none';
+            // Datos del personal
+            $("#cedula_personal").val($(pos).attr('cedula_personal'));
+            $("#datosdelpersonal").html(
+                `Nombre: ${$(pos).attr('nombre')} / Apellido: ${$(pos).attr('apellido')} / Cargo: ${$(pos).attr('cargo')}`
+            );
+            
+            // Cargar observaciones
+            cargarObservacionesConsulta($(pos).attr('cod_consulta'));
+            $('#bloque_agregar_observacion').show();
+            break;
 
-		limpiarm();
-		colocapacientes(linea)
-		colocapersonal(linea)
-		
-	}
-	else{
-		$("#proceso").text("INCLUIR");
-		boton_h.style.display = '';
-		boton_p.style.display = '';
+        case 1: // ELIMINAR
+            $("#proceso").text("ELIMINAR");
+            boton_h.style.display = 'none';
+            boton_p.style.display = 'none';
+            limpiarm();
+            
+            // Datos del paciente
+            $("#cedula_paciente").val($(pos).attr('cedula_paciente'));
+            $("#datosdelpacientes").html(
+                `Nombre: ${$(pos).attr('nombre_h')} / Apellido: ${$(pos).attr('apellido_h')}`
+            );
 
-		limpiarm();
-		
-	}
-	$("#cod_consulta").val($(linea).find("td:eq(1)").text());
-	$("#fechaconsulta").val( $(pos).attr('fechaconsulta') );
-	$("#consulta").val( $(pos).attr('consulta') );
-	$("#diagnostico").val( $(pos).attr('diagnostico') );
-	$("#tratamientos").val( $(pos).attr('tratamientos') );
-	$("#cedula_p").val( $(pos).attr('cedula_p') );
-	$("#cedula_h").val( $(pos).attr('cedula_h') );
-	$("#boca_abierta").val( $(pos).attr('boca_abierta') );
-	$("#boca_cerrada").val( $(pos).attr('boca_cerrada') );
-	$("#oidos").val( $(pos).attr('oidos') );
-	$("#cabeza_craneo").val( $(pos).attr('cabeza_craneo') );
-	$("#ojos").val( $(pos).attr('ojos') );
-	$("#nariz").val( $(pos).attr('nariz') );
-	$("#respiratorio").val( $(pos).attr('respiratorio') );
-	$("#abdomen").val( $(pos).attr('abdomen') );
-	$("#extremidades_r").val( $(pos).attr('extremidades_r') );
-	$("#extremidades_s").val( $(pos).attr('extremidades_s') );
-	$("#neurologicos").val( $(pos).attr('neurologicos') );
-	$("#general").val( $(pos).attr('general') );
-	$("#cardiovascular").val( $(pos).attr('cardiovascular') );
+            // Datos del personal
+            $("#cedula_personal").val($(pos).attr('cedula_personal'));
+            $("#datosdelpersonal").html(
+                `Nombre: ${$(pos).attr('nombre')} / Apellido: ${$(pos).attr('apellido')} / Cargo: ${$(pos).attr('cargo')}`
+            );
 
+            // Cargar observaciones y ocultar controles
+            cargarObservacionesConsulta($(pos).attr('cod_consulta'));
+            $('#bloque_agregar_observacion').hide();
+            setTimeout(function() {  
+                $('.bt_quitar').hide();        
+                $('.tex_o').attr('readonly', true);
+            }, 50);
+            break;
 
+        case 2: // CERRAR
+            $("#proceso").text("CERRAR");
+            boton_h.style.display = 'none';
+            boton_p.style.display = 'none';
+            limpiarm();
+            
+            // Datos del paciente
+            $("#cedula_paciente").val($(pos).attr('cedula_paciente'));
+            $("#datosdelpacientes").html(
+                `Nombre: ${$(pos).attr('nombre_h')} / Apellido: ${$(pos).attr('apellido_h')}`
+            );
 
+            // Datos del personal
+            $("#cedula_personal").val($(pos).attr('cedula_personal'));
+            $("#datosdelpersonal").html(
+                `Nombre: ${$(pos).attr('nombre')} / Apellido: ${$(pos).attr('apellido')} / Cargo: ${$(pos).attr('cargo')}`
+            );
 
-	
-	$("#modal1").modal("show");
+            // Cargar observaciones y ocultar controles
+            cargarObservacionesConsulta($(pos).attr('cod_consulta'));
+            $('#bloque_agregar_observacion').hide();
+            setTimeout(function() {  
+                $('.bt_quitar').hide();        
+                $('.tex_o').attr('readonly', true);
+            }, 50);
+            break;
+
+        case 3: // INCLUIR
+            $("#proceso").text("INCLUIR");
+            boton_h.style.display = '';
+            boton_p.style.display = '';
+            limpiarm();
+			 $('#bloque_agregar_observacion').show();
+            break;
+
+        case 4: // AGREGAR OBSERVACIÓN
+            $("#cod_observacion").val($(linea).find("td:eq(0)").text());
+            $("#nom_observaciones").val($(pos).attr('nom_observaciones'));
+            $("#proceso2").text("agregar");
+            $("#modal2").modal("show");
+            break;
+
+        case 5: // DESCARTAR OBSERVACIÓN
+            $("#cod_observacion").val($(linea).find("td:eq(0)").text());
+            $("#nom_observaciones").val($(pos).attr('nom_observaciones'));
+            $("#nom_observaciones").prop("readonly", true);
+            $("#proceso2").text("descartar");
+            $("#modal2").modal("show");
+            break;
+
+        case 6: // ACTUALIZAR OBSERVACIÓN
+            $("#cod_observacion").val($(linea).find("td:eq(0)").text());
+            $("#nom_observaciones").val($(pos).attr('nom_observaciones'));
+            $("#proceso2").text("actualizar");
+            $("#modal2").modal("show");
+            break;
+
+        default:
+            console.error("Acción no reconocida:", accion);
+            alert("Error: Acción no válida");
+    }
+
+    // Establecer valores en los campos del formulario para acciones 0-3
+    if ([0, 1, 2, 3].includes(accion)) {
+        $("#cod_consulta").val($(linea).find("td:eq(0)").text());
+        $("#fechaconsulta").val($(pos).attr('fechaconsulta'));
+        $("#Horaconsulta").val($(pos).attr('Horaconsulta'));
+        $("#consulta").val($(pos).attr('consulta'));
+        $("#diagnostico").val($(pos).attr('diagnostico'));
+        $("#tratamientos").val($(pos).attr('tratamientos'));
+        $("#cedula_personal").val($(pos).attr('cedula_personal'));
+        $("#cedula_paciente").val($(pos).attr('cedula_paciente'));
+        $("#modal1").modal("show");
+    }
 }
 
 
@@ -675,81 +666,65 @@ function enviaAjax(datos) {
 		   var html="";
 		   lee.datos.forEach(function (fila) {
 			html += `<tr>
+
+				<td style="display:none;">${fila.cod_consulta}</td>
+				<td>${fila.nombre_h}</td>
+				<td>${fila.apellido_h}</td>
+				<td>${fila.cedula_paciente}</td>
+				<td>${fila.fechaconsulta}</td>
+				<td>${fila.Horaconsulta}</td>
+				<td>${fila.nombre}</td>
+				<td>${fila.apellido}</td>
+				<td>${fila.cedula_personal}</td>
+
 				<td>
 					<div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
 						<a type="button" class="btn btn-success" onclick="pone(this,0)"
 							fechaconsulta="${fila.fechaconsulta}"
+							Horaconsulta="${fila.Horaconsulta}"
 							consulta="${fila.consulta}"
 							diagnostico="${fila.diagnostico}"
 							tratamientos="${fila.tratamientos}"
-							cedula_p="${fila.cedula_p}"
-							cedula_h="${fila.cedula_h}"
+							cedula_personal="${fila.cedula_personal}"
+							cedula_paciente="${fila.cedula_paciente}"
 							cargo="${fila.cargo}"
 							nombre="${fila.nombre}"
 							apellido="${fila.apellido}"
-							boca_abierta="${fila.boca_abierta}"
-							boca_cerrada="${fila.boca_cerrada}"
-							oidos="${fila.oidos}"
-							cabeza_craneo="${fila.cabeza_craneo}"
-							ojos="${fila.ojos}"
-							nariz="${fila.nariz}"
-							respiratorio="${fila.respiratorio}"
-							abdomen="${fila.abdomen}"
-							extremidades_r="${fila.extremidades_r}"
-							extremidades_s="${fila.extremidades_s}"
-							neurologicos="${fila.neurologicos}"
-							general="${fila.general}"
-							cardiovascular="${fila.cardiovascular}">
+							nombre_h="${fila.nombre_h}"
+							apellido_h="${fila.apellido_h}"
+							cod_consulta="${fila.cod_consulta}">
 							<img src="img/lapiz.svg" style="width: 20px">
 						</a>
 						<a type="button" class="btn btn-danger" onclick="pone(this,1)"
 							fechaconsulta="${fila.fechaconsulta}"
+							Horaconsulta="${fila.Horaconsulta}"
 							consulta="${fila.consulta}"
 							diagnostico="${fila.diagnostico}"
 							tratamientos="${fila.tratamientos}"
-							cedula_p="${fila.cedula_p}"
-							cedula_h="${fila.cedula_h}"
+							cedula_personal="${fila.cedula_personal}"
+							cedula_paciente="${fila.cedula_paciente}"
 							cargo="${fila.cargo}"
 							nombre="${fila.nombre}"
 							apellido="${fila.apellido}"
-							boca_abierta="${fila.boca_abierta}"
-							boca_cerrada="${fila.boca_cerrada}"
-							oidos="${fila.oidos}"
-							cabeza_craneo="${fila.cabeza_craneo}"
-							ojos="${fila.ojos}"
-							nariz="${fila.nariz}"
-							respiratorio="${fila.respiratorio}"
-							abdomen="${fila.abdomen}"
-							extremidades_r="${fila.extremidades_r}"
-							extremidades_s="${fila.extremidades_s}"
-							neurologicos="${fila.neurologicos}"
-							general="${fila.general}"
-							cardiovascular="${fila.cardiovascular}">
+							nombre_h="${fila.nombre_h}"
+							apellido_h="${fila.apellido_h}"
+							cod_consulta="${fila.cod_consulta}">
 							<img src="img/basura.svg" style="width: 20px">
 						</a>
 						<a type="button" class="btn btn-primary" onclick="pone(this,2)"
 							fechaconsulta="${fila.fechaconsulta}"
+							Horaconsulta="${fila.Horaconsulta}"
 							consulta="${fila.consulta}"
 							diagnostico="${fila.diagnostico}"
 							tratamientos="${fila.tratamientos}"
-							cedula_p="${fila.cedula_p}"
-							cedula_h="${fila.cedula_h}"
+							cedula_personal="${fila.cedula_personal}"
+							cedula_paciente="${fila.cedula_paciente}"
 							cargo="${fila.cargo}"
 							nombre="${fila.nombre}"
 							apellido="${fila.apellido}"
-							boca_abierta="${fila.boca_abierta}"
-							boca_cerrada="${fila.boca_cerrada}"
-							oidos="${fila.oidos}"
-							cabeza_craneo="${fila.cabeza_craneo}"
-							ojos="${fila.ojos}"
-							nariz="${fila.nariz}"
-							respiratorio="${fila.respiratorio}"
-							abdomen="${fila.abdomen}"
-							extremidades_r="${fila.extremidades_r}"
-							extremidades_s="${fila.extremidades_s}"
-							neurologicos="${fila.neurologicos}"
-							general="${fila.general}"
-							cardiovascular="${fila.cardiovascular}">
+							nombre_h="${fila.nombre_h}"
+							apellido_h="${fila.apellido_h}"
+							cod_consulta="${fila.cod_consulta}">
 							<img src="img/ojo.svg" style="width: 20px">
 						</a>
 						<a class="btn btn-danger" href="vista/fpdf/consultasm.php?cod_consulta=${fila.cod_consulta}" target="_blank">
@@ -757,14 +732,7 @@ function enviaAjax(datos) {
 						</a>
 					</div>
 				</td>
-				<td style="display:none;">${fila.cod_consulta}</td>
-				<td>${fila.nombre_h}</td>
-				<td>${fila.apellido_h}</td>
-				<td>${fila.fechaconsulta}</td>
-				<td>${fila.cedula_h}</td>
-				<td>${fila.nombre}</td>
-				<td>${fila.apellido}</td>
-				<td>${fila.cedula_p}</td>
+
 			</tr>`;
 		});
 		
@@ -773,23 +741,84 @@ function enviaAjax(datos) {
         }
 		else if(lee.resultado=='listadopersonal'){
 			destruyeDT2();
-					
-
-			$('#listadopersonal').html(lee.mensaje);
-			crearDT2();
+			var html = '';
+			lee.datos.forEach(function(fila) {
+				html += `<tr onclick="colocapersonal(this)">
+					<td style="display:none;">${fila.cedula_personal}</td>
+					<td>${fila.cedula_personal}</td>
+					<td>${fila.nombre}</td>
+					<td>${fila.apellido}</td>
+					<td>${fila.cargo}</td>
+				</tr>`;
+			});
+			$("#listadopersonal").html(html);
+			crearDT2();	
+			
 		}
 		else if(lee.resultado=='listadopacientes'){
+			
 			destruyeDT1();
-
-			$('#listadopacientes').html(lee.mensaje);
+			var html = '';
+			lee.datos.forEach(function(fila) {
+				html += `<tr onclick="colocapacientes(this)">
+					<td style="display:none;">${fila.cedula_paciente}</td>
+					<td>${fila.cedula_paciente}</td>
+					<td>${fila.nombre}</td>
+					<td>${fila.apellido}</td>
+				</tr>`;
+			});
+			$("#listadopacientes").html(html);
 			crearDT1();
-		
+		}
+		else if(lee.resultado=='listado_observaciones'){
+			
+			destruyeDT3();
+			var html = '';
+			lee.datos.forEach(function(fila) {
+				html += `<tr onclick="colocapacientes(this)">
+					<td style="display:none;">${fila.cod_observacion}</td>
+					<td>${fila.nom_observaciones}</td>
+						<td>
+						<div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
+							<a type="button" class="btn btn-success" onclick="pone(this,6)"
+								nom_observaciones="${fila.nom_observaciones}"
+								cod_observacion="${fila.cod_observacion}">
+								<img src="img/lapiz.svg" style="width: 20px">
+							</a>
+							<a type="button" class="btn btn-danger" onclick="pone(this,5)"
+								cod_observacion="${fila.cod_observacion}"
+								nom_observaciones="${fila.nom_observaciones}">
+								<img src="img/basura.svg" style="width: 20px">
+							</a>
+							
+						</div>
+					</td>
+				</tr>`;
+			});
+			$("#listado_observaciones").html(html);
+			crearDT3();
+
+			var $select = $("#select_observacion");
+			$select.empty();
+			$select.append('<option value="" disabled selected>Seleccione una observación</option>');
+			lee.datos.forEach(function(o) {
+				$select.append(
+					`<option value="${o.cod_observacion}">${o.nom_observaciones}</option>`
+				);
+			});
 		}
 		else if (lee.resultado == "incluir") {
            muestraMensaje(lee.mensaje);
-		   if(lee.mensaje=='Registro Inluido'){
+		   if(lee.mensaje=='Registro Incluido'){
 			   $("#modal1").modal("hide");
 			   consultar();
+		   }
+        }
+		else if (lee.resultado == "agregar") {
+           muestraMensaje(lee.mensaje);
+		   if(lee.mensaje=='Registro Incluido'){
+			   $("#modal2").modal("hide");
+			   carga_observaciones();
 		   }
         }
 		else if (lee.resultado == "modificar") {
@@ -799,6 +828,13 @@ function enviaAjax(datos) {
 			   consultar();
 		   }
         }
+		else if (lee.resultado == "actualizar") {
+           muestraMensaje(lee.mensaje);
+		   if(lee.mensaje=='Registro Modificado'){
+			   $("#modal2").modal("hide");
+			   carga_observaciones();
+		   }   
+        }
 		else if (lee.resultado == "eliminar") {
            muestraMensaje(lee.mensaje);
 		   if(lee.mensaje=='Registro Eliminado'){
@@ -806,6 +842,31 @@ function enviaAjax(datos) {
 			   consultar();
 		   }
         }
+		else if (lee.resultado === "obtener_observaciones_consulta") {
+			$("#observaciones_container").empty();
+			lee.datos.forEach(function(obs) {
+				var html = `
+				<div class="mb-3" id="obs_${obs.cod_observacion}">
+					<label><b>${obs.nom_observaciones}</b></label>
+					<textarea class="form-control mb-1 tex_o " name="observacion_${obs.cod_observacion}" placeholder="Detalle de la observación">${obs.observacion}</textarea>	
+					<button type="button" class="btn btn-danger btn-sm bt_quitar" onclick="$('#obs_${obs.cod_observacion}').remove()">Quitar</button>			
+					<input type="hidden" name="cod_observacion[]" value="${obs.cod_observacion}">
+				</div>
+				`;
+				
+				$("#observaciones_container").append(html);
+			});
+		}
+		else if (lee.resultado == "descartar") {
+           muestraMensaje(lee.mensaje);
+		   if(lee.mensaje=='Registro Eliminado'){
+			   $("#modal2").modal("hide");
+			   carga_observaciones();
+		   }
+        }
+		
+	
+
 		else if (lee.resultado == "error") {
            muestraMensaje(lee.mensaje);
         }
@@ -830,24 +891,24 @@ function enviaAjax(datos) {
 function limpia(){
 	$("#cod_consulta").val("");
 	$("#fechaconsulta").val("");
+	$("#Horaconsulta").val("");
 	$("#consulta").val("");
 	$("#diagnostico").val("");
 	$("#tratamientos").val("");
-	$("#cedula_p").val("");
-	$("#cedula_h").val("");
-	$("#boca_abierta").val("");
-	$("#boca_cerrada").val("");
-	$("#oidos").val("");
-	$("#cabeza_craneo").val("");
-	$("#ojos").val("");
-	$("#nariz").val("");
-	$("#respiratorio").val("");
-	$("#abdomen").val("");
-	$("#extremidades_r").val("");
-	$("#extremidades_s").val("");
-	$("#neurologicos").val("");
-	$("#general").val("");
-	$("#cardiovascular").val("");
+	$("#cedula_personal").val("");
+	$("#cedula_paciente").val("");
+	$("#cod_observacion").html("");
+	$("#nom_observaciones").val("");
+}
+function limpiarm(){
+
+	const limpia = document.querySelector('#datosdelpacientes');
+	const limpia1 = document.querySelector('#datosdelpersonal');
+	limpia.textContent = "";
+	limpia1.textContent = "";
+	$("#observaciones_container").empty();
+    $("#select_observacion").val("");
+
 
 }
 

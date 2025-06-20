@@ -9,66 +9,101 @@ require_once("modelo/".$pagina.".php");
   if(is_file("vista/".$pagina.".php")){
 
 	  
-	  if(!empty($_POST)){
-		$o = new consultasm();   
-
-		  $accion = $_POST['accion'];
-		  
-		  if($accion=='consultar'){
-			 echo  json_encode($o->consultar());  
-		  }
-		  elseif($accion=='listadopersonal'){
-			$respuesta = $o->listadopersonal();
-			echo json_encode($respuesta);
-		}
-		elseif($accion=='listadopacientes'){
-			$respuesta = $o->listadopacientes();
-			echo json_encode($respuesta);
-		}
-		  elseif($accion=='eliminar'){
-			 $o->set_cod_consulta($_POST['cod_consulta']);
-			 echo  json_encode($o->eliminar());
-			 bitacora::registrar('eliminar', 'Eliminó una consulta médica con código: '.$_POST['cod_consulta']);
-		  }
-		  else{		  
-			  
+	if (!empty($_POST)) {
+		$o = new consultasm();
+		$p = new observaciones();
+		
+		$accion = $_POST['accion'];
+		
+		switch ($accion) {
+			case 'consultar':
+				echo json_encode($o->consultar());
+				break;
+				
+			case 'listadopersonal':
+				$respuesta = $o->listadopersonal();
+				echo json_encode($respuesta);
+				break;
+				
+			case 'listadopacientes':
+				$respuesta = $o->listadopacientes();
+				echo json_encode($respuesta);
+				break;
+				
+			case 'listado_observaciones':
+				$respuesta = $p->listado_observaciones();
+				echo json_encode($respuesta);
+				break;
+				
+			case 'eliminar':
+				$o->set_cod_consulta($_POST['cod_consulta']);
+				echo json_encode($o->eliminar());
+				break;
+				
+			case 'agregar':
+				$p->set_cod_observacion($_POST['cod_observacion']);
+				$p->set_nom_observaciones($_POST['nom_observaciones']);
+				echo json_encode($p->incluir2());
+				break;
+				
+			case 'actualizar':
+				$p->set_cod_observacion($_POST['cod_observacion']);
+				$p->set_nom_observaciones($_POST['nom_observaciones']);
+				echo json_encode($p->modificar2());
+				break;
+				
+			case 'obtener_observaciones_consulta':
+				$cod_consulta = $_POST['cod_consulta'];
+				$observaciones = $o->obtener_observaciones_consulta($cod_consulta);
+				echo json_encode([
+					'resultado' => 'obtener_observaciones_consulta', 
+					'datos' => $observaciones
+				]);
+				break;
+				
+			case 'descartar':
+				$p->set_cod_observacion($_POST['cod_observacion']);
+				echo json_encode($p->eliminar2());
+				break;
+				
+			case 'incluir':
+			case 'modificar':
+				// Configuración común para incluir y modificar
 				$o->set_cod_consulta($_POST['cod_consulta']);
 				$o->set_fechaconsulta($_POST['fechaconsulta']);
+				$o->set_Horaconsulta($_POST['Horaconsulta']);
 				$o->set_consulta($_POST['consulta']);
 				$o->set_diagnostico($_POST['diagnostico']);
 				$o->set_tratamientos($_POST['tratamientos']);
-				$o->set_cedula_p($_POST['cedula_p']);
-			    $o->set_cedula_h($_POST['cedula_h']);
-			    $o->set_boca_abierta($_POST['boca_abierta']);
-			    $o->set_boca_cerrada($_POST['boca_cerrada']);
-			    $o->set_oidos($_POST['oidos']);
-			    $o->set_cabeza_craneo($_POST['cabeza_craneo']);
-			    $o->set_ojos($_POST['ojos']);
-			    $o->set_nariz($_POST['nariz']);
-			    $o->set_respiratorio($_POST['respiratorio']);
-			    $o->set_abdomen($_POST['abdomen']);
-			    $o->set_extremidades_r($_POST['extremidades_r']);
-			    $o->set_extremidades_s($_POST['extremidades_s']);
-			    $o->set_neurologicos($_POST['neurologicos']);
-			    $o->set_general($_POST['general']);
-			    $o->set_cardiovascular($_POST['cardiovascular']);
-			  if($accion=='incluir'){
-				echo  json_encode($o->incluir());
-				bitacora::registrar('incluir', 'Incluyó una nueva consulta médica con código: '.$_POST['cod_consulta']);
+				$o->set_cedula_personal($_POST['cedula_personal']);
+				$o->set_cedula_paciente($_POST['cedula_paciente']);
 				
-			  }
-			  elseif($accion=='modificar'){
-				echo  json_encode($o->modificar());
-				bitacora::registrar('modificar', 'Modificó una consulta médica con código: '.$_POST['cod_consulta']);
-			  }
-		  }
-		  exit;
-	  }
+				// Prepara el array de observaciones
+				$observaciones = [];
+				if (!empty($_POST['cod_observacion'])) {
+					foreach ($_POST['cod_observacion'] as $cod_observacion) {
+						$observaciones[] = [
+							'cod_observacion' => $cod_observacion,
+							'observacion' => $_POST['observacion_' . $cod_observacion]
+						];
+					}
+				}
+				
+				if ($accion == 'incluir') {
+					echo json_encode($o->incluir($observaciones));
+				} else {
+					echo json_encode($o->modificar($observaciones));
+				}
+				break;
+				
+			default:
+				// Manejo de acción no reconocida
+				echo json_encode(['error' => 'Acción no reconocida']);
+		}
+		
+		exit;
+	}
 	  
-	$o = new consultasm();
-	$datos = $o->consultar();
-	$datosPacientes = $o->listadopacientes();
-	$datosPersonal = $o->listadopersonal();
 	  require_once("vista/".$pagina.".php"); 
   }
   else{

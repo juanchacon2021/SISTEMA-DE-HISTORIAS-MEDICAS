@@ -70,7 +70,7 @@ class PDF extends FPDF
 include '../../modelo/datos.php'; 
 
 function conexion() {
-    return new PDO('mysql:host=localhost;dbname=shm-cdi.2', 'root', '123456');
+    return new PDO('mysql:host=localhost;dbname=prueva', 'root', '123456');
 }
 
 $pdf = new PDF();
@@ -88,16 +88,23 @@ if (empty($cod_consulta)) {
     die('No se proporcionó una emergencia');
 }
 echo "Valor de cod_consulta: " . $cod_consulta;
-$consulta_reporte_emergencia = $bd->prepare("SELECT *, h.nombre AS nombre_h, h.apellido AS apellido_h  
-                                            FROM consultas c 
-                                            INNER JOIN historias h ON c.cedula_h = h.cedula_historia
-                                            INNER JOIN personal p ON c.cedula_p = p.cedula_personal
-                                            WHERE cod_consulta = :cod_consulta");
+$consulta_reporte_emergencia = $bd->prepare("SELECT *, h.nombre as nombre_h, h.apellido as apellido_h  
+                                             FROM consulta c 
+                                             INNER JOIN paciente h ON c.cedula_paciente = h.cedula_paciente
+                                             INNER JOIN personal p ON c.cedula_personal = p.cedula_personal
+                                                            WHERE cod_consulta = :cod_consulta");
 $consulta_reporte_emergencia->bindParam(':cod_consulta', $cod_consulta, PDO::PARAM_STR);
 $consulta_reporte_emergencia->execute();
+$observacion_consulta_reporte = $bd->prepare("SELECT oc.cod_observacion, tobs.nom_observaciones, oc.observacion
+                                             FROM observacion_consulta oc
+                                             JOIN tipo_observacion tobs ON oc.cod_observacion = tobs.cod_observacion
+                                             WHERE oc.cod_consulta = :cod_consulta");
+$observacion_consulta_reporte->bindParam(':cod_consulta', $cod_consulta, PDO::PARAM_STR);
+$observacion_consulta_reporte->execute();
+
 
 $datos_reporte = $consulta_reporte_emergencia->fetch(PDO::FETCH_OBJ);
-
+$datos_reporte_observacion = $observacion_consulta_reporte->fetchAll(PDO::FETCH_OBJ);
 
 if ($datos_reporte) {
 
@@ -121,7 +128,7 @@ if ($datos_reporte) {
     $pdf->SetFont('Arial', '', 8);
     $pdf->Cell(47.5, 8, utf8_decode($datos_reporte->nombre_h), 1, 0, 'C', 0);
     $pdf->Cell(47.5, 8, utf8_decode($datos_reporte->apellido_h), 1, 0, 'C', 0);
-    $pdf->Cell(47.5, 8, utf8_decode($datos_reporte->cedula_h), 1, 0, 'C', 0);
+    $pdf->Cell(47.5, 8, utf8_decode($datos_reporte->cedula_paciente), 1, 0, 'C', 0);
     $pdf->Cell(47.5, 8, utf8_decode($datos_reporte->fechaconsulta), 1, 1, 'C', 0);
     $pdf->Ln(10);
 
@@ -161,6 +168,28 @@ if ($datos_reporte) {
     $pdf->SetFont('Arial', '', 8);
     $pdf->MultiCell(190, 5, utf8_decode($datos_reporte->tratamientos), 1,'C',0);
 
+     $pdf->Ln(10);
+
+    $pdf->SetTextColor(226, 37, 53);
+    $pdf->SetFont('Arial', 'B', 15);
+    $pdf->Cell(190, 10, utf8_decode('OBSERVACIONES DE LA CONSULTA'), 0, 1, 'C', 0);
+
+
+    foreach ($datos_reporte_observacion as $obs) {
+
+          $pdf->Ln(5);
+
+        $pdf->SetFillColor(226, 37, 53); // colorFondo
+         $pdf->SetTextColor(255, 255, 255); // colorTexto
+         $pdf->SetDrawColor(0, 0, 0); // colorBorde
+         $pdf->SetFont('Arial', 'B', 7);
+         $pdf->Cell(190, 7, utf8_decode($obs->nom_observaciones), 1, 1, 'C', 1);
+
+         $pdf->SetTextColor(0, 0, 0); // colorTexto
+         $pdf->SetFont('Arial', '', 8);
+         $pdf->MultiCell(190, 5, utf8_decode($obs->observacion), 1,'C',0);
+    }
+
     $pdf->Ln(10);
 
     $pdf->SetTextColor(226, 37, 53);
@@ -182,7 +211,7 @@ if ($datos_reporte) {
     $pdf->Cell(40, 8, utf8_decode($datos_reporte->cargo), 1, 0, 'C', 0);
     $pdf->Cell(50, 8, utf8_decode($datos_reporte->nombre), 1, 0, 'C', 0);
     $pdf->Cell(50, 8, utf8_decode($datos_reporte->apellido), 1, 0, 'C', 0);
-    $pdf->Cell(50, 8, utf8_decode($datos_reporte->cedula_p), 1, 1, 'C', 0);
+    $pdf->Cell(50, 8, utf8_decode($datos_reporte->cedula_personal), 1, 1, 'C', 0);
     
 
     ob_end_clean();

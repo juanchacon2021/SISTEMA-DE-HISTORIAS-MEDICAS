@@ -29,6 +29,12 @@ Pacientes cronicos
 				Registrar pacientes cronicos
 			</div>
 
+			<div class="col-md-2">
+				<button type="button" class="btn botonverde" data-bs-toggle="modal" data-bs-target="#modalopatologias">
+					patologias
+				</button>
+			</div>
+
 			<div class="col-md-2 recortar">	
                 <a href="?pagina=principal" class="boton">Volver</a>
 			</div>
@@ -39,12 +45,11 @@ Pacientes cronicos
         <table class="table table-striped table-hover" id="tablapersonal">
             <thead>
                 <tr>
-                    <th>Acciones</th>
-                    <th style="display:none;">Cod. de emergencia</th> 
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Patologia Cronica</th>
-                    <th>Cedula del Paciente</th>
+                    <th style="text-align: center;">Cedula Pacientes</th>
+                    <th style="text-align: center;">Nombre</th>
+                    <th style="text-align: center;">Apellido</th>
+					<th style="text-align: center;">Patologías Crónica</th>
+					<th style="text-align: center;">Acciones</th>
                 </tr>
             </thead>
             <tbody id="resultadoconsulta">
@@ -56,127 +61,78 @@ Pacientes cronicos
 
 
 <div class="modal fade" tabindex="-1" role="dialog"  id="modal1">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-	<div class="modal-header text-light bg-info gradiente">
-        <h5 class="modal-title">Formulario de pacientes cronicos</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    </div>
-		<div class="container">
-		   <form method="post" id="f" autocomplete="off">
-			<input autocomplete="off" type="text" class="form-control" name="accion" id="accion" style="display: none;">
-			<div class="container">	
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header text-light bg-info gradiente">
+				<h5 class="modal-title">Formulario de pacientes cronicos</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="container">
+				<form method="post" id="f" autocomplete="off">
+					<input autocomplete="off" type="text" class="form-control" name="accion" id="accion" style="display: none;">
+					<div class="container">	
 
-<br>
-			<div class="row mb-3">
+						<br>
+						<div class="row mb-3">
 
-				<label class="texto-inicio font-medium" for="cedula_h">Cedula del Paciente</label>
-						<div class="col-md-8 input-group">
-							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_h" name="cedula_h" />				
-							<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_historia" name="cedula_historia" style="display:none"/>
-							<button type="button" class="btn btn-primary" id="listadodepacientes" name="listadodepacientes">LISTADO DE PACIENTES</button>
-						</div>
-						<span id="scedula_h"></span>
-					</div>
-					<div class="row">
-						<div class="col-md-12" id="datosdelpacientes">
+							<div class="col-md-12">
+
+								<label class="texto-inicio font-medium" for="cedula_paciente">Cedula del Paciente</label>
+								<div class="boton-ced">
+									<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_paciente" name="cedula_paciente" />				
+									<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_pacienteistoria" name="cedula_pacienteistoria" style="display:none"/>
+									<button type="button" class="btn btn-primary boton-lista" id="listadodepacientes" name="listadodepacientes">LISTADO DE PACIENTES</button>
+								</div>
+								<span id="scedula_paciente"></span>
+								<div class="row">
+									<div class="col-md-12" id="datosdelpacientes"></div>
+								</div>
+
+							</div>
 						
-						</div>
-					</div>
-
-			</div>
-
-			<div class="row mb-3 ms-2">
-
-
-			<div class="col-md-12" style="display: none;">
-					   <label class="texto-inicio font-medium" for="cod_cronico">Cod. de pacientes cronicos</label>
-					   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cod_cronico" />
-					   <span id="scod_cronico"></span>
-					</div>
-					
-					<div class="col-md-12">
-					<label class="texto-inicio font-medium" for="patologia_cronica">Patología Crónica</label>
-					<input
-						class="form-control bg-gray-200 rounded-lg border-white"
-						type="text"
-						id="patologia_cronica"
-						name="patologia_cronica"
-						readonly
-					/>
-
-
-
-			</div>
+						</div>	
 				
-				<div class="row mb-3 ms-2">
-					
-					<div id="patologia_options" class="mb-2">
-					<div class="row" id="patologia_options">
-						<div class="col-md-6">
-						<label><input type="checkbox" value="Cardiopatía" onchange="actualizarCheckboxes()"> Cardiopatía</label><br>
-						<label><input type="checkbox" value="Hipertensión" onchange="actualizarCheckboxes()"> Hipertensión</label><br>
-						<label><input type="checkbox" value="Endocrinometabólico" onchange="actualizarCheckboxes()"> Endocrinometabólico</label>
+						
+						
+
+
+						<div class="row mb-3">
+							<div id="bloque_agregar_patologia">
+
+								<select id="select_patologia" class="form-control">
+								<option value="" disabled selected>Seleccione una patología</option>
+								<!-- Las opciones se llenarán por JS -->
+								</select>
+								<button type="button" class="btn btn-secondary mt-2" id="agregar_patologia">Agregar</button>
+
+							</div>
+
+							
+							<div id="patologias_container"></div>
+
 						</div>
-						<div class="col-md-6">
-						<label><input type="checkbox" value="Asmático" onchange="actualizarCheckboxes()"> Asmático</label><br>
-						<label><input type="checkbox" value="Renal" onchange="actualizarCheckboxes()"> Renal</label><br>
-						<label><input type="checkbox" value="Mental" onchange="actualizarCheckboxes()"> Mental</label>
+
+
+						
+
+						<div class="row">
+							<div class="col-md-12">
+								<hr/>
+							</div>
 						</div>
-					</div>
-					</div>
-
-					
-					<span id="spatologia_cronica"></span>
-					</div>
-
-                    <div class="col-md-12">
-					   <label class="texto-inicio font-medium" for="Tratamiento">Tratamiento</label>
-					   <input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="Tratamiento" />
-					   <span id="Tratamiento"></span>
-					</div>
-				</div>
-
-				<br>
-
-                <div class="row mb-3 ms-2">
-				    <div class="col-md-12" >
-					   <label class="texto-inicio font-medium" for="admistracion_t">Admistracion de Tratamiento</label>
-					   <textarea rows="2" cols="25" class="form-control bg-gray-200 rounded-lg border-white" type="text" id="admistracion_t"></textarea>
-					   <span id="sadmistracion_t"></span>
-					</div>
-                    
-				</div>
-				<div class="row mb-3">
-				</div>
-
-					<br>
-
-				
-					
-				                  
-				</div>
-
-				<div class="row">
-					<div class="col-md-12">
-						<hr/>
-					</div>
-				</div>
 
 
-				<div class="row mt-3 justify-content-center mb-4">
-					<div class="col-md-2">
-						   <button style="color: white;" type="button" class="btn botonverde" id="proceso"></button>
-					</div>
-				</div>
-				
-			</div>	
-			</form>
-		</div> 
-		
-    </div>
-	
-  </div>
+						<div class="row mt-3 justify-content-center mb-4">
+							<div class="col-md-2">
+								<button style="color: white;" type="button" class="btn botonverde" id="proceso"></button>
+							</div>
+						</div>
+
+					</div>	
+				</form>
+			</div> 
+		</div>
+	</div>
 </div>
 
 <!-- seccion del modal historias -->
@@ -191,9 +147,9 @@ Pacientes cronicos
 		<thead>
 		  <tr>
 		    <th style="display:none">Id</th>
-			<th>Cedula</th>
-			<th>Nombre</th>
-			<th>Apellido</th>
+			<th style="text-align: center;">Cedula</th>
+			<th style="text-align: center;">Nombre</th>
+			<th style="text-align: center;">Apellido</th>
 		  </tr>
 		</thead>
 		<tbody id="listadopacientes">
@@ -205,6 +161,115 @@ Pacientes cronicos
 </div>
 <!--fin de seccion modal-->
 
+
+<!--modal de patologias-->
+<div class="modal fade" tabindex="-1" id="modalopatologias">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header text-light bg-info gradiente">
+				<h5 class="modal-title">Listado de Patologías</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<table class="table table-striped table-hover" id="tabla_Patologias">
+				<thead>
+					<tr>
+					<th style="display:none">Id</th>
+					<th class="text-center">Nombre</th>
+					<th class="text-center">Acción</th>
+					</tr>
+				</thead>
+				<tbody id="listado_patologias">
+				</tbody>
+				</table>
+
+				<div class="row">
+					<div class="col-md-12">
+						<hr/>
+					</div>
+				</div>
+
+				<div class="row mt-3 justify-content-center mb-4">
+					<div style="color: white;" class="col-md-2 botonverde" style="cursor: pointer;" onclick='pone(this,4)' >
+						Registrar Patologia
+					</div>			
+				</div>
+				
+
+			</div>
+		</div>
+	</div>
+</div>
+<!--modal de patologias-->
+
+
+<!--modal de new patologias-->
+
+<div class="modal fade" tabindex="-1" role="dialog"  id="modal2">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+		<div class="modal-header text-light bg-info gradiente">
+			<h5 class="modal-title">Patologia</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		</div>
+		<div class="container">
+			<form method="post" id="f" autocomplete="off">
+				<input autocomplete="off" type="text" class="form-control" name="accion" id="accion" style="display: none;">
+				<div class="container">	
+					<div class="primerafila">
+						<div class="row">
+
+							<div class="col-md-3" style="display: none;">
+								<label class="texto-inicio font-medium" for="cod_patologia">cod_patologia</label>
+								<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cod_patologia" />
+								<span id="scod_patologia"></span>
+							</div>
+					
+						</div>	
+
+						
+
+						<div class="row mb-3">
+
+							<div class="col-md-12">
+
+								<label class="texto-inicio font-medium" for="nombre_patologia">Nombre de la Patologia</label>
+								<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="nombre_patologia" />
+								<span id="snombre_patologia"></span>
+								
+							</div>			
+							
+						</div>
+	
+
+						<div class="row">
+							<div class="col-md-12">
+								<hr/>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-12">
+								<hr/>
+							</div>
+						</div>
+					
+						<div class="row mt-3 justify-content-center mb-4">
+							<div class="col-md-2">
+								<button style="color: white;" type="button" class="btn botonverde" 
+								id="proceso2" ></button>
+							</div>
+						</div>
+					</div>
+				</div>	
+			</form>
+		</div> 	
+    </div>
+  </div>
+</div> 
+
+
+<!--modal de new patologias-->
 
 
 <?php require_once("comunes/modal.php"); ?>

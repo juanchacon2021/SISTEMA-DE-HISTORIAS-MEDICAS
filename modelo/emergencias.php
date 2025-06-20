@@ -14,6 +14,7 @@ class emergencias extends datos{
 	private $tratamientos;
 	private $cedula_personal;
 	private $cedula_paciente;
+	private $procedimiento;
 
 	private $old_cedula_paciente;
 	private $old_cedula_personal;
@@ -49,6 +50,10 @@ class emergencias extends datos{
 	}
 	
 	
+	function set_procedimiento($valor){
+		$this->procedimiento = $valor;
+	}
+
 	function set_cedula_paciente($valor){
 		$this->cedula_paciente = $valor;
 	}
@@ -69,54 +74,34 @@ class emergencias extends datos{
 		$this->old_horaingreso = $valor; 
 	}
 
-	
-	
-	
-	function get_horaingreso(){
-		return $this->horaingreso;
-	}
-	
-	function get_fechaingreso(){
-		return $this->fechaingreso;
-	}
-
-	function get_motingreso(){
-		return $this->motingreso;
-	}
-
-	function get_diagnostico_e(){
-		return $this->diagnostico_e;
-	}
-
-	function get_tratamientos(){
-		return $this->tratamientos;
-	}
-
-	function get_cedula_personal(){
-		return $this->cedula_personal;
-	}
-	
-	function get_cedula_paciente(){
-		return $this->cedula_paciente;
-	}
 
 	function listadopersonal() {
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$r = array();  
+		
 		try {
-			$resultado = $co->query("SELECT * FROM personal");
-			if ($resultado) {
+			// Consulta preparada
+			$stmt = $co->prepare("SELECT * FROM personal");			
+			// Ejecutar la consulta
+			$stmt->execute();
+			// Obtener resultados
+			$resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);		
+			if ($resultados) {
 				$r['resultado'] = 'listadopersonal';
-				$r['datos'] = $resultado->fetchAll(PDO::FETCH_ASSOC); 
+				$r['datos'] = $resultados; 
 			} else {
 				$r['resultado'] = 'listadopersonal';
 				$r['datos'] = array(); 
 			}
+			// Cerrar el cursor
+			$stmt->closeCursor();
+			
 		} catch (Exception $e) {
 			$r['resultado'] = 'error';
 			$r['mensaje'] = $e->getMessage(); 
 		}
+		
 		return $r;
 	}
 
@@ -125,73 +110,98 @@ class emergencias extends datos{
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$r = array();
+		
 		try {
-			$resultado = $co->query("SELECT * FROM paciente");
-			if ($resultado) {
+			// Consulta preparada
+			$stmt = $co->prepare("SELECT * FROM paciente");		
+			// Ejecutar la consulta
+			$stmt->execute();
+			// Obtener resultados
+			$resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			if ($resultados) {
 				$r['resultado'] = 'listadopacientes';
-				$r['datos'] = $resultado->fetchAll(PDO::FETCH_ASSOC); 
+				$r['datos'] = $resultados; 
 			} else {
 				$r['resultado'] = 'listadopacientes';
 				$r['datos'] = array(); 
 			}
+			// Cerrar el cursor
+			$stmt->closeCursor();
+			
 		} catch (Exception $e) {
 			$r['resultado'] = 'error';
 			$r['mensaje'] = $e->getMessage(); 
 		}
+		
 		return $r;
 	}
 
 
 
-	function incluir(){
-		
+	function incluir() {
 		$r = array();
-		if(!$this->existe($this->cedula_paciente, $this->cedula_personal, $this->fechaingreso, $this->horaingreso)){
-			
-				
-						
-					$co = $this->conecta();
-					$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		
+		if(!$this->existe($this->cedula_paciente, $this->cedula_personal, $this->fechaingreso, $this->horaingreso)) {
+			$co = $this->conecta();
+			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-				
-					try {
-							$co->query("Insert into emergencia(
-								horaingreso,
-								fechaingreso,
-								motingreso,
-								diagnostico_e,
-								tratamientos,
-								cedula_personal,
-								cedula_paciente
-								) 
-								Values(
-								'$this->horaingreso',
-								'$this->fechaingreso',
-								'$this->motingreso',
-								'$this->diagnostico_e',
-								'$this->tratamientos',
-								'$this->cedula_personal',
-								'$this->cedula_paciente'
-								)");
-								$r['resultado'] = 'incluir';
-								$r['mensaje'] =  'Registro Incluido';
-					} catch(Exception $e) {
-						$r['resultado'] = 'error';
-						$r['mensaje'] =  'Un error en alguna de las cedulas';
-					}
-				
-					
-				}								
-				else{
+			try {
+				// Consulta preparada con parámetros nombrados
+				$stmt = $co->prepare("INSERT INTO emergencia (
+					horaingreso,
+					fechaingreso,
+					motingreso,
+					diagnostico_e,
+					tratamientos,
+					cedula_personal,
+					cedula_paciente,
+					procedimiento
+				) VALUES (
+					:horaingreso,
+					:fechaingreso,
+					:motingreso,
+					:diagnostico_e,
+					:tratamientos,
+					:cedula_personal,
+					:cedula_paciente,
+					:procedimiento
+				)");
+
+				// Vincular parámetros
+				$stmt->bindParam(':horaingreso', $this->horaingreso);
+				$stmt->bindParam(':fechaingreso', $this->fechaingreso);
+				$stmt->bindParam(':motingreso', $this->motingreso);
+				$stmt->bindParam(':diagnostico_e', $this->diagnostico_e);
+				$stmt->bindParam(':tratamientos', $this->tratamientos);
+				$stmt->bindParam(':cedula_personal', $this->cedula_personal);
+				$stmt->bindParam(':cedula_paciente', $this->cedula_paciente);
+				$stmt->bindParam(':procedimiento', $this->procedimiento);
+
+				// Ejecutar la consulta
+				$stmt->execute();
+
+				// Verificar si se insertó correctamente
+				if($stmt->rowCount() > 0) {
 					$r['resultado'] = 'incluir';
-					$r['mensaje'] =  'Ya existe el Cod de Consulta';
+					$r['mensaje'] = 'Registro Incluido';
+				} else {
+					$r['resultado'] = 'error';
+					$r['mensaje'] = 'No se pudo insertar el registro';
 				}
-		
-				
-		
+
+				// Cerrar el cursor
+				$stmt->closeCursor();
+
+			} catch(Exception $e) {
+				$r['resultado'] = 'error';
+				$r['mensaje'] = 'Error al insertar: ' . $e->getMessage();
+			}
+		} else {
+			$r['resultado'] = 'incluir';
+			$r['mensaje'] = 'Ya existe el registro con estos datos';
+		}
 
 		return $r;
-		
 	}
 	
 	function modificar(){
@@ -207,6 +217,7 @@ class emergencias extends datos{
                     motingreso = :motingreso,
                     diagnostico_e = :diagnostico_e,
                     tratamientos = :tratamientos,
+					procedimiento = :procedimiento,
                     cedula_paciente = :cedula_paciente,
                     cedula_personal = :cedula_personal,
                     fechaingreso = :fechaingreso,
@@ -224,6 +235,7 @@ class emergencias extends datos{
             $stmt->bindParam(':cedula_personal', $this->cedula_personal);
             $stmt->bindParam(':fechaingreso', $this->fechaingreso);
             $stmt->bindParam(':horaingreso', $this->horaingreso);
+            $stmt->bindParam(':procedimiento', $this->procedimiento);
 
             $stmt->bindParam(':old_cedula_paciente', $this->old_cedula_paciente);
             $stmt->bindParam(':old_cedula_personal', $this->old_cedula_personal);
@@ -309,31 +321,31 @@ class emergencias extends datos{
 	
 	
 	private function existe($cedula_paciente, $cedula_personal, $fechaingreso, $horaingreso){
-    $co = $this->conecta();
-    $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$co = $this->conecta();
+		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    try {
-        $stmt = $co->prepare("
-            SELECT * FROM emergencia 
-            WHERE cedula_paciente = :cedula_paciente 
-              AND cedula_personal = :cedula_personal 
-              AND fechaingreso = :fechaingreso 
-              AND horaingreso = :horaingreso
-        ");
+		try {
+			$stmt = $co->prepare("
+				SELECT * FROM emergencia 
+				WHERE cedula_paciente = :cedula_paciente 
+				AND cedula_personal = :cedula_personal 
+				AND fechaingreso = :fechaingreso 
+				AND horaingreso = :horaingreso
+			");
 
-        $stmt->bindParam(':cedula_paciente', $cedula_paciente);
-        $stmt->bindParam(':cedula_personal', $cedula_personal);
-        $stmt->bindParam(':fechaingreso', $fechaingreso);
-        $stmt->bindParam(':horaingreso', $horaingreso);
-        $stmt->execute();
+			$stmt->bindParam(':cedula_paciente', $cedula_paciente);
+			$stmt->bindParam(':cedula_personal', $cedula_personal);
+			$stmt->bindParam(':fechaingreso', $fechaingreso);
+			$stmt->bindParam(':horaingreso', $horaingreso);
+			$stmt->execute();
 
-        $fila = $stmt->fetch(PDO::FETCH_ASSOC);
+			$fila = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        return $fila !== false;
-    } catch(Exception $e) {
-        return false;
-    }
-}
+			return $fila !== false;
+		} catch(Exception $e) {
+			return false;
+		}
+	}
 	
 	
 

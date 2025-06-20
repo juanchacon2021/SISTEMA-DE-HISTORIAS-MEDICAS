@@ -164,7 +164,7 @@ if ($datos_reporte) {
     $pdf->MultiCell(190, 5, utf8_decode($datos_reporte->diagnostico_e), 1, 'C',0);
 
     $pdf->Ln(10);
-
+    
     $pdf->SetFillColor(226, 37, 53); // colorFondo
     $pdf->SetTextColor(255, 255, 255); // colorTexto
     $pdf->SetDrawColor(0, 0, 0); // colorBorde
@@ -174,6 +174,18 @@ if ($datos_reporte) {
     $pdf->SetTextColor(0, 0, 0); // colorTexto
     $pdf->SetFont('Arial', '', 8);
     $pdf->MultiCell(190, 5, utf8_decode($datos_reporte->tratamientos), 1,'C',0);
+
+    $pdf->Ln(10);
+
+    $pdf->SetFillColor(226, 37, 53); // colorFondo
+    $pdf->SetTextColor(255, 255, 255); // colorTexto
+    $pdf->SetDrawColor(0, 0, 0); // colorBorde
+    $pdf->SetFont('Arial', 'B', 7);
+    $pdf->Cell(190, 7, utf8_decode('procedimiento'), 1, 1, 'C', 1);
+
+    $pdf->SetTextColor(0, 0, 0); // colorTexto
+    $pdf->SetFont('Arial', '', 8);
+    $pdf->MultiCell(190, 5, utf8_decode($datos_reporte->procedimiento), 1,'C',0);
 
     $pdf->Ln(10);
 

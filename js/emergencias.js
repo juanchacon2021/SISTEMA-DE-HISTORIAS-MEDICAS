@@ -3,6 +3,24 @@ function consultar(){
 	datos.append('accion','consultar');
 	enviaAjax(datos);	
 }
+function carga_personal(){
+
+	var datos = new FormData();
+
+	datos.append('accion','listadopersonal'); 
+
+
+	enviaAjax(datos);
+}
+function carga_pacientes(){
+	
+	var datos = new FormData();
+
+	datos.append('accion','listadopacientes'); 
+
+	enviaAjax(datos);
+}
+
 function destruyeDT(){
 	if ($.fn.DataTable.isDataTable("#tablapersonal")) {
             $("#tablapersonal").DataTable().destroy();
@@ -152,6 +170,15 @@ $(document).ready(function(){
 		$(this),$("#stratamientos"),"Solo letras  entre 3 y 300 caracteres");
 	});
 
+	$("#procedimiento").on("keypress",function(e){
+		validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/,e);
+	});
+   
+	$("#procedimiento").on("keyup",function(){
+		validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
+		$(this),$("#sprocedimiento"),"Solo letras  entre 3 y 300 caracteres");
+	});
+
 	
 	//validar
 
@@ -194,6 +221,7 @@ $("#proceso").on("click",function(){
 			datos.append('motingreso',$("#motingreso").val());
 			datos.append('diagnostico_e',$("#diagnostico_e").val());
 			datos.append('tratamientos',$("#tratamientos").val());
+			datos.append('procedimiento',$("#procedimiento").val());
 			datos.append('cedula_personal',$("#cedula_personal").val());
 			datos.append('cedula_paciente',$("#cedula_paciente").val());
 			enviaAjax(datos);
@@ -209,6 +237,7 @@ $("#proceso").on("click",function(){
 			datos.append('motingreso',$("#motingreso").val());
 			datos.append('diagnostico_e',$("#diagnostico_e").val());
 			datos.append('tratamientos',$("#tratamientos").val());
+			datos.append('procedimiento',$("#procedimiento").val());
 			datos.append('cedula_personal',$("#cedula_personal").val());
 			datos.append('cedula_paciente',$("#cedula_paciente").val());
 
@@ -235,47 +264,17 @@ $("#proceso").on("click",function(){
 		}
 	
 });
-$("#incluir").on("click",function(){
-	limpia();
-	$("#proceso").text("INCLUIR");
-	$("#modal1").modal("show");
-});
-
-
-
+	$("#incluir").on("click",function(){
+		limpia();
+		$("#proceso").text("INCLUIR");
+		$("#modal1").modal("show");
+	});
 
 
 	
 	
 });
 
-function carga_personal(){
-
-	var datos = new FormData();
-
-	datos.append('accion','listadopersonal'); 
-
-
-	enviaAjax(datos);
-}
-function carga_pacientes(){
-	
-	var datos = new FormData();
-
-	datos.append('accion','listadopacientes'); 
-
-	enviaAjax(datos);
-}
-function limpiarm(){
-
-	const limpia = document.querySelector('#datosdelpacientes');
-	const limpia1 = document.querySelector('#datosdelpersonal');
-	limpia.textContent = "";
-	limpia1.textContent = "";
-
-
-
-}
 
 
 function validarenvio(){
@@ -288,11 +287,11 @@ function validarenvio(){
 	}
 
 	else if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula_personal"),
-	$("#scedula_personal"),"El formato debe ser 12345678")==0){
-	muestraMensaje("La cedula del personal debe coincidir con el formato <br/>"+ 
-					"12345678");	
-	return false;					
-}
+		$("#scedula_personal"),"El formato debe ser 12345678")==0){
+		muestraMensaje("La cedula del personal debe coincidir con el formato <br/>"+ 
+						"12345678");	
+		return false;					
+	}
 
 	
 	return true;
@@ -377,120 +376,114 @@ function colocapacientes(linea) {
 
 
 
-function pone(pos,accion){
-	$("#horaingreso").prop("readonly",false);
-	$("#fechaingreso").prop("readonly",false);
-	$("#motingreso").prop("readonly",false);
-	$("#diagnostico_e").prop("readonly",false);
-	$("#tratamientos").prop("readonly",false);
-	$("#cedula_personal").prop("readonly",false);
-	$("#cedula_paciente").prop("readonly",false);
-	$("#proceso1").prop("cerrar",false); 
-	const boton_h = document.querySelector('#listadodepacientes');
-	const boton_p = document.querySelector('#listadodepersonal');
-	
-	linea=$(pos).closest('tr');
+function pone(pos, accion) {
+    // Habilitar/deshabilitar campos según la acción
+    const readonly = accion === 1 || accion === 2; // Solo editable para modificar (acción 0)
+    
+    $("#horaingreso").prop("readonly", readonly);
+    $("#fechaingreso").prop("readonly", readonly);
+    $("#motingreso").prop("readonly", readonly);
+    $("#diagnostico_e").prop("readonly", readonly);
+    $("#tratamientos").prop("readonly", readonly);
+    $("#procedimiento").prop("readonly", readonly);
+    $("#cedula_personal").prop("readonly", readonly);
+    $("#cedula_paciente").prop("readonly", readonly);
+    $("#proceso1").prop("cerrar", false);
 
+    // Elementos del DOM
+    const boton_h = document.querySelector('#listadodepacientes');
+    const boton_p = document.querySelector('#listadodepersonal');
+    const linea = $(pos).closest('tr');
 
-	if(accion==0){
+    // Configuración según el tipo de acción
+    switch (accion) {
+        case 0: // MODIFICAR
+            $("#proceso").text("MODIFICAR");
+            boton_h.style.display = '';
+            boton_p.style.display = '';
+            limpiarm();
+            
+            // Datos del paciente
+            $("#cedula_paciente").val($(pos).attr('cedula_paciente'));
+            $("#datosdelpacientes").html(
+                `Nombre: ${$(pos).attr('nombre_h')} / Apellido: ${$(pos).attr('apellido_h')}`
+            );
 
-		$("#proceso").text("MODIFICAR");
-		boton_h.style.display = '';
-		boton_p.style.display = '';
-		limpiarm();
-		 // Asigna los datos del paciente
-        $("#cedula_paciente").val($(pos).attr('cedula_paciente'));
-        $("#datosdelpacientes").html(
-            `Nombre: ${$(pos).attr('nombre_h')} / Apellido: ${$(pos).attr('apellido_h')}`
-        );
+            // Datos del personal
+            $("#cedula_personal").val($(pos).attr('cedula_personal'));
+            $("#datosdelpersonal").html(
+                `Nombre: ${$(pos).attr('nombre')} / Apellido: ${$(pos).attr('apellido')} / Cargo: ${$(pos).attr('cargo')}`
+            );
+            
+            // Valores antiguos para posible comparación
+            $("#old_cedula_paciente").val($(pos).attr('cedula_paciente'));
+            $("#old_cedula_personal").val($(pos).attr('cedula_personal'));
+            $("#old_fechaingreso").val($(pos).attr('fechaingreso'));
+            $("#old_horaingreso").val($(pos).attr('horaingreso'));
+            break;
 
-        // Asigna los datos del personal
-        $("#cedula_personal").val($(pos).attr('cedula_personal'));
-        $("#datosdelpersonal").html(
-            `Nombre: ${$(pos).attr('nombre')} / Apellido: ${$(pos).attr('apellido')} / Cargo: ${$(pos).attr('cargo')}`
-        );
-		$("#old_cedula_paciente").val($(pos).attr('cedula_paciente'));
-		$("#old_cedula_personal").val($(pos).attr('cedula_personal'));
-		$("#old_fechaingreso").val($(pos).attr('fechaingreso'));
-		$("#old_horaingreso").val($(pos).attr('horaingreso'));
-	}
-	else if (accion==1){
-		$("#horaingreso").prop("readonly",true);
-		$("#fechaingreso").prop("readonly",true);
-		$("#motingreso").prop("readonly",true);
-		$("#diagnostico_e").prop("readonly",true);
-		$("#tratamientos").prop("readonly",true);
-		$("#cedula_personal").prop("readonly",true);
-		$("#cedula_paciente").prop("readonly",true);
-		$("#proceso").text("ELIMINAR");
+        case 1: // ELIMINAR
+            $("#proceso").text("ELIMINAR");
+            boton_h.style.display = 'none';
+            boton_p.style.display = 'none';
+            limpiarm();
+            console.log($(pos).attr('cargo'));
+            
+            // Datos del paciente
+            $("#cedula_paciente").val($(pos).attr('cedula_paciente'));
+            $("#datosdelpacientes").html(
+                `Nombre: ${$(pos).attr('nombre_h')} / Apellido: ${$(pos).attr('apellido_h')}`
+            );
 
-		
-		boton_h.style.display = 'none';
-		boton_p.style.display = 'none';
+            // Datos del personal
+            $("#cedula_personal").val($(pos).attr('cedula_personal'));
+            $("#datosdelpersonal").html(
+                `Nombre: ${$(pos).attr('nombre')} / Apellido: ${$(pos).attr('apellido')} / Cargo: ${$(pos).attr('cargo')}`
+            );
+            break;
 
-		limpiarm();
-		console.log($(pos).attr('cargo'))
-		 // Asigna los datos del paciente
-        $("#cedula_paciente").val($(pos).attr('cedula_paciente'));
-        $("#datosdelpacientes").html(
-            `Nombre: ${$(pos).attr('nombre_h')} / Apellido: ${$(pos).attr('apellido_h')}`
-        );
+        case 2: // CERRAR
+            $("#proceso").text("CERRAR");
+            boton_h.style.display = 'none';
+            boton_p.style.display = 'none';
+            limpiarm();
+            
+            // Datos del paciente
+            $("#cedula_paciente").val($(pos).attr('cedula_paciente'));
+            $("#datosdelpacientes").html(
+                `Nombre: ${$(pos).attr('nombre_h')} / Apellido: ${$(pos).attr('apellido_h')}`
+            );
 
-        // Asigna los datos del personal
-        $("#cedula_personal").val($(pos).attr('cedula_personal'));
-        $("#datosdelpersonal").html(
-            `Nombre: ${$(pos).attr('nombre')} / Apellido: ${$(pos).attr('apellido')} / Cargo: ${$(pos).attr('cargo')}`
-        );
+            // Datos del personal
+            $("#cedula_personal").val($(pos).attr('cedula_personal'));
+            $("#datosdelpersonal").html(
+                `Nombre: ${$(pos).attr('nombre')} / Apellido: ${$(pos).attr('apellido')} / Cargo: ${$(pos).attr('cargo')}`
+            );
+            break;
+		case 3:
+			  $("#proceso").text("INCLUIR");
+            boton_h.style.display = '';
+            boton_p.style.display = '';
+			break;	
 
-		
-	}
-	else if (accion==2){
-		$("#horaingreso").prop("readonly",true);
-		$("#fechaingreso").prop("readonly",true);
-		$("#motingreso").prop("readonly",true);
-		$("#diagnostico_e").prop("readonly",true);
-		$("#tratamientos").prop("readonly",true);
-		$("#cedula_personal").prop("readonly",true);
-		$("#cedula_paciente").prop("readonly",true);
-		$("#proceso").text("CERRAR");
+        default: // INCLUIR (acción no especificada)
+          console.error("Acción no reconocida:", accion);
+            alert("Error: Acción no válida");
+            
+    }
 
-		
-		boton_h.style.display = 'none';
-		boton_p.style.display = 'none';
+    // Establecer valores en los campos del formulario
+    $("#horaingreso").val($(pos).attr('horaingreso'));
+    $("#fechaingreso").val($(pos).attr('fechaingreso'));
+    $("#motingreso").val($(pos).attr('motingreso'));
+    $("#diagnostico_e").val($(pos).attr('diagnostico_e'));
+    $("#tratamientos").val($(pos).attr('tratamientos'));
+    $("#procedimiento").val($(pos).attr('procedimiento'));
+    $("#cedula_personal").val($(pos).attr('cedula_personal'));
+    $("#cedula_paciente").val($(pos).attr('cedula_paciente'));
 
-
-		limpiarm();
-		 // Asigna los datos del paciente
-        $("#cedula_paciente").val($(pos).attr('cedula_paciente'));
-        $("#datosdelpacientes").html(
-            `Nombre: ${$(pos).attr('nombre_h')} / Apellido: ${$(pos).attr('apellido_h')}`
-        );
-
-        // Asigna los datos del personal
-        $("#cedula_personal").val($(pos).attr('cedula_personal'));
-        $("#datosdelpersonal").html(
-            `Nombre: ${$(pos).attr('nombre')} / Apellido: ${$(pos).attr('apellido')} / Cargo: ${$(pos).attr('cargo')}`
-        );
-		
-	}
-	else{
-		$("#proceso").text("INCLUIR");
-		boton_h.style.display = '';
-		boton_p.style.display = '';
-		
-	}
-
-	$("#horaingreso").val( $(pos).attr('horaingreso') );
-	$("#fechaingreso").val( $(pos).attr('fechaingreso') );
-	$("#motingreso").val( $(pos).attr('motingreso') );
-	$("#diagnostico_e").val( $(pos).attr('diagnostico_e') );
-	$("#tratamientos").val( $(pos).attr('tratamientos') );
-	$("#cedula_personal").val( $(pos).attr('cedula_personal') );
-	$("#cedula_paciente").val( $(pos).attr('cedula_paciente') );
-
-
-	
-	$("#modal1").modal("show");
+    // Mostrar el modal
+    $("#modal1").modal("show");
 }
 
 
@@ -534,6 +527,7 @@ function enviaAjax(datos) {
 							   motingreso="${fila.motingreso}"
 							   diagnostico_e="${fila.diagnostico_e}"
 							   tratamientos="${fila.tratamientos}"
+							   procedimiento="${fila.procedimiento}"
 							   cedula_personal="${fila.cedula_personal}"
 							   cedula_paciente="${fila.cedula_paciente}"
 							   cargo="${fila.cargo}"
@@ -549,6 +543,7 @@ function enviaAjax(datos) {
 							   motingreso="${fila.motingreso}"
 							   diagnostico_e="${fila.diagnostico_e}"
 							   tratamientos="${fila.tratamientos}"
+							   procedimiento="${fila.procedimiento}"
 							   cedula_personal="${fila.cedula_personal}"
 							   cedula_paciente="${fila.cedula_paciente}"
 							   cargo="${fila.cargo}"
@@ -564,6 +559,7 @@ function enviaAjax(datos) {
 							   motingreso="${fila.motingreso}"
 							   diagnostico_e="${fila.diagnostico_e}"
 							   tratamientos="${fila.tratamientos}"
+							   procedimiento="${fila.procedimiento}"
 							   cedula_personal="${fila.cedula_personal}"
 							   cedula_paciente="${fila.cedula_paciente}"
 							   cargo="${fila.cargo}"
@@ -671,7 +667,22 @@ function limpia(){
 	$("#motingreso").val("");
 	$("#diagnostico_e").val("");
 	$("#tratamientos").val("");
+	$("#procedimiento").val("");
 	$("#cedula_personal").val("");
 	$("#cedula_paciente").val("");
 
+
+
+}
+function limpiarm(){
+	const limpia = document.querySelector('#datosdelpacientes');
+	const limpia1 = document.querySelector('#datosdelpersonal');
+	limpia.textContent = "";
+	limpia1.textContent = "";
+	$("#shoraingreso").empty("");
+	$("#sfechaingreso").empty("");
+	$("#smotingreso").empty("");
+	$("#sdiagnostico_e").empty("");
+	$("#stratamientos").empty("");
+	$("#sprocedimiento").empty("");
 }
