@@ -624,3 +624,28 @@ document.addEventListener('DOMContentLoaded', function() {
     $('#proceso').click(registrarPaciente);
 });
 
+// NOTIFICACIONES
+const ws = new WebSocket('ws://localhost:8080');
+
+ws.onopen = function() {
+    console.log('Conectado al WebSocket');
+};
+
+ws.onmessage = function(event) {
+    // Aquí recibes las notificaciones
+    alert('Notificación: ' + event.data);
+    // O puedes mostrarlo en un div, toast, etc.
+};
+
+ws.onclose = function() {
+    console.log('WebSocket cerrado');
+};
+
+ws.onerror = function(error) {
+    console.error('WebSocket error:', error);
+};
+
+// Ejemplo: enviar un mensaje (puedes quitar esto si solo quieres recibir)
+function enviarNotificacion(msg) {
+    ws.send(msg);
+}
