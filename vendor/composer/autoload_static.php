@@ -21,6 +21,7 @@ class ComposerStaticInit65c9a8f87141c77ac44bfffa60df8163
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Component\\Routing\\' => 26,
             'Symfony\\Component\\HttpFoundation\\' => 33,
+            'Shm\\Shm\\' => 8,
         ),
         'R' => 
         array (
@@ -63,6 +64,10 @@ class ComposerStaticInit65c9a8f87141c77ac44bfffa60df8163
         'Symfony\\Component\\HttpFoundation\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/http-foundation',
+        ),
+        'Shm\\Shm\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src',
         ),
         'React\\Stream\\' => 
         array (
