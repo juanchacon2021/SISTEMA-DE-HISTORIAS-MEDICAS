@@ -13,11 +13,9 @@ if (typeof window.ws === "undefined") {
         try {
             data = JSON.parse(event.data);
         } catch {
-            // Si no es JSON, mostrar como texto plano
             mostrarToast(event.data);
             return;
         }
-        // Mostrar notificación con foto, nombre y descripción
         mostrarToast(`
             <div style="display:flex;align-items:center;">
                 <img src="${data.foto}" style="width:32px;height:32px;border-radius:50%;margin-right:10px;">
@@ -27,7 +25,6 @@ if (typeof window.ws === "undefined") {
                 </div>
             </div>
         `);
-        // Guardar en la lista de notificaciones
         notificaciones.unshift(event.data);
         actualizarListaNotificaciones();
     };
@@ -54,10 +51,24 @@ function actualizarListaNotificaciones() {
     const lista = document.getElementById('listaNotificaciones');
     lista.innerHTML = '';
     notificaciones.slice(0, 10).forEach(msg => {
+        let data;
+        try {
+            data = typeof msg === 'string' ? JSON.parse(msg) : msg;
+        } catch {
+            data = { descripcion: msg, nombre: '', foto: 'img/default-user.png' };
+        }
         const li = document.createElement('li');
         li.style.padding = '10px';
         li.style.borderBottom = '1px solid #eee';
-        li.innerText = msg;
+        li.innerHTML = `
+            <div style="display:flex;align-items:center;">
+                <img src="${data.foto}" style="width:32px;height:32px;border-radius:50%;margin-right:10px;">
+                <div>
+                    <strong>${data.nombre}</strong><br>
+                    <span>${data.descripcion}</span>
+                </div>
+            </div>
+        `;
         lista.appendChild(li);
     });
 }

@@ -5,6 +5,7 @@ if (!is_file("modelo/".$pagina.".php")){
 }
 
 require_once("modelo/".$pagina.".php");  
+require_once("modelo/bitacora.php");
 
 if(is_file("vista/".$pagina.".php")){
     // Desactivar warnings en producción
@@ -75,34 +76,52 @@ if(is_file("vista/".$pagina.".php")){
             if($accion=='incluir'){
                 try {
                     $resultado = $o->incluir();
-                    while(ob_get_length()) ob_end_clean();
-                    echo json_encode($resultado);
-                    exit;
-                } catch(Exception $e) {
-                    while(ob_get_length()) ob_end_clean();
-                    bitacora::registrar($accion, $descripcion);
 
-                    // Obtener datos del usuario activo
-                    $cedula = $_SESSION['usuario'];
+                    // 1. Registrar en bitácora (ajusta usuario_id y modulo_id según tu sistema)
+                    $usuario_id = $_SESSION['usuario']; // cédula o id según tu sistema
+                    $modulo_id = 1; // Cambia esto por el id real del módulo pacientes
+                    $accion_bitacora = 'Registrar';
+                    $descripcion = 'Se ha registrado un paciente: '.$_POST['nombre'].' '.$_POST['apellido'];
+
                     $co = new PDO('mysql:host=localhost;dbname=seguridad', 'root', '123456');
+                    $stmt = $co->prepare("INSERT INTO bitacora (usuario_id, modulo_id, accion, descripcion, fecha_hora) VALUES (?, ?, ?, ?, NOW())");
+                    $stmt->execute([$usuario_id, $modulo_id, $accion_bitacora, $descripcion]);
+
+                    // 2. Obtener datos del usuario activo
                     $stmt = $co->prepare("SELECT nombre, foto_perfil FROM usuario WHERE cedula_personal = ?");
-                    $stmt->execute([$cedula]);
+                    $stmt->execute([$usuario_id]);
                     $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                    // Construir mensaje de notificación
+                    // 3. Construir mensaje de notificación
                     $mensaje = [
                         'nombre' => $usuario['nombre'],
                         'foto' => $usuario['foto_perfil'] ? 'img/perfiles/'.$usuario['foto_perfil'] : 'img/default-user.png',
                         'descripcion' => $descripcion
                     ];
 
-                    // Enviar por WebSocket
+                    // 4. Limitar a 10 notificaciones en la bitácora (solo para el módulo pacientes)
+                    $co->query("DELETE FROM bitacora WHERE modulo_id = $modulo_id AND id NOT IN (SELECT id FROM (SELECT id FROM bitacora WHERE modulo_id = $modulo_id ORDER BY fecha_hora DESC LIMIT 10) AS t)");
+
+                    // 5. Enviar por WebSocket
                     require_once __DIR__ . '/../vendor/autoload.php';
-                    $ws = new WebSocket\Client("ws://localhost:8080");
-                    $ws->send(json_encode($mensaje));
-                    $ws->close();
-                    http_response_code(400);
-                    echo json_encode(['resultado' => 'error', 'mensaje' => $e->getMessage()]);
+                    try {
+                        $ws = new WebSocket\Client("ws://localhost:8080");
+                        $ws->send(json_encode($mensaje));
+                        $ws->close();
+                    } catch(Exception $e) {
+                        // Si falla el WebSocket, no afecta el registro
+                    }
+
+                    echo json_encode($resultado);
+                    exit;
+                } catch(Exception $e) {
+                    while(ob_get_length()) ob_end_clean();
+                    // También registra el error en bitácora si lo deseas
+                    bitacora::registrar($accion, $descripcion);
+                    echo json_encode([
+                        'resultado' => 'error',
+                        'mensaje' => 'Error en el servidor: ' . $e->getMessage()
+                    ]);
                     exit;
                 }
             }

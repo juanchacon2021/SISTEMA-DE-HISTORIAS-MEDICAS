@@ -15,7 +15,7 @@
 <head>
     <style>
         .captcha-container {
-            margin: 50px 0;
+            margin: 15px 0;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -65,13 +65,14 @@
             </div>
             
             <!-- CAPTCHA -->
-            <div class="input-div">
-                <div class="captcha-container">
-                    <div class="captcha-code" id="captcha-code"><?php echo $captcha_code; ?></div>
-                </div>
+            <div class="input-div d-flex flex-column">
                 <div class="div">
                     <input type="text" id="captcha" class="input form-control" name="captcha" placeholder="Ingrese el código CAPTCHA">
                     <span id="scaptcha"></span>
+                </div>
+                <hr>
+                <div class="captcha-container">
+                    <div class="captcha-code" id="captcha-code"><?php echo $captcha_code; ?></div>
                 </div>
             </div>
 
