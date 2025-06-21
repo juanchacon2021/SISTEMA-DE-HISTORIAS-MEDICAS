@@ -80,6 +80,27 @@ if(is_file("vista/".$pagina.".php")){
                     exit;
                 } catch(Exception $e) {
                     while(ob_get_length()) ob_end_clean();
+                    bitacora::registrar($accion, $descripcion);
+
+                    // Obtener datos del usuario activo
+                    $cedula = $_SESSION['usuario'];
+                    $co = new PDO('mysql:host=localhost;dbname=seguridad', 'root', '123456');
+                    $stmt = $co->prepare("SELECT nombre, foto_perfil FROM usuario WHERE cedula_personal = ?");
+                    $stmt->execute([$cedula]);
+                    $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                    // Construir mensaje de notificación
+                    $mensaje = [
+                        'nombre' => $usuario['nombre'],
+                        'foto' => $usuario['foto_perfil'] ? 'img/perfiles/'.$usuario['foto_perfil'] : 'img/default-user.png',
+                        'descripcion' => $descripcion
+                    ];
+
+                    // Enviar por WebSocket
+                    require_once __DIR__ . '/../vendor/autoload.php';
+                    $ws = new WebSocket\Client("ws://localhost:8080");
+                    $ws->send(json_encode($mensaje));
+                    $ws->close();
                     http_response_code(400);
                     echo json_encode(['resultado' => 'error', 'mensaje' => $e->getMessage()]);
                     exit;
@@ -108,4 +129,3 @@ if(is_file("vista/".$pagina.".php")){
 else{
     echo "pagina en construccion";
 }
-?>

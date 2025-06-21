@@ -9,16 +9,27 @@ if (typeof window.ws === "undefined") {
     };
 
     ws.onmessage = function(event) {
-        notificacionCount++;
-        document.getElementById('notificacionBadge').innerText = notificacionCount;
-        document.getElementById('notificacionBadge').style.display = 'inline';
-
-        // Guardar la notificación
+        let data;
+        try {
+            data = JSON.parse(event.data);
+        } catch {
+            // Si no es JSON, mostrar como texto plano
+            mostrarToast(event.data);
+            return;
+        }
+        // Mostrar notificación con foto, nombre y descripción
+        mostrarToast(`
+            <div style="display:flex;align-items:center;">
+                <img src="${data.foto}" style="width:32px;height:32px;border-radius:50%;margin-right:10px;">
+                <div>
+                    <strong>${data.nombre}</strong><br>
+                    <span>${data.descripcion}</span>
+                </div>
+            </div>
+        `);
+        // Guardar en la lista de notificaciones
         notificaciones.unshift(event.data);
         actualizarListaNotificaciones();
-
-        // Mostrar toast flotante
-        mostrarToast(event.data);
     };
 
     ws.onclose = function() {
@@ -32,7 +43,7 @@ if (typeof window.ws === "undefined") {
 
 function mostrarToast(mensaje) {
     const toast = document.getElementById('toastNotificacion');
-    toast.innerText = mensaje;
+    toast.innerHTML = mensaje;
     toast.style.display = 'block';
     setTimeout(() => {
         toast.style.display = 'none';
@@ -52,6 +63,11 @@ function actualizarListaNotificaciones() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    if(window.notificacionesPersistentes) {
+        notificaciones = window.notificacionesPersistentes.map(n => n.descripcion);
+        actualizarListaNotificaciones(); // Tu función para mostrar la lista
+    }
+
     document.getElementById('notificacionIcono').onclick = function() {
         const panel = document.getElementById('panelNotificaciones');
         if (panel.style.display === 'none' || panel.style.display === '') {

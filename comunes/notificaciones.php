@@ -1,3 +1,8 @@
+<?php if(isset($_SESSION['notificaciones'])): ?>
+<script>
+    window.notificacionesPersistentes = <?php echo json_encode($_SESSION['notificaciones']); ?>;
+</script>
+<?php endif; ?>
 <body>
     <!-- Icono de notificación -->
     <div id="notificacionIcono" style="position:fixed;top:20px;right:30px;z-index:9999;cursor:pointer;">

@@ -11,5 +11,7 @@
             "email": "eduinmeneses86@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "textalk/websocket": "^1.6"
+    }
 }
