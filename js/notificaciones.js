@@ -25,8 +25,14 @@ if (typeof window.ws === "undefined") {
                 </div>
             </div>
         `);
-        notificaciones.unshift(event.data);
+        notificaciones.unshift(data);
         actualizarListaNotificaciones();
+
+        // Mostrar y actualizar el badge de notificaciones
+        notificacionCount++;
+        const badge = document.getElementById('notificacionBadge');
+        badge.textContent = notificacionCount;
+        badge.style.display = 'inline-block';
     };
 
     ws.onclose = function() {
@@ -55,17 +61,22 @@ function actualizarListaNotificaciones() {
         try {
             data = typeof msg === 'string' ? JSON.parse(msg) : msg;
         } catch {
-            data = { descripcion: msg, nombre: '', foto: 'img/default-user.png' };
+            data = {};
         }
+        // Valores por defecto
+        const foto = data.foto ? data.foto : 'img/default-user.png';
+        const nombre = data.nombre ? data.nombre : '';
+        const descripcion = data.descripcion ? data.descripcion : (typeof msg === 'string' ? msg : '');
+
         const li = document.createElement('li');
         li.style.padding = '10px';
         li.style.borderBottom = '1px solid #eee';
         li.innerHTML = `
             <div style="display:flex;align-items:center;">
-                <img src="${data.foto}" style="width:32px;height:32px;border-radius:50%;margin-right:10px;">
+                <img src="${foto}" style="width:32px;height:32px;border-radius:50%;margin-right:10px;">
                 <div>
-                    <strong>${data.nombre}</strong><br>
-                    <span>${data.descripcion}</span>
+                    <strong>${nombre}</strong><br>
+                    <span>${descripcion}</span>
                 </div>
             </div>
         `;
@@ -75,8 +86,17 @@ function actualizarListaNotificaciones() {
 
 document.addEventListener('DOMContentLoaded', function() {
     if(window.notificacionesPersistentes) {
-        notificaciones = window.notificacionesPersistentes.map(n => n.descripcion);
-        actualizarListaNotificaciones(); // Tu función para mostrar la lista
+        notificaciones = window.notificacionesPersistentes.map(n => {
+            // Si ya tiene nombre y foto, úsalo directamente
+            if (n.nombre && n.foto) return n;
+            // Si solo tiene descripcion, crea un objeto básico
+            return {
+                descripcion: n.descripcion || '',
+                nombre: n.nombre || '',
+                foto: n.foto || 'img/default-user.png'
+            };
+        });
+        actualizarListaNotificaciones();
     }
 
     document.getElementById('notificacionIcono').onclick = function() {

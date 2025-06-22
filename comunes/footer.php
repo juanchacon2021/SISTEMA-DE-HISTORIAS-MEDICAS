@@ -91,5 +91,6 @@ function confirmarEliminacion(event, mensaje = "¿Está seguro de eliminar este 
     });
 }
 </script>
+
 </body>
 </html>

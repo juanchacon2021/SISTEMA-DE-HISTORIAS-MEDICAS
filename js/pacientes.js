@@ -631,11 +631,11 @@ ws.onopen = function() {
     console.log('Conectado al WebSocket');
 };
 
-ws.onmessage = function(event) {
-    // Aquí recibes las notificaciones
-    alert('Notificación: ' + event.data);
-    // O puedes mostrarlo en un div, toast, etc.
-};
+// ws.onmessage = function(event) {
+//     // Aquí recibes las notificaciones
+//     alert('Notificación: ' + event.data);
+//     // O puedes mostrarlo en un div, toast, etc.
+// };
 
 ws.onclose = function() {
     console.log('WebSocket cerrado');
