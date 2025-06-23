@@ -1,7 +1,7 @@
 <?php
 // Obtener las últimas 10 notificaciones de la bitácora del módulo pacientes
 $co = new PDO('mysql:host=localhost;dbname=seguridad', 'root', '123456');
-$stmt = $co->query("SELECT b.descripcion, p.nombre, p.apellido, p.foto_perfil, b.fecha_hora 
+$stmt = $co->query("SELECT b.descripcion, p.nombre, p.foto_perfil, b.fecha_hora 
                     FROM bitacora b 
                     LEFT JOIN usuario p ON b.usuario_id = p.cedula_personal 
                     WHERE b.modulo_id = 1 

@@ -1,5 +1,8 @@
 <?php
-require_once('modelo/datos.php');
+namespace Shm\Shm\modelo;
+use Shm\Shm\modelo\datos;
+use Pdo;
+use Exception;
 
 class pacientes extends datos {
     private $conexion;
