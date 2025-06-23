@@ -6,7 +6,7 @@ class datos{
     private $bd = "prueva";
     private $bd2 = "seguridad";
     private $usuario = "root";
-    private $contrasena = "123456";
+    private $contrasena = "";
    
     
     
