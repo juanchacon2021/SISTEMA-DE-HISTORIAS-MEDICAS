@@ -1,6 +1,9 @@
 <?php
 
-require_once('modelo/datos.php');
+namespace Shm\Shm\modelo;
+use Shm\Shm\modelo\datos;
+use PDO;
+use Exception;
 
 
 class p_cronicos extends datos{
@@ -209,34 +212,7 @@ class p_cronicos extends datos{
 			return [];
 		}
 	}
-		
-	
 
-/* 	private function existe($cedula_paciente){
-		$co = $this->conecta();
-		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		try{
-			
-			$resultado = $co->query("SELECT * FROM padece p WHERE p.cedula_paciente = '$cedula_paciente'");
-			
-			
-			$fila = $resultado->fetchAll(PDO::FETCH_BOTH);
-			if($fila){
-
-				return true;
-			    
-			}
-			else{
-				
-				return false;;
-			}
-			
-		}catch(Exception $e){
-
-			return false;
-
-		}
-	} */
 
 	private function existe($cedula_paciente) {
 		$co = $this->conecta();

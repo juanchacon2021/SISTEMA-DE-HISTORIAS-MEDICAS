@@ -27,4 +27,9 @@
     "></div>
 
     <script src="js/notificaciones.js"></script>
+    <?php if(isset($_SESSION['notificaciones'])): ?>
+    <script>
+        window.notificacionesPersistentes = <?php echo json_encode($_SESSION['notificaciones']); ?>;
+    </script>
+    <?php endif; ?>
 </body>

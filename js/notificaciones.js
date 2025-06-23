@@ -9,16 +9,30 @@ if (typeof window.ws === "undefined") {
     };
 
     ws.onmessage = function(event) {
-        notificacionCount++;
-        document.getElementById('notificacionBadge').innerText = notificacionCount;
-        document.getElementById('notificacionBadge').style.display = 'inline';
-
-        // Guardar la notificación
-        notificaciones.unshift(event.data);
+        let data;
+        try {
+            data = JSON.parse(event.data);
+        } catch {
+            mostrarToast(event.data);
+            return;
+        }
+        mostrarToast(`
+            <div style="display:flex;align-items:center;">
+                <img src="${data.foto}" style="width:32px;height:32px;border-radius:50%;margin-right:10px;">
+                <div>
+                    <strong>${data.nombre}</strong><br>
+                    <span>${data.descripcion}</span>
+                </div>
+            </div>
+        `);
+        notificaciones.unshift(data);
         actualizarListaNotificaciones();
 
-        // Mostrar toast flotante
-        mostrarToast(event.data);
+        // Mostrar y actualizar el badge de notificaciones
+        notificacionCount++;
+        const badge = document.getElementById('notificacionBadge');
+        badge.textContent = notificacionCount;
+        badge.style.display = 'inline-block';
     };
 
     ws.onclose = function() {
@@ -32,7 +46,7 @@ if (typeof window.ws === "undefined") {
 
 function mostrarToast(mensaje) {
     const toast = document.getElementById('toastNotificacion');
-    toast.innerText = mensaje;
+    toast.innerHTML = mensaje;
     toast.style.display = 'block';
     setTimeout(() => {
         toast.style.display = 'none';
@@ -43,15 +57,48 @@ function actualizarListaNotificaciones() {
     const lista = document.getElementById('listaNotificaciones');
     lista.innerHTML = '';
     notificaciones.slice(0, 10).forEach(msg => {
+        let data;
+        try {
+            data = typeof msg === 'string' ? JSON.parse(msg) : msg;
+        } catch {
+            data = {};
+        }
+        // Valores por defecto
+        const foto = data.foto ? data.foto : 'img/default-user.png';
+        const nombre = data.nombre ? data.nombre : '';
+        const descripcion = data.descripcion ? data.descripcion : (typeof msg === 'string' ? msg : '');
+
         const li = document.createElement('li');
         li.style.padding = '10px';
         li.style.borderBottom = '1px solid #eee';
-        li.innerText = msg;
+        li.innerHTML = `
+            <div style="display:flex;align-items:center;">
+                <img src="${foto}" style="width:32px;height:32px;border-radius:50%;margin-right:10px;">
+                <div>
+                    <strong>${nombre}</strong><br>
+                    <span>${descripcion}</span>
+                </div>
+            </div>
+        `;
         lista.appendChild(li);
     });
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    if(window.notificacionesPersistentes) {
+        notificaciones = window.notificacionesPersistentes.map(n => {
+            // Si ya tiene nombre y foto, úsalo directamente
+            if (n.nombre && n.foto) return n;
+            // Si solo tiene descripcion, crea un objeto básico
+            return {
+                descripcion: n.descripcion || '',
+                nombre: n.nombre || '',
+                foto: n.foto || 'img/default-user.png'
+            };
+        });
+        actualizarListaNotificaciones();
+    }
+
     document.getElementById('notificacionIcono').onclick = function() {
         const panel = document.getElementById('panelNotificaciones');
         if (panel.style.display === 'none' || panel.style.display === '') {
