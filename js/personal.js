@@ -57,6 +57,14 @@ function agregarCampoTelefono(valor = '') {
 $(document).ready(function () {
     consultar();
 
+     const params = new URLSearchParams(window.location.search);
+    if (params.get('accion') === 'registrar') {
+        limpia(); // Limpia el formulario
+        pone(null, 3);       // Abre el modal en modo "INCLUIR"
+        // Limpiar la URL
+        window.history.replaceState({}, document.title, "?pagina=personal");
+    }
+
     // Manejar clic en botón para agregar teléfono
     $('#btn-add-phone').click(function() {
         agregarCampoTelefono();

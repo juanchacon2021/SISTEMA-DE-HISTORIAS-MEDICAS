@@ -177,24 +177,66 @@ $(document).ready(function(){
 	$("#listado_observaciones").on("click",function(){
 		$("#modalobservacion").modal("show");
 	});
-
-	//Validar
+		//Validar
 	$("#cedula_paciente").on("keypress",function(e){
 		validarkeypress(/^[0-9-\b]*$/,e);
 	});
 	
-	$("#cedula_paciente").on("keyup",function(){
-		validarkeyup(/^[0-9]{7,8}$/,$(this),
-		$("#scedula_paciente"),"El formato debe ser 12345678 ");
+	$("#cedula_paciente").on("keyup", function() {
+		var $input = $(this);
+		var cedula = $input.val();
+
+		// Limita a 8 caracteres
+		if (cedula.length > 8) {
+			cedula = cedula.slice(0, 8);
+			$input.val(cedula);
+		}
+
+		if (validarkeyup(/^[0-9]{7,8}$/, $input, $("#scedula_paciente"), "El formato debe ser 12345678")) {
+			$("#scedula_paciente").css("color", "black");
+			if (cedulaExisteEnListado(cedula)) {
+				$("#scedula_paciente").text("✔ Cédula encontrada").css("color", "green");
+			} else {
+				$("#scedula_paciente")
+					.html(`Cédula no está registrada, registrar cédula
+							<a style="color: green; text-decoration: underline;" href="?pagina=pacientes&accion=registrar">aquí</a>`)
+					.css("color", "red");
+			}
+		} else {
+			// Si el formato es incorrecto, asegúrate de que el mensaje sea negro
+			$("#scedula_paciente").css("color", "black");
+		}
 	});
 
 	$("#cedula_personal").on("keypress",function(e){
 		validarkeypress(/^[0-9-\b]*$/,e);
 	});
-	
-	$("#cedula_personal").on("keyup",function(){
-		validarkeyup(/^[0-9]{7,8}$/,$(this),
-		$("#scedula_personal"),"El formato debe ser 12345678 ");
+
+
+	$("#cedula_personal").on("keyup", function() {
+		var $input = $(this);
+		var cedula = $input.val();
+
+		// Limita a 8 caracteres
+		if (cedula.length > 8) {
+			cedula = cedula.slice(0, 8);
+			$input.val(cedula);
+		}
+
+		if (validarkeyup(/^[0-9]{7,8}$/, $input, $("#scedula_personal"), "El formato debe ser 12345678")) {
+			$("#scedula_personal").css("color", "black");
+			if (cedulaExisteEnListado2(cedula)) {
+				$("#scedula_personal").text("✔ Cédula encontrada").css("color", "green");
+			} else {
+				$("#scedula_personal")
+					.html(`Cédula no está registrada, registrar cédula
+							<a style="color: green; text-decoration: underline;" href="?pagina=personal&accion=registrar">aqui</a>`)
+					.css("color", "red");
+			}
+		} else {
+			// Si el formato es incorrecto, asegúrate de que el mensaje sea negro
+			$("#scedula_personal").css("color", "black");
+		}
 	});
 
 	$("#consulta").on("keypress",function(e){
@@ -496,6 +538,30 @@ $("#agregar_observacion").on("click", function() {
         $("#observaciones_container").append(html);
     }
 });
+
+function cedulaExisteEnListado(cedula) {
+    var existe = false;
+    $("#listadopacientes tr").each(function() {
+        // La cédula está en la segunda columna (td:eq(1))
+        if ($(this).find("td:eq(1)").text() === cedula) {
+            existe = true;
+            return false; // Detiene el each
+        }
+    });
+    return existe;
+}
+
+function cedulaExisteEnListado2(cedula) {
+    var existe = false;
+    $("#listadopersonal tr").each(function() {
+        // La cédula está en la segunda columna (td:eq(1))
+        if ($(this).find("td:eq(1)").text() === cedula) {
+            existe = true;
+            return false; // Detiene el each
+        }
+    });
+    return existe;
+}
 
 function pone(pos, accion) {
     // Habilitar/deshabilitar campos según la acción

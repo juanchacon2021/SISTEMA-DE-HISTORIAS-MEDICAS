@@ -17,6 +17,16 @@ function destruyeDT() {
     }
 }
 
+$(document).ready(function() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('accion') === 'registrar') {
+        limpiarFormulario(); // Limpia el formulario
+        pone(null, 3);       // Abre el modal en modo "INCLUIR"
+        // Limpiar la URL
+        window.history.replaceState({}, document.title, "?pagina=pacientes");
+    }
+});
+
 // Función para crear DataTable
 function crearDT() {
     if (!$.fn.DataTable.isDataTable("#tablapersonal")) {
