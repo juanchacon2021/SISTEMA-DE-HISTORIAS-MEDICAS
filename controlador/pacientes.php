@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 if (!is_file("src/modelo/".$pagina.".php")){
     echo "Falta definir la clase ".$pagina;
     exit;
@@ -62,7 +65,7 @@ if(is_file("vista/".$pagina.".php")){
             $o->set_quirurgico($_POST['quirurgico'] ?? '');
             $o->set_transsanguineo($_POST['transsanguineo'] ?? '');
             $o->set_psicosocial($_POST['psicosocial'] ?? '');
-            $o->set_habtoxico($_POST['habtoxico'] ?? '');
+            $o->set_habtoxico($_POST['habtoxico' ?? '']);
 
             // Procesar familiares si existen
             if(!empty($_POST['familiares'])) {
@@ -93,6 +96,7 @@ if(is_file("vista/".$pagina.".php")){
                     $stmt = $co->prepare("SELECT nombre, foto_perfil FROM usuario WHERE cedula_personal = ?");
                     $stmt->execute([$usuario_id]);
                     $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+                    error_log("Resultado consulta usuario: " . print_r($usuario, true));
 
                     // 4. Construir mensaje de notificación
                     $mensaje = [
@@ -100,6 +104,7 @@ if(is_file("vista/".$pagina.".php")){
                         'foto' => $usuario['foto_perfil'] ? 'img/perfiles/'.$usuario['foto_perfil'] : 'img/default-user.png',
                         'descripcion' => $descripcion
                     ];
+                    error_log("Mensaje a enviar por WebSocket: " . print_r($mensaje, true));
 
                     // 5. Enviar por WebSocket
                     require_once __DIR__ . '/../vendor/autoload.php';
