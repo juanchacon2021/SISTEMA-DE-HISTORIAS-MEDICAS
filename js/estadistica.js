@@ -7,7 +7,7 @@ function consultar() {
 function consultarCronicos() {
     var datos = new FormData();
     datos.append('accion', 'consultar_cronicos');
-    enviaAjax(datos, 'cronicos');
+    enviaAjax(datos, 'consultarCronicos');
 }
 
 function consultarTotalHistorias() {
@@ -155,54 +155,42 @@ function enviaAjax(datos, tipo) {
 
                  }
 
-                if (tipo === "cronicos") {
-                    // Gráfico de distribución por padecimiento crónico
-					const ctxCronicos = document.getElementById('graficoCronicos').getContext('2d');
-					const graficoCronicos = new Chart(ctxCronicos, {
-						type: 'pie',
-						data: {
-							labels: ['Cardiopatía', 'Hipertensión', 'Endocrinometabólico', 'Asmático', 'Renal', 'Mental'],
-							datasets: [{
-								label: 'Distribución por Padecimiento Crónico',
-								data: [
-									lee.distribucionCronicos.Cardiopatia, 
-									lee.distribucionCronicos.Hipertension, 
-									lee.distribucionCronicos.Endocrinometabolico,
-									lee.distribucionCronicos.Asmatico, 
-									lee.distribucionCronicos.Renal, 
-									lee.distribucionCronicos.Mental
-								],
-								backgroundColor: ['#36A2EB', '#FF6384', '#9966FF', '#FFCE56', '#4BC0C0', '#FF9F40'],
-								borderColor: '#fff',
-								borderWidth: 2
-							}]
-						},
-						options: {
-							responsive: true,
-							plugins: {
-								legend: { position: 'bottom' }
-							}
-						}
-					});
-                    // Calcular el padecimiento crónico con mayor cantidad
-                        const cronicos = [
-                        { nombre: 'Cardiopatía', valor: lee.distribucionCronicos.Cardiopatia, color: '#36A2EB' },
-                        { nombre: 'Hipertensión', valor: lee.distribucionCronicos.Hipertension, color: '#FF6384' },
-                        { nombre: 'Endocrinometabólico', valor: lee.distribucionCronicos.Endocrinometabolico, color: '#9966FF' },
-                        { nombre: 'Asmático', valor: lee.distribucionCronicos.Asmatico, color: '#FFCE56' },
-                        { nombre: 'Renal', valor: lee.distribucionCronicos.Renal, color: '#4BC0C0' },
-                        { nombre: 'Mental', valor: lee.distribucionCronicos.Mental, color: '#FF9F40' }
-                    ];
-                    const mayorCronico = cronicos.reduce((a, b) => a.valor > b.valor ? a : b);
+               if (tipo === "consultarCronicos") {
+                    const datos = lee.datos;
+                    const labels = datos.map(d => d.nombre_patologia);
+                    const valores = datos.map(d => d.pacientes);
+                    const backgroundColors = labels.map(() => '#' + Math.floor(Math.random()*16777215).toString(16));
 
-                    // Mostrarlo en el elemento de la página
-                                       document.getElementById('cronico_mayor').innerHTML =
-                        `De las enfermedades crónicas registradas, la de mayor incidencia es: 
-                        <strong>${mayorCronico.nombre} </strong> 
-                        <span style="display:inline-block;width:18px;height:18px;vertical-align:middle;background:${mayorCronico.color};border-radius:4px;margin-right:6px;"></span>
-                        con <strong>${mayorCronico.valor}</strong> registros.`;
+                    const ctx = document.getElementById('graficoCronicos').getContext('2d');
+                    // Solución segura para destruir el gráfico anterior si existe
+                    if (window.graficoCronicos && typeof window.graficoCronicos.destroy === "function") {
+                        window.graficoCronicos.destroy();
+                    }
+                    window.graficoCronicos = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                data: valores,
+                                backgroundColor: backgroundColors,
+                                borderColor: '#fff',
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: { position: 'bottom' }
+                            }
+                        }
+                    });
 
-                    
+                    // Mostrar la patología con más pacientes
+                    if (datos.length > 0) {
+                        const mayor = datos.reduce((a, b) => a.pacientes > b.pacientes ? a : b);
+                        document.getElementById('cronico_mayor').innerHTML =
+                            `La patología con más pacientes es: <strong>${mayor.nombre_patologia}</strong> con <strong>${mayor.pacientes}</strong> registros.`;
+                    }
                 }
                 if (tipo === 'emergencias_mes') {
                     const datos = lee.datos;

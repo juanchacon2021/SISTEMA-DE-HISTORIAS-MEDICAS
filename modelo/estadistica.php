@@ -10,7 +10,7 @@ class estadisticas extends datos {
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
         try {
-            $totalHistorias = $co->query("SELECT COUNT(*) as total FROM historias")->fetch(PDO::FETCH_ASSOC)['total'];
+            $totalHistorias = $co->query("SELECT COUNT(*) as total FROM paciente")->fetch(PDO::FETCH_ASSOC)['total'];
 
             $distribucionEdad = $co->query("
                 SELECT 
@@ -18,7 +18,7 @@ class estadisticas extends datos {
                     SUM(CASE WHEN edad BETWEEN 13 AND 17 THEN 1 ELSE 0 END) AS Adolescentes,
                     SUM(CASE WHEN edad BETWEEN 18 AND 64 THEN 1 ELSE 0 END) AS Adultos,
                     SUM(CASE WHEN edad >= 65 THEN 1 ELSE 0 END) AS AdultosMayores
-                FROM historias
+                FROM paciente
             ")->fetch(PDO::FETCH_ASSOC);
 
             $r['resultado'] = 'consultar';
@@ -32,12 +32,12 @@ class estadisticas extends datos {
         return $r;
     }
 
-	function consultarCronicos() {
+/* 	function consultarCronicos() {
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$r = array();
 		try {
-			$totalCronicos = $co->query("SELECT COUNT(DISTINCT cedula_h) as totalCronicos FROM p_cronicos")->fetch(PDO::FETCH_ASSOC)['totalCronicos'];
+			$totalCronicos = $co->query("SELECT COUNT(DISTINCT cedula_paciente) as totalCronicos FROM p_cronicos")->fetch(PDO::FETCH_ASSOC)['totalCronicos'];
 	
 			$distribucion = $co->query("
 				SELECT 
@@ -59,6 +59,31 @@ class estadisticas extends datos {
 			$r['mensaje'] = $e->getMessage();
 		}
 		return $r;
+	} */
+
+	function consultarCronicos() {
+		$co = $this->conecta();
+		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$r = array();
+		try {
+			// Consulta dinámica para todas las patologías
+			$stmt = $co->prepare("
+				SELECT p.nombre_patologia, COUNT(pc.cedula_paciente) as pacientes
+				FROM patologia p
+				JOIN padece pc ON p.cod_patologia = pc.cod_patologia
+				GROUP BY p.cod_patologia, p.nombre_patologia
+				ORDER BY pacientes DESC
+			");
+			$stmt->execute();
+			$resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			$r['resultado'] = 'consultarCronicos';
+			$r['datos'] = $resultados;
+		} catch (Exception $e) {
+			$r['resultado'] = 'error';
+			$r['mensaje'] = $e->getMessage();
+		}
+		return $r;
 	}
 
 	public function totalHistorias() {
@@ -66,7 +91,7 @@ class estadisticas extends datos {
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$r = array();
 		try {
-			$total = $co->query("SELECT COUNT(*) as total FROM historias")
+			$total = $co->query("SELECT COUNT(*) as total FROM paciente")
 						->fetch(PDO::FETCH_ASSOC)['total'];
 	
 			$r['resultado'] = 'total_historias';
@@ -100,7 +125,7 @@ class estadisticas extends datos {
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$r = array();
 		try {
-			$total = $co->query("SELECT COUNT(*) as total FROM emergencias")
+			$total = $co->query("SELECT COUNT(*) as total FROM emergencia")
 						->fetch(PDO::FETCH_ASSOC)['total'];
 	
 			$r['resultado'] = 'total_emergencias';
@@ -117,7 +142,7 @@ class estadisticas extends datos {
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$r = array();
 		try {
-			$total = $co->query("SELECT COUNT(*) as total FROM consultas")
+			$total = $co->query("SELECT COUNT(*) as total FROM consulta")
 						->fetch(PDO::FETCH_ASSOC)['total'];
 	
 			$r['resultado'] = 'total_consultas';
@@ -141,7 +166,7 @@ class estadisticas extends datos {
 
 			$stmt = $co->prepare("
 				SELECT DAY(fechaingreso) AS dia, COUNT(*) AS total
-				FROM emergencias
+				FROM emergencia
 				WHERE MONTH(fechaingreso) = :mes AND YEAR(fechaingreso) = :anio
 				GROUP BY dia
 				ORDER BY dia ASC
@@ -176,7 +201,7 @@ class estadisticas extends datos {
 
 			$stmt = $co->prepare("
 				SELECT DAY(fechaconsulta) AS dia, COUNT(*) AS total
-				FROM consultas
+				FROM consulta
 				WHERE MONTH(fechaconsulta) = :mes AND YEAR(fechaconsulta) = :anio
 				GROUP BY dia
 				ORDER BY dia ASC
