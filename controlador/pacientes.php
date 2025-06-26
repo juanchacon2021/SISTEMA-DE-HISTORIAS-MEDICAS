@@ -9,7 +9,6 @@ require_once("modelo/bitacora.php");
 require_once("src/modelo/datos.php");
 
 if(is_file("vista/".$pagina.".php")){
-    // Desactivar warnings en producción
     error_reporting(0);
     ini_set('display_errors', 0);
     ob_start();
@@ -55,8 +54,8 @@ if(is_file("vista/".$pagina.".php")){
             $o->set_fecha_nac($_POST['fecha_nac'] ?? '');
             $o->set_edad($_POST['edad'] ?? '');
             $o->set_estadocivil($_POST['estadocivil'] ?? '');
-            $o->set_ocupacion($_POST['ocupacion' ?? '']);
-            $o->set_direccion($_POST['direccion' ?? '']);
+            $o->set_ocupacion($_POST['ocupacion'] ?? '');
+            $o->set_direccion($_POST['direccion'] ?? '');
             $o->set_telefono($_POST['telefono' ?? '']);
             $o->set_hda($_POST['hda' ?? '']);
             $o->set_alergias($_POST['alergias' ?? '']);
@@ -77,29 +76,11 @@ if(is_file("vista/".$pagina.".php")){
             if($accion=='incluir'){
                 try {
                     $resultado = $o->incluir();
-
-                    bitacora::registrar('Registrar', 'Se ha registrado un paciente: '.$_POST['nombre'].' '.$_POST['apellido']);
-
-                    // Obtener datos del usuario activo desde el modelo
-                    $usuario = pacientes::obtenerUsuarioPersonal($_SESSION['usuario']);
-
-                    $mensaje = [
-                        'nombre' => $usuario['nombre'] . ' ' . $usuario['apellido'],
-                        'foto' => $usuario['foto_perfil'] ? 'img/perfiles/'.$usuario['foto_perfil'] : 'img/default-user.png',
-                        'descripcion' => 'Se ha registrado un paciente: '.$_POST['nombre'].' '.$_POST['apellido'],
-                        'fecha_hora' => date('Y-m-d H:i:s')
-                    ];
-
-                    // Enviar por WebSocket
-                    require_once __DIR__ . '/../vendor/autoload.php';
-                    try {
-                        $ws = new \WebSocket\Client("ws://localhost:8080");
-                        $ws->send(json_encode($mensaje));
-                        $ws->close();
-                    } catch(Exception $e) {
-                        // Si falla el WebSocket, no afecta el registro
-                    }
-
+                    bitacora::registrarYNotificar(
+                        'Registrar',
+                        'Se ha registrado un paciente: '.$_POST['nombre'].' '.$_POST['apellido'],
+                        $_SESSION['usuario']
+                    );
                     echo json_encode($resultado);
                     exit;
                 } catch(Exception $e) {
@@ -114,26 +95,11 @@ if(is_file("vista/".$pagina.".php")){
             elseif($accion=='modificar'){
                 try {
                     $resultado = $o->modificar();
-
-                    bitacora::registrar('Modificar', 'Se ha modificado el paciente: '.$_POST['nombre'].' '.$_POST['apellido']);
-
-                    // Usar el modelo para obtener los datos del usuario activo
-                    $usuario = pacientes::obtenerUsuarioPersonal($_SESSION['usuario']);
-
-                    $mensaje = [
-                        'nombre' => $usuario['nombre'] . ' ' . $usuario['apellido'],
-                        'foto' => $usuario['foto_perfil'] ? 'img/perfiles/'.$usuario['foto_perfil'] : 'img/user.png',
-                        'descripcion' => 'Se ha modificado el paciente: '.$_POST['nombre'].' '.$_POST['apellido'],
-                        'fecha_hora' => date('Y-m-d H:i:s')
-                    ];
-
-                    require_once __DIR__ . '/../vendor/autoload.php';
-                    try {
-                        $ws = new \WebSocket\Client("ws://localhost:8080");
-                        $ws->send(json_encode($mensaje));
-                        $ws->close();
-                    } catch(Exception $e) {}
-
+                    bitacora::registrarYNotificar(
+                        'Modificar',
+                        'Se ha modificado el paciente: '.$_POST['nombre'].' '.$_POST['apellido'],
+                        $_SESSION['usuario']
+                    );
                     echo json_encode($resultado);
                     exit;
                 } catch(Exception $e) {
@@ -147,6 +113,11 @@ if(is_file("vista/".$pagina.".php")){
             }
             elseif($accion=='eliminar'){
                 $resultado = $o->eliminar();
+                bitacora::registrarYNotificar(
+                    'Eliminar',
+                    'Se ha eliminado el paciente: '.$_POST['nombre'].' '.$_POST['apellido'],
+                    $_SESSION['usuario']
+                );
                 while(ob_get_length()) ob_end_clean();
                 echo json_encode($resultado);
                 exit;
