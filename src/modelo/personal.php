@@ -249,5 +249,16 @@ class personal extends datos{
             return false;
         }
     }
+    
+    public static function obtenerUsuarioPersonal($cedula_personal) {
+        $co = (new self())->conecta();
+        $stmt = $co->prepare("SELECT nombre, apellido FROM personal WHERE cedula_personal = ?");
+        $stmt->execute([$cedula_personal]);
+        $usuario = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if (!$usuario) {
+            $usuario = ['nombre' => 'Desconocido', 'apellido' => '', 'foto_perfil' => ''];
+        }
+        return $usuario;
+    }
 }
 ?>

@@ -86,7 +86,8 @@ if(is_file("vista/".$pagina.".php")){
                     $mensaje = [
                         'nombre' => $usuario['nombre'] . ' ' . $usuario['apellido'],
                         'foto' => $usuario['foto_perfil'] ? 'img/perfiles/'.$usuario['foto_perfil'] : 'img/default-user.png',
-                        'descripcion' => 'Se ha registrado un paciente: '.$_POST['nombre'].' '.$_POST['apellido']
+                        'descripcion' => 'Se ha registrado un paciente: '.$_POST['nombre'].' '.$_POST['apellido'],
+                        'fecha_hora' => date('Y-m-d H:i:s')
                     ];
 
                     // Enviar por WebSocket
@@ -121,8 +122,9 @@ if(is_file("vista/".$pagina.".php")){
 
                     $mensaje = [
                         'nombre' => $usuario['nombre'] . ' ' . $usuario['apellido'],
-                        'foto' => $usuario['foto_perfil'] ? 'img/perfiles/'.$usuario['foto_perfil'] : 'img/default-user.png',
-                        'descripcion' => 'Se ha modificado el paciente: '.$_POST['nombre'].' '.$_POST['apellido']
+                        'foto' => $usuario['foto_perfil'] ? 'img/perfiles/'.$usuario['foto_perfil'] : 'img/user.png',
+                        'descripcion' => 'Se ha modificado el paciente: '.$_POST['nombre'].' '.$_POST['apellido'],
+                        'fecha_hora' => date('Y-m-d H:i:s')
                     ];
 
                     require_once __DIR__ . '/../vendor/autoload.php';
