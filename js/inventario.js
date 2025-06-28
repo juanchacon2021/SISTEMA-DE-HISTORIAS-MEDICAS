@@ -393,6 +393,11 @@ function procesarRespuesta(respuesta) {
             var html = '';
             lee.datos.forEach(function(fila) {
                 html += `<tr>
+                    <td>${fila.cod_medicamento}</td>
+                    <td>${fila.nombre}</td>
+                    <td>${fila.descripcion}</td>
+                    <td>${fila.stock_total || 0}</td>
+                    <td>${fila.unidad_medida}</td>
                     <td>
                         <div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
                             <a type="button" class="btn btn-success" onclick="editarMedicamento(${fila.cod_medicamento})">
@@ -406,11 +411,6 @@ function procesarRespuesta(respuesta) {
                             </a>
                         </div>
                     </td>
-                    <td>${fila.cod_medicamento}</td>
-                    <td>${fila.nombre}</td>
-                    <td>${fila.descripcion}</td>
-                    <td>${fila.stock_total || 0}</td>
-                    <td>${fila.unidad_medida}</td>
                 </tr>`;
             });
             $("#resultadoMedicamentos").html(html);

@@ -17,7 +17,7 @@ use Shm\Shm\modelo\principal;
     <div style="position:fixed;
                 top:20px;
                 right:30px;
-                z-index:99;
+                z-index:1005;
                 display:flex;
                 align-items:center;
                 gap:35px;">
