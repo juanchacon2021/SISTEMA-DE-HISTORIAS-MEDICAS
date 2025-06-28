@@ -17,17 +17,8 @@ if(is_file("vista/".$pagina.".php")){
         } elseif($accion == 'consultar_cronicos') {
             echo json_encode($o->consultarCronicos());
         }
-		elseif($accion == 'total_historias') {
-			echo json_encode($o->totalHistorias());
-        }
-		elseif($accion == 'total_cronicos') {
-			echo json_encode($o->totalp_cronicos());
-        }
-        elseif($accion == 'total_emergencias') {
-			echo json_encode($o->total_emergencias());
-        }
-        elseif($accion == 'total_consultas') {
-			echo json_encode($o->total_consultas());
+        elseif($accion == 'totales_generales') {
+            echo json_encode($o->totalesGenerales());
         }
         elseif($accion == 'emergencias_mes') {
             echo json_encode($o->emergenciasPorDiaMesActual());
@@ -40,6 +31,12 @@ if(is_file("vista/".$pagina.".php")){
         }
         elseif($accion == 'mes_con_mas_consultas') {
             echo json_encode($o->mesConMasConsultas());
+        }
+        elseif($accion == 'medicamentosMasUsados') {
+            echo json_encode($o->medicamentosMasUsados());
+        }
+        elseif($accion == 'medicamentosPorVencer') {
+            echo json_encode($o->medicamentosPorVencer());
         }
         
         exit;

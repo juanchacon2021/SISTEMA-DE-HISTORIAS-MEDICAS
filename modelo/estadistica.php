@@ -32,47 +32,44 @@ class estadisticas extends datos {
         return $r;
     }
 
-/* 	function consultarCronicos() {
-		$co = $this->conecta();
-		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$r = array();
-		try {
-			$totalCronicos = $co->query("SELECT COUNT(DISTINCT cedula_paciente) as totalCronicos FROM p_cronicos")->fetch(PDO::FETCH_ASSOC)['totalCronicos'];
-	
-			$distribucion = $co->query("
-				SELECT 
-					SUM(CASE WHEN patologia_cronica LIKE '%Cardiopatía%' THEN 1 ELSE 0 END) AS Cardiopatia,
-					SUM(CASE WHEN patologia_cronica LIKE '%Hipertensión%' THEN 1 ELSE 0 END) AS Hipertension,
-					SUM(CASE WHEN patologia_cronica LIKE '%Endocrinometabólico%' THEN 1 ELSE 0 END) AS Endocrinometabolico,
-					SUM(CASE WHEN patologia_cronica LIKE '%Asmático%' THEN 1 ELSE 0 END) AS Asmatico,
-					SUM(CASE WHEN patologia_cronica LIKE '%Renal%' THEN 1 ELSE 0 END) AS Renal,
-					SUM(CASE WHEN patologia_cronica LIKE '%Mental%' THEN 1 ELSE 0 END) AS Mental
-				FROM p_cronicos
-			")->fetch(PDO::FETCH_ASSOC);
-	
-			$r['resultado'] = 'consultarCronicos';
-			$r['totalCronicos'] = $totalCronicos;
-			$r['distribucionCronicos'] = $distribucion;
-	
-		} catch (Exception $e) {
-			$r['resultado'] = 'error';
-			$r['mensaje'] = $e->getMessage();
-		}
-		return $r;
-	} */
 
 	function consultarCronicos() {
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$r = array();
 		try {
-			// Consulta dinámica para todas las patologías
 			$stmt = $co->prepare("
-				SELECT p.nombre_patologia, COUNT(pc.cedula_paciente) as pacientes
-				FROM patologia p
-				JOIN padece pc ON p.cod_patologia = pc.cod_patologia
-				GROUP BY p.cod_patologia, p.nombre_patologia
-				ORDER BY pacientes DESC
+				SELECT 
+					nombre_patologia, 
+					pacientes
+				FROM (
+					SELECT 
+						p.nombre_patologia, 
+						COUNT(pc.cedula_paciente) as pacientes,
+						1 as orden
+					FROM patologia p
+					JOIN padece pc ON p.cod_patologia = pc.cod_patologia
+					GROUP BY p.cod_patologia, p.nombre_patologia
+					ORDER BY pacientes DESC
+					LIMIT 10
+				) AS top10
+
+				UNION ALL
+
+				SELECT 
+					'Otros' as nombre_patologia, 
+					COALESCE(SUM(pacientes), 0) as pacientes
+				FROM (
+					SELECT 
+						COUNT(pc.cedula_paciente) as pacientes
+					FROM patologia p
+					JOIN padece pc ON p.cod_patologia = pc.cod_patologia
+					GROUP BY p.cod_patologia, p.nombre_patologia
+					ORDER BY COUNT(pc.cedula_paciente) DESC
+					LIMIT 18446744073709551615 OFFSET 10
+				) AS resto
+
+				ORDER BY CASE WHEN nombre_patologia = 'Otros' THEN 2 ELSE 1 END, pacientes DESC
 			");
 			$stmt->execute();
 			$resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -86,16 +83,29 @@ class estadisticas extends datos {
 		return $r;
 	}
 
-	public function totalHistorias() {
+	public function medicamentosPorVencer() {
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$r = array();
 		try {
-			$total = $co->query("SELECT COUNT(*) as total FROM paciente")
-						->fetch(PDO::FETCH_ASSOC)['total'];
-	
-			$r['resultado'] = 'total_historias';
-			$r['total'] = $total;
+			$stmt = $co->prepare("
+				SELECT 
+					l.cod_lote, 
+					m.nombre AS medicamento, 
+					m.unidad_medida, 
+					l.fecha_vencimiento, 
+					l.cantidad
+				FROM lotes l
+				JOIN medicamentos m ON l.cod_medicamento = m.cod_medicamento
+				WHERE l.cantidad > 0
+				ORDER BY l.fecha_vencimiento ASC
+				LIMIT 10
+			");
+			$stmt->execute();
+			$resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			$r['resultado'] = 'medicamentosPorVencer';
+			$r['datos'] = $resultados;
 		} catch (Exception $e) {
 			$r['resultado'] = 'error';
 			$r['mensaje'] = $e->getMessage();
@@ -103,50 +113,24 @@ class estadisticas extends datos {
 		return $r;
 	}
 
-	public function totalp_cronicos() {
+    public function totalesGenerales() {
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$r = array();
 		try {
-			$total = $co->query("SELECT COUNT(*) as total FROM p_cronicos")
-						->fetch(PDO::FETCH_ASSOC)['total'];
-	
-			$r['resultado'] = 'total_cronicos';
-			$r['total'] = $total;
-		} catch (Exception $e) {
-			$r['resultado'] = 'error';
-			$r['mensaje'] = $e->getMessage();
-		}
-		return $r;
-	}
+			$sql = "
+				SELECT
+					(SELECT COUNT(*) FROM paciente) AS total_historias,
+					(SELECT COUNT(*) FROM padece) AS total_cronicos,
+					(SELECT COUNT(*) FROM emergencia) AS total_emergencias,
+					(SELECT COUNT(*) FROM consulta) AS total_consultas,
+					(SELECT COUNT(*) FROM lotes WHERE cantidad > 0) AS cantidad_lotes_con_existencia,
+					(SELECT COUNT(*) FROM medicamentos) AS total_de_medicamentos
+			";
+			$result = $co->query($sql)->fetch(PDO::FETCH_ASSOC);
 
-	public function total_emergencias() {
-		$co = $this->conecta();
-		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$r = array();
-		try {
-			$total = $co->query("SELECT COUNT(*) as total FROM emergencia")
-						->fetch(PDO::FETCH_ASSOC)['total'];
-	
-			$r['resultado'] = 'total_emergencias';
-			$r['total'] = $total;
-		} catch (Exception $e) {
-			$r['resultado'] = 'error';
-			$r['mensaje'] = $e->getMessage();
-		}
-		return $r;
-	}
-
-	public function total_consultas() {
-		$co = $this->conecta();
-		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$r = array();
-		try {
-			$total = $co->query("SELECT COUNT(*) as total FROM consulta")
-						->fetch(PDO::FETCH_ASSOC)['total'];
-	
-			$r['resultado'] = 'total_consultas';
-			$r['total'] = $total;
+			$r['resultado'] = 'totales_generales';
+			$r['totales'] = $result;
 		} catch (Exception $e) {
 			$r['resultado'] = 'error';
 			$r['mensaje'] = $e->getMessage();
@@ -231,7 +215,7 @@ class estadisticas extends datos {
 		try {
 			$stmt = $co->prepare("
 				SELECT YEAR(fechaingreso) AS anio, MONTH(fechaingreso) AS mes, COUNT(*) AS total
-				FROM emergencias
+				FROM emergencia
 				GROUP BY anio, mes
 				ORDER BY total DESC
 				LIMIT 1
@@ -257,6 +241,39 @@ class estadisticas extends datos {
 		return $r;
 	}
 
+	public function medicamentosMasUsados() {
+		$co = $this->conecta();
+		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$r = array();
+		try {
+			$stmt = $co->prepare("
+				SELECT 
+					m.nombre AS medicamento,
+					SUM(i.cantidad) AS cantidad_total
+				FROM 
+					medicamentos m
+				JOIN 
+					lotes l ON m.cod_medicamento = l.cod_medicamento
+				JOIN 
+					insumos i ON l.cod_lote = i.cod_lote
+				GROUP BY 
+					m.nombre
+				ORDER BY 
+					cantidad_total DESC
+				LIMIT 10
+			");
+			$stmt->execute();
+			$resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			$r['resultado'] = 'medicamentosMasUsados';
+			$r['datos'] = $resultados;
+		} catch (Exception $e) {
+			$r['resultado'] = 'error';
+			$r['mensaje'] = $e->getMessage();
+		}
+		return $r;
+	}
+
 	public function mesConMasConsultas() {
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -264,7 +281,7 @@ class estadisticas extends datos {
 		try {
 			$stmt = $co->prepare("
 				SELECT YEAR(fechaconsulta) AS anio, MONTH(fechaconsulta) AS mes, COUNT(*) AS total
-				FROM consultas
+				FROM consulta
 				GROUP BY anio, mes
 				ORDER BY total DESC
 				LIMIT 1
