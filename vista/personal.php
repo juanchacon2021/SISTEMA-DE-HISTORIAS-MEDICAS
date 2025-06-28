@@ -2,6 +2,7 @@
 <?php 
     require_once("comunes/encabezado.php"); 
     require_once("comunes/sidebar.php");    
+    require_once("comunes/notificaciones.php")
 ?>
 <body >
 <?php  

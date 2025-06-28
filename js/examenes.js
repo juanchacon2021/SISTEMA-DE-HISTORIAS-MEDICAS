@@ -1,524 +1,581 @@
-
-function consultar() {
-	var datos = new FormData();
-	datos.append('accion', 'consultar');
-	enviaAjax(datos);
-}
-function destruyeDT() {
-	//1 se destruye el datatablet
-	if ($.fn.DataTable.isDataTable("#tablapersonal")) {
-		$("#tablapersonal").DataTable().destroy();
-	}
-}
-function crearDT() {
-	//se crea nuevamente
-	if (!$.fn.DataTable.isDataTable("#tablapersonal")) {
-		$("#tablapersonal").DataTable({
-			language: {
-				lengthMenu: "Mostrar _MENU_ por página",
-				zeroRecords: "No se encontró ningun Examen",
-				info: "Mostrando página _PAGE_ de _PAGES_",
-				infoEmpty: "No hay examenes registrados",
-				infoFiltered: "(filtrado de _MAX_ registros totales)",
-				search: "Buscar:",
-				paginate: {
-					first: "Primera",
-					last: "Última",
-					next: "Siguiente",
-					previous: "Anterior",
-				},
-			},
-			autoWidth: false,
-			order: [[1, "asc"]],
-		});
-	}
-}
-
-function destruyeDT1() {
-	if ($.fn.DataTable.isDataTable("#tablahistorias")) {
-		$("#tablahistorias").DataTable().destroy();
-	}
-	console.log('listo');
-	// crearDT1()
-}
-function crearDT1() {
-	console.log('listo1');
-	if (!$.fn.DataTable.isDataTable("#tablahistorias")) {
-		$("#tablahistorias").DataTable({
-			language: {
-				lengthMenu: "Mostrar _MENU_ por página",
-				zeroRecords: "No se encontró ninguna Emergencia",
-				info: "Mostrando página _PAGE_ de _PAGES_",
-				infoEmpty: "No hay emergencias registradas",
-				infoFiltered: "(filtrado de _MAX_ registros totales)",
-				search: "Buscar:",
-				paginate: {
-					first: "Primera",
-					last: "Última",
-					next: "Siguiente",
-					previous: "Anterior",
-				},
-			},
-			autoWidth: false,
-			order: [[1, "asc"]],
-		});
-	}
-}
-
-
-
-
-function destruyeDT2() {
-	if ($.fn.DataTable.isDataTable("#tabladeexamenes")) {
-		$("#tabladeexamenes").DataTable().destroy();
-	}
-
-	// crearDT1()
-}
-
-function crearDT2() {
-	console.log('listor');
-	if (!$.fn.DataTable.isDataTable("#tabladeexamenes")) {
-		$("#tabladeexamenes").DataTable({
-			language: {
-				lengthMenu: "Mostrar _MENU_ por página",
-				zeroRecords: "No se encontró ninguna Emergencia",
-				info: "Mostrando página _PAGE_ de _PAGES_",
-				infoEmpty: "No hay emergencias registradas",
-				infoFiltered: "(filtrado de _MAX_ registros totales)",
-				search: "Buscar:",
-				paginate: {
-					first: "Primera",
-					last: "Última",
-					next: "Siguiente",
-					previous: "Anterior",
-				},
-			},
-			autoWidth: false,
-			order: [[1, "asc"]],
-		});
-	}
-}
-
+// Variables globales
+var modoActual = "";
+var idActual = "";
+var tablaTiposExamen = null;
+var tablaRegistrosExamen = null;
 
 $(document).ready(function () {
+  // Inicializar tabs
+  $("#examenesTabs a").on("click", function (e) {
+    e.preventDefault();
+    $(this).tab("show");
+  });
 
-	//ejecuta una consulta a la base de datos para llenar la tabla
-	consultar();
-	carga_pacientes();
-	carga_examenes();
+  // Cargar datos iniciales
+  cargarTiposExamen();
+  cargarRegistrosExamen();
+  cargarSelectTipos();
+  cargarSelectPacientes();
 
-	$("#archivo").on("change", function () {
+  // Eventos para el modal de tipos de examen
+  $("#btnGuardarTipoExamen").click(function () {
+    guardarTipoExamen();
+  });
 
-		mostrarImagen(this);
-	});
-	//			
+  // Eventos para el modal de registros de examen
+  $("#btnGuardarRegistroExamen").click(function () {
+    guardarRegistroExamen();
+  });
 
-	$("#imagen").on("error", function () {
-		$(this).prop("src", "img/logo.png");
-	});
+  // Evento para confirmación de eliminación
+  $("#btnConfirmarEliminar").click(function () {
+    if (modoActual == "tipo") {
+      eliminarTipoExamenConfirmado();
+    } else if (modoActual == "registro") {
+      eliminarRegistroExamenConfirmado();
+    }
+  });
 
-	$("#listadodepacientes").on("click", function () {
-		$("#modalpacientes").modal("show");
-	});
+  // Filtros para registros
+  $("#filtroPaciente, #filtroFechaExamen, #filtroTipoExamen").change(
+    function () {
+      cargarRegistrosExamen();
+    }
+  );
 
-	$("#listadodeexamenes").on("click", function () {
-		$("#modalexamenes").modal("show");
-	});
+  // Validaciones de formulario
+  $("#nombre_examen").on("keypress", function (e) {
+    validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
+  });
 
+  $("#nombre_examen").on("keyup", function () {
+    validarkeyup(
+      /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,50}$/,
+      $(this),
+      $("#snombre_examen"),
+      "Solo letras entre 3 y 50 caracteres"
+    );
+  });
 
-
-	$("#cedula_h").on("keyup", function () {
-		var cedula = $(this).val();
-		var encontro = false;
-		$("#listadopacientes tr").each(function () {
-			if (cedula == $(this).find("td:eq(1)").text()) {
-				colocapacientes($(this));
-				encontro = true;
-			}
-		});
-		if (!encontro) {
-			$("#datosdelpacientes").html("");
-		}
-	});
-
-
-
-	$("#cod_examenes1").on("keyup", function () {
-		var cedula = $(this).val();
-		var encontro = false;
-		$("#listadoexamenes tr").each(function () {
-			if (cedula == $(this).find("td:eq(1)").text()) {
-				colocaexamen($(this));
-				encontro = true;
-			}
-		});
-		if (!encontro) {
-			$("#datosdeexamen").html("");
-		}
-	});
-
-	$("#proceso").on("click", function () {
-		if ($(this).text() == "INCLUIR") {
-			if (validarenvio()) {
-				var datos = new FormData();
-				datos.append('accion', 'incluir');
-				datos.append('cod_examenes', $("#cod_examenes").val());
-				datos.append('nombre_examen', $("#nombre_examen").val());
-				datos.append('descripcion_examen', $("#descripcion_examen").val());
-				datos.append('cedula_h', $("#cedula_h").val());
-				enviaAjax(datos);
-			}
-		}
-
-
-	});
-	$("#proceso1").on("click", function () {
-
-		if ($(this).text() == "INCLUIR REGISTRO") {
-			if (validarenvio()) {
-				var datos = new FormData($('#f')[0]);
-				datos.append('fecha_r', $("#fecha_r").val());
-				datos.append('observacion_examen', $("#observacion_examen").val());
-				datos.append('accion', 'incluir1');
-				$("#modal2").modal("hide");
-				enviaAjax(datos);
-
-			}
-		}
-		else if ($(this).text() == "MODIFICAR") {
-			if (validarenvio()) {
-				var datos = new FormData($('#f')[0]);
-				datos.append('accion', 'modificar');
-				datos.append('cod_registro', $("#cod_registro").val());
-				datos.append('fecha_r', $("#fecha_r").val());
-				datos.append('cedula_h', $("#cedula_h").val());
-				datos.append('cod_examenes1', $("#cod_examenes1").val());
-				datos.append('observacion_examen', $("#observacion_examen").val());
-				enviaAjax(datos);
-			}
-		}
-
-		else {
-			var datos = new FormData();
-			datos.append('accion', 'eliminar');
-			datos.append('cod_registro', $("#cod_registro").val());
-			enviaAjax(datos);
-		}
-
-	});
-
-
-	$("#incluir").on("click", function () {
-		limpia();
-		$("#proceso").text("INCLUIR");
-		$("#modal1").modal("show");
-	});
-	$("#incluir1").on("click", function () {
-		limpia1();
-		$("#proceso1").text("INCLUIR REGISTRO");
-		$("#modal2").modal("show");
-	});
-
-
-
-
+  // Mostrar imagen seleccionada
+  $("#archivoExamen").on("change", function () {
+    mostrarImagen(this, "#imagenExamen");
+  });
 });
 
+// Funciones para tipos de examen
+function cargarTiposExamen() {
+  var datos = new FormData();
+  datos.append("accion", "consultar_tipos");
 
-function carga_pacientes() {
+  enviaAjax(datos, function (respuesta) {
+    if (respuesta.resultado == "consultar") {
+      if (tablaTiposExamen != null) {
+        tablaTiposExamen.destroy();
+      }
 
-	var datos = new FormData();
+      $("#resultadoTiposExamen").html("");
 
-	datos.append('accion', 'listadopacientes');
+      respuesta.datos.forEach(function (tipo) {
+        var fila = `
+                <tr>
+                    <td>${tipo.cod_examen}</td>
+                    <td>${tipo.nombre_examen}</td>
+                    <td>${tipo.descripcion_examen || "N/A"}</td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <button class='btn btn-sm btn-primary mr-1' onclick='editarTipoExamen(${JSON.stringify(
+                              tipo
+                            )})'>
+                                <img src="img/lapiz.svg" style="width: 20px">
+                            </button>
+                            <button class='btn btn-sm btn-danger' onclick='confirmarEliminar("tipo", "${
+                              tipo.cod_examen
+                            }")'>
+                                <img src='img/trash-can-solid.svg' style='width: 20px;'>
+                            </button>
+                        </div>
+                    </td>
+                </tr>`;
+        $("#resultadoTiposExamen").append(fila);
+      });
 
-	enviaAjax(datos);
+      tablaTiposExamen = $("#tablaTiposExamen").DataTable({
+        language: {
+          lengthMenu: "Mostrar _MENU_ por página",
+          zeroRecords: "No se encontraron registros",
+          info: "Mostrando página _PAGE_ de _PAGES_",
+          infoEmpty: "No hay registros disponibles",
+          infoFiltered: "(filtrado de _MAX_ registros totales)",
+          search: "Buscar:",
+          paginate: {
+            first: "Primera",
+            last: "Última",
+            next: "Siguiente",
+            previous: "Anterior",
+          },
+        },
+        responsive: true,
+        autoWidth: false,
+        columnDefs: [
+          { orderable: false, targets: -1 },
+          { className: "text-center", targets: -1 },
+        ],
+        order: [[1, "asc"]],
+      });
+    }
+  });
 }
-function carga_examenes() {
 
-	var datos = new FormData();
+function mostrarModalTipoExamen(modo, datos = null) {
+  modoActual = modo;
+  $("#accionTipoExamen").val(
+    modo == "incluir" ? "incluir_tipo" : "modificar_tipo"
+  );
+  $("#modalTipoExamenLabel").text(
+    modo == "incluir" ? "Registrar Tipo de Examen" : "Editar Tipo de Examen"
+  );
+  $("#btnGuardarTipoExamen").text(
+    modo == "incluir" ? "Registrar" : "Actualizar"
+  );
 
-	datos.append('accion', 'listadoexamenes');
+  if (modo == "incluir") {
+    $("#formTipoExamen")[0].reset();
+    $("#cod_examen").val("");
+  } else {
+    $("#cod_examen").val(datos.cod_examen);
+    $("#nombre_examen").val(datos.nombre_examen);
+    $("#descripcion_examen").val(datos.descripcion_examen || "");
+  }
 
-	enviaAjax(datos);
-}
-function limpiarm() {
-
-	const limpia = document.querySelector('#datosdelpacientes');
-	const limpia1 = document.querySelector('#datosdeexamen');
-	limpia.textContent = "";
-	limpia1.textContent = "";
-
-
-
-}
-
-
-//Validación de todos los campos antes del envio
-function validarenvio() {
-
-	return true;
-}
-
-
-//Funcion que muestra el modal con un mensaje
-function muestraMensaje(mensaje) {
-
-	$("#contenidodemodal").html(mensaje);
-	$("#mostrarmodal").modal("show");
-	setTimeout(function () {
-		$("#mostrarmodal").modal("hide");
-	}, 5000);
+  $("#modalTipoExamen").modal("show");
 }
 
+function editarTipoExamen(tipo) {
+  mostrarModalTipoExamen("editar", tipo);
+}
 
-//Función para validar por Keypress
+function guardarTipoExamen() {
+  if (!validarFormularioTipoExamen()) {
+    return;
+  }
+
+  var datos = new FormData($("#formTipoExamen")[0]);
+  datos.append("accion", $("#accionTipoExamen").val());
+
+  enviaAjax(datos, function (respuesta) {
+    muestraMensaje(
+      respuesta.mensaje,
+      respuesta.resultado == "error" ? "error" : "success"
+    );
+    if (respuesta.resultado != "error") {
+      $("#modalTipoExamen").modal("hide");
+      cargarTiposExamen();
+      cargarSelectTipos();
+    }
+  });
+}
+
+function eliminarTipoExamenConfirmado() {
+  var datos = new FormData();
+  datos.append("accion", "eliminar_tipo");
+  datos.append("cod_examen", idActual);
+
+  enviaAjax(datos, function (respuesta) {
+    muestraMensaje(
+      respuesta.mensaje,
+      respuesta.resultado == "error" ? "error" : "success"
+    );
+    $("#modalConfirmacion").modal("hide");
+    cargarTiposExamen();
+    cargarSelectTipos();
+  });
+}
+
+// Funciones para registros de examen
+function cargarRegistrosExamen() {
+  var datos = new FormData();
+  datos.append("accion", "consultar_registros");
+
+  // Aplicar filtros
+  var paciente = $("#filtroPaciente").val();
+  var fecha = $("#filtroFechaExamen").val();
+  var tipo = $("#filtroTipoExamen").val();
+
+  if (paciente) datos.append("filtro_paciente", paciente);
+  if (fecha) datos.append("filtro_fecha", fecha);
+  if (tipo) datos.append("filtro_tipo", tipo);
+
+  enviaAjax(datos, function (respuesta) {
+    if (respuesta.resultado == "consultar") {
+      if (tablaRegistrosExamen != null) {
+        tablaRegistrosExamen.destroy();
+      }
+
+      $("#resultadoRegistrosExamen").html("");
+
+      respuesta.datos.forEach(function (registro) {
+        var fila = `
+                <tr>
+                    <td>${registro.paciente} (${registro.cedula_paciente})</td>
+                    <td>${registro.nombre_examen}</td>
+                    <td>${registro.fecha_e} ${registro.hora_e}</td>
+                    <td>${registro.observacion_examen || "N/A"}</td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <button class='btn btn-sm btn-info mr-1' onclick='editarRegistroExamen(${JSON.stringify(
+                              registro
+                            )})'>
+                                <img src="img/lapiz.svg" style="width: 20px">
+                            </button>
+                            <button class='btn btn-sm btn-danger mr-1' onclick='confirmarEliminar("registro", "${registro.cedula_paciente}|${registro.fecha_e}|${registro.cod_examen}")'>
+                                <img src='img/trash-can-solid.svg' style='width: 20px;'>
+                            </button>
+                            ${
+                              registro.ruta_imagen
+                                ? `<a class='btn btn-sm btn-primary' href="${registro.ruta_imagen}" target="_blank">
+                                    <img src='img/ojo.svg' style='width: 20px;'>
+                                </a>`
+                                : '<button class="btn btn-sm btn-secondary" disabled><img src="img/eye-slash-solid.svg" style="width: 20px;"></button>'
+                            }
+                        </div>
+                    </td>
+                </tr>`;
+        $("#resultadoRegistrosExamen").append(fila);
+      });
+
+      tablaRegistrosExamen = $("#tablaRegistrosExamen").DataTable({
+        language: {
+          lengthMenu: "Mostrar _MENU_ por página",
+          zeroRecords: "No se encontraron registros",
+          info: "Mostrando página _PAGE_ de _PAGES_",
+          infoEmpty: "No hay registros disponibles",
+          infoFiltered: "(filtrado de _MAX_ registros totales)",
+          search: "Buscar:",
+          paginate: {
+            first: "Primera",
+            last: "Última",
+            next: "Siguiente",
+            previous: "Anterior",
+          },
+        },
+        responsive: true,
+        autoWidth: false,
+        columnDefs: [
+          { orderable: false, targets: -1 },
+          { className: "text-center", targets: -1 },
+        ],
+        order: [[2, "desc"]],
+      });
+    }
+  });
+}
+
+function mostrarModalRegistroExamen(datos = null) {
+  $("#modalRegistroExamenLabel").text(
+    datos ? "Editar Registro de Examen" : "Registrar Examen"
+  );
+  $("#btnGuardarRegistroExamen").text(datos ? "Actualizar" : "Registrar");
+  $("#accionRegistroExamen").val(
+    datos ? "modificar_registro" : "incluir_registro"
+  );
+
+  // Cargar pacientes en el select
+  var selectPaciente = $("#pacienteExamen");
+  selectPaciente
+    .empty()
+    .append('<option value="">Seleccione un paciente</option>');
+
+  // Cargar tipos de examen en el select
+  var selectTipo = $("#tipoExamen");
+  selectTipo.empty().append('<option value="">Seleccione un tipo</option>');
+
+  // Si hay datos, llenar el formulario
+  if (datos) {
+    $("#pacienteExamen").val(datos.cedula_paciente);
+    $("#tipoExamen").val(datos.cod_examen);
+    $("#fechaExamen").val(datos.fecha_e);
+    $("#horaExamen").val(datos.hora_e);
+    $("#observacionExamen").val(datos.observacion_examen || "");
+
+    if (datos.ruta_imagen) {
+      $("#imagenExamen").attr("src", datos.ruta_imagen);
+    } else {
+      $("#imagenExamen").attr("src", "img/logo.png");
+    }
+  } else {
+    $("#formRegistroExamen")[0].reset();
+    $("#imagenExamen").attr("src", "img/logo.png");
+  }
+
+  // Cargar selects
+  var datosPacientes = new FormData();
+  datosPacientes.append("accion", "obtener_pacientes_select");
+
+  enviaAjax(datosPacientes, function (respuesta) {
+    if (respuesta.resultado == "consultar") {
+      respuesta.datos.forEach(function (paciente) {
+        selectPaciente.append(
+          $("<option>", {
+            value: paciente.cedula_paciente,
+            text: paciente.nombre_completo,
+          })
+        );
+      });
+    }
+  });
+
+  var datosTipos = new FormData();
+  datosTipos.append("accion", "obtener_tipos_select");
+
+  enviaAjax(datosTipos, function (respuesta) {
+    if (respuesta.resultado == "consultar") {
+      respuesta.datos.forEach(function (tipo) {
+        selectTipo.append(
+          $("<option>", {
+            value: tipo.cod_examen,
+            text: tipo.nombre_examen,
+          })
+        );
+
+        // También cargar en el filtro
+        var filtroTipo = $("#filtroTipoExamen");
+        filtroTipo.empty().append('<option value="">Todos los tipos</option>');
+
+        respuesta.datos.forEach(function (tipo) {
+          filtroTipo.append(
+            $("<option>", {
+              value: tipo.cod_examen,
+              text: tipo.nombre_examen,
+            })
+          );
+        });
+      });
+    }
+  });
+
+  $("#modalRegistroExamen").modal("show");
+}
+
+function editarRegistroExamen(registro) {
+  mostrarModalRegistroExamen(registro);
+}
+
+function guardarRegistroExamen() {
+  // Validación básica
+  if (
+    $("#pacienteExamen").val() === "" ||
+    $("#tipoExamen").val() === "" ||
+    $("#fechaExamen").val() === "" ||
+    $("#horaExamen").val() === ""
+  ) {
+    muestraMensaje("Debe completar todos los campos requeridos", "error");
+    return;
+  }
+
+  var datos = new FormData($("#formRegistroExamen")[0]);
+  datos.append("accion", $("#accionRegistroExamen").val());
+
+  enviaAjax(datos, function (respuesta) {
+    muestraMensaje(
+      respuesta.mensaje,
+      respuesta.resultado == "error" ? "error" : "success"
+    );
+    if (respuesta.resultado != "error") {
+      $("#modalRegistroExamen").modal("hide");
+      cargarRegistrosExamen();
+    }
+  });
+}
+
+function eliminarRegistroExamenConfirmado() {
+  var partes = idActual.split('|');
+  var cedula = partes[0];
+  var fecha = partes[1];
+  var examen = partes[2];
+  
+  var datos = new FormData();
+  datos.append("accion", "eliminar_registro");
+  datos.append("cedula_paciente", cedula);
+  datos.append("fecha_e", fecha);
+  datos.append("cod_examen", examen);
+
+  enviaAjax(datos, function (respuesta) {
+    muestraMensaje(
+      respuesta.mensaje,
+      respuesta.resultado == "error" ? "error" : "success"
+    );
+    $("#modalConfirmacion").modal("hide");
+    cargarRegistrosExamen();
+  });
+}
+
+// Funciones auxiliares
+function cargarSelectTipos() {
+  var datos = new FormData();
+  datos.append("accion", "obtener_tipos_select");
+
+  enviaAjax(datos, function (respuesta) {
+    if (respuesta.resultado == "consultar") {
+      var select = $("#tipoExamen");
+      select.empty().append('<option value="">Seleccione un tipo</option>');
+
+      respuesta.datos.forEach(function (tipo) {
+        select.append(
+          $("<option>", {
+            value: tipo.cod_examen,
+            text: tipo.nombre_examen,
+          })
+        );
+      });
+    }
+  });
+}
+
+function cargarSelectPacientes() {
+  var datos = new FormData();
+  datos.append("accion", "obtener_pacientes_select");
+
+  enviaAjax(datos, function (respuesta) {
+    if (respuesta.resultado == "consultar") {
+      var select = $("#pacienteExamen");
+      select.empty().append('<option value="">Seleccione un paciente</option>');
+
+      respuesta.datos.forEach(function (paciente) {
+        select.append(
+          $("<option>", {
+            value: paciente.cedula_paciente,
+            text: paciente.nombre_completo,
+          })
+        );
+      });
+    }
+  });
+}
+
+function confirmarEliminar(tipo, id) {
+  modoActual = tipo;
+  idActual = id;
+
+  if (tipo == "tipo") {
+    $("#mensajeConfirmacion").html(
+      "¿Está seguro de eliminar este tipo de examen?<br>Solo se puede eliminar si no tiene registros asociados."
+    );
+  } else if (tipo == "registro") {
+    $("#mensajeConfirmacion").html(
+      "¿Está seguro de eliminar este registro de examen?<br>Esta acción no se puede deshacer."
+    );
+  }
+
+  $("#modalConfirmacion").modal("show");
+}
+
+function validarFormularioTipoExamen() {
+  let valido = true;
+
+  if (
+    validarkeyup(
+      /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,50}$/,
+      $("#nombre_examen"),
+      $("#snombre_examen"),
+      "Solo letras entre 3 y 50 caracteres"
+    ) == 0
+  ) {
+    valido = false;
+  }
+
+  return valido;
+}
+
+function mostrarImagen(input, selectorImagen) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      $(selectorImagen).attr("src", e.target.result);
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+// Funciones de validación
 function validarkeypress(er, e) {
+  const key = e.keyCode || e.which;
+  const tecla = String.fromCharCode(key);
+  const a = er.test(tecla);
 
-	key = e.keyCode;
-
-
-	tecla = String.fromCharCode(key);
-
-
-	a = er.test(tecla);
-
-	if (!a) {
-
-		e.preventDefault();
-	}
-
-
-}
-//Función para validar por keyup
-function validarkeyup(er, etiqueta, etiquetamensaje,
-	mensaje) {
-	a = er.test(etiqueta.val());
-	if (a) {
-		etiquetamensaje.text("");
-		return 1;
-	}
-	else {
-		etiquetamensaje.text(mensaje);
-		return 0;
-	}
+  if (!a) {
+    e.preventDefault();
+  }
 }
 
-function colocapacientes(linea) {
-	$("#cedula_h").val($(linea).find("td:eq(1)").text());
-	$("#cedula_historia").val($(linea).find("td:eq(0)").text());
-	$("#datosdelpacientes").html("Nombre: " + $(linea).find("td:eq(2)").text() +
-		" / Apellido: " + $(linea).find("td:eq(3)").text());
-	$("#modalpacientes").modal("hide");
+function validarkeyup(er, etiqueta, etiquetamensaje, mensaje) {
+  const a = er.test(etiqueta.val());
+  if (a) {
+    etiquetamensaje.text("");
+    return 1;
+  } else {
+    etiquetamensaje.text(mensaje);
+    return 0;
+  }
 }
 
-function colocapacientes_ver(linea, nombre, apellido) {
-	$("#cedula_h").val($(linea).find("td:eq(4)").text());
-	$("#cedula_historia").val($(linea).find("td:eq(0)").text());
-	$("#datosdelpacientes").html("Nombre: " + nombre +
-		" / Apellido: " + apellido);
-	$("#modalpacientes").modal("hide");
+function enviaAjax(datos, callback) {
+  $.ajax({
+    async: true,
+    url: "?pagina=examenes",
+    type: "POST",
+    contentType: false,
+    data: datos,
+    processData: false,
+    cache: false,
+    timeout: 10000,
+    beforeSend: function () {},
+    success: function (respuesta) {
+      try {
+        if (typeof respuesta === "object") {
+          if (typeof callback === "function") {
+            callback(respuesta);
+          }
+        } else {
+          const json = JSON.parse(respuesta);
+          if (typeof callback === "function") {
+            callback(json);
+          }
+        }
+      } catch (e) {
+        console.error("Error parsing JSON:", e, respuesta);
+        muestraMensaje(
+          "Error al procesar la respuesta del servidor: " + e.message
+        );
+      }
+    },
+    error: function (xhr, status, err) {
+      console.error("Error en la petición AJAX:", status, err);
+      if (status == "timeout") {
+        muestraMensaje("Servidor ocupado, intente de nuevo");
+      } else {
+        muestraMensaje("ERROR: <br/>" + request + status + err);
+      }
+    },
+    complete: function () {},
+  });
 }
 
-function colocaexamen(linea) {
-	$("#cod_examenes1").val($(linea).find("td:eq(1)").text());
-	$("#codigo_examenes").val($(linea).find("td:eq(0)").text());
-	$("#datosdeexamen").html("Nombre del examen: " + $(linea).find("td:eq(2)").text());
-	$("#modalexamenes").modal("hide");
-}
-function colocaexamen_ver(linea, nombre_x) {
+function muestraMensaje(mensaje, tipo = "error") {
+  const modal = $("#mostrarmodal");
+  const contenido = $("#contenidodemodal");
 
-	$("#cod_examenes1").val($(linea).find("td:eq(6)").text());
-	$("#codigo_examenes").val($(linea).find("td:eq(0)").text());
-	$("#datosdeexamen").html("Nombre del examen: " + nombre_x);
-	$("#modalexamenes").modal("hide");
+  contenido.html(mensaje);
 
-}
-//funcion para pasar de la lista a el formulario
-function pone(pos, accion) {
+  if (tipo == "error") {
+    modal.find(".modal-header").removeClass("bg-success").addClass("bg-danger");
+  } else {
+    modal.find(".modal-header").removeClass("bg-danger").addClass("bg-success");
+  }
 
-	linea = $(pos).closest('tr');
+  modal.modal("show");
 
-	const boton_h = document.querySelector('#listadodepacientes');
-	const boton_e = document.querySelector('#listadodeexamenes');
-
-
-	if (accion == 0) {
-		$("#proceso1").text("MODIFICAR");
-
-		$("#cod_registro").val($(linea).find("td:eq(1)").text());
-		$("#fecha_r").val($(linea).find("td:eq(2)").text());
-		$("#observacion_examen").val($(linea).find("td:eq(3)").text());
-		$("#cedula_h").val($(linea).find("td:eq(4)").text());
-		$("#cod_examenes1").val($(linea).find("td:eq(6)").text());
-		$("#imagen").prop("src", "vista/fpdf/usuarios/" + $(linea).find("td:eq(4)").text() + "-" + $(linea).find("td:eq(2)").text() + "-" + $(linea).find("td:eq(6)").text() + ".jpeg");
-		$("#modal2").modal("show");
-		limpiarm();
-		colocapacientes_ver(linea, $(pos).attr('nombre'), $(pos).attr('apellido'));
-		colocaexamen_ver(linea, $(pos).attr('nombre_examen'));
-		boton_h.style.display = '';
-		boton_e.style.display = '';
-
-	}
-	else if (accion == 1) {
-		$("#proceso1").text("ELIMINAR");
-
-		$("#cod_registro").val($(linea).find("td:eq(1)").text());
-		$("#fecha_r").val($(linea).find("td:eq(2)").text());
-		$("#observacion_examen").val($(linea).find("td:eq(3)").text());
-		$("#cedula_h").val($(linea).find("td:eq(4)").text());
-		$("#cod_examenes1").val($(linea).find("td:eq(6)").text());
-		$("#imagen").prop("src", "vista/fpdf/usuarios/" + $(linea).find("td:eq(4)").text() + "-" + $(linea).find("td:eq(2)").text() + "-" + $(linea).find("td:eq(6)").text() + ".jpeg");
-		$("#modal2").modal("show");
-		limpiarm();
-		colocapacientes_ver(linea, $(pos).attr('nombre'), $(pos).attr('apellido'));
-		colocaexamen_ver(linea, $(pos).attr('nombre_examen'));
-		boton_h.style.display = 'none';
-		boton_e.style.display = 'none';
-
-	}
-	else if (accion == 3) {
-		$("#proceso").text("INCLUIR");
-		$("#cod_examenes").val($(linea).find("td:eq(1)").text());
-		$("#nombre_examen").val($(linea).find("td:eq(2)").text());
-		$("#descripcion_examen").val($(linea).find("td:eq(3)").text());
-		$("#cedula_h").val($(linea).find("td:eq(4)").text());
-		$("#modal1").modal("show");
-		limpiarm();
-
-
-	}
-	else {
-		$("#proceso1").text("INCLUIR REGISTRO");
-		$("#cod_registro").val($(linea).find("td:eq(1)").text());
-		$("#fecha_r").val($(linea).find("td:eq(2)").text());
-		$("#observacion_examen").val($(linea).find("td:eq(3)").text());
-		$("#cedula_h").val($(linea).find("td:eq(4)").text());
-		$("#cod_examenes1").val($(linea).find("td:eq(6)").text());
-		$("#modal2").modal("show");
-		limpiarm();
-
-	}
-
-}
-
-function mostrarImagen(f) {
-
-	var tamano = f.files[0].size;
-	var megas = parseInt(tamano / 10240);
-
-	if (megas > 10240) {
-		muestraMensaje("La imagen debe ser igual o menor a 1024 K");
-		$(f).val('');
-	}
-	else {
-		if (f.files && f.files[0]) {
-			var reader = new FileReader();
-			reader.onload = function (e) {
-				$('#imagen').attr('src', e.target.result);
-			}
-			reader.readAsDataURL(f.files[0]);
-		}
-	}
-}
-//funcion que envia y recibe datos por AJAX
-function enviaAjax(datos) {
-	$.ajax({
-		async: true,
-		url: "",
-		type: "POST",
-		contentType: false,
-		data: datos,
-		processData: false,
-		cache: false,
-		beforeSend: function () { },
-		timeout: 10000, //tiempo maximo de espera por la respuesta del servidor
-		success: function (respuesta) {
-			console.log(respuesta);
-			try {
-				var lee = JSON.parse(respuesta);
-				if (lee.resultado == "consultar") {
-					destruyeDT();
-					$("#resultadoconsulta").html(lee.mensaje);
-					crearDT();
-				}
-				else if (lee.resultado == 'listadopacientes') {
-					destruyeDT1();
-
-					$('#listadopacientes').html(lee.mensaje);
-					crearDT1();
-				}
-				else if (lee.resultado == 'listadoexamenes') {
-
-					destruyeDT2();
-
-					$('#listadoexamenes').html(lee.mensaje);
-					crearDT2();
-
-				}
-				else if (lee.resultado == "incluir") {
-					muestraMensaje(lee.mensaje);
-					if (lee.mensaje == 'Registro Inluido') {
-						$("#modal1").modal("hide");
-						consultar();
-					}
-				}
-				else if (lee.resultado == "incluir1") {
-					muestraMensaje(lee.mensaje);
-					if (lee.mensaje == 'Registro Inluido') {
-						$("#modal2").modal("hide");
-						consultar();
-					}
-				}
-				else if (lee.resultado == "modificar") {
-					muestraMensaje(lee.mensaje);
-					if (lee.mensaje == 'Registro Modificado') {
-						$("#modal2").modal("hide");
-						consultar();
-					}
-				}
-				else if (lee.resultado == "eliminar") {
-					muestraMensaje(lee.mensaje);
-					if (lee.mensaje == 'Registro Eliminado') {
-						$("#modal2").modal("hide");
-						consultar();
-					}
-				}
-				else if (lee.resultado == "error") {
-					muestraMensaje(lee.mensaje);
-				}
-			} catch (e) {
-				alert("Error en JSON " + e.name);
-			}
-		},
-		error: function (request, status, err) {
-			// si ocurrio un error en la trasmicion
-			// o recepcion via ajax entra aca
-			// y se muestran los mensaje del error
-			if (status == "timeout") {
-				//pasa cuando superan los 10000 10 segundos de timeout
-				muestraMensaje("Servidor ocupado, intente de nuevo");
-			} else {
-				//cuando ocurre otro error con ajax
-				muestraMensaje("ERROR: <br/>" + request + status + err);
-			}
-		},
-		complete: function () { },
-	});
-}
-
-function limpia() {
-	$("#cod_examenes").val("");
-	$("#nombre_examen").val("");
-	$("#descripcion_examen").val("");
-	$("#cedula_h").val("");
-
-}
-function limpia1() {
-	$("#cod_registro").val("");
-	$("#fecha_r").val("");
-	$("#cedula_h").val("");
-	$("#cod_examenes1").val("");
-	$("#observacion_examen").val("");
-	$('#imagen').prop("src", "img/logo.png");
+  setTimeout(function () {
+    modal.modal("hide");
+  }, 5000);
 }

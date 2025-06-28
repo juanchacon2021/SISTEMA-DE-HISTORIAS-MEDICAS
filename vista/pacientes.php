@@ -39,13 +39,13 @@
         <table class="table table-striped table-hover" id="tablapersonal">
             <thead>
                 <tr>
-                    <th>Acciones</th>
                     <th>Cédula</th>
                     <th>Apellido</th>
                     <th>Nombre</th>
                     <th>Fecha de Nacimiento</th>
                     <th>Edad</th>
                     <th>Teléfono</th>
+                    <th>Acciones</th>
                     <th style="display: none;">Estado Civil</th>
                     <th style="display: none;">Dirección</th>
                     <th style="display: none;">Ocupación</th>

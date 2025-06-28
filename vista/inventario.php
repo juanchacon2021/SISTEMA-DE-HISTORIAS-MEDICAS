@@ -46,12 +46,12 @@ require_once("comunes/sidebar.php");
             <table id="tablaMedicamentos" class="table table-striped table-bordered" style="width:100%">
                 <thead class="table-dark">
                     <tr>
-                        <th>Acciones</th>
                         <th>Código</th>
                         <th>Nombre</th>
                         <th>Descripción</th>
                         <th>Stock</th>
                         <th>Unidad</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody id="resultadoMedicamentos">

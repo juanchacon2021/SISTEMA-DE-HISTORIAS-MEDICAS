@@ -234,6 +234,22 @@ function enviaAjax(datos) {
                     
                     lee.datos.forEach(function (fila) {
                         html += `<tr>
+                            <td class="cedula_paciente">${fila.cedula_paciente}</td>
+                            <td class="apellido">${fila.apellido}</td>
+                            <td class="nombre">${fila.nombre}</td>
+                            <td class="fecha_nac">${fila.fecha_nac}</td>
+                            <td class="edad">${fila.edad}</td>
+                            <td class="telefono">${fila.telefono}</td>
+                            <td class="estadocivil" style="display: none;">${fila.estadocivil}</td>
+                            <td class="direccion" style="display: none;">${fila.direccion}</td>
+                            <td class="ocupacion" style="display: none;">${fila.ocupacion}</td>
+                            <td class="hda" style="display: none;">${fila.hda}</td>
+                            <td class="habtoxico" style="display: none;">${fila.habtoxico}</td>
+                            <td class="alergias" style="display: none;">${fila.alergias}</td>
+                            <td class="alergias_med" style="display: none;">${fila.alergias_med}</td>
+                            <td class="quirurgico" style="display: none;">${fila.quirurgico}</td>
+                            <td class="psicosocial" style="display: none;">${fila.psicosocial}</td>
+                            <td class="transsanguineo" style="display: none;">${fila.transsanguineo}</td>
                             <td>
                                 <div class="button-containerotro">
                                     <a type="button" class="btn btn-success" onclick="pone(this,0)"
@@ -260,22 +276,6 @@ function enviaAjax(datos) {
                                     </a>
                                 </div>
                             </td>
-                            <td class="cedula_paciente">${fila.cedula_paciente}</td>
-                            <td class="apellido">${fila.apellido}</td>
-                            <td class="nombre">${fila.nombre}</td>
-                            <td class="fecha_nac">${fila.fecha_nac}</td>
-                            <td class="edad">${fila.edad}</td>
-                            <td class="telefono">${fila.telefono}</td>
-                            <td class="estadocivil" style="display: none;">${fila.estadocivil}</td>
-                            <td class="direccion" style="display: none;">${fila.direccion}</td>
-                            <td class="ocupacion" style="display: none;">${fila.ocupacion}</td>
-                            <td class="hda" style="display: none;">${fila.hda}</td>
-                            <td class="habtoxico" style="display: none;">${fila.habtoxico}</td>
-                            <td class="alergias" style="display: none;">${fila.alergias}</td>
-                            <td class="alergias_med" style="display: none;">${fila.alergias_med}</td>
-                            <td class="quirurgico" style="display: none;">${fila.quirurgico}</td>
-                            <td class="psicosocial" style="display: none;">${fila.psicosocial}</td>
-                            <td class="transsanguineo" style="display: none;">${fila.transsanguineo}</td>
                         </tr>`;
                     });
                     $("#resultadoconsulta").html(html);

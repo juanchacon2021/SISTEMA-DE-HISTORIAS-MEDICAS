@@ -26,6 +26,19 @@ if (typeof window.ws === "undefined") {
             </div>
         `);
         notificaciones.unshift(data);
+        // Guardar en localStorage
+        let guardadas = JSON.parse(localStorage.getItem('notificacionesGuardadas') || '[]');
+        guardadas.unshift(data);
+        // Evitar duplicados por fecha_hora
+        let fechas = new Set();
+        let unicas = [];
+        for (let n of guardadas) {
+            if (!fechas.has(n.fecha_hora)) {
+                fechas.add(n.fecha_hora);
+                unicas.push(n);
+            }
+        }
+        localStorage.setItem('notificacionesGuardadas', JSON.stringify(unicas));
         actualizarListaNotificaciones();
 
         // Mostrar y actualizar el badge de notificaciones
@@ -56,27 +69,37 @@ function mostrarToast(mensaje) {
 function actualizarListaNotificaciones() {
     const lista = document.getElementById('listaNotificaciones');
     lista.innerHTML = '';
-    notificaciones.slice(0, 10).forEach(msg => {
+    let leidas = JSON.parse(localStorage.getItem('notificacionesLeidas') || '[]');
+
+    notificaciones.slice(0, 20).forEach(msg => {
         let data;
         try {
             data = typeof msg === 'string' ? JSON.parse(msg) : msg;
         } catch {
             data = {};
         }
-        // Valores por defecto
-        const foto = data.foto ? data.foto : 'img/default-user.png';
+        const foto = data.foto ? data.foto : 'img/user.png';
         const nombre = data.nombre ? data.nombre : '';
         const descripcion = data.descripcion ? data.descripcion : (typeof msg === 'string' ? msg : '');
+        const fecha = data.fecha_hora ? data.fecha_hora : '';
+
+        // Marcar como no leída si su fecha_hora no está en localStorage
+        const isUnread = fecha && !leidas.includes(fecha);
 
         const li = document.createElement('li');
         li.style.padding = '10px';
         li.style.borderBottom = '1px solid #eee';
+        if (isUnread) {
+            li.style.background = '#f8f9fa';
+            li.style.fontWeight = 'bold';
+        }
         li.innerHTML = `
             <div style="display:flex;align-items:center;">
                 <img src="${foto}" style="width:32px;height:32px;border-radius:50%;margin-right:10px;">
                 <div>
                     <strong>${nombre}</strong><br>
                     <span>${descripcion}</span>
+                    <div style="font-size:11px;color:#888;">${fecha}</div>
                 </div>
             </div>
         `;
@@ -85,26 +108,47 @@ function actualizarListaNotificaciones() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    let guardadas = JSON.parse(localStorage.getItem('notificacionesGuardadas') || '[]');
+    let leidas = JSON.parse(localStorage.getItem('notificacionesLeidas') || '[]');
+    let nuevas = [];
+
+    // Si hay notificaciones del backend, agrégalas a las guardadas solo si no existen
     if(window.notificacionesPersistentes) {
-        notificaciones = window.notificacionesPersistentes.map(n => {
-            // Si ya tiene nombre y foto, úsalo directamente
-            if (n.nombre && n.foto) return n;
-            // Si solo tiene descripcion, crea un objeto básico
-            return {
-                descripcion: n.descripcion || '',
-                nombre: n.nombre || '',
-                foto: n.foto || 'img/default-user.png'
-            };
+        let fechas = new Set(guardadas.map(n => n.fecha_hora));
+        window.notificacionesPersistentes.forEach(n => {
+            if (n.fecha_hora && !fechas.has(n.fecha_hora)) {
+                guardadas.push(n);
+                fechas.add(n.fecha_hora);
+            }
         });
-        actualizarListaNotificaciones();
+        localStorage.setItem('notificacionesGuardadas', JSON.stringify(guardadas));
     }
+
+    notificaciones = guardadas;
+
+    nuevas = notificaciones.filter(n => n.fecha_hora && !leidas.includes(n.fecha_hora));
+    notificacionCount = nuevas.length;
+
+    const badge = document.getElementById('notificacionBadge');
+    if (notificacionCount > 0) {
+        badge.textContent = notificacionCount;
+        badge.style.display = 'inline-block';
+    } else {
+        badge.style.display = 'none';
+    }
+
+    actualizarListaNotificaciones();
 
     document.getElementById('notificacionIcono').onclick = function() {
         const panel = document.getElementById('panelNotificaciones');
         if (panel.style.display === 'none' || panel.style.display === '') {
             panel.style.display = 'block';
+            // Marcar todas como leídas
+            let ids = notificaciones.map(n => n.fecha_hora).filter(Boolean);
+            localStorage.setItem('notificacionesLeidas', JSON.stringify(ids));
             notificacionCount = 0;
             document.getElementById('notificacionBadge').style.display = 'none';
+            actualizarListaNotificaciones();
         } else {
             panel.style.display = 'none';
         }
@@ -118,3 +162,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+document.getElementById('userDropdownBtn').onclick = function(e) {
+    e.stopPropagation();
+    document.getElementById('userDropdownMenu').classList.toggle('show');
+};
+
+document.addEventListener('click', function(e) {
+    var menu = document.getElementById('userDropdownMenu');
+    if(menu.classList.contains('show')) menu.classList.remove('show');
+});
+    

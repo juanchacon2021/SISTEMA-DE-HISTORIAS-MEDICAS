@@ -36,6 +36,32 @@ class bitacora extends datos {
         }
     }
     
+    public static function registrarYNotificar($accion, $descripcion, $usuario_cedula) {
+        // Registrar en bitácora
+        self::registrar($accion, $descripcion);
+
+        // Obtener datos del usuario
+        require_once(__DIR__ . '/../src/modelo/principal.php');
+        $usuario = \Shm\Shm\modelo\principal::obtenerDatosUsuario($usuario_cedula);
+
+        $mensaje = [
+            'nombre' => $usuario['nombre'],
+            'foto' => $usuario['foto_perfil'],
+            'descripcion' => $descripcion,
+            'fecha_hora' => date('Y-m-d H:i:s')
+        ];
+
+        // Enviar por WebSocket
+        require_once __DIR__ . '/../vendor/autoload.php';
+        try {
+            $ws = new \WebSocket\Client("ws://localhost:8080");
+            $ws->send(json_encode($mensaje));
+            $ws->close();
+        } catch(Exception $e) {
+            // Si falla el WebSocket, no afecta el registro
+        }
+    }
+    
     public static function consultar($filtro = '', $limit = 100) {
         $obj = new self();
         $co = $obj->conecta2();
