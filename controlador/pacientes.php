@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 if (!is_file("src/modelo/".$pagina.".php")){
     echo "Falta definir la clase ".$pagina;
     exit;
@@ -46,16 +49,35 @@ if(is_file("vista/".$pagina.".php")){
             echo json_encode($resultado);
             exit;
         }
+        elseif($accion == 'listado_patologias') {
+            $res = $o->listado_patologias();
+            echo json_encode($res);
+            exit;
+        }
+        elseif($accion == 'agregar_patologia') {
+            $res = $o->agregar_patologia($_POST['nombre_patologia']);
+            echo json_encode($res);
+            exit;
+        }
+        elseif($accion == 'obtener_patologias_paciente') {
+            require_once("src/modelo/p_cronicos.php");
+            $pat = new \Shm\Shm\modelo\p_cronicos();
+            echo json_encode([
+                "resultado" => "success",
+                "datos" => $pat->obtener_patologias_paciente($_POST['cedula_paciente'])
+            ]);
+            exit;
+        }
         else{
             // Campos básicos del paciente
             $o->set_cedula_paciente($_POST['cedula_paciente'] ?? '');
             $o->set_nombre($_POST['nombre'] ?? '');
             $o->set_apellido($_POST['apellido'] ?? '');
             $o->set_fecha_nac($_POST['fecha_nac'] ?? '');
-            $o->set_edad($_POST['edad'] ?? '');
-            $o->set_estadocivil($_POST['estadocivil'] ?? '');
-            $o->set_ocupacion($_POST['ocupacion'] ?? '');
-            $o->set_direccion($_POST['direccion'] ?? '');
+            $o->set_edad($_POST['edad' ?? '']);
+            $o->set_estadocivil($_POST['estadocivil' ?? '']);
+            $o->set_ocupacion($_POST['ocupacion' ?? '']);
+            $o->set_direccion($_POST['direccion' ?? '']);
             $o->set_telefono($_POST['telefono' ?? '']);
             $o->set_hda($_POST['hda' ?? '']);
             $o->set_alergias($_POST['alergias' ?? '']);
@@ -71,6 +93,11 @@ if(is_file("vista/".$pagina.".php")){
                 if(json_last_error() === JSON_ERROR_NONE) {
                     $o->set_familiares($familiares);
                 }
+            }
+
+            // Al incluir/modificar paciente, antes de llamar a incluir/modificar:
+            if(isset($_POST['patologias'])) {
+                $o->set_patologias($_POST['patologias']);
             }
 
             if($accion=='incluir'){

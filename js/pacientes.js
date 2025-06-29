@@ -1,7 +1,91 @@
 // Variables globales
 let currentStep = 1;
+const totalSteps = 4; 
 let familiaresTemporales = [];
 let pacienteEditando = null;
+let patologiasPaciente = [];
+
+function cargarPatologias() {
+    $.post('', {accion: 'listado_patologias'}, function(res) {
+        let data = JSON.parse(res);
+        let $select = $("#select_patologia");
+        $select.empty().append('<option value="">Seleccione...</option>');
+        if(data.datos) {
+            data.datos.forEach(function(p) {
+                $select.append(`<option value="${p.cod_patologia}">${p.nombre_patologia}</option>`);
+            });
+        }
+    });
+}
+
+$("#btnAgregarPatologiaPaciente").on("click", function() {
+    let cod = $("#select_patologia").val();
+    let nombre = $("#select_patologia option:selected").text();
+    let tratamiento = $("#tratamiento_patologia").val().trim();
+    let administracion = $("#administracion_patologia").val().trim();
+
+    if(!cod || !tratamiento || !administracion) {
+        muestraMensaje("Complete todos los campos de patología");
+        return;
+    }
+    if(patologiasPaciente.some(p => p.cod_patologia === cod)) {
+        muestraMensaje("Ya agregó esta patología");
+        return;
+    }
+    patologiasPaciente.push({cod_patologia: cod, nombre_patologia: nombre, tratamiento, administracion});
+    actualizarListaPatologiasPaciente();
+    $("#select_patologia").val(''); // <-- Limpia el select
+    $("#tratamiento_patologia").val('');
+    $("#administracion_patologia").val('');
+});
+
+function actualizarListaPatologiasPaciente() {
+    let $div = $("#listaPatologiasPaciente");
+    if(patologiasPaciente.length === 0) {
+        $div.html('<div class="alert alert-info">No se han agregado patologías</div>');
+        return;
+    }
+    let html = '<ul class="list-group">';
+    patologiasPaciente.forEach((p, i) => {
+        html += `<li class="list-group-item d-flex justify-content-between align-items-center">
+            <span><b>${p.nombre_patologia}</b> - Tratamiento: ${p.tratamiento} - Administración: ${p.administracion}</span>
+            <button type="button" class="btn btn-danger btn-sm" onclick="eliminarPatologiaPaciente(${i})">Quitar</button>
+        </li>`;
+    });
+    html += '</ul>';
+    $div.html(html);
+}
+
+function eliminarPatologiaPaciente(idx) {
+    patologiasPaciente.splice(idx, 1);
+    actualizarListaPatologiasPaciente();
+}
+
+$("#btnRegistrarPatologia").on("click", function() {
+    $("#modalRegistrarPatologia").modal("show");
+});
+$("#btnGuardarNuevaPatologia").off('click').on("click", function() {
+    let nombre = $("#nombre_nueva_patologia").val();
+    if(!nombre) return muestraMensaje("Ingrese el nombre de la patología");
+    $.post('', {accion: 'agregar_patologia', nombre_patologia: nombre}, function(res) {
+        let data = JSON.parse(res);
+        muestraMensaje(data.mensaje);
+        if(data.resultado === "success") {
+            $("#modalRegistrarPatologia").modal("hide");
+            $("#nombre_nueva_patologia").val('');
+            cargarPatologias(); // Solo una vez aquí
+        }
+    });
+});
+
+// Al enviar el formulario principal, agrega las patologías al FormData
+function agregarPatologiasAFormData(formData) {
+    patologiasPaciente.forEach(function(p, i) {
+        formData.append(`patologias[${i}][cod_patologia]`, p.cod_patologia);
+        formData.append(`patologias[${i}][tratamiento]`, p.tratamiento);
+        formData.append(`patologias[${i}][administracion]`, p.administracion);
+    });
+}
 
 // Función para consultar pacientes
 function consultar() {
@@ -135,10 +219,18 @@ function pone(pos, accion) {
 
     // Resetear pasos
     currentStep = 1;
-    updateStep();
+    showStep(currentStep);
     
     // Mostrar modal
     $("#modal1").modal("show");
+
+    if(accion === 0) {
+        // Si es modificar, cargar patologías del paciente
+        cargarPatologiasPaciente(pacienteEditando);
+    } else {
+        patologiasPaciente = [];
+        actualizarListaPatologiasPaciente();
+    }
 }
 
 // Función para limpiar el formulario
@@ -160,6 +252,9 @@ function limpiarFormulario() {
     $("#transsanguineo").val("");
     $("#psicosocial").val("");
     familiaresTemporales = [];
+    patologiasPaciente = [];
+    actualizarListaFamiliares();
+    actualizarListaPatologiasPaciente(); // <-- Agregado para limpiar la vista de patologías
 }
 
 // Función para validar antes de enviar
@@ -315,20 +410,20 @@ function enviaAjax(datos) {
 }
 
 // Función para actualizar los pasos del formulario
-function updateStep() {
-    $('.step').addClass('d-none');
-    $(`#step-${currentStep}`).removeClass('d-none');
+// function updateStep() {
+//     $('.step').addClass('d-none');
+//     $(`#step-${currentStep}`).removeClass('d-none');
 
-    $('#prev-btn').toggle(currentStep > 1);
-    
-    if (currentStep === 3) {
-        $('#next-btn').hide();
-        $('#proceso').show().text($('#accion').val() === 'modificar' ? 'MODIFICAR' : 'INCLUIR');
-    } else {
-        $('#next-btn').show();
-        $('#proceso').hide();
-    }
-}
+//     $('#prev-btn').toggle(currentStep > 1);
+
+//     if (currentStep === totalSteps) {
+//         $('#next-btn').hide();
+//         $('#proceso').show().text($('#accion').val() === 'modificar' ? 'MODIFICAR' : 'INCLUIR');
+//     } else {
+//         $('#next-btn').show();
+//         $('#proceso').hide();
+//     }
+// }
 
 // Funciones para antecedentes familiares
 function mostrarModalFamiliar(editar = false, familiar = null) {
@@ -501,7 +596,91 @@ function eliminarFamiliar(id_familiar) {
     });
 }
 
-// Función para enviar datos
+// Variables para patologías
+// Cargar patologías al select
+function cargarPatologias() {
+    $.ajax({
+        url: "",
+        type: "POST",
+        data: {accion: "listado_patologias"},
+        success: function(res) {
+            let data = JSON.parse(res);
+            let $select = $("#select_patologia");
+            $select.empty().append('<option value="">Seleccione...</option>');
+            if(data.datos) {
+                data.datos.forEach(function(p) {
+                    $select.append(`<option value="${p.cod_patologia}">${p.nombre_patologia}</option>`);
+                });
+            }
+        }
+    });
+}
+
+// Agregar patología a la lista del paciente
+$("#btnAgregarPatologiaPaciente").on("click", function() {
+    let cod = $("#select_patologia").val();
+    let nombre = $("#select_patologia option:selected").text();
+    let tratamiento = $("#tratamiento_patologia").val().trim();
+    let administracion = $("#administracion_patologia").val().trim();
+
+    if(!cod || !tratamiento || !administracion) {
+        muestraMensaje("Complete todos los campos de patología");
+        return;
+    }
+    // Evitar duplicados
+    if(patologiasPaciente.some(p => p.cod_patologia === cod)) {
+        muestraMensaje("Ya agregó esta patología");
+        return;
+    }
+    patologiasPaciente.push({cod_patologia: cod, nombre_patologia: nombre, tratamiento, administracion});
+    actualizarListaPatologiasPaciente();
+    $("#select_patologia").val(''); // <-- Limpia el select
+    $("#tratamiento_patologia").val('');
+    $("#administracion_patologia").val('');
+});
+
+// Mostrar lista de patologías agregadas
+function actualizarListaPatologiasPaciente() {
+    let $div = $("#listaPatologiasPaciente");
+    if(patologiasPaciente.length === 0) {
+        $div.html('<div class="alert alert-info">No se han agregado patologías</div>');
+        return;
+    }
+    let html = '<ul class="list-group">';
+    patologiasPaciente.forEach((p, i) => {
+        html += `<li class="list-group-item d-flex justify-content-between align-items-center">
+            <span><b>${p.nombre_patologia}</b> - Tratamiento: ${p.tratamiento} - Administración: ${p.administracion}</span>
+            <button type="button" class="btn btn-danger btn-sm" onclick="eliminarPatologiaPaciente(${i})">Quitar</button>
+        </li>`;
+    });
+    html += '</ul>';
+    $div.html(html);
+}
+
+function eliminarPatologiaPaciente(idx) {
+    patologiasPaciente.splice(idx, 1);
+    actualizarListaPatologiasPaciente();
+}
+
+// Registrar nueva patología
+$("#btnRegistrarPatologia").on("click", function() {
+    $("#modalRegistrarPatologia").modal("show");
+});
+$("#btnGuardarNuevaPatologia").off('click').on("click", function() {
+    let nombre = $("#nombre_nueva_patologia").val();
+    if(!nombre) return muestraMensaje("Ingrese el nombre de la patología");
+    $.post('', {accion: 'agregar_patologia', nombre_patologia: nombre}, function(res) {
+        let data = JSON.parse(res);
+        muestraMensaje(data.mensaje);
+        if(data.resultado === "success") {
+            $("#modalRegistrarPatologia").modal("hide");
+            $("#nombre_nueva_patologia").val('');
+            cargarPatologias(); // Solo una vez aquí
+        }
+    });
+});
+
+// Al registrar o modificar paciente, enviar patologías
 function registrarPaciente() {
     if (!validarenvio()) return;
     
@@ -524,6 +703,13 @@ function registrarPaciente() {
 
     campos.forEach(campo => {
         datos.append(campo, $(`#${campo}`).val());
+    });
+
+    // Agregar patologías
+    patologiasPaciente.forEach(function(p, i) {
+        datos.append(`patologias[${i}][cod_patologia]`, p.cod_patologia);
+        datos.append(`patologias[${i}][tratamiento]`, p.tratamiento);
+        datos.append(`patologias[${i}][administracion]`, p.administracion);
     });
 
     $('#proceso').prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Procesando...');
@@ -564,25 +750,41 @@ function registrarPaciente() {
     });
 }
 
+// Función para mostrar y ocultar pasos
+function showStep(step) {
+    $('.step').addClass('d-none');
+    $('#step-' + step).removeClass('d-none');
+    $('#prev-btn').toggle(step > 1);
+    if (step === totalSteps) {
+        $('#next-btn').hide();
+        $('#proceso').show().text($('#accion').val() === 'modificar' ? 'MODIFICAR' : 'INCLUIR');
+    } else {
+        $('#next-btn').show();
+        $('#proceso').hide();
+    }
+}
+
 // Event Listeners
 document.addEventListener('DOMContentLoaded', function() {
     // Inicializar la aplicación
     consultar();
     inicializarValidaciones();
-    updateStep();
+    showStep(currentStep);
     
     // Configurar navegación por pasos
     document.getElementById('next-btn').addEventListener('click', () => {
-        if (currentStep < 3) {
+        if (currentStep < totalSteps) {
             currentStep++;
-            updateStep();
+            console.log("Avanzando a step:", currentStep);
+            showStep(currentStep);
         }
     });
 
     document.getElementById('prev-btn').addEventListener('click', () => {
         if (currentStep > 1) {
             currentStep--;
-            updateStep();
+            console.log("Retrocediendo a step:", currentStep);
+            showStep(currentStep);
         }
     });
     
@@ -632,6 +834,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     // Configurar botón INCLUIR
     $('#proceso').click(registrarPaciente);
+
+    // Cargar patologías al abrir el documento
+    cargarPatologias();
 });
 
 // NOTIFICACIONES

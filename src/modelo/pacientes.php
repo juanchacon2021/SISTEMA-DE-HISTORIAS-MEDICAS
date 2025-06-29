@@ -27,6 +27,7 @@ class pacientes extends datos {
 	private $ape_familiar;
 	private $relacion_familiar;
 	private $observaciones;
+	private $patologias = [];
 
     function __construct() {
         $this->conexion = $this->conecta(); 
@@ -55,6 +56,7 @@ class pacientes extends datos {
 	function set_ape_familiar($valor) { $this->ape_familiar = $valor; }
 	function set_relacion_familiar($valor) { $this->relacion_familiar = $valor; }
 	function set_observaciones($valor) { $this->observaciones = $valor; }
+    public function set_patologias($patologias) { $this->patologias = $patologias; }
     // Getters
     function get_cedula_paciente() { return $this->cedula_paciente; }
     function get_apellido() { return $this->apellido; }
@@ -139,6 +141,19 @@ class pacientes extends datos {
 						':relacion' => $familiar['relacion_familiar'],
 						':observaciones' => $familiar['observaciones'] ?? '',
 						':cedula' => $this->cedula_paciente
+					]);
+				}
+			}
+			
+			// Insertar patologías crónicas
+			if(!empty($this->patologias)) {
+				foreach($this->patologias as $pat) {
+					$stmt = $co->prepare("INSERT INTO padece (cedula_paciente, cod_patologia, tratamiento, administracion_t) VALUES (?, ?, ?, ?)");
+					$stmt->execute([
+						$this->cedula_paciente,
+						$pat['cod_patologia'],
+						$pat['tratamiento'],
+						$pat['administracion']
 					]);
 				}
 			}
@@ -235,6 +250,21 @@ class pacientes extends datos {
                     ':relacion' => $familiar['relacion_familiar'],
                     ':observaciones' => $familiar['observaciones'] ?? '',
                     ':cedula' => $this->cedula_paciente
+                ]);
+            }
+        }
+
+        // Actualizar patologías crónicas
+        $stmt = $co->prepare("DELETE FROM padece WHERE cedula_paciente = ?");
+        $stmt->execute([$this->cedula_paciente]);
+        if(!empty($this->patologias)) {
+            foreach($this->patologias as $pat) {
+                $stmt = $co->prepare("INSERT INTO padece (cedula_paciente, cod_patologia, tratamiento, administracion_t) VALUES (?, ?, ?, ?)");
+                $stmt->execute([
+                    $this->cedula_paciente,
+                    $pat['cod_patologia'],
+                    $pat['tratamiento'],
+                    $pat['administracion']
                 ]);
             }
         }
@@ -417,6 +447,40 @@ class pacientes extends datos {
             $usuario = ['nombre' => 'Desconocido', 'apellido' => '', 'foto_perfil' => ''];
         }
         return $usuario;
+    }
+
+    // Listar patologías
+    public function listado_patologias() {
+        $co = $this->conecta();
+        $co->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        $r = array();
+        try {
+            $stmt = $co->query("SELECT * FROM patologia");
+            $r['resultado'] = 'listado_patologias';
+            $r['datos'] = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\Exception $e) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $e->getMessage();
+        }
+        return $r;
+    }
+
+    // Agregar nueva patología
+    public function agregar_patologia($nombre_patologia) {
+        $co = $this->conecta();
+        $co->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        $r = array();
+        try {
+            $stmt = $co->prepare("INSERT INTO patologia(nombre_patologia) VALUES(:nombre)");
+            $stmt->bindParam(':nombre', $nombre_patologia);
+            $stmt->execute();
+            $r['resultado'] = 'success';
+            $r['mensaje'] = 'Patología registrada';
+        } catch (\Exception $e) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $e->getMessage();
+        }
+        return $r;
     }
 }
 ?>
