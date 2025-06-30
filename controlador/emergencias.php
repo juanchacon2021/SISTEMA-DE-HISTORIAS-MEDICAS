@@ -30,45 +30,19 @@ use Shm\Shm\modelo\emergencias;
 				break;
 				
 			case 'eliminar':
-				// Asignar los valores de la llave compuesta
-				$o->set_cedula_paciente($_POST['cedula_paciente']);
-				$o->set_cedula_personal($_POST['cedula_personal']);
-				$o->set_fechaingreso($_POST['fechaingreso']);
-				$o->set_horaingreso($_POST['horaingreso']);
-				// Ejecutar eliminación
+				
+				$o->setDatos($_POST, $accion);		
 				echo json_encode($o->eliminar());
 				break;
 				
 			case 'incluir':
-				// Configurar propiedades comunes
-				$o->set_horaingreso($_POST['horaingreso']);
-				$o->set_fechaingreso($_POST['fechaingreso']);
-				$o->set_motingreso($_POST['motingreso']);
-				$o->set_diagnostico_e($_POST['diagnostico_e']);
-				$o->set_tratamientos($_POST['tratamientos']);
-				$o->set_cedula_personal($_POST['cedula_personal']);
-				$o->set_cedula_paciente($_POST['cedula_paciente']);
-				$o->set_procedimiento($_POST['procedimiento']);
-				// Ejecutar inclusión
+			
+				$o->setDatos($_POST, $accion);
 				echo json_encode($o->incluir());
 				break;
 				
 			case 'modificar':
-				// Configurar propiedades comunes
-				$o->set_horaingreso($_POST['horaingreso']);
-				$o->set_fechaingreso($_POST['fechaingreso']);
-				$o->set_motingreso($_POST['motingreso']);
-				$o->set_diagnostico_e($_POST['diagnostico_e']);
-				$o->set_tratamientos($_POST['tratamientos']);
-				$o->set_cedula_personal($_POST['cedula_personal']);
-				$o->set_cedula_paciente($_POST['cedula_paciente']);
-				$o->set_procedimiento($_POST['procedimiento']);
-				// Configurar propiedades antiguas para modificación
-				$o->set_old_cedula_paciente($_POST['old_cedula_paciente']);
-				$o->set_old_cedula_personal($_POST['old_cedula_personal']);
-				$o->set_old_fechaingreso($_POST['old_fechaingreso']);
-				$o->set_old_horaingreso($_POST['old_horaingreso']);
-				// Ejecutar modificación
+				$o->setDatos($_POST, $accion);
 				echo json_encode($o->modificar());
 				break;
 				

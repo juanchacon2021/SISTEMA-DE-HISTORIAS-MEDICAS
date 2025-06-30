@@ -37,19 +37,17 @@ use Shm\Shm\modelo\observaciones;
 				break;
 				
 			case 'eliminar':
-				$o->set_cod_consulta($_POST['cod_consulta']);
+				$o->setDatos($_POST);
 				echo json_encode($o->eliminar());
 				break;
 				
 			case 'agregar':
-				$p->set_cod_observacion($_POST['cod_observacion']);
-				$p->set_nom_observaciones($_POST['nom_observaciones']);
+				$p->setDatos($_POST);
 				echo json_encode($p->incluir2());
 				break;
 				
 			case 'actualizar':
-				$p->set_cod_observacion($_POST['cod_observacion']);
-				$p->set_nom_observaciones($_POST['nom_observaciones']);
+				$p->setDatos($_POST);
 				echo json_encode($p->modificar2());
 				break;
 				
@@ -63,21 +61,14 @@ use Shm\Shm\modelo\observaciones;
 				break;
 				
 			case 'descartar':
-				$p->set_cod_observacion($_POST['cod_observacion']);
+				$p->setDatos($_POST);
 				echo json_encode($p->eliminar2());
 				break;
 				
 			case 'incluir':
 			case 'modificar':
 				// Configuración común para incluir y modificar
-				$o->set_cod_consulta($_POST['cod_consulta']);
-				$o->set_fechaconsulta($_POST['fechaconsulta']);
-				$o->set_Horaconsulta($_POST['Horaconsulta']);
-				$o->set_consulta($_POST['consulta']);
-				$o->set_diagnostico($_POST['diagnostico']);
-				$o->set_tratamientos($_POST['tratamientos']);
-				$o->set_cedula_personal($_POST['cedula_personal']);
-				$o->set_cedula_paciente($_POST['cedula_paciente']);
+				$o->setDatos($_POST);
 				
 				// Prepara el array de observaciones
 				$observaciones = [];
