@@ -10,31 +10,13 @@ function consultarCronicos() {
     enviaAjax(datos, 'consultarCronicos');
 }
 
-function consultarTotalHistorias() {
+function consultarTotalesGenerales() {
     var datos = new FormData();
-    datos.append('accion', 'total_historias');
-    enviaAjax(datos, 'total');
-}
-
-function consultarTotalCronicos() {
-    var datos = new FormData();
-    datos.append('accion', 'total_cronicos');
-    enviaAjax(datos, 'total_p');
+    datos.append('accion', 'totales_generales');
+    enviaAjax(datos, 'totales_generales');
 }
 
 let graficoEmergencias = null;
-
-function consultarTotalemergencias() {
-    var datos = new FormData();
-    datos.append('accion', 'total_emergencias');
-    enviaAjax(datos, 'emergencias');
-}
-
-function consultarTotalconsultas() {
-    var datos = new FormData();
-    datos.append('accion', 'total_consultas');
-    enviaAjax(datos, 'consultas');
-}
 
 function consultarEmergenciasMes(mes, anio) {
     var datos = new FormData();
@@ -75,6 +57,18 @@ function consultarMesMayorConsultas() {
     enviaAjax(datos, 'mes_con_mas_consultas');
 }
 
+function consultarMedicamentosMasUsados() {
+    var datos = new FormData();
+    datos.append('accion', 'medicamentosMasUsados');
+    enviaAjax(datos, 'medicamentosMasUsados');
+}
+
+function consultarMedicamentosPorVencer() {
+    var datos = new FormData();
+    datos.append('accion', 'medicamentosPorVencer');
+    enviaAjax(datos, 'medicamentosPorVencer');
+}
+
 $(document).ready(function(){
     // Establecer el mes y año actual por defecto
     const mesActual = new Date().getMonth() + 1;
@@ -90,14 +84,13 @@ $(document).ready(function(){
     // Cargar datos iniciales
     consultar();
     consultarCronicos();
-    consultarTotalHistorias();
-    consultarTotalCronicos();
-    consultarTotalemergencias();
-    consultarTotalconsultas();
     actualizarGrafico(); // Usamos la nueva función que incluye mes y año
     actualizarGraficoConsultas(); // Usamos la nueva función que incluye mes y año
     consultarMesMayorEmergencias();
     consultarMesMayorConsultas();
+    consultarMedicamentosMasUsados();
+    consultarMedicamentosPorVencer();
+    consultarTotalesGenerales();
 });
 
 function enviaAjax(datos, tipo) {
@@ -155,14 +148,28 @@ function enviaAjax(datos, tipo) {
 
                  }
 
-               if (tipo === "consultarCronicos") {
+                if (tipo === "consultarCronicos") {
                     const datos = lee.datos;
                     const labels = datos.map(d => d.nombre_patologia);
                     const valores = datos.map(d => d.pacientes);
-                    const backgroundColors = labels.map(() => '#' + Math.floor(Math.random()*16777215).toString(16));
-
+                
+                    // Paleta de 10 colores fijos + 1 para "Otros"
+                    const baseColors = [
+                        '#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0', '#9966FF',
+                        '#FF9F40', '#C9CBCF', '#FFCD56', '#4D5360', '#B2FF66'
+                    ];
+                    // Si hay "Otros", agrégale un color especial al final
+                    let backgroundColors = baseColors.slice(0, 10);
+                    if (labels.length > 10) {
+                        backgroundColors.push('#888888'); // Gris para "Otros"
+                    } else if (labels.length === 11) {
+                        // Si justo hay 11 (10 + "Otros"), también agrega el color extra
+                        backgroundColors.push('#888888');
+                    } else {
+                        backgroundColors = baseColors.slice(0, labels.length);
+                    }
+                
                     const ctx = document.getElementById('graficoCronicos').getContext('2d');
-                    // Solución segura para destruir el gráfico anterior si existe
                     if (window.graficoCronicos && typeof window.graficoCronicos.destroy === "function") {
                         window.graficoCronicos.destroy();
                     }
@@ -184,14 +191,16 @@ function enviaAjax(datos, tipo) {
                             }
                         }
                     });
-
-                    // Mostrar la patología con más pacientes
+                
+                    // Mostrar la patología con más pacientes (excluyendo "Otros")
                     if (datos.length > 0) {
-                        const mayor = datos.reduce((a, b) => a.pacientes > b.pacientes ? a : b);
+                        // Filtra "Otros" si existe
+                        const datosSinOtros = datos.filter(d => d.nombre_patologia !== 'Otros');
+                        const mayor = datosSinOtros.reduce((a, b) => a.pacientes > b.pacientes ? a : b, datosSinOtros[0]);
                         document.getElementById('cronico_mayor').innerHTML =
                             `La patología con más pacientes es: <strong>${mayor.nombre_patologia}</strong> con <strong>${mayor.pacientes}</strong> registros.`;
                     }
-                }
+            }
                 if (tipo === 'emergencias_mes') {
                     const datos = lee.datos;
                     
@@ -287,18 +296,14 @@ function enviaAjax(datos, tipo) {
                         }
                     });
                 }
-				if (tipo === 'total') {
-					document.getElementById('totalHistorias').textContent = lee.total;
-				}
-				if (tipo === 'total_p') {
-					document.getElementById('total_cronicos').textContent = lee.total;
-				}
-                if (tipo === 'emergencias') {
-					document.getElementById('total_emergencias').textContent = lee.total;
-				}
-                if (tipo === 'consultas') {
-					document.getElementById('total_consultas').textContent = lee.total;
-				}
+                if (tipo === 'totales_generales') {
+                    document.getElementById('totalHistorias').textContent = lee.totales.total_historias;
+                    document.getElementById('total_cronicos').textContent = lee.totales.total_cronicos;
+                    document.getElementById('total_emergencias').textContent = lee.totales.total_emergencias;
+                    document.getElementById('total_consultas').textContent = lee.totales.total_consultas;
+                    document.getElementById('total_lotes').textContent = lee.totales.cantidad_lotes_con_existencia;
+                    document.getElementById('total_medicamentos').textContent = lee.totales.total_de_medicamentos;
+                }
                 if (tipo === 'mes_con_mas_emergencias') {
                     if (lee.mes && lee.anio) {
                         document.getElementById('mes_mayor_emergencias').innerHTML =
@@ -315,6 +320,115 @@ function enviaAjax(datos, tipo) {
                     } else {
                         document.getElementById('mes_mayor_consultas').innerHTML =
                             "No hay datos de consultas.";
+                    }
+                }
+                if (tipo === "medicamentosPorVencer") {
+                    const datos = lee.datos;
+                    // Etiqueta: nombre + fecha de vencimiento
+                    const labels = datos.map(d => `Lote: ${d.cod_lote} -(${d.fecha_vencimiento})`);
+                    const valores = datos.map(d => parseInt(d.cantidad));
+                    const backgroundColors = [
+                        '#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0', '#9966FF',
+                        '#FF9F40', '#C9CBCF', '#FFCD56', '#4D5360', '#B2FF66'
+                    ].slice(0, labels.length);
+
+                    const ctx = document.getElementById('graficoMedicamentosPorVencer').getContext('2d');
+                    if (window.graficoMedicamentosPorVencer && typeof window.graficoMedicamentosPorVencer.destroy === "function") {
+                        window.graficoMedicamentosPorVencer.destroy();
+                    }
+                    window.graficoMedicamentosPorVencer = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Cantidad Disponible',
+                                data: valores,
+                                backgroundColor: backgroundColors,
+                                borderColor: '#fff',
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: { display: false },
+                                title: {
+                                    display: true,
+                                    text: 'Medicamentos por vencer (más próximos)'
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: { stepSize: 1 }
+                                }
+                            }
+                        }
+                    });
+
+                    if (datos.length > 0) {
+                        const proximo = datos[0];
+                        document.getElementById('lote_por_expirar').innerHTML =
+                            `El medicamento más próximo a vencer es: <strong>${proximo.medicamento}</strong> 
+                            (Lote: <strong>${proximo.cod_lote}</strong>) 
+                            el <strong>${proximo.fecha_vencimiento}</strong> 
+                            con <strong>${proximo.cantidad}</strong> unidades disponibles.`;
+                    } else {
+                        document.getElementById('lote_por_expirar').innerHTML =
+                            "No hay lotes próximos a vencer.";
+                    }
+                }
+                if (tipo === "medicamentosMasUsados") {
+                    const datos = lee.datos;
+                    const labels = datos.map(d => d.medicamento);
+                    const valores = datos.map(d => parseInt(d.cantidad_total));
+                    // Paleta de 10 colores fijos
+                    const backgroundColors = [
+                        '#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0', '#9966FF',
+                        '#FF9F40', '#C9CBCF', '#FFCD56', '#4D5360', '#B2FF66'
+                    ];
+
+                    const ctx = document.getElementById('graficoMedicamentos').getContext('2d');
+                    if (window.graficoMedicamentos && typeof window.graficoMedicamentos.destroy === "function") {
+                        window.graficoMedicamentos.destroy();
+                    }
+                    window.graficoMedicamentos = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Cantidad Total Sacada',
+                                data: valores,
+                                backgroundColor: backgroundColors.slice(0, labels.length), // Solo los necesarios
+                                borderColor: '#fff',
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: { display: false },
+                                title: {
+                                    display: true,
+                                    text: 'Medicamentos más usados'
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: { stepSize: 1 }
+                                }
+                            }
+                        }
+                    });
+
+                    if (datos.length > 0) {
+                        const masUsado = datos[0];
+                        document.getElementById('Medicamento_mas_usado').innerHTML =
+                            `El medicamento más usado es: <strong>${masUsado.medicamento}</strong> con <strong>${masUsado.cantidad_total}</strong> unidades entregadas.`;
+                    } else {
+                        document.getElementById('Medicamento_mas_usado').innerHTML =
+                            "No hay datos de medicamentos usados.";
                     }
                 }
             } catch (e) {
