@@ -26,7 +26,7 @@
 <div class="container espacio">
     <div class="container">
         <div class="row mt-3 botones">
-            <div style="color: white;" class="col-md-2 botonverde" style="cursor: pointer;" onclick='pone(this,3), limpiarm()' >
+            <div style="color: white;" class="btn botonverde" style="cursor: pointer;" onclick='pone(this,3), limpiarm()' >
                 Registrar Paciente
             </div>
             <div class="btn botonrojo">    
@@ -228,24 +228,49 @@
                     <textarea class="form-control bg-gray-200 rounded-lg border-white p-3" placeholder="Psicosocial" name="psicosocial" id="psicosocial"></textarea>
                     <span id="spsicosocial"></span>
                 </div>
-<!-- Sección de Antecedentes Familiares -->
-                <!-- <div class="col-md-6 mt-4">
-                    <label for="antc_madre" class="texto-inicio font-medium mb-2">Antecedentes Maternos *</label>
-                    <textarea class="form-control bg-gray-200 rounded-lg border-white p-3" placeholder="Antecedentes Maternos" name="antc_madre" id="antc_madre"></textarea>
-                    <span id="santc_madre"></span>
-                </div>
-                <div class="col-md-6 mt-4">
-                    <label for="antc_padre" class="texto-inicio font-medium mb-2">Antecedentes Paternos *</label>
-                    <textarea class="form-control bg-gray-200 rounded-lg border-white p-3" placeholder="Antecedentes Paternos" name="antc_padre" id="antc_padre"></textarea>
-                    <span id="santc_padre"></span>
-                </div>
-                <div class="col-md-6 mt-4">
-                    <label for="antc_hermano" class="texto-inicio font-medium mb-2">Antecedentes de Hermanos *</label>
-                    <textarea class="form-control bg-gray-200 rounded-lg border-white p-3" placeholder="Antecedentes de Hermanos" name="antc_hermano" id="antc_hermano"></textarea>
-                    <span id="santc_hermano"></span>
-                </div>  -->
             </div>
           </div>
+
+          <!-- Paso 4: Patologías Crónicas -->
+<div class="container step d-none" id="step-4">
+    <div class="row mb-3">
+        <h1 class="text-2xl font-bold mb-2">Patologías Crónicas</h1>
+
+        <div>
+            <div class="col-md-1 mb-4 p-1 rounded-full" style="background-color: rgb(220 38 38);">
+            </div>
+        </div>
+
+        <div class="col-md-12 mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="texto-inicio font-medium mb-2">Patologías del Paciente</h3>
+                <button type="button" class="btn btn-info" id="btnRegistrarPatologia">
+                    Registrar Nueva Patología
+                </button>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="select_patologia" class="form-label">Patología</label>
+                    <select class="form-control" id="select_patologia">
+                        <option value="">Seleccione...</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="tratamiento_patologia" class="form-label">Tratamiento</label>
+                    <input type="text" class="form-control" id="tratamiento_patologia" />
+                </div>
+                <div class="col-md-3">
+                    <label for="administracion_patologia" class="form-label">Administración</label>
+                    <input type="text" class="form-control" id="administracion_patologia" />
+                </div>
+            </div>
+            <button type="button" class="btn btn-secondary mb-3" id="btnAgregarPatologiaPaciente">Agregar Patología</button>
+            <div id="listaPatologiasPaciente" class="mt-3">
+                <div class="alert alert-info">No se han agregado patologías</div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Botones de Navegación -->
           <div class="row mt-5 mb-5 justify-content-between">
             <div class="col-md-3 abajo">
@@ -316,6 +341,44 @@
   </div>
 </div>
 
+<!-- MODAL PARA REGISTRAR NUEVA PATOLOGÍA -->
+<div class="modal fade" id="modalRegistrarPatologia" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Registrar Nueva Patología</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="formRegistrarPatologia">
+          <div class="mb-3">
+            <label for="nombre_nueva_patologia" class="form-label">Nombre de la Patología *</label>
+            <input type="text" class="form-control" id="nombre_nueva_patologia" name="nombre_patologia" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="btnGuardarNuevaPatologia">Registrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Botones de Navegación (SOLO UNO, dentro del form y antes de </form>) -->
+<div class="row mt-5 mb-5 justify-content-between">
+    <div class="col-md-3 abajo">
+        <button type="button" class="" id="prev-btn" style="display: none;">&lt; Anterior</button>
+    </div>
+    <div class="col-md-3 text-end abajo">
+        <button type="button" id="next-btn">Siguiente &gt;</button>
+        <button type="button" class="btn botonverde" id="proceso" style="display: none;">INCLUIR</button>
+    </div>
+</div>
+</form>
+</div>
 <?php require_once("comunes/modal.php"); ?>
 <script type="text/javascript" src="js/pacientes.js"></script>
 
