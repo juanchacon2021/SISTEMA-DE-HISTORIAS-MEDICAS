@@ -1,6 +1,7 @@
 <?php
 require_once("comunes/encabezado.php");
 require_once("comunes/sidebar.php");
+require_once("comunes/notificaciones.php");
 
 if (!isset($_SESSION['permisos']) || !is_array($_SESSION['permisos'])) {
     header("Location: ?pagina=login");
@@ -17,11 +18,11 @@ if (!isset($_SESSION['permisos']) || !is_array($_SESSION['permisos'])) {
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
+        <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
+            Exámenes Médicos
+        </div>
         <div class="container espacio">
             <section class="content">
-                <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
-                    Exámenes Médicos
-                </div>
 
                 <div class="container-fluid d-flex">
                     <!-- Tabs -->

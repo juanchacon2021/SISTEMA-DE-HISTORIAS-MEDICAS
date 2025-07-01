@@ -27,7 +27,7 @@ function cargarPublicaciones() {
                 let html = '';
                 let cedulaActual = res.cedula_actual; // <-- la cédula del usuario logueado
                 res.datos.forEach(function(pub) {
-                    html += `<div class="publicacion cardd mb-3" style="padding:30px; height: 600px; width: 900px">
+                    html += `<div class="publicacion cardd mb-3">
                         <div class="card-body">
                             <div class="d-flex justify-between">
                                 <div>
@@ -41,7 +41,7 @@ function cargarPublicaciones() {
                                         <button class="btn btn-sm btn-warning me-2" onclick="editarPublicacion('${pub.cod_pub}')" style="height:40px;">
                                             <img src="img/lapiz.svg" alt="Editar" style="width:20px;">
                                         </button>
-                                        <button class="btn btn-sm btn-danger" onclick="eliminarPublicacion('${pub.cod_pub}')" style="height:40px;">
+                                        <button class="btn btn-sm btn-danger" onclick="confirmarEliminacion('${pub.cod_pub}')" style="height:40px;">
                                             <img src="img/basura.svg" alt="Eliminar" style="width:20px;">
                                         </button>
                                     `;
@@ -51,7 +51,7 @@ function cargarPublicaciones() {
                             
                            
                             <p class="card-text my-2">${pub.contenido}</p>
-                            <center>${pub.imagen ? `<img src="${pub.imagen}" class="img-fluid rounded mb-2" style="max-width:300px; max-height:500px;">` : ''}</center>
+                            <center>${pub.imagen ? `<img src="${pub.imagen}">` : ''}</center>
                             
                         </div>
                     </div>`;
@@ -158,11 +158,6 @@ $(document).on('click', '#procesoPublicacion', function() {
         }
     });
 });
-
-function confirmarEliminacion(cod_pub) {
-    codPublicacionAEliminar = cod_pub;
-    $('#modalConfirmacion').modal('show');
-}
 
 // Eliminar publicación confirmada
 $('#btnConfirmarEliminar').off('click').on('click', function() {

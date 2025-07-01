@@ -90,12 +90,12 @@
                 </div>
                 <?php endif; ?>
                 
-                <?php if(isset($permisos['modulos']) && in_array('Pacientes crónicos', $permisos['modulos'])): ?>
+                <!-- <?php if(isset($permisos['modulos']) && in_array('Pacientes crónicos', $permisos['modulos'])): ?>
                 <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
                     <img class="w-6 h-8 imagen" src="img/cronico.svg" alt="">
                     <a href="?pagina=p_cronicos"><span class="text-[15px] ml-4 text-lg hover:text-white">Pacientes Crónicos</span></a>
                 </div>
-                <?php endif; ?>
+                <?php endif; ?> -->
                 
                 <?php if(isset($permisos['modulos']) && in_array('Jornadas', $permisos['modulos'])): ?>
                 <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">

@@ -5,6 +5,8 @@ if (!is_file("src/modelo/" . $pagina . ".php")) {
 }
 
 use Shm\Shm\modelo\examenes;
+require_once("modelo/bitacora.php");
+require_once("src/modelo/datos.php");
 
 if (is_file("vista/" . $pagina . ".php")) {
     if (!empty($_POST)) {
@@ -24,23 +26,63 @@ if (is_file("vista/" . $pagina . ".php")) {
                 break;
 
             case 'incluir_tipo':
-            case 'modificar_tipo':
-            case 'eliminar_tipo':
-                echo json_encode($o->gestionar_tipo($datos));
-                bitacora::registrar(
-                    ucfirst(str_replace('_', ' ', $accion)),
-                    'Acción sobre tipo de examen: ' . $datos['cod_examen']
+                $resultado = $o->gestionar_tipo($datos);
+                bitacora::registrarYNotificar(
+                    'Registrar',
+                    'Se ha registrado el tipo de examen: ' . $datos['cod_examen'],
+                    $_SESSION['usuario']
                 );
+                echo json_encode($resultado);
+                break;
+
+            case 'modificar_tipo':
+                $resultado = $o->gestionar_tipo($datos);
+                bitacora::registrarYNotificar(
+                    'Modificar',
+                    'Se ha modificado el tipo de examen: ' . $datos['cod_examen'],
+                    $_SESSION['usuario']
+                );
+                echo json_encode($resultado);
+                break;
+
+            case 'eliminar_tipo':
+                $resultado = $o->gestionar_tipo($datos);
+                bitacora::registrarYNotificar(
+                    'Eliminar',
+                    'Se ha eliminado el tipo de examen: ' . $datos['cod_examen'],
+                    $_SESSION['usuario']
+                );
+                echo json_encode($resultado);
                 break;
 
             case 'incluir_registro':
-            case 'modificar_registro':
-            case 'eliminar_registro':
-                echo json_encode($o->gestionar_registro($datos));
-                bitacora::registrar(
-                    ucfirst(str_replace('_', ' ', $accion)),
-                    'Acción sobre registro de examen: ' . $datos['cedula_paciente']
+                $resultado = $o->gestionar_registro($datos);
+                bitacora::registrarYNotificar(
+                    'Registrar',
+                    'Se ha registrado un examen para el paciente: ' . $datos['cedula_paciente'],
+                    $_SESSION['usuario']
                 );
+                echo json_encode($resultado);
+                break;
+
+            case 'modificar_registro':
+                $resultado = $o->gestionar_registro($datos);
+                bitacora::registrarYNotificar(
+                    'Modificar',
+                    'Se ha modificado un examen para el paciente: ' . $datos['cedula_paciente'],
+                    $_SESSION['usuario']
+                );
+                echo json_encode($resultado);
+                break;
+
+            case 'eliminar_registro':
+                $resultado = $o->gestionar_registro($datos);
+                bitacora::registrarYNotificar(
+                    'Eliminar',
+                    'Se ha eliminado un examen para el paciente: ' . $datos['cedula_paciente'],
+                    $_SESSION['usuario']
+                );
+                echo json_encode($resultado);
                 break;
 
             case 'obtener_tipos_select':

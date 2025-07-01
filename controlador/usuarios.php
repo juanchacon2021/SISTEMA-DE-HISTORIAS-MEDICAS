@@ -5,6 +5,8 @@ if (!is_file("modelo/" . $pagina . ".php")) {
 }
 
 require_once("modelo/" . $pagina . ".php");
+require_once("modelo/bitacora.php");
+require_once("src/modelo/datos.php");
 
 if (is_file("vista/" . $pagina . ".php")) {
     if (!empty($_POST)) {
@@ -25,7 +27,13 @@ if (is_file("vista/" . $pagina . ".php")) {
                 if (!empty($_POST['foto_perfil'])) {
                     $o->set_foto_perfil($_POST['foto_perfil']);
                 }
-                echo json_encode($o->incluir_usuario());
+                $resultado = $o->incluir_usuario();
+                bitacora::registrarYNotificar(
+                    'Registrar',
+                    'Se ha registrado el usuario: '.$_POST['nombre'].' '.$_POST['cedula'],
+                    $_SESSION['usuario']
+                );
+                echo json_encode($resultado);
                 break;
 
             case 'modificar_usuario':
@@ -39,12 +47,24 @@ if (is_file("vista/" . $pagina . ".php")) {
                 if (!empty($_POST['foto_perfil'])) {
                     $o->set_foto_perfil($_POST['foto_perfil']);
                 }
-                echo json_encode($o->modificar_usuario());
+                $resultado = $o->modificar_usuario();
+                bitacora::registrarYNotificar(
+                    'Modificar',
+                    'Se ha modificado el usuario: '.$_POST['nombre'].' '.$_POST['cedula'],
+                    $_SESSION['usuario']
+                );
+                echo json_encode($resultado);
                 break;
 
             case 'eliminar_usuario':
                 $o->set_id($_POST['id']);
-                echo json_encode($o->eliminar_usuario());
+                $resultado = $o->eliminar_usuario();
+                bitacora::registrarYNotificar(
+                    'Eliminar',
+                    'Se ha eliminado el usuario con ID: '.$_POST['id'],
+                    $_SESSION['usuario']
+                );
+                echo json_encode($resultado);
                 break;
 
             // Acciones para roles
@@ -59,19 +79,37 @@ if (is_file("vista/" . $pagina . ".php")) {
             case 'incluir_rol':
                 $o->set_nombre_rol($_POST['nombre']);
                 $o->set_descripcion_rol($_POST['descripcion']);
-                echo json_encode($o->incluir_rol());
+                $resultado = $o->incluir_rol();
+                bitacora::registrarYNotificar(
+                    'Registrar',
+                    'Se ha registrado el rol: '.$_POST['nombre'],
+                    $_SESSION['usuario']
+                );
+                echo json_encode($resultado);
                 break;
 
             case 'modificar_rol':
                 $o->set_id($_POST['id']);
                 $o->set_nombre_rol($_POST['nombre']);
                 $o->set_descripcion_rol($_POST['descripcion']);
-                echo json_encode($o->modificar_rol());
+                $resultado = $o->modificar_rol();
+                bitacora::registrarYNotificar(
+                    'Modificar',
+                    'Se ha modificado el rol: '.$_POST['nombre'],
+                    $_SESSION['usuario']
+                );
+                echo json_encode($resultado);
                 break;
 
             case 'eliminar_rol':
                 $o->set_id($_POST['id']);
-                echo json_encode($o->eliminar_rol());
+                $resultado = $o->eliminar_rol();
+                bitacora::registrarYNotificar(
+                    'Eliminar',
+                    'Se ha eliminado el rol con ID: '.$_POST['id'],
+                    $_SESSION['usuario']
+                );
+                echo json_encode($resultado);
                 break;
 
             // Acciones para permisos
@@ -87,28 +125,52 @@ if (is_file("vista/" . $pagina . ".php")) {
                 echo json_encode($o->consultar_permisos_rol($_POST['rol_id']));
                 break;
 
-           case 'actualizar_permisos':
+            case 'actualizar_permisos':
                 $permisos = isset($_POST['permisos']) ? json_decode($_POST['permisos'], true) : array();
-                echo json_encode($o->actualizar_permisos($_POST['rol_id'], $permisos));
+                $resultado = $o->actualizar_permisos($_POST['rol_id'], $permisos);
+                bitacora::registrarYNotificar(
+                    'Modificar',
+                    'Se han actualizado los permisos del rol ID: '.$_POST['rol_id'],
+                    $_SESSION['usuario']
+                );
+                echo json_encode($resultado);
                 break;
 
             // Acciones para módulos
             case 'incluir_modulo':
                 $o->set_nombre_modulo($_POST['nombre']);
                 $o->set_descripcion_modulo($_POST['descripcion']);
-                echo json_encode($o->incluir_modulo());
+                $resultado = $o->incluir_modulo();
+                bitacora::registrarYNotificar(
+                    'Registrar',
+                    'Se ha registrado el módulo: '.$_POST['nombre'],
+                    $_SESSION['usuario']
+                );
+                echo json_encode($resultado);
                 break;
 
             case 'modificar_modulo':
                 $o->set_id_modulo($_POST['id']);
                 $o->set_nombre_modulo($_POST['nombre']);
                 $o->set_descripcion_modulo($_POST['descripcion']);
-                echo json_encode($o->modificar_modulo());
+                $resultado = $o->modificar_modulo();
+                bitacora::registrarYNotificar(
+                    'Modificar',
+                    'Se ha modificado el módulo: '.$_POST['nombre'],
+                    $_SESSION['usuario']
+                );
+                echo json_encode($resultado);
                 break;
 
             case 'eliminar_modulo':
                 $o->set_id_modulo($_POST['id']);
-                echo json_encode($o->eliminar_modulo());
+                $resultado = $o->eliminar_modulo();
+                bitacora::registrarYNotificar(
+                    'Eliminar',
+                    'Se ha eliminado el módulo con ID: '.$_POST['id'],
+                    $_SESSION['usuario']
+                );
+                echo json_encode($resultado);
                 break;
 
             // Acciones para fotos de perfil
@@ -118,11 +180,19 @@ if (is_file("vista/" . $pagina . ".php")) {
 
             case 'eliminar_foto':
                 $o->set_id($_POST['id']);
-                echo json_encode($o->eliminar_foto_perfil($_POST['id']));
+                $resultado = $o->eliminar_foto_perfil($_POST['id']);
+                bitacora::registrarYNotificar(
+                    'Eliminar',
+                    'Se ha eliminado la foto de perfil del usuario con ID: '.$_POST['id'],
+                    $_SESSION['usuario']
+                );
+                echo json_encode($resultado);
                 break;
+
             case 'obtener_personal':
-                 echo json_encode($o->obtener_personal());
-                 break;
+                echo json_encode($o->obtener_personal());
+                break;
+
             default:
                 echo json_encode(array("resultado" => "error", "mensaje" => "Acción no válida"));
         }
