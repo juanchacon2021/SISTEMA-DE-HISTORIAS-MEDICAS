@@ -4,7 +4,7 @@ if (!is_file("modelo/".$pagina.".php")){
     exit;
 }
 
-require_once("modelo/".$pagina.".php");  
+use Shm\Shm\modelo\jornadas;
 require_once("modelo/bitacora.php");
 
 if(is_file("vista/".$pagina.".php")){
@@ -18,8 +18,8 @@ if(is_file("vista/".$pagina.".php")){
                 break;
                 
             case 'consultar_jornada':
-                echo json_encode($o->consultar_jornada($_POST['cod_jornada']));
-                break;
+                echo json_encode($o->consultar_jornada($datos['cod_jornada']));
+               break;
                 
             case 'incluir':
                 $o->set_fecha_jornada($_POST['fecha_jornada']);
@@ -51,24 +51,14 @@ if(is_file("vista/".$pagina.".php")){
                 $o->set_pacientes_embarazadas($_POST['pacientes_embarazadas']);
                 $o->set_cedula_responsable($_POST['cedula_responsable']);
                 $o->set_participantes(isset($_POST['participantes']) ? $_POST['participantes'] : array());
-                $resultado = $o->modificar();
-                bitacora::registrarYNotificar(
-                    'Modificar',
-                    'Modificó una jornada con código: '.$_POST['cod_jornada'].' y ubicación: '.$_POST['ubicacion'],
-                    $_SESSION['usuario']
-                );
-                echo json_encode($resultado);
+                echo json_encode($o->modificar());
+                bitacora::registrar('modificar', 'Modificó una jornada con código: '.$_POST['cod_jornada'].' y ubicacion: '.$_POST['ubicacion']);
                 break;
                 
             case 'eliminar':
                 $o->set_cod_jornada($_POST['cod_jornada']);
-                $resultado = $o->eliminar();
-                bitacora::registrarYNotificar(
-                    'Eliminar',
-                    'Eliminó una jornada con código: '.$_POST['cod_jornada'],
-                    $_SESSION['usuario']
-                );
-                echo json_encode($resultado);
+                echo json_encode($o->eliminar());
+                bitacora::registrar('eliminar', 'Eliminó una jornada con código: '.$_POST['cod_jornada']);
                 break;
                 
             case 'obtener_personal':

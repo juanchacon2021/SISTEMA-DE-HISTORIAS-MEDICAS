@@ -20,7 +20,7 @@ class consultasm extends datos{
 
 
 	
-	function set_cod_consulta($valor){
+/* 	function set_cod_consulta($valor){
 		$this->cod_consulta = $valor;
 	}
 
@@ -52,6 +52,17 @@ class consultasm extends datos{
 	
 	function set_cedula_paciente($valor){
 		$this->cedula_paciente = $valor;
+	} */
+
+	public function setDatos($datos) {
+		if (isset($datos['cod_consulta']))      $this->cod_consulta = $datos['cod_consulta'];
+		if (isset($datos['fechaconsulta']))     $this->fechaconsulta = $datos['fechaconsulta'];
+		if (isset($datos['Horaconsulta']))      $this->Horaconsulta = $datos['Horaconsulta'];
+		if (isset($datos['consulta']))          $this->consulta = $datos['consulta'];
+		if (isset($datos['diagnostico']))       $this->diagnostico = $datos['diagnostico'];
+		if (isset($datos['tratamientos']))      $this->tratamientos = $datos['tratamientos'];
+		if (isset($datos['cedula_personal']))   $this->cedula_personal = $datos['cedula_personal'];
+		if (isset($datos['cedula_paciente']))   $this->cedula_paciente = $datos['cedula_paciente'];
 	}
    
 	function listadopersonal() {
@@ -370,14 +381,14 @@ class observaciones extends datos {
 	private $cod_observacion;
 	private $nom_observaciones;
 
-	function set_cod_observacion($valor){
-		$this->cod_observacion = $valor;
+	public function setDatos($datos) {
+		if (isset($datos['cod_observacion'])) {
+			$this->cod_observacion = $datos['cod_observacion'];
+		}
+		if (isset($datos['nom_observaciones'])) {
+			$this->nom_observaciones = $datos['nom_observaciones'];
+		}
 	}
-
-	function set_nom_observaciones($valor){
-		$this->nom_observaciones = $valor;
-	}
-
 
 	function listado_observaciones() {
 		$co = $this->conecta();

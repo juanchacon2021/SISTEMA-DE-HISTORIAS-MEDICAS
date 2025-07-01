@@ -54,10 +54,9 @@ require_once("comunes/notificaciones.php");
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <h3 class="card-title">Listado de Estudiantes en Pasantía</h3>
                                     </div>
                                     <div class="col-md-6 text-right">
-                                        <button type="button" class="btn btn-success" onclick="mostrarModalEstudiante('incluir')">
+                                        <button type="button" class="btn botonverde" onclick="mostrarModalEstudiante('incluir')">
                                             Nuevo Estudiante
                                         </button>
                                         <a href="vista/fpdf/pasantias.php" target="_blank" class="btn btn-primary">
@@ -71,7 +70,6 @@ require_once("comunes/notificaciones.php");
                                     <table class="table table-bordered table-striped table-hover" id="tablaEstudiantes" style="width:100%">
                                         <thead class="thead-dark">
                                             <tr>
-                                                
                                                 <th>Cédula</th>
                                                 <th>Apellidos</th>
                                                 <th>Nombres</th>
@@ -93,10 +91,9 @@ require_once("comunes/notificaciones.php");
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <h3 class="card-title">Listado de Áreas de Pasantía</h3>
                                     </div>
                                     <div class="col-md-6 text-right">
-                                        <button type="button" class="btn btn-success" onclick="mostrarModalArea('incluir')">
+                                        <button type="button" class="btn botonverde" onclick="mostrarModalArea('incluir')">
                                             Nueva Área
                                         </button>
                                         <a href="vista/fpdf/areas_pasantia.php" target="_blank" class="btn btn-primary">
@@ -110,7 +107,6 @@ require_once("comunes/notificaciones.php");
                                     <table class="table table-bordered table-striped table-hover" id="tablaAreas" style="width:100%">
                                         <thead class="thead-dark">
                                             <tr>
-                                                
                                                 <th>Área</th>
                                                 <th>Descripción</th>
                                                 <th>Doctor Responsable</th>
@@ -130,10 +126,9 @@ require_once("comunes/notificaciones.php");
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <h3 class="card-title">Registro de Asistencia</h3>
                                     </div>
                                     <div class="col-md-6 text-right">
-                                        <button type="button" class="btn btn-success" onclick="mostrarModalAsistencia()">
+                                        <button type="button" class="btn botonverde" onclick="mostrarModalAsistencia()">
                                             <i class="fas fa-plus mr-1"></i> Registrar Asistencia
                                         </button>
                                     </div>
@@ -183,14 +178,11 @@ require_once("comunes/notificaciones.php");
         </div>
 
         <!-- Modal para Estudiantes -->
-        <div class="modal fade" id="modalEstudiante" tabindex="-1" role="dialog" aria-labelledby="modalEstudianteLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header bg-primary text-white">
-                        <h5 class="modal-title" id="modalEstudianteLabel">Registrar Estudiante</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+        <div class="modal fade" id="modalEstudiante" tabindex="-1" aria-labelledby="modalEstudianteLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" style="padding: 25px 25px 0px 25px;">
+                    <div class="text-light text-end" style="margin: 20px 20px 0px 0px;">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form id="formEstudiante" autocomplete="off">
@@ -199,14 +191,14 @@ require_once("comunes/notificaciones.php");
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="cedula_estudiante">Cédula</label>
-                                        <input type="text" class="form-control" id="cedula_estudiante" name="cedula_estudiante" required>
+                                        <input type="text" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="cedula_estudiante" name="cedula_estudiante" required>
                                         <small id="scedula_estudiante" class="form-text text-danger"></small>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="nombre">Nombres</label>
-                                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                        <input type="text" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="nombre" name="nombre" required>
                                         <small id="snombre" class="form-text text-danger"></small>
                                     </div>
                                 </div>
@@ -215,72 +207,67 @@ require_once("comunes/notificaciones.php");
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="apellido">Apellidos</label>
-                                        <input type="text" class="form-control" id="apellido" name="apellido" required>
+                                        <input type="text" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="apellido" name="apellido" required>
                                         <small id="sapellido" class="form-text text-danger"></small>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="institucion">Institución</label>
-                                        <input type="text" class="form-control" id="institucion" name="institucion" required>
+                                        <input type="text" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="institucion" name="institucion" required>
                                     </div>
                                 </div>
                             </div>
-                            <!-- En el modal de estudiante, dentro del formulario -->
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="telefono">Teléfono</label>
-                                        <input type="text" class="form-control" id="telefono" name="telefono">
+                                        <input type="text" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="telefono" name="telefono">
                                         <small id="stelefono" class="form-text text-danger"></small>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="cod_area">Área de Pasantía</label>
-                                        <select class="form-control" id="cod_area" name="cod_area" required>
+                                        <select class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="cod_area" name="cod_area" required>
                                             <option value="">Seleccione un área</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
-
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary" id="btnGuardarEstudiante">Guardar</button>
+                        <button type="button" class="btn boton" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn botonverde" id="btnGuardarEstudiante">Guardar</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Modal para Áreas -->
-        <div class="modal fade" id="modalArea" tabindex="-1" role="dialog" aria-labelledby="modalAreaLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header bg-success text-white">
-                        <h5 class="modal-title" id="modalAreaLabel">Registrar Área</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+        <div class="modal fade" id="modalArea" tabindex="-1" aria-labelledby="modalAreaLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" style="padding: 25px 25px 0px 25px;">
+                    <div class="text-light text-end" style="margin: 20px 20px 0px 0px;">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form id="formArea" autocomplete="off">
                             <input type="hidden" id="accionArea" name="accion" value="">
-                            <input type="hidden" id="id_area" name="cod_area" value=""> <!-- Cambiado el ID para evitar conflicto -->
+                            <input type="hidden" id="id_area" name="cod_area" value="">
                             <div class="form-group">
                                 <label for="nombre_area">Nombre del Área</label>
-                                <input type="text" class="form-control" id="nombre_area" name="nombre_area" required>
+                                <input type="text" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="nombre_area" name="nombre_area" required>
                                 <small id="snombre_area" class="form-text text-danger"></small>
                             </div>
                             <div class="form-group">
                                 <label for="descripcion">Descripción</label>
-                                <textarea class="form-control" id="descripcion" name="descripcion" rows="3"></textarea>
+                                <textarea class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="descripcion" name="descripcion" rows="3"></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="responsable_id">Doctor Responsable</label>
-                                <select class="form-control" id="responsable_id" name="responsable_id" required>
+                                <select class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="responsable_id" name="responsable_id" required>
                                     <option value="">Seleccione un doctor</option>
                                 </select>
                                 <small id="sresponsable_id" class="form-text text-danger"></small>
@@ -288,22 +275,19 @@ require_once("comunes/notificaciones.php");
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-success" id="btnGuardarArea">Guardar</button>
+                        <button type="button" class="btn boton" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn botonverde" id="btnGuardarArea">Guardar</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Modal para Asistencia -->
-        <div class="modal fade" id="modalAsistencia" tabindex="-1" role="dialog" aria-labelledby="modalAsistenciaLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header bg-info text-white">
-                        <h5 class="modal-title" id="modalAsistenciaLabel">Registrar Asistencia</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+        <div class="modal fade" id="modalAsistencia" tabindex="-1" aria-labelledby="modalAsistenciaLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content" style="padding: 25px 25px 0px 25px;">
+                    <div class="text-light text-end" style="margin: 20px 20px 0px 0px;">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form id="formAsistencia" autocomplete="off">
@@ -311,7 +295,7 @@ require_once("comunes/notificaciones.php");
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="asistenciaEstudiante">Estudiante</label>
-                                        <select class="form-control" id="asistenciaEstudiante" required>
+                                        <select class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="asistenciaEstudiante" required>
                                             <option value="">Seleccione un estudiante</option>
                                         </select>
                                     </div>
@@ -319,7 +303,7 @@ require_once("comunes/notificaciones.php");
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="asistenciaArea">Área</label>
-                                        <select class="form-control" id="asistenciaArea" required>
+                                        <select class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="asistenciaArea" required>
                                             <option value="">Seleccione un área</option>
                                         </select>
                                     </div>
@@ -329,13 +313,13 @@ require_once("comunes/notificaciones.php");
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="asistenciaFechaInicio">Fecha de Inicio</label>
-                                        <input type="date" class="form-control" id="asistenciaFechaInicio" required>
+                                        <input type="date" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="asistenciaFechaInicio" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="asistenciaFechaFin">Fecha de Finalización (opcional)</label>
-                                        <input type="date" class="form-control" id="asistenciaFechaFin">
+                                        <input type="date" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="asistenciaFechaFin">
                                     </div>
                                 </div>
                             </div>
@@ -346,8 +330,8 @@ require_once("comunes/notificaciones.php");
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-info" id="btnGuardarAsistencia">Guardar</button>
+                        <button type="button" class="btn boton" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn botonverde" id="btnGuardarAsistencia">Guardar</button>
                     </div>
                 </div>
             </div>
@@ -357,18 +341,16 @@ require_once("comunes/notificaciones.php");
         <div class="modal fade" id="modalConfirmacion" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header bg-warning">
+                    <div class="modal-header">
                         <h5 class="modal-title">Confirmación</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body" id="mensajeConfirmacion">
                         ¿Está seguro de eliminar este registro?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-danger" id="btnConfirmarEliminar">Eliminar</button>
+                        <button type="button" class="btn boton" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn botonrojo" id="btnConfirmarEliminar">Eliminar</button>
                     </div>
                 </div>
             </div>

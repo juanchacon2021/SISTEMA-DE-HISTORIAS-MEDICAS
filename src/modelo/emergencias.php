@@ -26,55 +26,26 @@ class emergencias extends datos{
 
 	
 	
+
 	
-	
-	function set_horaingreso($valor){
-		$this->horaingreso = $valor;
-	}
-	
-	function set_fechaingreso($valor){
-		$this->fechaingreso = $valor;
-	}
+	public function setDatos($datos, $accion) {
+		// Comunes a todas las acciones
+		if (isset($datos['horaingreso'])) $this->horaingreso = $datos['horaingreso'];
+		if (isset($datos['fechaingreso'])) $this->fechaingreso = $datos['fechaingreso'];
+		if (isset($datos['motingreso'])) $this->motingreso = $datos['motingreso'];
+		if (isset($datos['diagnostico_e'])) $this->diagnostico_e = $datos['diagnostico_e'];
+		if (isset($datos['tratamientos'])) $this->tratamientos = $datos['tratamientos'];
+		if (isset($datos['cedula_personal'])) $this->cedula_personal = $datos['cedula_personal'];
+		if (isset($datos['cedula_paciente'])) $this->cedula_paciente = $datos['cedula_paciente'];
+		if (isset($datos['procedimiento'])) $this->procedimiento = $datos['procedimiento'];
 
-	function set_motingreso($valor){
-		$this->motingreso = $valor;
-	}
-
-	function set_diagnostico_e($valor){
-		$this->diagnostico_e = $valor;
-	}
-
-	function set_tratamientos($valor){
-		$this->tratamientos = $valor;
-	}
-	
-	function set_cedula_personal($valor){
-		$this->cedula_personal = $valor;
-	}
-	
-	
-	function set_procedimiento($valor){
-		$this->procedimiento = $valor;
-	}
-
-	function set_cedula_paciente($valor){
-		$this->cedula_paciente = $valor;
-	}
-
-	function set_old_cedula_paciente($valor){ 
-		$this->old_cedula_paciente = $valor; 
-	}
-
-	function set_old_cedula_personal($valor){ 
-		$this->old_cedula_personal = $valor; 
-	}
-
-	function set_old_fechaingreso($valor){ 
-		$this->old_fechaingreso = $valor; 
-	}
-
-	function set_old_horaingreso($valor){ 
-		$this->old_horaingreso = $valor; 
+		// Solo para modificar
+		if ($accion === 'modificar') {
+			if (isset($datos['old_cedula_paciente'])) $this->old_cedula_paciente = $datos['old_cedula_paciente'];
+			if (isset($datos['old_cedula_personal'])) $this->old_cedula_personal = $datos['old_cedula_personal'];
+			if (isset($datos['old_fechaingreso'])) $this->old_fechaingreso = $datos['old_fechaingreso'];
+			if (isset($datos['old_horaingreso'])) $this->old_horaingreso = $datos['old_horaingreso'];
+		}
 	}
 
 

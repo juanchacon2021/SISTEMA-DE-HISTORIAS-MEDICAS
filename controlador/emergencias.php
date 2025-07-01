@@ -11,7 +11,48 @@ if(is_file("vista/".$pagina.".php")){
     if(!empty($_POST)){
         $o = new emergencias();
 
+<<<<<<< HEAD
         $accion = $_POST['accion'];
+=======
+		$accion = $_POST['accion'];
+		  
+		switch ($accion) {
+			case 'consultar':
+				echo json_encode($o->consultar());
+				break;
+				
+			case 'listadopersonal':
+				$respuesta = $o->listadopersonal();
+				echo json_encode($respuesta);
+				break;
+				
+			case 'listadopacientes':
+				$respuesta = $o->listadopacientes();
+				echo json_encode($respuesta);
+				break;
+				
+			case 'eliminar':
+				
+				$o->setDatos($_POST, $accion);		
+				echo json_encode($o->eliminar());
+				break;
+				
+			case 'incluir':
+			
+				$o->setDatos($_POST, $accion);
+				echo json_encode($o->incluir());
+				break;
+				
+			case 'modificar':
+				$o->setDatos($_POST, $accion);
+				echo json_encode($o->modificar());
+				break;
+				
+			default:
+				// Código para acciones no reconocidas (opcional)
+				echo json_encode(['error' => 'Acción no reconocida']);
+		}
+>>>>>>> a5aba03ad16c3745bb648bf150066e4bfaed281b
 
         switch ($accion) {
             case 'consultar':
