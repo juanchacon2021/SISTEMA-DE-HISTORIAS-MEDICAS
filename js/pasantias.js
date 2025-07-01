@@ -129,16 +129,16 @@ function cargarEstudiantes() {
             <td>${estudiante.institucion}</td>
             <td>${estudiante.telefono || "N/A"}</td>
             <td class="text-center">
-                <div class="btn-group">
-                    <button class='btn btn-sm btn-primary mr-1' onclick='editarEstudiante(${JSON.stringify(
+                <div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
+                    <button type="button" class="btn btn-success" onclick='editarEstudiante(${JSON.stringify(
                       estudiante
                     )})'>
                         <img src="img/lapiz.svg" style="width: 20px">
                     </button>
-                    <button class='btn btn-sm btn-danger' onclick='confirmarEliminar("estudiante", "${
+                    <button type="button" class="btn btn-danger" onclick='confirmarEliminar("estudiante", "${
                       estudiante.cedula_estudiante
                     }")'>
-                        <img src='img/trash-can-solid.svg' style='width: 20px;'>
+                        <img src="img/basura.svg" style="width: 20px">
                     </button>
                 </div>
             </td>
@@ -269,16 +269,16 @@ function cargarAreas() {
             <td>${area.descripcion || "N/A"}</td>
             <td>${area.responsable}</td>
             <td class="text-center">
-                <div class="btn-group">
-                    <button class='btn btn-sm btn-primary mr-1' onclick='editarArea(${JSON.stringify(
+                <div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
+                    <button type="button" class="btn btn-success" onclick='editarArea(${JSON.stringify(
                       area
                     )})'>
                         <img src="img/lapiz.svg" style="width: 20px">
                     </button>
-                    <button class='btn btn-sm btn-danger' onclick='confirmarEliminar("area", "${
+                    <button type="button" class="btn btn-danger" onclick='confirmarEliminar("area", "${
                       area.cod_area
                     }")'>
-                        <img src='img/trash-can-solid.svg' style='width: 20px;'>
+                        <img src="img/basura.svg" style="width: 20px">
                     </button>
                 </div>
             </td>
@@ -407,20 +407,22 @@ function cargarAsistencia() {
             <td>${asistencia.fecha_fin || "En curso"}</td>
             <td>${
               asistencia.activo == 1
-                ? '<span class="badge badge-success" style="background-color: green;">Activo</span>'
-                : '<span class="badge badge-secondary" style="background-color: red;">Inactivo</span>'
+                ? '<span class="badge bg-success" style="background-color: green;">Activo</span>'
+                : '<span class="badge bg-secondary" style="background-color: red;">Inactivo</span>'
             }</td>
             <td class="text-center">
-                <button class='btn btn-sm btn-info mr-1' onclick='editarAsistencia(${JSON.stringify(
-                  asistencia
-                )})'>
-                    <img src="img/lapiz.svg" style="width: 20px">
-                </button>
-                <button class='btn btn-sm btn-danger' onclick='confirmarEliminar("asistencia", "${
-                  asistencia.cedula_estudiante
-                }", "${asistencia.fecha_inicio}")'>
-                    <img src='img/trash-can-solid.svg' style='width: 20px;'>
-                </button>
+                <div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
+                    <button type="button" class="btn btn-info" onclick='editarAsistencia(${JSON.stringify(
+                      asistencia
+                    )})'>
+                        <img src="img/lapiz.svg" style="width: 20px">
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick='confirmarEliminar("asistencia", "${
+                      asistencia.cedula_estudiante
+                    }", "${asistencia.fecha_inicio}")'>
+                        <img src="img/basura.svg" style="width: 20px">
+                    </button>
+                </div>
             </td>
         </tr>`;
         $("#resultadoAsistencia").append(fila);

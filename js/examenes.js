@@ -36,13 +36,6 @@ $(document).ready(function () {
     }
   });
 
-  // Filtros para registros
-  $("#filtroPaciente, #filtroFechaExamen, #filtroTipoExamen").change(
-    function () {
-      cargarRegistrosExamen();
-    }
-  );
-
   // Validaciones de formulario
   $("#nombre_examen").on("keypress", function (e) {
     validarkeypress(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]*$/, e);
@@ -82,17 +75,17 @@ function cargarTiposExamen() {
                     <td>${tipo.cod_examen}</td>
                     <td>${tipo.nombre_examen}</td>
                     <td>${tipo.descripcion_examen || "N/A"}</td>
-                    <td class="text-center">
-                        <div class="btn-group">
-                            <button class='btn btn-sm btn-primary mr-1' onclick='editarTipoExamen(${JSON.stringify(
+                    <td>
+                        <div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
+                            <button type="button" class="btn btn-success" onclick='editarTipoExamen(${JSON.stringify(
                               tipo
                             )})'>
                                 <img src="img/lapiz.svg" style="width: 20px">
                             </button>
-                            <button class='btn btn-sm btn-danger' onclick='confirmarEliminar("tipo", "${
+                            <button type="button" class="btn btn-danger" onclick='confirmarEliminar("tipo", "${
                               tipo.cod_examen
                             }")'>
-                                <img src='img/trash-can-solid.svg' style='width: 20px;'>
+                                <img src="img/basura.svg" style="width: 20px">
                             </button>
                         </div>
                     </td>
@@ -117,10 +110,6 @@ function cargarTiposExamen() {
         },
         responsive: true,
         autoWidth: false,
-        columnDefs: [
-          { orderable: false, targets: -1 },
-          { className: "text-center", targets: -1 },
-        ],
         order: [[1, "asc"]],
       });
     }
@@ -193,6 +182,7 @@ function eliminarTipoExamenConfirmado() {
 }
 
 // Funciones para registros de examen
+
 function cargarRegistrosExamen() {
   var datos = new FormData();
   datos.append("accion", "consultar_registros");
@@ -221,22 +211,24 @@ function cargarRegistrosExamen() {
                     <td>${registro.nombre_examen}</td>
                     <td>${registro.fecha_e} ${registro.hora_e}</td>
                     <td>${registro.observacion_examen || "N/A"}</td>
-                    <td class="text-center">
-                        <div class="btn-group">
-                            <button class='btn btn-sm btn-info mr-1' onclick='editarRegistroExamen(${JSON.stringify(
+                    <td>
+                        <div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
+                            <button type="button" class="btn btn-success" onclick='editarRegistroExamen(${JSON.stringify(
                               registro
                             )})'>
                                 <img src="img/lapiz.svg" style="width: 20px">
                             </button>
-                            <button class='btn btn-sm btn-danger mr-1' onclick='confirmarEliminar("registro", "${registro.cedula_paciente}|${registro.fecha_e}|${registro.cod_examen}")'>
-                                <img src='img/trash-can-solid.svg' style='width: 20px;'>
+                            <button type="button" class="btn btn-danger" onclick='confirmarEliminar("registro", "${
+                              registro.cedula_paciente
+                            }|${registro.fecha_e}|${registro.cod_examen}")'>
+                                <img src="img/basura.svg" style="width: 20px">
                             </button>
                             ${
                               registro.ruta_imagen
-                                ? `<a class='btn btn-sm btn-primary' href="${registro.ruta_imagen}" target="_blank">
-                                    <img src='img/ojo.svg' style='width: 20px;'>
-                                </a>`
-                                : '<button class="btn btn-sm btn-secondary" disabled><img src="img/eye-slash-solid.svg" style="width: 20px;"></button>'
+                                ? `<button type="button" class="btn btn-primary" onclick='mostrarImagenExamen("${registro.ruta_imagen}")'>
+                                  <img src="img/ojo.svg" style="width: 20px">
+                              </button>`
+                                : '<button type="button" class="btn btn-secondary" disabled><img src="img/ojo-cruzado.svg" style="width: 20px"></button>'
                             }
                         </div>
                     </td>
@@ -261,14 +253,20 @@ function cargarRegistrosExamen() {
         },
         responsive: true,
         autoWidth: false,
-        columnDefs: [
-          { orderable: false, targets: -1 },
-          { className: "text-center", targets: -1 },
-        ],
         order: [[2, "desc"]],
       });
     }
   });
+}
+
+function mostrarImagenExamen(rutaImagen) {
+    if (!rutaImagen) {
+        muestraMensaje("No hay imagen disponible para este examen", "error");
+        return;
+    }
+    
+    $("#imagenGrandeExamen").attr("src", rutaImagen);
+    $("#modalImagenExamen").modal("show");
 }
 
 function mostrarModalRegistroExamen(datos = null) {
@@ -389,11 +387,11 @@ function guardarRegistroExamen() {
 }
 
 function eliminarRegistroExamenConfirmado() {
-  var partes = idActual.split('|');
+  var partes = idActual.split("|");
   var cedula = partes[0];
   var fecha = partes[1];
   var examen = partes[2];
-  
+
   var datos = new FormData();
   datos.append("accion", "eliminar_registro");
   datos.append("cedula_paciente", cedula);
