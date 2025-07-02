@@ -400,6 +400,47 @@ function enviaAjax(datos, callback) {
   });
 }
 
+<<<<<<< HEAD
+function muestraMensaje(mensaje, tipo = 'error') {
+    const modal = $('#mostrarmodal');
+    const contenido = $('#contenidodemodal');
+    
+    contenido.html(mensaje);
+    
+    if(tipo == 'error') {
+        modal.find('.modal-header').removeClass('bg-success').addClass('bg-danger');
+    } else {
+        modal.find('.modal-header').removeClass('bg-danger').addClass('bg-success');
+    }
+    
+    modal.modal('show');
+    
+    setTimeout(function() {
+        modal.modal('hide');
+    }, 5000);
+}
+
+
+// NOTIFICACIONES
+const ws = new WebSocket('ws://localhost:8080');
+
+ws.onopen = function() {
+    console.log('Conectado al WebSocket');
+};
+
+ws.onclose = function() {
+    console.log('WebSocket cerrado');
+};
+
+ws.onerror = function(error) {
+    console.error('WebSocket error:', error);
+};
+
+// Ejemplo: enviar un mensaje (puedes quitar esto si solo quieres recibir)
+function enviarNotificacion(msg) {
+    ws.send(msg);
+}
+=======
 function muestraMensaje(mensaje, tipo = "error") {
   const modal = $("#mostrarmodal");
   const contenido = $("#contenidodemodal");
@@ -418,3 +459,4 @@ function muestraMensaje(mensaje, tipo = "error") {
     modal.modal("hide");
   }, 5000);
 }
+>>>>>>> a5aba03ad16c3745bb648bf150066e4bfaed281b

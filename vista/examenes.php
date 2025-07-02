@@ -1,6 +1,7 @@
 <?php
 require_once("comunes/encabezado.php");
 require_once("comunes/sidebar.php");
+require_once("comunes/notificaciones.php");
 
 if (!isset($_SESSION['permisos']) || !is_array($_SESSION['permisos'])) {
     header("Location: ?pagina=login");

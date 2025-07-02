@@ -937,3 +937,23 @@ function limpia() {
   $("#formModulo")[0].reset();
   $(".invalid-feedback").text("");
 }
+
+// NOTIFICACIONES
+const ws = new WebSocket('ws://localhost:8080');
+
+ws.onopen = function() {
+    console.log('Conectado al WebSocket');
+};
+
+ws.onclose = function() {
+    console.log('WebSocket cerrado');
+};
+
+ws.onerror = function(error) {
+    console.error('WebSocket error:', error);
+};
+
+// Ejemplo: enviar un mensaje (puedes quitar esto si solo quieres recibir)
+function enviarNotificacion(msg) {
+    ws.send(msg);
+}

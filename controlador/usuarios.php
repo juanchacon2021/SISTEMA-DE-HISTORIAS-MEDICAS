@@ -62,6 +62,7 @@ if (is_file("vista/" . $pagina . ".php")) {
                 break;
 
             case 'actualizar_permisos':
+            case 'actualizar_permisos':
                 $permisos = isset($_POST['permisos']) ? json_decode($_POST['permisos'], true) : array();
                 echo json_encode($o->actualizar_permisos($datos['rol_id'], $permisos));
                 break;
@@ -75,7 +76,11 @@ if (is_file("vista/" . $pagina . ".php")) {
                 echo json_encode($o->eliminar_foto_perfil($datos['id']));
                 break;
 
+
             case 'obtener_personal':
+                echo json_encode($o->obtener_personal());
+                break;
+
                 echo json_encode($o->obtener_personal());
                 break;
 

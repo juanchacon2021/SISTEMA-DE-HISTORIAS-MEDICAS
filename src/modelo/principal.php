@@ -1,6 +1,10 @@
 <?php
 namespace Shm\Shm\modelo;
+require_once __DIR__ . '/datos.php';
+
+use Shm\Shm\modelo\datos;
 use PDO;
+use Exception;
 
 class principal extends datos {
     public static function obtenerNotificaciones($limite = 10) {
@@ -36,6 +40,21 @@ class principal extends datos {
             ];
         }
         return $resultado;
+    }
+    public static function obtenerTotales($cedula_usuario) {
+        $co = (new self())->conecta(); // Usa conecta() como en los otros modelos
+
+        // Total pacientes
+        $stmt = $co->query("SELECT COUNT(*) AS total FROM paciente");
+        $totalPacientes = $stmt->fetchColumn();
+
+        // Total personal activo (ajusta si no tienes estatus)
+        $stmt = $co->query("SELECT COUNT(*) AS total FROM personal");
+        $totalPersonal = $stmt->fetchColumn();
+        return [
+            'pacientes' => $totalPacientes,
+            'personal' => $totalPersonal
+        ];
     }
 }
 ?>

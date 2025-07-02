@@ -1,6 +1,7 @@
-<?php
-require_once("comunes/encabezado.php");
-require_once("comunes/sidebar.php");
+<?php 
+require_once("comunes/encabezado.php"); 
+require_once("comunes/sidebar.php");  
+require_once("comunes/notificaciones.php");  
 ?>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -18,13 +19,13 @@ require_once("comunes/sidebar.php");
     }
     ?>
 
-    <div class="wrapper">
-
-        <div class="container espacio">
-            <section class="content">
-                <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
-                    Gestión de Usuarios y Permisos
-                </div>
+<div class="wrapper">
+    
+    <div class="container espacio">
+        <section class="content">
+        <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
+            Gestión de Usuarios y Permisos
+        </div>
 
                 <div class="container-fluid d-flex">
                     <!-- Tabs -->

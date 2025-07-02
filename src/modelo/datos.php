@@ -6,7 +6,7 @@ class datos{
     private $bd = "sgm";
     private $bd2 = "seguridad";
     private $usuario = "root";
-    private $contrasena = "";
+    private $contrasena = "123456";
    
     
     
