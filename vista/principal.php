@@ -104,6 +104,46 @@
         </div>
     </div>
 
+    <!-- Frase motivacional -->
+    <div id="frase-motivacional" style="
+        position: fixed;
+        left: 350px;
+        bottom: 30px;
+        background: rgba(255,255,255,0.95);
+        color: #a11212;
+        font-size: 1.2rem;
+        font-family: 'Sora', sans-serif;
+        border-radius: 1rem;
+        box-shadow: 0 2px 8px #eee;
+        padding: 1.2rem 2rem;
+        min-width: 260px;
+        max-width: 350px;
+        z-index: 1003;
+        text-align: left;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        font-style: italic;
+    ">
+    </div>
+
+    <script>
+    // Frases motivacionales modernas
+    const frases = [
+        "¡Hoy es un gran día para ayudar y sanar!",
+        "Cada paciente es una oportunidad para marcar la diferencia.",
+        "La salud es el regalo más grande, cuídala.",
+        "Tu vocación transforma vidas. ¡Sigue adelante!",
+        "La empatía y la dedicación salvan más que cualquier medicina.",
+        "Pequeños actos, grandes cambios.",
+        "El esfuerzo de hoy es el bienestar de mañana.",
+        "¡Gracias por ser parte de este equipo humano!",
+        "La sonrisa es el mejor remedio.",
+        "Juntos construimos salud y esperanza."
+    ];
+    // Selecciona una frase aleatoria
+    document.getElementById('frase-motivacional').textContent =
+        frases[Math.floor(Math.random() * frases.length)];
+    </script>
     <script src="js/principal.js"></script>
 </body>
 </html>
