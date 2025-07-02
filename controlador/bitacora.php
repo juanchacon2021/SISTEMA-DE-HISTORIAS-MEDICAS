@@ -5,6 +5,7 @@ if (!is_file("modelo/".$pagina.".php")){
 }
 
 require_once("modelo/".$pagina.".php");  
+require_once("modelo/bitacora.php");
 
 if(is_file("vista/".$pagina.".php")){ 
     if(!empty($_POST)){
@@ -19,7 +20,6 @@ if(is_file("vista/".$pagina.".php")){
                     'datos' => $registros
                 ));
                 break;
-                
             default:
                 echo json_encode(array(
                     'resultado' => 'error',

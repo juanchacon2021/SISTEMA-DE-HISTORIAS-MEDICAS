@@ -4,8 +4,9 @@ if (!is_file("src/modelo/".$pagina.".php")){
     exit;
 }  
 
-
 use Shm\Shm\modelo\inventario;
+require_once("modelo/bitacora.php");
+
 if(is_file("vista/".$pagina.".php")) {
     if(!empty($_POST)){
         $o = new inventario();
@@ -65,39 +66,88 @@ if(is_file("vista/".$pagina.".php")) {
                 exit;
                 
             case 'incluir_medicamento':
-                $resultado = $o->incluir();
-                while(ob_get_length()) ob_end_clean(); // Limpia cualquier salida previa
-                header('Content-Type: application/json');
-                echo json_encode($resultado);
-                bitacora::registrar('Registrar', 'Se ha registrado un medicamento: '.$_POST['nombre']);
-                exit;
+                try {
+                    $resultado = $o->incluir();
+                    while(ob_get_length()) ob_end_clean();
+                    header('Content-Type: application/json');
+                    echo json_encode($resultado);
+                    bitacora::registrarYNotificar(
+                        'Registrar',
+                        'Se ha registrado un medicamento: '.$_POST['nombre'],
+                        $_SESSION['usuario']
+                    );
+                    exit;
+                } catch(Exception $e) {
+                    while(ob_get_length()) ob_end_clean();
+                    echo json_encode([
+                        'resultado' => 'error',
+                        'mensaje' => 'Error en el servidor: ' . $e->getMessage()
+                    ]);
+                    exit;
+                }
                 
             case 'modificar_medicamento':
-                echo json_encode($o->modificar());
-                bitacora::registrar('Modificar', 'Se ha modificado un medicamento: '.$_POST['nombre']);
-                exit;
+                try {
+                    $resultado = $o->modificar();
+                    echo json_encode($resultado);
+                    bitacora::registrarYNotificar(
+                        'Modificar',
+                        'Se ha modificado un medicamento: '.$_POST['nombre'],
+                        $_SESSION['usuario']
+                    );
+                    exit;
+                } catch(Exception $e) {
+                    echo json_encode([
+                        'resultado' => 'error',
+                        'mensaje' => 'Error en el servidor: ' . $e->getMessage()
+                    ]);
+                    exit;
+                }
                 
             case 'registrar_entrada':
-                $o->set_cod_medicamento($_POST['cod_medicamento']);
-                $o->set_cantidad_lote($_POST['cantidad']);
-                $o->set_fecha_vencimiento($_POST['fecha_vencimiento']);
-                $o->set_proveedor($_POST['proveedor']);
-                $o->set_cedula_personal($_SESSION['cedula_personal']);
-                $resultado = $o->registrar_entrada();
-                echo json_encode($resultado);
-                bitacora::registrar('Entrada', 'Entrada de medicamento: '.$_POST['cod_medicamento']);
-                exit;
+                try {
+                    $o->set_cod_medicamento($_POST['cod_medicamento']);
+                    $o->set_cantidad_lote($_POST['cantidad']);
+                    $o->set_fecha_vencimiento($_POST['fecha_vencimiento']);
+                    $o->set_proveedor($_POST['proveedor']);
+                    $o->set_cedula_personal($_SESSION['cedula_personal']);
+                    $resultado = $o->registrar_entrada();
+                    echo json_encode($resultado);
+                    bitacora::registrarYNotificar(
+                        'Entrada',
+                        'Entrada de medicamento: '.$_POST['cod_medicamento'],
+                        $_SESSION['usuario']
+                    );
+                    exit;
+                } catch(Exception $e) {
+                    echo json_encode([
+                        'resultado' => 'error',
+                        'mensaje' => 'Error en el servidor: ' . $e->getMessage()
+                    ]);
+                    exit;
+                }
                 
             case 'registrar_salida':
-                $o = new inventario();
-                $o->set_cod_medicamento($_POST['cod_medicamento']);
-                $o->set_cantidad_lote($_POST['cantidad']); // cantidad a retirar
-                $o->set_cedula_personal($_SESSION['cedula_personal']); // quien realiza la salida
-
-                $resultado = $o->registrar_salida();
-                echo json_encode($resultado);
-                bitacora::registrar('Salida', 'Salida de medicamento: '.$_POST['cod_medicamento']);
-                exit;
+                try {
+                    $o = new inventario();
+                    $o->set_cod_medicamento($_POST['cod_medicamento']);
+                    $o->set_cantidad_lote($_POST['cantidad']);
+                    $o->set_cedula_personal($_SESSION['cedula_personal']);
+                    $resultado = $o->registrar_salida();
+                    echo json_encode($resultado);
+                    bitacora::registrarYNotificar(
+                        'Salida',
+                        'Salida de medicamento: '.$_POST['cod_medicamento'],
+                        $_SESSION['usuario']
+                    );
+                    exit;
+                } catch(Exception $e) {
+                    echo json_encode([
+                        'resultado' => 'error',
+                        'mensaje' => 'Error en el servidor: ' . $e->getMessage()
+                    ]);
+                    exit;
+                }
                 
             case 'registrar_salida_multiple':
                 if (!isset($_POST['salidas'])) {
@@ -108,15 +158,33 @@ if(is_file("vista/".$pagina.".php")) {
                     echo json_encode(['resultado' => 'error', 'mensaje' => 'No hay lotes válidos para salida']);
                     exit;
                 }
-                $o->set_cedula_personal($_SESSION['usuario']); // <-- aquí el cambio
+                $o->set_cedula_personal($_SESSION['usuario']);
                 $resultado = $o->registrar_salida_multiple($salidas);
                 echo json_encode($resultado);
+                bitacora::registrarYNotificar(
+                    'Salida',
+                    'Salida múltiple de medicamentos',
+                    $_SESSION['usuario']
+                );
                 exit;
                 
             case 'eliminar_medicamento':
-                echo json_encode($o->eliminar());
-                bitacora::registrar('Eliminar', 'Se ha eliminado un medicamento: '.$_POST['cod_medicamento']);
-                exit;
+                try {
+                    $resultado = $o->eliminar();
+                    echo json_encode($resultado);
+                    bitacora::registrarYNotificar(
+                        'Eliminar',
+                        'Se ha eliminado un medicamento: '.$_POST['cod_medicamento'],
+                        $_SESSION['usuario']
+                    );
+                    exit;
+                } catch(Exception $e) {
+                    echo json_encode([
+                        'resultado' => 'error',
+                        'mensaje' => 'Error en el servidor: ' . $e->getMessage()
+                    ]);
+                    exit;
+                }
                 
             case 'registrar_entrada_multiple':
                 if (!isset($_POST['lotes'])) {
@@ -127,9 +195,14 @@ if(is_file("vista/".$pagina.".php")) {
                     echo json_encode(['resultado' => 'error', 'mensaje' => 'No hay lotes válidos para entrada']);
                     exit;
                 }
-                $o->set_cedula_personal($_SESSION['usuario']); // <-- SIEMPRE la cédula
+                $o->set_cedula_personal($_SESSION['usuario']);
                 $resultado = $o->registrar_entrada_multiple($lotes);
                 echo json_encode($resultado);
+                bitacora::registrarYNotificar(
+                    'Entrada',
+                    'Entrada múltiple de medicamentos',
+                    $_SESSION['usuario']
+                );
                 exit;
         }
         exit;

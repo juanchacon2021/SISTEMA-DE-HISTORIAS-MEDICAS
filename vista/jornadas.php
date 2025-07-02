@@ -1,13 +1,7 @@
-<<<<<<< HEAD
 <?php 
 require_once("comunes/encabezado.php"); 
 require_once("comunes/sidebar.php");  
 require_once("comunes/notificaciones.php"); 
-=======
-<?php
-require_once("comunes/encabezado.php");
-require_once("comunes/sidebar.php");
->>>>>>> a5aba03ad16c3745bb648bf150066e4bfaed281b
 ?>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -25,23 +19,12 @@ require_once("comunes/sidebar.php");
     }
     ?>
 
-<<<<<<< HEAD
-<div class="wrapper">
+    <div class="wrapper">
     <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
         Jornadas Médicas
     </div>
-   
-    <div class="container espacio">
-        
-        <section class="content">
-=======
-    <div class="wrapper">
         <div class="container espacio">
             <section class="content">
-                <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
-                    Jornadas Médicas
-                </div>
->>>>>>> a5aba03ad16c3745bb648bf150066e4bfaed281b
 
                 <div class="container-fluid">
                     <div class="cardd">
