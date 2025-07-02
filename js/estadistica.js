@@ -91,6 +91,41 @@ $(document).ready(function(){
     consultarMedicamentosMasUsados();
     consultarMedicamentosPorVencer();
     consultarTotalesGenerales();
+
+    const carruselInner = document.getElementById('carrusel-inner');
+    const cards = carruselInner.children;
+    const cardsToShow = 2;
+    let currentIndex = 0;
+    const totalCards = cards.length;
+
+   
+
+    function updateCarousel() {
+    carruselInner.style.transform = `translateX(-${currentIndex * (cards[0].offsetWidth + 16)}px)`;
+    }
+
+    // Botón siguiente
+    document.getElementById('nextBtn').onclick = function() {
+        currentIndex++;
+        if (currentIndex > totalCards - cardsToShow) {
+            currentIndex = 0; // Vuelve al primer slide
+        }
+        updateCarousel();
+    };
+
+    // Botón anterior
+    document.getElementById('prevBtn').onclick = function() {
+        currentIndex--;
+        if (currentIndex < 0) {
+            currentIndex = totalCards - cardsToShow; // Vuelve al último slide visible
+        }
+        updateCarousel();
+    };
+
+    updateCarousel();
+
+
+
 });
 
 function enviaAjax(datos, tipo) {
@@ -117,7 +152,7 @@ function enviaAjax(datos, tipo) {
                                 label: 'Distribución por Edad',
                                 data: [lee.distribucionEdad.Ninos, lee.distribucionEdad.Adolescentes, 
                                        lee.distribucionEdad.Adultos, lee.distribucionEdad.AdultosMayores],
-                                backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0'],
+                                backgroundColor: ['#F8C8C8', '#E34234', '#DC143C', '#800020'],
                                 borderColor: '#fff',
                                 borderWidth: 2
                             }]
@@ -132,10 +167,10 @@ function enviaAjax(datos, tipo) {
 
                          // Calcular el rango con mayor cantidad y su color
                     const rangos = [
-                        { nombre: 'Niños (0-12)', valor: lee.distribucionEdad.Ninos, color: '#36A2EB' },
-                        { nombre: 'Adolescentes (13-17)', valor: lee.distribucionEdad.Adolescentes, color: '#FF6384' },
-                        { nombre: 'Adultos (18-64)', valor: lee.distribucionEdad.Adultos, color: '#FFCE56' },
-                        { nombre: 'Adultos Mayores (65+)', valor: lee.distribucionEdad.AdultosMayores, color: '#4BC0C0' }
+                        { nombre: 'Niños (0-12)', valor: lee.distribucionEdad.Ninos, color: '#F8C8C8' },
+                        { nombre: 'Adolescentes (13-17)', valor: lee.distribucionEdad.Adolescentes, color: '#E34234' },
+                        { nombre: 'Adultos (18-64)', valor: lee.distribucionEdad.Adultos, color: '#DC143C' },
+                        { nombre: 'Adultos Mayores (65+)', valor: lee.distribucionEdad.AdultosMayores, color: '#800020' }
                     ];
                     const mayor = rangos.reduce((a, b) => a.valor > b.valor ? a : b);
                     
@@ -155,16 +190,24 @@ function enviaAjax(datos, tipo) {
                 
                     // Paleta de 10 colores fijos + 1 para "Otros"
                     const baseColors = [
-                        '#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0', '#9966FF',
-                        '#FF9F40', '#C9CBCF', '#FFCD56', '#4D5360', '#B2FF66'
+                        '#F8C8C8', // Rosa antiguo (rojo pálido)
+                        '#F08080', // Coral claro (rojo cálido)
+                        '#FA8072', // Rojo salmón (cálido y terroso)
+                        '#E34234', // Bermellón (vibrante anaranjado)
+                        '#D22B2B', // Rojo cadmio (clásico intenso)
+                        '#DC143C', // Carmesí (profundo azulado)
+                        '#BB0A1E', // Rojo sangre (oscuro dramático)
+                        '#800020', // Burdeos (vino elegante)
+                        '#9E2B27', // Rojo óxido (terroso apagado)
+                        '#5E1916'  // Rojo sombra (casi marrón)
                     ];
                     // Si hay "Otros", agrégale un color especial al final
                     let backgroundColors = baseColors.slice(0, 10);
                     if (labels.length > 10) {
-                        backgroundColors.push('#888888'); // Gris para "Otros"
+                        backgroundColors.push('#9E9E9E'); // Gris para "Otros"
                     } else if (labels.length === 11) {
                         // Si justo hay 11 (10 + "Otros"), también agrega el color extra
-                        backgroundColors.push('#888888');
+                        backgroundColors.push('#9E9E9E');
                     } else {
                         backgroundColors = baseColors.slice(0, labels.length);
                     }
@@ -222,8 +265,8 @@ function enviaAjax(datos, tipo) {
                             datasets: [{
                                 label: 'Emergencias por Día',
                                 data: valores,
-                                borderColor: '#FF6384',
-                                backgroundColor: 'rgba(255,99,132,0.2)',
+                                borderColor: '#DC143C', // Rojo carmesí (más vibrante)
+                                backgroundColor: 'rgba(220, 20, 60, 0.15)', // 15% de opacidad para mejor legibilidad
                                 fill: true,
                                 tension: 0.3,
                                 pointRadius: 5,
@@ -268,8 +311,8 @@ function enviaAjax(datos, tipo) {
                             datasets: [{
                                 label: 'Consultas por Día',
                                 data: valores,
-                                backgroundColor: 'rgba(54, 162, 235, 0.6)', // Azul
-                                borderColor: 'rgba(54, 162, 235, 1)',       // Azul más fuerte
+                                backgroundColor: 'rgba(175, 2, 45, 0.5)',   // Burdeos (#800020) al 50% opacidad
+                                borderColor: 'rgb(117, 15, 10)',
                                 fill: true,
                                 tension: 0.3,
                                 pointRadius: 5,
@@ -327,9 +370,17 @@ function enviaAjax(datos, tipo) {
                     // Etiqueta: nombre + fecha de vencimiento
                     const labels = datos.map(d => `Lote: ${d.cod_lote} -(${d.fecha_vencimiento})`);
                     const valores = datos.map(d => parseInt(d.cantidad));
-                    const backgroundColors = [
-                        '#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0', '#9966FF',
-                        '#FF9F40', '#C9CBCF', '#FFCD56', '#4D5360', '#B2FF66'
+                   const backgroundColors = [
+                        '#F8C8C8', // Rosa antiguo (rojo pálido suave)
+                        '#F08080', // Coral claro (rojo cálido luminoso)
+                        '#FA8072', // Rojo salmón (cálido y terroso)
+                        '#E34234', // Bermellón (intenso con toque naranja)
+                        '#D22B2B', // Rojo cadmio (clásico y vibrante)
+                        '#DC143C', // Carmesí (profundo con matiz azulado)
+                        '#BB0A1E', // Rojo sangre (oscuro y dramático)
+                        '#800020', // Burdeos (elegante rojo vino)
+                        '#9E2B27', // Rojo óxido (terroso y apagado)
+                        '#5E1916'  // Rojo sombra (casi marrón, muy oscuro)
                     ].slice(0, labels.length);
 
                     const ctx = document.getElementById('graficoMedicamentosPorVencer').getContext('2d');
@@ -383,10 +434,18 @@ function enviaAjax(datos, tipo) {
                     const labels = datos.map(d => d.medicamento);
                     const valores = datos.map(d => parseInt(d.cantidad_total));
                     // Paleta de 10 colores fijos
-                    const backgroundColors = [
-                        '#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0', '#9966FF',
-                        '#FF9F40', '#C9CBCF', '#FFCD56', '#4D5360', '#B2FF66'
-                    ];
+                  const backgroundColors = [
+                    '#F8C8C8', // Rosa antiguo (rojo pálido suave)
+                    '#F08080', // Coral claro (rojo cálido luminoso)
+                    '#FA8072', // Rojo salmón (cálido y terroso)
+                    '#E34234', // Bermellón (intenso con toque naranja)
+                    '#D22B2B', // Rojo cadmio (clásico y vibrante)
+                    '#DC143C', // Carmesí (profundo con matiz azulado)
+                    '#BB0A1E', // Rojo sangre (oscuro y dramático)
+                    '#800020', // Burdeos (elegante rojo vino)
+                    '#9E2B27', // Rojo óxido (terroso y apagado)
+                    '#5E1916'  // Rojo sombra (casi marrón, muy oscuro)
+                ];
 
                     const ctx = document.getElementById('graficoMedicamentos').getContext('2d');
                     if (window.graficoMedicamentos && typeof window.graficoMedicamentos.destroy === "function") {
