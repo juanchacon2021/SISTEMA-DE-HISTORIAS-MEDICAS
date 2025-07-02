@@ -1,7 +1,13 @@
 <?php
-require_once('modelo/datos.php');
 
-class jornadas extends datos {
+namespace Shm\Shm\modelo;
+
+use Shm\Shm\modelo\datos;
+use PDO;
+use Exception;
+
+class jornadas extends datos
+{
     private $cod_jornada;
     private $fecha_jornada;
     private $ubicacion;
@@ -12,7 +18,8 @@ class jornadas extends datos {
     private $pacientes_embarazadas;
     private $cedula_responsable;
     private $participantes = array();
-    
+
+    // Setters
     public function set_cod_jornada($valor) { $this->cod_jornada = $valor; }
     public function set_fecha_jornada($valor) { $this->fecha_jornada = $valor; }
     public function set_ubicacion($valor) { $this->ubicacion = $valor; }
@@ -29,7 +36,6 @@ class jornadas extends datos {
         $femeninos = $this->pacientes_femeninos;
         $embarazadas = $this->pacientes_embarazadas;
         
-        // Calcular el total automáticamente
         $this->total_pacientes = $masculinos + $femeninos;
         
         if($embarazadas > $femeninos) {
@@ -39,17 +45,39 @@ class jornadas extends datos {
         return true;
     }
 
-    public function incluir() {
+    public function gestionar_jornada($datos) {
+        $this->set_cod_jornada($datos['cod_jornada'] ?? '');
+        $this->set_fecha_jornada($datos['fecha_jornada'] ?? '');
+        $this->set_ubicacion($datos['ubicacion'] ?? '');
+        $this->set_descripcion($datos['descripcion'] ?? '');
+        $this->set_pacientes_masculinos($datos['pacientes_masculinos'] ?? 0);
+        $this->set_pacientes_femeninos($datos['pacientes_femeninos'] ?? 0);
+        $this->set_pacientes_embarazadas($datos['pacientes_embarazadas'] ?? 0);
+        $this->set_cedula_responsable($datos['cedula_responsable'] ?? '');
+        $this->set_participantes($datos['participantes'] ?? array());
+
+        switch ($datos['accion']) {
+            case 'incluir':
+                return $this->incluir();
+            case 'modificar':
+                return $this->modificar();
+            case 'eliminar':
+                return $this->eliminar();
+            default:
+                return array("resultado" => "error", "mensaje" => "Acción no válida");
+        }
+    }
+
+    private function incluir() {
         $this->validarPacientes();
-        
-        $co = $this->conecta();
-        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $conexion = $this->conecta();
+        $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
-        
+
         try {
-            $co->beginTransaction();
+            $conexion->beginTransaction();
             
-            $stmt = $co->prepare("INSERT INTO jornadas_medicas (
+            $stmt = $conexion->prepare("INSERT INTO jornadas_medicas (
                 fecha_jornada, ubicacion, descripcion, total_pacientes, 
                 pacientes_masculinos, pacientes_femeninos, pacientes_embarazadas, 
                 created_at
@@ -69,10 +97,10 @@ class jornadas extends datos {
                 ':embarazadas' => $this->pacientes_embarazadas
             ));
             
-            $cod_jornada = $co->lastInsertId();
+            $cod_jornada = $conexion->lastInsertId();
             
-            // Insertar responsable como participante
-            $stmt = $co->prepare("INSERT INTO participantes_jornadas (
+            // Insertar responsable
+            $stmt = $conexion->prepare("INSERT INTO participantes_jornadas (
                 cod_jornada, cedula_personal, tipo_participante
             ) VALUES (
                 :jornada, :personal, 'responsable'
@@ -82,15 +110,14 @@ class jornadas extends datos {
                 ':personal' => $this->cedula_responsable
             ));
             
-            // Insertar otros participantes
+            // Insertar participantes
             foreach($this->participantes as $participante) {
-                if($participante != $this->cedula_responsable) { // Evitar duplicar al responsable
-                    $stmt = $co->prepare("INSERT INTO participantes_jornadas (
+                if($participante != $this->cedula_responsable) {
+                    $stmt = $conexion->prepare("INSERT INTO participantes_jornadas (
                         cod_jornada, cedula_personal, tipo_participante
                     ) VALUES (
                         :jornada, :personal, 'participante'
                     )");
-                    
                     $stmt->execute(array(
                         ':jornada' => $cod_jornada,
                         ':personal' => $participante
@@ -98,29 +125,30 @@ class jornadas extends datos {
                 }
             }
             
-            $co->commit();
+            $conexion->commit();
             
             $r['resultado'] = 'incluir';
             $r['mensaje'] = 'Jornada registrada exitosamente';
         } catch(Exception $e) {
-            $co->rollBack();
+            $conexion->rollBack();
             $r['resultado'] = 'error';
             $r['mensaje'] = $e->getMessage();
+        } finally {
+            $this->cerrar_conexion($conexion);
         }
         return $r;
     }
     
-    public function modificar() {
+    private function modificar() {
         $this->validarPacientes();
-        
-        $co = $this->conecta();
-        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $conexion = $this->conecta();
+        $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
-        
+
         try {
-            $co->beginTransaction();
+            $conexion->beginTransaction();
             
-            $stmt = $co->prepare("UPDATE jornadas_medicas SET
+            $stmt = $conexion->prepare("UPDATE jornadas_medicas SET
                 fecha_jornada = :fecha,
                 ubicacion = :ubicacion,
                 descripcion = :descripcion,
@@ -142,10 +170,11 @@ class jornadas extends datos {
             ));
             
             // Eliminar participantes existentes
-            $co->query("DELETE FROM participantes_jornadas WHERE cod_jornada = '$this->cod_jornada'");
+            $stmt = $conexion->prepare("DELETE FROM participantes_jornadas WHERE cod_jornada = :codigo");
+            $stmt->execute([':codigo' => $this->cod_jornada]);
             
-            // Insertar responsable como participante
-            $stmt = $co->prepare("INSERT INTO participantes_jornadas (
+            // Insertar responsable
+            $stmt = $conexion->prepare("INSERT INTO participantes_jornadas (
                 cod_jornada, cedula_personal, tipo_participante
             ) VALUES (
                 :jornada, :personal, 'responsable'
@@ -155,15 +184,14 @@ class jornadas extends datos {
                 ':personal' => $this->cedula_responsable
             ));
             
-            // Insertar otros participantes
+            // Insertar participantes
             foreach($this->participantes as $participante) {
-                if($participante != $this->cedula_responsable) { // Evitar duplicar al responsable
-                    $stmt = $co->prepare("INSERT INTO participantes_jornadas (
+                if($participante != $this->cedula_responsable) {
+                    $stmt = $conexion->prepare("INSERT INTO participantes_jornadas (
                         cod_jornada, cedula_personal, tipo_participante
                     ) VALUES (
                         :jornada, :personal, 'participante'
                     )");
-                    
                     $stmt->execute(array(
                         ':jornada' => $this->cod_jornada,
                         ':personal' => $participante
@@ -171,95 +199,106 @@ class jornadas extends datos {
                 }
             }
             
-            $co->commit();
+            $conexion->commit();
             
             $r['resultado'] = 'modificar';
             $r['mensaje'] = 'Jornada actualizada exitosamente';
         } catch(Exception $e) {
-            $co->rollBack();
+            $conexion->rollBack();
             $r['resultado'] = 'error';
             $r['mensaje'] = $e->getMessage();
+        } finally {
+            $this->cerrar_conexion($conexion);
         }
         return $r;
     }
     
-    public function eliminar() {
-        $co = $this->conecta();
-        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    private function eliminar() {
+        $conexion = $this->conecta();
+        $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
-        
+
         try {
-            $co->beginTransaction();
+            $conexion->beginTransaction();
             
             // Eliminar participantes
-            $co->query("DELETE FROM participantes_jornadas WHERE cod_jornada = '$this->cod_jornada'");
+            $stmt = $conexion->prepare("DELETE FROM participantes_jornadas WHERE cod_jornada = :codigo");
+            $stmt->execute([':codigo' => $this->cod_jornada]);
             
             // Eliminar jornada
-            $co->query("DELETE FROM jornadas_medicas WHERE cod_jornada = '$this->cod_jornada'");
+            $stmt = $conexion->prepare("DELETE FROM jornadas_medicas WHERE cod_jornada = :codigo");
+            $stmt->execute([':codigo' => $this->cod_jornada]);
             
-            $co->commit();
+            $conexion->commit();
             
             $r['resultado'] = 'eliminar';
             $r['mensaje'] = 'Jornada eliminada exitosamente';
         } catch(Exception $e) {
-            $co->rollBack();
+            $conexion->rollBack();
             $r['resultado'] = 'error';
             $r['mensaje'] = $e->getMessage();
+        } finally {
+            $this->cerrar_conexion($conexion);
         }
         return $r;
     }
     
     public function consultar() {
-        $co = $this->conecta();
-        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $conexion = $this->conecta();
+        $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
-        
+
         try {
-            $resultado = $co->query("SELECT 
+            $sql = "SELECT 
                 j.*, 
                 (SELECT CONCAT(p.nombre, ' ', p.apellido) 
                  FROM participantes_jornadas pj 
                  JOIN personal p ON pj.cedula_personal = p.cedula_personal 
                  WHERE pj.cod_jornada = j.cod_jornada AND pj.tipo_participante = 'responsable' LIMIT 1) as responsable
                FROM jornadas_medicas j
-               ORDER BY j.fecha_jornada DESC");
+               ORDER BY j.fecha_jornada DESC";
+            
+            $stmt = $conexion->prepare($sql);
+            $stmt->execute();
             
             $r['resultado'] = 'consultar';
-            $r['datos'] = $resultado->fetchAll(PDO::FETCH_ASSOC);
+            $r['datos'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch(Exception $e) {
             $r['resultado'] = 'error';
             $r['mensaje'] = $e->getMessage();
+        } finally {
+            $this->cerrar_conexion($conexion);
         }
         return $r;
     }
     
     public function consultar_jornada($codigo) {
-        $co = $this->conecta();
-        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $conexion = $this->conecta();
+        $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
        
         try {
             // Datos de la jornada
-            $stmt = $co->prepare("SELECT * FROM jornadas_medicas WHERE cod_jornada = :codigo");
-            $stmt->execute(array(':codigo' => $codigo));
+            $stmt = $conexion->prepare("SELECT * FROM jornadas_medicas WHERE cod_jornada = :codigo");
+            $stmt->execute([':codigo' => $codigo]);
             $jornada = $stmt->fetch(PDO::FETCH_ASSOC);
            
             if($jornada) {
                 // Obtener responsable
-                $stmt = $co->prepare("SELECT pj.cedula_personal 
-                                    FROM participantes_jornadas pj 
-                                    WHERE pj.cod_jornada = :codigo AND pj.tipo_participante = 'responsable' LIMIT 1");
-                $stmt->execute(array(':codigo' => $codigo));
+                $stmt = $conexion->prepare("SELECT pj.cedula_personal 
+                                          FROM participantes_jornadas pj 
+                                          WHERE pj.cod_jornada = :codigo AND pj.tipo_participante = 'responsable' LIMIT 1");
+                $stmt->execute([':codigo' => $codigo]);
                 $responsable = $stmt->fetch(PDO::FETCH_ASSOC);
                 
                 $jornada['cedula_responsable'] = $responsable ? $responsable['cedula_personal'] : null;
                 
                 // Participantes (excluyendo al responsable)
-                $stmt = $co->prepare("SELECT pj.cedula_personal, CONCAT(p.nombre, ' ', p.apellido) as nombre_completo
-                                    FROM participantes_jornadas pj
-                                    JOIN personal p ON pj.cedula_personal = p.cedula_personal
-                                    WHERE pj.cod_jornada = :codigo AND pj.tipo_participante = 'participante'");
-                $stmt->execute(array(':codigo' => $codigo));
+                $stmt = $conexion->prepare("SELECT pj.cedula_personal, CONCAT(p.nombre, ' ', p.apellido) as nombre_completo
+                                          FROM participantes_jornadas pj
+                                          JOIN personal p ON pj.cedula_personal = p.cedula_personal
+                                          WHERE pj.cod_jornada = :codigo AND pj.tipo_participante = 'participante'");
+                $stmt->execute([':codigo' => $codigo]);
                 $participantes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                
                 $r['resultado'] = 'consultar';
@@ -272,44 +311,61 @@ class jornadas extends datos {
         } catch(Exception $e) {
             $r['resultado'] = 'error';
             $r['mensaje'] = $e->getMessage();
+        } finally {
+            $this->cerrar_conexion($conexion);
         }
         return $r;
     }
     
     public function obtener_personal() {
-        $co = $this->conecta();
-        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $conexion = $this->conecta();
+        $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
-        
+
         try {
-            $resultado = $co->query("SELECT cedula_personal, CONCAT(nombre, ' ', apellido) as nombre_completo
-                                   FROM personal ORDER BY apellido, nombre");
+            $sql = "SELECT cedula_personal, CONCAT(nombre, ' ', apellido) as nombre_completo
+                   FROM personal ORDER BY apellido, nombre";
+            
+            $stmt = $conexion->prepare($sql);
+            $stmt->execute();
             
             $r['resultado'] = 'consultar';
-            $r['datos'] = $resultado->fetchAll(PDO::FETCH_ASSOC);
+            $r['datos'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch(Exception $e) {
             $r['resultado'] = 'error';
             $r['mensaje'] = $e->getMessage();
+        } finally {
+            $this->cerrar_conexion($conexion);
         }
         return $r;
     }
     
     public function obtener_responsables() {
-        $co = $this->conecta();
-        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $conexion = $this->conecta();
+        $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
-        
+
         try {
-            $resultado = $co->query("SELECT cedula_personal, CONCAT(nombre, ' ', apellido) as nombre_completo
-                                   FROM personal WHERE cargo = 'Doctor' ORDER BY apellido, nombre");
+            $sql = "SELECT cedula_personal, CONCAT(nombre, ' ', apellido) as nombre_completo
+                   FROM personal WHERE cargo = 'Doctor' ORDER BY apellido, nombre";
+            
+            $stmt = $conexion->prepare($sql);
+            $stmt->execute();
             
             $r['resultado'] = 'consultar';
-            $r['datos'] = $resultado->fetchAll(PDO::FETCH_ASSOC);
+            $r['datos'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch(Exception $e) {
             $r['resultado'] = 'error';
             $r['mensaje'] = $e->getMessage();
+        } finally {
+            $this->cerrar_conexion($conexion);
         }
         return $r;
     }
+
+    private function cerrar_conexion(&$conexion) {
+        if ($conexion) {
+            $conexion = null;
+        }
+    }
 }
-?>

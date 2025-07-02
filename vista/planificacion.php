@@ -1,6 +1,7 @@
 <?php 
 require_once("comunes/encabezado.php"); 
 require_once("comunes/sidebar.php");    
+require_once("comunes/notificaciones.php");
 ?>
 
 <body>
@@ -64,7 +65,7 @@ require_once("comunes/sidebar.php");
     </div>
 
     <!-- Listado de publicaciones -->
-    <div class="container d-flex col-md-9" id="listadoPublicaciones">
+    <div class="container" id="listadoPublicaciones">
         <!-- Las publicaciones se cargarán aquí via AJAX -->
     </div>
 </div>

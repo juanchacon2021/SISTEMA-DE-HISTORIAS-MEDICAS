@@ -5,6 +5,7 @@ if (!is_file("src/modelo/" . $pagina . ".php")) {
 }
 
 use Shm\Shm\modelo\pasantias;
+require_once("modelo/bitacora.php");
 
 if (is_file("vista/" . $pagina . ".php")) {
     if (!empty($_POST)) {
@@ -31,9 +32,10 @@ if (is_file("vista/" . $pagina . ".php")) {
             case 'modificar_estudiante':
             case 'eliminar_estudiante':
                 echo json_encode($o->gestionar_estudiante($datos));
-                bitacora::registrar(
+                bitacora::registrarYNotificar(
                     ucfirst(str_replace('_', ' ', $accion)),
-                    'Acción sobre estudiante: ' . $datos['cedula_estudiante']
+                    'Acción sobre estudiante: ' . $datos['cedula_estudiante'],
+                    $_SESSION['usuario']
                 );
                 break;
 
@@ -41,9 +43,10 @@ if (is_file("vista/" . $pagina . ".php")) {
             case 'modificar_asistencia':
             case 'eliminar_asistencia':
                 echo json_encode($o->gestionar_asistencia($datos));
-                bitacora::registrar(
+                bitacora::registrarYNotificar(
                     ucfirst(str_replace('_', ' ', $accion)),
-                    'Acción sobre asistencia: ' . $datos['cedula_estudiante']
+                    'Acción sobre asistencia: ' . $datos['cedula_estudiante'],
+                    $_SESSION['usuario']
                 );
                 break;
 
@@ -52,9 +55,10 @@ if (is_file("vista/" . $pagina . ".php")) {
             case 'eliminar_area':
                 echo json_encode($o->gestionar_area($datos));
                 $id = isset($datos['cod_area']) ? $datos['cod_area'] : 'nueva área';
-                bitacora::registrar(
+                bitacora::registrarYNotificar(
                     ucfirst(str_replace('_', ' ', $accion)),
-                    'Acción sobre área: ' . $id
+                    'Acción sobre área: ' . $id,
+                    $_SESSION['usuario']
                 );
                 break;
 

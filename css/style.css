@@ -496,81 +496,7 @@ background: linear-gradient(90deg, #ff0000,#ff8080);/* W3C, IE 10+/ Edge, Firefo
     background-color: #f8f9fa;
 }
 
-/* Estilos para el módulo de planificación */
-.publicacion {
-    border-radius: 10px;
-    border: 1px solid #e0e0e0;
-    transition: all 0.3s ease;
-}
 
-.publicacion:hover {
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.avatar {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-}
-
-.publicacion-imagen {
-    margin-top: 15px;
-    overflow: hidden;
-    border-radius: 8px;
-}
-
-.card-img-container img {
-    width: 100%;
-    max-height: 350px;
-    object-fit: cover;
-}
-
-.publicacion-imagen img {
-    width: 100%;
-    max-height: 200px;
-    object-fit: cover;
-}
-
-.card {
-    width: 500px;
-    height: auto;
-    padding: 10px;
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.212);
-}
-
-.btn-flotante:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
-}
-
-#formPublicacion {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-#button {
-  z-index: 2;
-  position: relative;
-  width: 100%;
-  border: none;
-  background-color: rgb(220 38 38);
-  height: 50px;
-  color: white;
-  font-size: 1.5em;
-  font-weight: 500;
-  letter-spacing: 1px;
-  margin: 10px;
-  cursor: pointer;
-}
-
-#button:hover {
-  background-color: rgb(150, 25, 25);
-}
 
 .container-login {
     display: flex;
@@ -919,12 +845,93 @@ background: linear-gradient(90deg, #ff0000,#ff8080);/* W3C, IE 10+/ Edge, Firefo
     }
 }
 
-#listadoPublicaciones {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
-    gap: 1rem;
+/* Estilos para el módulo de planificación */
+
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.publicacion-imagen {
+    margin-top: 15px;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.card-img-container img {
     width: 100%;
-    padding: 1rem 0;
-    justify-items: center; 
-    align-items: start;     
+    max-height: 350px;
+    object-fit: cover;
+}
+
+.publicacion img {
+    width: 100%;
+    max-height: 350px;
+    object-fit: cover;
+}
+
+.card {
+    width: 500px;
+    height: auto;
+    padding: 10px;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.212);
+}
+
+.btn-flotante:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+#formPublicacion {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+#button {
+  z-index: 2;
+  position: relative;
+  width: 100%;
+  border: none;
+  background-color: rgb(220 38 38);
+  height: 50px;
+  color: white;
+  font-size: 1.5em;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+#button:hover {
+  background-color: rgb(150, 25, 25);
+}
+
+#listadoPublicaciones {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.publicacion {
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s ease;
+    padding: 20px;
+    margin-top: 20px;
+    width: 400px;
+    box-sizing: border-box;
+    height: 500px;
+}
+
+.publicacion:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
