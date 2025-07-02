@@ -56,11 +56,11 @@ require_once("comunes/sidebar.php");
                                     </div>
                                     <div class="col-md-6 text-right">
                                         <button type="button" class="btn botonverde" onclick="mostrarModalEstudiante('incluir')">
-                                            Nuevo Estudiante
+                                            <i class="fas fa-plus me-2"></i>Nuevo Estudiante
                                         </button>
-                                        <a href="vista/fpdf/pasantias.php" target="_blank" class="btn btn-primary">
-                                            <i class="fas fa-file-pdf mr-1"></i> Generar Reporte
-                                        </a>
+                                        <button type="button" class="btn btn-primary" onclick="mostrarModalReportes()">
+                                            <i class="fas fa-file-pdf me-2"></i>Generar Reporte
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -331,6 +331,35 @@ require_once("comunes/sidebar.php");
                     <div class="modal-footer">
                         <button type="button" class="btn boton" data-bs-dismiss="modal">Cancelar</button>
                         <button type="button" class="btn botonverde" id="btnGuardarAsistencia">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Agregar esto antes del cierre del body en pasantias.php -->
+        <div class="modal fade" id="modalReportes" tabindex="-1" aria-labelledby="modalReportesLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title" id="modalReportesLabel">
+                            <i class="fas fa-file-pdf me-2"></i>Generar Reporte
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="d-grid gap-3">
+                            <button type="button" class="btn btn-primary text-start" onclick="generarReporte('estudiantes')">
+                                <i class="fas fa-users me-2"></i> Listado de Estudiantes
+                            </button>
+                            <button type="button" class="btn btn-primary text-start" onclick="generarReporte('areas')">
+                                <i class="fas fa-map-marked-alt me-2"></i> Asistencia por Áreas
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </button>
                     </div>
                 </div>
             </div>

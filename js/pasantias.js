@@ -130,15 +130,14 @@ function cargarEstudiantes() {
             <td>${estudiante.telefono || "N/A"}</td>
             <td class="text-center">
                 <div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
-                    <button type="button" class="btn btn-success" onclick='editarEstudiante(${JSON.stringify(
-                      estudiante
-                    )})'>
+                    <button type="button" class="btn btn-success" onclick='editarEstudiante(${JSON.stringify(estudiante)})'>
                         <img src="img/lapiz.svg" style="width: 20px">
                     </button>
-                    <button type="button" class="btn btn-danger" onclick='confirmarEliminar("estudiante", "${
-                      estudiante.cedula_estudiante
-                    }")'>
+                    <button type="button" class="btn btn-primary" onclick='confirmarEliminar("estudiante", "${estudiante.cedula_estudiante}")'>
                         <img src="img/basura.svg" style="width: 20px">
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick='generarReporteIndividual("${estudiante.cedula_estudiante}")'>
+                        <img src="img/descarga.svg" style="width: 20px">
                     </button>
                 </div>
             </td>
@@ -412,7 +411,7 @@ function cargarAsistencia() {
             }</td>
             <td class="text-center">
                 <div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
-                    <button type="button" class="btn btn-info" onclick='editarAsistencia(${JSON.stringify(
+                    <button type="button" class="btn btn-success" onclick='editarAsistencia(${JSON.stringify(
                       asistencia
                     )})'>
                         <img src="img/lapiz.svg" style="width: 20px">
@@ -531,6 +530,21 @@ function guardarAsistencia() {
       cargarAsistencia();
     }
   });
+}
+
+function mostrarModalReportes() {
+    $('#modalReportes').modal('show');
+}
+
+// Función para generar reportes generales
+function generarReporte(tipo) {
+    $('#modalReportes').modal('hide');
+    window.open(`vista/fpdf/pasantias_reportes.php?tipo=${tipo}`, '_blank');
+}
+
+// Función para generar reporte individual
+function generarReporteIndividual(cedula) {
+    window.open(`vista/fpdf/pasantias_reportes.php?tipo=individual&cedula=${cedula}`, '_blank');
 }
 
 function eliminarAsistenciaConfirmado() {

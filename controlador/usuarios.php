@@ -1,15 +1,18 @@
 <?php
-if (!is_file("modelo/" . $pagina . ".php")) {
+if (!is_file("src/modelo/" . $pagina . ".php")) {
     echo "Falta definir la clase " . $pagina;
     exit;
 }
 
-require_once("modelo/" . $pagina . ".php");
+use Shm\Shm\modelo\usuarios;
 
 if (is_file("vista/" . $pagina . ".php")) {
     if (!empty($_POST)) {
         $o = new usuarios();
         $accion = $_POST['accion'];
+
+        // Convertir $_POST a array y filtrar datos
+        $datos = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
 
         switch ($accion) {
             // Acciones para usuarios
@@ -18,33 +21,9 @@ if (is_file("vista/" . $pagina . ".php")) {
                 break;
 
             case 'incluir_usuario':
-                $o->set_nombre($_POST['nombre']);
-                $o->set_cedula($_POST['cedula']);
-                $o->set_password($_POST['password']);
-                $o->set_rol_id($_POST['rol_id']);
-                if (!empty($_POST['foto_perfil'])) {
-                    $o->set_foto_perfil($_POST['foto_perfil']);
-                }
-                echo json_encode($o->incluir_usuario());
-                break;
-
             case 'modificar_usuario':
-                $o->set_id($_POST['id']);
-                $o->set_nombre($_POST['nombre']);
-                $o->set_cedula($_POST['cedula']);
-                if (!empty($_POST['password'])) {
-                    $o->set_password($_POST['password']);
-                }
-                $o->set_rol_id($_POST['rol_id']);
-                if (!empty($_POST['foto_perfil'])) {
-                    $o->set_foto_perfil($_POST['foto_perfil']);
-                }
-                echo json_encode($o->modificar_usuario());
-                break;
-
             case 'eliminar_usuario':
-                $o->set_id($_POST['id']);
-                echo json_encode($o->eliminar_usuario());
+                echo json_encode($o->gestionar_usuario($datos));
                 break;
 
             // Acciones para roles
@@ -57,24 +36,12 @@ if (is_file("vista/" . $pagina . ".php")) {
                 break;
 
             case 'incluir_rol':
-                $o->set_nombre_rol($_POST['nombre']);
-                $o->set_descripcion_rol($_POST['descripcion']);
-                echo json_encode($o->incluir_rol());
-                break;
-
             case 'modificar_rol':
-                $o->set_id($_POST['id']);
-                $o->set_nombre_rol($_POST['nombre']);
-                $o->set_descripcion_rol($_POST['descripcion']);
-                echo json_encode($o->modificar_rol());
-                break;
-
             case 'eliminar_rol':
-                $o->set_id($_POST['id']);
-                echo json_encode($o->eliminar_rol());
+                echo json_encode($o->gestionar_rol($datos));
                 break;
 
-            // Acciones para permisos
+            // Acciones para módulos
             case 'consultar_modulos':
                 echo json_encode($o->consultar_modulos());
                 break;
@@ -83,32 +50,20 @@ if (is_file("vista/" . $pagina . ".php")) {
                 echo json_encode($o->consultar_modulos_tabla());
                 break;
 
-            case 'consultar_permisos_rol':
-                echo json_encode($o->consultar_permisos_rol($_POST['rol_id']));
-                break;
-
-           case 'actualizar_permisos':
-                $permisos = isset($_POST['permisos']) ? json_decode($_POST['permisos'], true) : array();
-                echo json_encode($o->actualizar_permisos($_POST['rol_id'], $permisos));
-                break;
-
-            // Acciones para módulos
             case 'incluir_modulo':
-                $o->set_nombre_modulo($_POST['nombre']);
-                $o->set_descripcion_modulo($_POST['descripcion']);
-                echo json_encode($o->incluir_modulo());
-                break;
-
             case 'modificar_modulo':
-                $o->set_id_modulo($_POST['id']);
-                $o->set_nombre_modulo($_POST['nombre']);
-                $o->set_descripcion_modulo($_POST['descripcion']);
-                echo json_encode($o->modificar_modulo());
+            case 'eliminar_modulo':
+                echo json_encode($o->gestionar_modulo($datos));
                 break;
 
-            case 'eliminar_modulo':
-                $o->set_id_modulo($_POST['id']);
-                echo json_encode($o->eliminar_modulo());
+            // Acciones para permisos
+            case 'consultar_permisos_rol':
+                echo json_encode($o->consultar_permisos_rol($datos['rol_id']));
+                break;
+
+            case 'actualizar_permisos':
+                $permisos = isset($_POST['permisos']) ? json_decode($_POST['permisos'], true) : array();
+                echo json_encode($o->actualizar_permisos($datos['rol_id'], $permisos));
                 break;
 
             // Acciones para fotos de perfil
@@ -117,12 +72,13 @@ if (is_file("vista/" . $pagina . ".php")) {
                 break;
 
             case 'eliminar_foto':
-                $o->set_id($_POST['id']);
-                echo json_encode($o->eliminar_foto_perfil($_POST['id']));
+                echo json_encode($o->eliminar_foto_perfil($datos['id']));
                 break;
+
             case 'obtener_personal':
-                 echo json_encode($o->obtener_personal());
-                 break;
+                echo json_encode($o->obtener_personal());
+                break;
+
             default:
                 echo json_encode(array("resultado" => "error", "mensaje" => "Acción no válida"));
         }
@@ -134,10 +90,10 @@ if (is_file("vista/" . $pagina . ".php")) {
     echo "Página en construcción";
 }
 
-function subirFotoUsuario() {
+function subirFotoUsuario()
+{
     $r = array();
 
-    // Verificar si se subió un archivo
     if (empty($_FILES['foto_perfil'])) {
         $r['resultado'] = 'error';
         $r['mensaje'] = 'No se ha seleccionado ningún archivo';
@@ -184,4 +140,3 @@ function subirFotoUsuario() {
 
     return $r;
 }
-?>
