@@ -577,7 +577,6 @@ function muestraMensaje(mensaje, tipo = "error") {
     modal.modal("hide");
   }, 5000);
 }
-<<<<<<< HEAD
 
 // NOTIFICACIONES
 const ws = new WebSocket('ws://localhost:8080');
@@ -598,5 +597,3 @@ ws.onerror = function(error) {
 function enviarNotificacion(msg) {
     ws.send(msg);
 }
-=======
->>>>>>> a5aba03ad16c3745bb648bf150066e4bfaed281b

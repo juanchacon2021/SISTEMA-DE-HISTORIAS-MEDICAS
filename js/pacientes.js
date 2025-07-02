@@ -376,17 +376,13 @@ function enviaAjax(datos) {
                     $("#resultadoconsulta").html(html);
                     crearDT();
                 }
-                else if (lee.resultado == "incluir") {
+                else if (lee.resultado == "incluir" || lee.resultado == "modificar" || lee.resultado == "success") {
                     muestraMensaje(lee.mensaje);
-                    if (lee.mensaje.includes('exitosamente')) {
-                        $("#modal1").modal("hide");
-                        consultar();
-                        limpiarFormulario();
-                    }
-                }
-                else if (lee.resultado == "modificar") {
-                    muestraMensaje(lee.mensaje);
-                    if(lee.mensaje.includes('Modificado')){
+                    if (
+                        (lee.resultado == "incluir" && lee.mensaje == "Paciente registrado exitosamente") ||
+                        (lee.resultado == "success" && lee.mensaje == "Paciente registrado exitosamente") ||
+                        (lee.resultado == "modificar" && lee.mensaje == "Paciente modificado exitosamente")
+                    ) {
                         $("#modal1").modal("hide");
                         consultar();
                     }

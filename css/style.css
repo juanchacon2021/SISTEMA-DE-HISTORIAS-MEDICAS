@@ -882,6 +882,7 @@ background: linear-gradient(90deg, #ff0000,#ff8080);/* W3C, IE 10+/ Edge, Firefo
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.212);
 }
 
+
 .btn-flotante:hover {
     transform: scale(1.1);
     box-shadow: 0 6px 12px rgba(0,0,0,0.3);
