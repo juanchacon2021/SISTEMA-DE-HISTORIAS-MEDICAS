@@ -1,7 +1,6 @@
 // SIMULACION
 document.getElementById('pacientesCount').textContent = '120';
 document.getElementById('personalCount').textContent = '15';
-document.getElementById('notificacionesCount').textContent = (localStorage.getItem('notificacionesGuardadas') ? JSON.parse(localStorage.getItem('notificacionesGuardadas')).length : 0);
 
 // Calendario simple
 function renderCalendar() {
@@ -48,3 +47,26 @@ document.addEventListener('click', function(e) {
     var menu = document.getElementById('userDropdownMenu');
     if(menu.classList.contains('show')) menu.classList.remove('show');
 });
+
+
+$(document).ready(function() {
+    cargarTotalesGenerales();
+});
+
+function cargarTotalesGenerales() {
+    $.ajax({
+        url: '',
+        type: 'POST',
+        data: { accion: 'totales_generales' },
+        dataType: 'json',
+        success: function(data) {
+            console.log("Respuesta AJAX:", data);
+            $("#pacientesCount").text(data.pacientes ?? '--');
+            $("#personalCount").text(data.personal ?? '--');
+        },
+        error: function(xhr, status, error) {
+            $("#pacientesCount, #personalCount").text('--');
+            console.error("Error al cargar totales:", error);
+        }
+    });
+}

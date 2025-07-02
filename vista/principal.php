@@ -93,18 +93,13 @@
         <div class="panel-container" style="gap: 25px;">
             <!-- Tarjeta Pacientes -->
             <div style="background: #fff; border-radius: 1rem; box-shadow: 0 2px 8px #eee; padding: 2rem 2.5rem; text-align: center; min-width: 220px;">
-                <div style="font-size: 2.2rem; color: rgb(220,38,38); font-weight: bold;" id="pacientesCount">--</div>
+                <div style="font-size: 2.2rem; color: rgb(220,38,38); font-weight: bold;" id="pacientesCount"></div>
                 <div style="color: #444;">Pacientes registrados</div>
             </div>
             <!-- Tarjeta Personal -->
             <div style="background: #fff; border-radius: 1rem; box-shadow: 0 2px 8px #eee; padding: 2rem 2.5rem; text-align: center; min-width: 220px;">
-                <div style="font-size: 2.2rem; color: rgb(220,38,38); font-weight: bold;" id="personalCount">--</div>
+                <div style="font-size: 2.2rem; color: rgb(220,38,38); font-weight: bold;" id="personalCount"></div>
                 <div style="color: #444;">Personal activo</div>
-            </div>
-            <!-- Tarjeta Notificaciones -->
-            <div style="background: #fff; border-radius: 1rem; box-shadow: 0 2px 8px #eee; padding: 2rem 2.5rem; text-align: center; min-width: 220px;">
-                <div style="font-size: 2.2rem; color: rgb(220,38,38); font-weight: bold;" id="notificacionesCount">--</div>
-                <div style="color: #444;">Notificaciones nuevas</div>
             </div>
         </div>
     </div>
