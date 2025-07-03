@@ -14,6 +14,7 @@ use Shm\Shm\modelo\patologias;
 		$z = new patologias();  
 
 		$accion = $_POST['accion'];
+		$datos = $_POST;
 
 		switch ($accion) {
 			case 'consultar':
@@ -31,25 +32,19 @@ use Shm\Shm\modelo\patologias;
 				break;
 				
 			case 'eliminar':
-				$o->set_cedula_paciente($_POST['cedula_paciente']);
-				echo json_encode($o->eliminar());
+				echo json_encode($o->eliminar($datos));
 				break;
 				
 			case 'agregar':
-				$z->set_cod_patologia($_POST['cod_patologia']);
-				$z->set_nombre_patologia($_POST['nombre_patologia']);
-				echo json_encode($z->incluir2());
+				echo json_encode($z->incluir2($datos));
 				break;
 				
 			case 'actualizar':
-				$z->set_cod_patologia($_POST['cod_patologia']);
-				$z->set_nombre_patologia($_POST['nombre_patologia']);
-				echo json_encode($z->modificar2());
+				echo json_encode($z->modificar2($datos));
 				break;
 				
 			case 'descartar':
-				$z->set_cod_patologia($_POST['cod_patologia']);
-				echo json_encode($z->eliminar2());
+				echo json_encode($z->eliminar2($datos));
 				break;
 				
 			case 'obtener_patologias_paciente':
@@ -71,7 +66,6 @@ use Shm\Shm\modelo\patologias;
 				
 			case 'incluir':
 			case 'modificar':
-				$cedula_paciente = $_POST['cedula_paciente'];
 				$patologias = array();
 				
 				foreach ($_POST['cod_patologia'] as $cod_patologia) {
@@ -83,10 +77,9 @@ use Shm\Shm\modelo\patologias;
 				}
 				
 				if ($accion == 'incluir') {
-					echo json_encode($o->incluir($cedula_paciente, $patologias));
+					echo json_encode($o->incluir($datos, $patologias));
 				} else {
-					$o->set_cedula_paciente($cedula_paciente);
-					echo json_encode($o->modificar($patologias));
+					echo json_encode($o->modificar($datos, $patologias));
 				}
 				break;
 				
