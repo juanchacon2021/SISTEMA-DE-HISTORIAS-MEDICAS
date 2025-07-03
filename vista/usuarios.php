@@ -3,8 +3,9 @@ require_once("comunes/encabezado.php");
 require_once("comunes/sidebar.php");  
 require_once("comunes/notificaciones.php");  
 ?>
+
 <body class="hold-transition sidebar-mini layout-fixed">
-<?php  
+    <?php
     if (!isset($_SESSION['permisos']) || !is_array($_SESSION['permisos'])) {
         header("Location: ?pagina=login");
         exit();
@@ -16,40 +17,36 @@ require_once("comunes/notificaciones.php");
                 <a href="?pagina=principal" class="btn btn-primary">Volver al inicio</a>
              </div>');
     }
-?>
+    ?>
 
-<div class="wrapper">
-    <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
-        Gestión de Usuarios y Permisos
-    </div>
-    <div class="container espacio">
-        <section class="content">
+    <div class="wrapper">
 
-            <div class="container-fluid d-flex">
-                <!-- Tabs -->
-                <ul class="nav nav-tabs" id="usuariosTabs" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="usuarios-tab" data-bs-toggle="tab" data-bs-target="#usuarios" type="button" role="tab">
-                            Usuarios
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="roles-tab" data-bs-toggle="tab" data-bs-target="#roles" type="button" role="tab">
-                            Roles
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="modulos-tab" data-bs-toggle="tab" data-bs-target="#modulos" type="button" role="tab">
-                            Módulos
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="permisos-tab" data-bs-toggle="tab" data-bs-target="#permisos" type="button" role="tab">
-                            Permisos
-                        </button>
-                    </li>
-                </ul>
-            </div>
+        <div class="container espacio">
+            <section class="content">
+                <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
+                    Gestión de Usuarios y Permisos
+                </div>
+
+                <div class="container-fluid d-flex">
+                    <!-- Tabs -->
+                    <ul class="nav nav-tabs" id="usuariosTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="usuarios-tab" data-bs-toggle="tab" data-bs-target="#usuarios" type="button" role="tab">
+                                Usuarios
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="roles-tab" data-bs-toggle="tab" data-bs-target="#roles" type="button" role="tab">
+                                Roles
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="modulos-tab" data-bs-toggle="tab" data-bs-target="#modulos" type="button" role="tab">
+                                Módulos
+                            </button>
+                        </li>
+                    </ul>
+                </div>
                 <div class="tab-content" id="usuariosTabContent">
                     <!-- Tab de Usuarios -->
                     <div class="tab-pane fade show active" id="usuarios" role="tabpanel">
@@ -57,7 +54,6 @@ require_once("comunes/notificaciones.php");
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <h3 class="card-title">Listado de Usuarios</h3>
                                     </div>
                                     <div class="col-md-6 text-right">
                                         <button type="button" class="btn btn-success" onclick="mostrarModalUsuario('incluir')">
@@ -71,13 +67,13 @@ require_once("comunes/notificaciones.php");
                                     <table class="table table-bordered table-striped table-hover" id="tablaUsuarios" style="width:100%">
                                         <thead class="thead-dark">
                                             <tr>
-                                                <th>Acciones</th>
                                                 <th>ID</th>
                                                 <th>Nombre</th>
                                                 <th>Cédula</th>
                                                 <th>Rol</th>
                                                 <th>Fecha Creación</th>
                                                 <th>Estado</th>
+                                                <th style="text-align: right;">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody id="resultadoUsuarios"></tbody>
@@ -93,7 +89,6 @@ require_once("comunes/notificaciones.php");
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <h3 class="card-title">Listado de Roles</h3>
                                     </div>
                                     <div class="col-md-6 text-right">
                                         <button type="button" class="btn btn-success" onclick="mostrarModalRol('incluir')">
@@ -107,10 +102,10 @@ require_once("comunes/notificaciones.php");
                                     <table class="table table-bordered table-striped table-hover" id="tablaRoles" style="width:100%">
                                         <thead class="thead-dark">
                                             <tr>
-                                                <th>Acciones</th>
                                                 <th>ID</th>
                                                 <th>Nombre</th>
                                                 <th>Descripción</th>
+                                                <th style="text-align: right;">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody id="resultadoRoles"></tbody>
@@ -126,7 +121,6 @@ require_once("comunes/notificaciones.php");
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <h3 class="card-title">Listado de Módulos</h3>
                                     </div>
                                     <div class="col-md-6 text-right">
                                         <button type="button" class="btn btn-success" onclick="mostrarModalModulo('incluir')">
@@ -140,10 +134,10 @@ require_once("comunes/notificaciones.php");
                                     <table class="table table-bordered table-striped table-hover" id="tablaModulos" style="width:100%">
                                         <thead class="thead-dark">
                                             <tr>
-                                                <th>Acciones</th>
                                                 <th>ID</th>
                                                 <th>Nombre</th>
                                                 <th>Descripción</th>
+                                                <th style="text-align: right;">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody id="resultadoModulos"></tbody>
@@ -152,48 +146,8 @@ require_once("comunes/notificaciones.php");
                             </div>
                         </div>
                     </div>
-
-                    <!-- Tab de Permisos -->
-                    <div class="tab-pane fade" id="permisos" role="tabpanel">
-                        <div class="cardd mt-3">
-                            <div class="card-header">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <h3 class="card-title">Asignación de Permisos</h3>
-                                    </div>
-                                    <div class="col-md-6 text-right">
-                                        <button type="button" class="btn btn-primary" id="btnGuardarPermisos" onclick="guardarPermisos()">
-                                            <i class="fas fa-save mr-1"></i> Guardar Permisos
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="selectRolPermisos">Seleccione Rol:</label>
-                                            <select class="form-control" id="selectRolPermisos" onchange="cargarPermisos()">
-                                                <option value="">-- Seleccione --</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-md-12">
-                                        <div class="alert alert-info">
-                                            <i class="fas fa-info-circle mr-2"></i> Marque los módulos a los que este rol tendrá acceso
-                                        </div>
-                                        <div id="listaModulos" class="list-group">
-                                            <!-- Los módulos se cargarán dinámicamente -->
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-            </div>
+        </div>
         </section>
     </div>
 
@@ -221,7 +175,7 @@ require_once("comunes/notificaciones.php");
                             <input type="text" class="form-control bg-gray-200 rounded-lg border-white p-3 text" placeholder="Nombre" id="nombreUsuario" name="nombre" required>
                             <small id="snombreUsuario" class="form-text text-danger"></small>
                         </div>
-                       <div class="form-group">
+                        <div class="form-group">
                             <label class="texto-inicio font-medium mt-2" for="cedulaUsuario">Personal</label>
                             <select class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="cedulaUsuario" name="cedula" required>
                                 <option value="">Seleccione un personal</option>
@@ -267,7 +221,7 @@ require_once("comunes/notificaciones.php");
 
     <!-- Modal para Roles -->
     <div class="modal fade" id="modalRol" tabindex="-1" role="dialog" aria-labelledby="modalRolLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="text-light text-end" style="margin: 20px 20px 0px 0px;">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -284,13 +238,23 @@ require_once("comunes/notificaciones.php");
                     <form id="formRol" autocomplete="off" style="margin: 0em 1em 0em 1em;">
                         <input type="hidden" id="accionRol" name="accion" value="">
                         <input type="hidden" id="idRol" name="id" value="">
-                        <div class="form-group">
-                            <label class="texto-inicio font-medium mt-2"for="nombreRol">Nombre del Rol</label>
-                            <input class="form-control bg-gray-200 rounded-lg border-white p-3 text" placeholder="Nombre del Rol" type="text" class="form-control" id="nombreRol" name="nombre" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="texto-inicio font-medium mt-2"for="descripcionRol">Descripción</label>
-                            <textarea class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="descripcionRol" name="descripcion" rows="3"></textarea>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="texto-inicio font-medium mt-2" for="nombreRol">Nombre del Rol</label>
+                                    <input class="form-control bg-gray-200 rounded-lg border-white p-3 text" placeholder="Nombre del Rol" type="text" class="form-control" id="nombreRol" name="nombre" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="texto-inicio font-medium mt-2" for="descripcionRol">Descripción</label>
+                                    <textarea class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="descripcionRol" name="descripcion" rows="3"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle mr-2"></i> Permisos del Rol
+                                </div>
+                                <div id="listaModulos" class="permisos-modulos"></div>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -322,11 +286,11 @@ require_once("comunes/notificaciones.php");
                         <input type="hidden" id="accionModulo" name="accion" value="">
                         <input type="hidden" id="idModulo" name="id" value="">
                         <div class="form-group">
-                            <label class="texto-inicio font-medium mt-2"for="nombreModulo">Nombre del Módulo</label>
+                            <label class="texto-inicio font-medium mt-2" for="nombreModulo">Nombre del Módulo</label>
                             <input class="form-control bg-gray-200 rounded-lg border-white p-3 text" placeholder="Nombre del Módulo" type="text" class="form-control" id="nombreModulo" name="nombre" required>
                         </div>
                         <div class="form-group">
-                            <label class="texto-inicio font-medium mt-2"for="descripcionModulo">Descripción</label>
+                            <label class="texto-inicio font-medium mt-2" for="descripcionModulo">Descripción</label>
                             <textarea class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="descripcionModulo" name="descripcion" rows="3"></textarea>
                         </div>
                     </form>
@@ -362,8 +326,9 @@ require_once("comunes/notificaciones.php");
 
     <?php require_once("comunes/modal.php"); ?>
     <?php require_once("comunes/footer.php"); ?>
-</div>
+    </div>
 
-<script src="js/usuarios.js"></script>
+    <script src="js/usuarios.js"></script>
 </body>
+
 </html>

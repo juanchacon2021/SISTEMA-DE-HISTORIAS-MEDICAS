@@ -106,7 +106,7 @@ $(document).ready(function(){
 
     // Botón siguiente
     document.getElementById('nextBtn').onclick = function() {
-        currentIndex++;
+        currentIndex += 2;
         if (currentIndex > totalCards - cardsToShow) {
             currentIndex = 0; // Vuelve al primer slide
         }
@@ -115,7 +115,7 @@ $(document).ready(function(){
 
     // Botón anterior
     document.getElementById('prevBtn').onclick = function() {
-        currentIndex--;
+        currentIndex -= 2;
         if (currentIndex < 0) {
             currentIndex = totalCards - cardsToShow; // Vuelve al último slide visible
         }
@@ -126,6 +126,56 @@ $(document).ready(function(){
 
 
 
+
+        document.querySelectorAll('.indicador-dot').forEach((dot, i) => {
+            dot.addEventListener('click', function() {
+                // Calcula el índice del primer card de ese slide
+                currentIndex = i * cardsToShow;
+                updateCarousel();
+            });
+        });
+
+    function updateIndicadores() {
+        const dots = document.querySelectorAll('.indicador-dot');
+        // Calcula el índice del slide actual (de 0 a 2 si tienes 3 slides)
+        let slideActual = Math.floor(currentIndex / cardsToShow);
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('activo', i === slideActual);
+        });
+    }
+
+    // Llama a updateIndicadores() cada vez que cambias de slide:
+    function updateCarousel() {
+        carruselInner.style.transform = `translateX(-${currentIndex * (cards[0].offsetWidth + 16)}px)`;
+        updateIndicadores();
+    }
+
+    // Llama una vez al cargar:
+    updateIndicadores();
+
+
+
+
+
+
+
+
+
+
+
+});
+
+document.getElementById('btnDescargarPDF').addEventListener('click', function(e) {
+    // Emergencias
+    const mesEmergencia = document.getElementById('selectMes').value;
+    const anioEmergencia = document.getElementById('selectAnio').value;
+    // Consultas
+    const mesConsulta = document.getElementById('selectMesConsultas').value;
+    const anioConsulta = document.getElementById('selectAnioConsultas').value;
+
+    // Arma el enlace con ambos pares de datos
+    this.href = `vista/fpdf/estadistica.php?mes_emergencia=${mesEmergencia}&anio_emergencia=${anioEmergencia}&mes_consulta=${mesConsulta}&anio_consulta=${anioConsulta}`;
+    // El navegador abrirá el PDF en una nueva pestaña por el target="_blank"
 });
 
 function enviaAjax(datos, tipo) {
