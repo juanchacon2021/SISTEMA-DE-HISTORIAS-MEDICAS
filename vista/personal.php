@@ -25,14 +25,14 @@ Personal
 <script type="text/javascript" src="js/personal.js"></script>
 <div class="container espacio"> <!-- container-->
     <div class="container">
-        <div class="row mt-3 botoneseduin">
-            <div style="color: white;" class="col-md-2 botonverde" onclick='pone(this,3)' style="cursor: pointer;" >
+        <div class="row mt-3 botones">
+            <div style="color: white;" class="btn botonverde" onclick='pone(this,3)' style="cursor: pointer;" >
                 Registrar Personal
             </div>
             <div class="col-md-2 botonreporte">
                 <a style="color: white;" class='btn' href='vista/fpdf/personal.php' target='_blank'>Generar Reporte</a>
             </div>
-            <div class="col-md-2 boton">    
+            <div class="btn botonrojo">    
                 <a href="?pagina=principal">Volver</a>
             </div>
         </div>
