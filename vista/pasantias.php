@@ -57,11 +57,11 @@ require_once("comunes/notificaciones.php");
                                     </div>
                                     <div class="col-md-6 text-right">
                                         <button type="button" class="btn botonverde" onclick="mostrarModalEstudiante('incluir')">
-                                            Nuevo Estudiante
+                                            <i class="fas fa-plus me-2"></i>Nuevo Estudiante
                                         </button>
-                                        <a href="vista/fpdf/pasantias.php" target="_blank" class="btn btn-primary">
-                                            <i class="fas fa-file-pdf mr-1"></i> Generar Reporte
-                                        </a>
+                                        <button type="button" class="btn botonreporte" onclick="mostrarModalReportes()">
+                                             Generar Reporte
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -96,9 +96,9 @@ require_once("comunes/notificaciones.php");
                                         <button type="button" class="btn botonverde" onclick="mostrarModalArea('incluir')">
                                             Nueva Área
                                         </button>
-                                        <a href="vista/fpdf/areas_pasantia.php" target="_blank" class="btn btn-primary">
-                                            <i class="fas fa-file-pdf mr-1"></i> Generar Reporte
-                                        </a>
+                                        <button type="button" class="btn botonreporte" onclick="mostrarModalReportes()">
+                                             Generar Reporte
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -332,6 +332,40 @@ require_once("comunes/notificaciones.php");
                     <div class="modal-footer">
                         <button type="button" class="btn boton" data-bs-dismiss="modal">Cancelar</button>
                         <button type="button" class="btn botonverde" id="btnGuardarAsistencia">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para Reportes -->
+        <div class="modal fade" id="modalReportes" tabindex="-1" aria-labelledby="modalReportesLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content" style="padding: 25px 25px 0px 25px;">
+                    <div class="text-light text-end" style="margin: 20px 20px 0px 0px;">
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div style="margin: 0em 2em 0em 2em;">
+                        <h1 class="text 2x1 font-bold mb-2" id="modalReportesLabel">
+                           Generar Reporte
+                        </h1>
+                        <div>
+                            <div class="col-md-2 mb-4 p-1 rounded-full" style="background-color: rgb(220 38 38);"></div>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="d-grid gap-3">
+                            <button type="button" class="btn btn-success text-start" onclick="generarReporte('estudiantes')">
+                                <i class="fas fa-users me-2"></i> Listado de Estudiantes
+                            </button>
+                            <button type="button" class="btn btn-success text-start" onclick="generarReporte('areas')">
+                                <i class="fas fa-map-marked-alt me-2"></i> Asistencia por Áreas
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn boton" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </button>
                     </div>
                 </div>
             </div>

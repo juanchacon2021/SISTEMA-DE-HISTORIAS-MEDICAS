@@ -135,9 +135,9 @@
     font-family: 'Sora';
     background-color: rgb(46, 99, 49);
     border-radius: 0.5rem;
-    color: white;
+    border: 0.5rem solid rgb(46, 99, 49);
     width: auto;
-    font-size: 15px;
+    color: white
 }
 
 .publicar {
@@ -882,6 +882,7 @@ background: linear-gradient(90deg, #ff0000,#ff8080);/* W3C, IE 10+/ Edge, Firefo
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.212);
 }
 
+
 .btn-flotante:hover {
     transform: scale(1.1);
     box-shadow: 0 6px 12px rgba(0,0,0,0.3);
@@ -934,4 +935,49 @@ background: linear-gradient(90deg, #ff0000,#ff8080);/* W3C, IE 10+/ Edge, Firefo
 
 .publicacion:hover {
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Estética para la asignación de permisos en el modal de roles */
+.permisos-modulos {
+  padding: 0.5em 0;
+}
+.permiso-row {
+  background: #f8f9fa;
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.permiso-row .modulo-nombre {
+  min-width: 180px;
+}
+.permiso-row .form-check {
+  margin-left: 10px;
+}
+
+/* Modal de roles adaptable */
+#modalRol .modal-dialog {
+  max-width: 1100px; /* Antes: 800px */
+  width: 98%;
+}
+
+
+
+#modalRol .modal-body {
+  /* Elimina o comenta estas líneas para quitar el scroll interno */
+  /* overflow-y: auto;
+  max-height: 60vh; */
+  padding-bottom: 0.5rem;
+}
+
+/* Permisos scroll si hay muchos */
+#listaModulos.permisos-modulos {
+  /* Elimina o comenta estas líneas para mostrar todo el contenido */
+  /* max-height: 40vh;
+  overflow-y: auto;
+  padding-right: 8px; */
+  padding-right: 0;
 }

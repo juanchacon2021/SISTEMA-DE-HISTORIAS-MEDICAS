@@ -118,7 +118,8 @@ class bitacora extends datos {
             'login' => 0,
             'salida' => 0,
             'usuarios' => 12,
-            'estadistica' => 13
+            'estadistica' => 13,
+            'historias' => 14
         );
         
         return $modulos[$pagina] ?? 0;

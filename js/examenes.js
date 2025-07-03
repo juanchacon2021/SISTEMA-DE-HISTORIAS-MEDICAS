@@ -206,33 +206,38 @@ function cargarRegistrosExamen() {
 
       respuesta.datos.forEach(function (registro) {
         var fila = `
-                <tr>
-                    <td>${registro.paciente} (${registro.cedula_paciente})</td>
-                    <td>${registro.nombre_examen}</td>
-                    <td>${registro.fecha_e} ${registro.hora_e}</td>
-                    <td>${registro.observacion_examen || "N/A"}</td>
-                    <td>
-                        <div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
-                            <button type="button" class="btn btn-success" onclick='editarRegistroExamen(${JSON.stringify(
-                              registro
-                            )})'>
-                                <img src="img/lapiz.svg" style="width: 20px">
-                            </button>
-                            <button type="button" class="btn btn-danger" onclick='confirmarEliminar("registro", "${
-                              registro.cedula_paciente
-                            }|${registro.fecha_e}|${registro.cod_examen}")'>
-                                <img src="img/basura.svg" style="width: 20px">
-                            </button>
-                            ${
-                              registro.ruta_imagen
-                                ? `<button type="button" class="btn btn-primary" onclick='mostrarImagenExamen("${registro.ruta_imagen}")'>
-                                  <img src="img/ojo.svg" style="width: 20px">
-                              </button>`
-                                : '<button type="button" class="btn btn-secondary" disabled><img src="img/ojo-cruzado.svg" style="width: 20px"></button>'
-                            }
-                        </div>
-                    </td>
-                </tr>`;
+            <tr>
+                <td>${registro.paciente} (${registro.cedula_paciente})</td>
+                <td>${registro.nombre_examen}</td>
+                <td>${registro.fecha_e} ${registro.hora_e}</td>
+                <td>${registro.observacion_examen || "N/A"}</td>
+                <td>
+                    <div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
+                        <button type="button" class="btn btn-success" onclick='editarRegistroExamen(${JSON.stringify(
+                          registro
+                        )})'>
+                            <img src="img/lapiz.svg" style="width: 20px">
+                        </button>
+                        <button type="button" class="btn btn-danger" onclick='confirmarEliminar("registro", "${
+                          registro.cedula_paciente
+                        }|${registro.fecha_e}|${registro.cod_examen}")'>
+                            <img src="img/basura.svg" style="width: 20px">
+                        </button>
+                        ${
+                          registro.ruta_imagen
+                            ? `<button type="button" class="btn btn-primary" onclick='mostrarImagenExamen("${registro.ruta_imagen}")'>
+                              <img src="img/ojo.svg" style="width: 20px">
+                          </button>`
+                            : '<button type="button" class="btn btn-danger" disabled><img src="img/ojo-cruzado.svg" style="width: 20px"></button>'
+                        }
+                        <button type="button" class="btn btn-danger" onclick='generarReporteExamen("${
+                          registro.cedula_paciente
+                        }", "${registro.fecha_e}", "${registro.cod_examen}")'>
+                            <img src="img/descarga.svg" style="width: 20px">
+                        </button>
+                    </div>
+                </td>
+            </tr>`;
         $("#resultadoRegistrosExamen").append(fila);
       });
 
@@ -259,14 +264,18 @@ function cargarRegistrosExamen() {
   });
 }
 
+function generarReporteExamen(cedula, fecha, codExamen) {
+    window.open(`vista/fpdf/examenes.php?cedula=${cedula}&fecha=${fecha}&cod_examen=${codExamen}`, '_blank');
+}
+
 function mostrarImagenExamen(rutaImagen) {
-    if (!rutaImagen) {
-        muestraMensaje("No hay imagen disponible para este examen", "error");
-        return;
-    }
-    
-    $("#imagenGrandeExamen").attr("src", rutaImagen);
-    $("#modalImagenExamen").modal("show");
+  if (!rutaImagen) {
+    muestraMensaje("No hay imagen disponible para este examen", "error");
+    return;
+  }
+
+  $("#imagenGrandeExamen").attr("src", rutaImagen);
+  $("#modalImagenExamen").modal("show");
 }
 
 function mostrarModalRegistroExamen(datos = null) {
@@ -577,7 +586,6 @@ function muestraMensaje(mensaje, tipo = "error") {
     modal.modal("hide");
   }, 5000);
 }
-<<<<<<< HEAD
 
 // NOTIFICACIONES
 const ws = new WebSocket('ws://localhost:8080');
@@ -598,5 +606,3 @@ ws.onerror = function(error) {
 function enviarNotificacion(msg) {
     ws.send(msg);
 }
-=======
->>>>>>> a5aba03ad16c3745bb648bf150066e4bfaed281b
