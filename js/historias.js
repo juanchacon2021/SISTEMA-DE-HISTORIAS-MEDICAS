@@ -1,4 +1,3 @@
-
 // Función para consultar pacientes
 function consultar() {
     var datos = new FormData();
@@ -46,7 +45,6 @@ function enviaAjax(datos) {
         processData: false,
         contentType: false,
         success: function(res) {
-            console.log("Respuesta AJAX:", res); // <-- Agrega esto
             try {
                 let data = JSON.parse(res);
                 if (data.resultado === 'consultar') {
@@ -62,9 +60,9 @@ function enviaAjax(datos) {
                                 <td>${p.edad}</td>
                                 <td>${p.telefono}</td>
                                 <td>
-                                    <a class="btn btn-danger" href="vista/fpdf/historia_medica.php?cedula_paciente=${p.cedula_paciente}" target="_blank">
-                                        <img src="img/descarga.svg" style="width: 20px;">
-                                    </a>
+                                    <button class="btn botonrojo" onclick="abrirModalSeleccionPDF('${p.cedula_paciente}')">
+                                        <img src="img/descarga.svg" style="width: 20px;"> PDF Personalizado
+                                    </button>
                                 </td>
                             </tr>`;
                     });
@@ -80,6 +78,30 @@ function enviaAjax(datos) {
         }
     });
 }
+
+// Función para abrir el modal de selección de PDF
+function abrirModalSeleccionPDF(cedula) {
+    $('#pdf_cedula_paciente').val(cedula);
+    // Por defecto selecciona datos personales
+    $('#formSeleccionPDF input[type=checkbox]').prop('checked', false);
+    $('#checkDatosPersonales').prop('checked', true);
+    $('#modalSeleccionPDF').modal('show');
+}
+
+// Evento para generar el PDF personalizado
+$(document).on('click', '#btnGenerarPDF', function() {
+    const cedula = $('#pdf_cedula_paciente').val();
+    const secciones = [];
+    $('#formSeleccionPDF input[type=checkbox]:checked').each(function() {
+        secciones.push($(this).val());
+    });
+    if (secciones.length === 0) {
+        alert('Seleccione al menos una sección');
+        return;
+    }
+    window.open('vista/fpdf/historia_medica.php?cedula_paciente=' + cedula + '&secciones=' + secciones.join(','), '_blank');
+    $('#modalSeleccionPDF').modal('hide');
+});
 
 // Inicialización
 $(document).ready(function() {

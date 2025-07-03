@@ -138,37 +138,44 @@ function crearDT() {
 // Función para inicializar validaciones
 function inicializarValidaciones() {
     const validaciones = [
-        { selector: "#cedula_paciente", regex: /^[0-9]{0,8}$/, errorSelector: "#scedula_paciente", errorMessage: "El formato debe ser 12345678" },
-        { selector: "#apellido", regex: /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{0,30}$/, errorSelector: "#sapellido", errorMessage: "Solo letras entre 3 y 30 caracteres" },
-        { selector: "#nombre", regex: /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{0,30}$/, errorSelector: "#snombre", errorMessage: "Solo letras entre 3 y 30 caracteres" },
-        { 
-            selector: "#telefono", 
-            regex: /^[0-9]{0,11}$/, 
-            errorSelector: "#stelefono", 
-            errorMessage: "El formato debe ser de 11 números",
-            onInput: function () {
-                $(this).val($(this).val().replace(/[^0-9]/g, ''));
-            }
-        },
-        { selector: "#ocupacion", regex: /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{0,300}$/, errorSelector: "#socupacion", errorMessage: "Solo letras entre 3 y 300 caracteres" },
+        { selector: "#cedula_paciente", regex: /^[0-9]{7,8}$/, errorSelector: "#scedula_paciente", errorMessage: "El formato debe ser 12345678" },
+        { selector: "#apellido", regex: /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/, errorSelector: "#sapellido", errorMessage: "Solo letras entre 3 y 30 caracteres" },
+        { selector: "#nombre", regex: /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/, errorSelector: "#snombre", errorMessage: "Solo letras entre 3 y 30 caracteres" },
+        { selector: "#telefono", regex: /^[0-9]{11}$/, errorSelector: "#stelefono", errorMessage: "El formato debe ser de 11 números" },
+        { selector: "#ocupacion", regex: /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,300}$/, errorSelector: "#socupacion", errorMessage: "Solo letras entre 3 y 300 caracteres" },
         { selector: "#hda", regex: /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{0,300}$/, errorSelector: "#shda", errorMessage: "Solo letras entre 3 y 300 caracteres" },
         { selector: "#habtoxico", regex: /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{0,300}$/, errorSelector: "#shabtoxico", errorMessage: "Solo letras entre 3 y 300 caracteres" },
         { selector: "#alergias", regex: /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{0,300}$/, errorSelector: "#salergias", errorMessage: "Solo letras entre 3 y 300 caracteres" },
         { selector: "#quirurgico", regex: /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{0,300}$/, errorSelector: "#squirurgico", errorMessage: "Solo letras entre 3 y 300 caracteres" },
         { selector: "#transsanguineo", regex: /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{0,300}$/, errorSelector: "#stranssanguineo", errorMessage: "Solo letras entre 3 y 300 caracteres" },
         { selector: "#alergias_med", regex: /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{0,300}$/, errorSelector: "#salergias_med", errorMessage: "Solo letras entre 3 y 300 caracteres" },
-        { selector: "#psicosocial", regex: /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{0,300}$/, errorSelector: "#spsicosocial", errorMessage: "Solo letras entre 3 e 300 caracteres" },
+        { selector: "#psicosocial", regex: /^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{0,300}$/, errorSelector: "#spsicosocial", errorMessage: "Solo letras entre 3 y 300 caracteres" },
+        // Nuevas validaciones:
+        { selector: "#fecha_nac", regex: /^\d{4}-\d{2}-\d{2}$/, errorSelector: "#sfecha_nac", errorMessage: "Debe ingresar una fecha válida" },
+        { selector: "#edad", regex: /^[0-9]{1,3}$/, errorSelector: "#sedad", errorMessage: "Edad inválida" },
+        { selector: "#estadocivil", regex: /^(Soltero|Casado|Divorciado|Viudo|Unión Libre)$/, errorSelector: "#sestadocivil", errorMessage: "Seleccione un estado civil" },
+        { selector: "#direccion", regex: /^.{5,}$/, errorSelector: "#sdireccion", errorMessage: "Dirección muy corta" },
     ];
 
     validaciones.forEach(({ selector, regex, errorSelector, errorMessage, onInput }) => {
         if (onInput) {
             $(selector).on("input", onInput);
         }
-        
         $(selector).on("keypress", function (e) {
-            validarkeypress(regex, e);
+            // Solo validar el carácter, no la cadena completa
+            const key = e.keyCode || e.which;
+            const tecla = String.fromCharCode(key);
+            // Extrae solo el patrón de un solo carácter
+            let charRegex = /./;
+            if (regex.toString().includes('[A-Za-z')) {
+                charRegex = /[A-Za-záéíóúÁÉÍÓÚñÑ\s]/;
+            } else if (regex.toString().includes('[0-9')) {
+                charRegex = /[0-9]/;
+            }
+            if (!tecla.match(charRegex) && key >= 32) {
+                e.preventDefault();
+            }
         });
-
         $(selector).on("keyup", function () {
             validarkeyup(regex, $(this), $(errorSelector), errorMessage);
         });
@@ -259,22 +266,42 @@ function limpiarFormulario() {
 
 // Función para validar antes de enviar
 function validarenvio() {
-    if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula_paciente"),
-        $("#scedula_paciente"),"El formato debe ser 12345678")==0){
+    if(validarkeyup(/^[0-9]{7,8}$/,$("#cedula_paciente"),$("#scedula_paciente"),"El formato debe ser 12345678")==0){
         muestraMensaje("La cedula debe coincidir con el formato 12345678");	
         return false;					
-    }	
-    else if(validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-        $("#apellido"),$("#sapellido"),"Solo letras entre 3 y 30 caracteres")==0){
+    }
+    if(validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,$("#apellido"),$("#sapellido"),"Solo letras entre 3 y 30 caracteres")==0){
         muestraMensaje("Apellido: Solo letras entre 3 y 30 caracteres");
         return false;
     }
-    else if(validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,
-        $("#nombre"),$("#snombre"),"Solo letras entre 3 y 30 caracteres")==0){
+    if(validarkeyup(/^[A-Za-z\b\s\u00f1\u00d1\u00E0-\u00FC]{3,30}$/,$("#nombre"),$("#snombre"),"Solo letras entre 3 y 30 caracteres")==0){
         muestraMensaje("Nombre: Solo letras entre 3 y 30 caracteres");
         return false;
     }
-    
+    if(validarkeyup(/^\d{4}-\d{2}-\d{2}$/,$("#fecha_nac"),$("#sfecha_nac"),"Debe ingresar una fecha válida")==0){
+        muestraMensaje("Debe ingresar una fecha de nacimiento válida");
+        return false;
+    }
+    // Validar que la fecha no sea futura
+    const fechaNac = new Date($("#fecha_nac").val());
+    const hoy = new Date();
+    if(fechaNac > hoy){
+        muestraMensaje("La fecha de nacimiento no puede ser futura");
+        return false;
+    }
+    if(validarkeyup(/^[0-9]{1,3}$/,$("#edad"),$("#sedad"),"Edad inválida")==0){
+        muestraMensaje("Edad inválida");
+        return false;
+    }
+    if(validarkeyup(/^[0-9]{11}$/,$("#telefono"),$("#stelefono"),"El formato debe ser de 11 números")==0){
+        muestraMensaje("Teléfono inválido");
+        return false;
+    }
+    if(validarkeyup(/^.{5,}$/,$("#direccion"),$("#sdireccion"),"Dirección muy corta")==0){
+        muestraMensaje("Dirección muy corta");
+        return false;
+    }
+    // ...mantén el resto de validaciones existentes...
     return true;
 }
 
@@ -289,11 +316,13 @@ function muestraMensaje(mensaje) {
 
 // Funciones para validación de campos
 function validarkeypress(er, e) {
-    key = e.keyCode;
-    tecla = String.fromCharCode(key);
-    a = er.test(tecla);
-    if(!a){
-        e.preventDefault();
+    const key = e.keyCode || e.which;
+    const tecla = String.fromCharCode(key);
+    // Solo validar si es un carácter imprimible
+    if (!e.ctrlKey && !e.altKey && key >= 32) {
+        if (!tecla.match(er)) {
+            e.preventDefault();
+        }
     }
 }
 
@@ -376,13 +405,17 @@ function enviaAjax(datos) {
                     $("#resultadoconsulta").html(html);
                     crearDT();
                 }
-                else if (lee.resultado == "incluir" || lee.resultado == "modificar" || lee.resultado == "success") {
+                else if (lee.resultado == "incluir") {
                     muestraMensaje(lee.mensaje);
-                    if (
-                        (lee.resultado == "incluir" && lee.mensaje == "Paciente registrado exitosamente") ||
-                        (lee.resultado == "success" && lee.mensaje == "Paciente registrado exitosamente") ||
-                        (lee.resultado == "modificar" && lee.mensaje == "Paciente modificado exitosamente")
-                    ) {
+                    if (lee.mensaje.includes('exitosamente')) {
+                        $("#modal1").modal("hide");
+                        consultar();
+                        limpiarFormulario();
+                    }
+                }
+                else if (lee.resultado == "modificar") {
+                    muestraMensaje(lee.mensaje);
+                    if(lee.mensaje.includes('Modificado')){
                         $("#modal1").modal("hide");
                         consultar();
                     }
