@@ -1,256 +1,329 @@
 <?php
+
 namespace Shm\Shm\modelo;
+
 use Shm\Shm\modelo\datos;
-use Pdo;
+use PDO;
 use Exception;
 
-
-class personal extends datos{
-    
-    
-    private $cedula_personal; 
+class personal extends datos
+{
+    private $cedula_personal;
     private $nombre;
     private $apellido;
     private $correo;
     private $telefonos = array();
     private $cargo;
-    
-    
-    
-    function set_cedula_personal($valor){
-        $this->cedula_personal = $valor; 
-        
+
+    // Setters
+    public function set_cedula_personal($valor)
+    {
+        $this->cedula_personal = $valor;
     }
-    
-    
-    function set_apellido($valor){
+
+    public function set_apellido($valor)
+    {
         $this->apellido = $valor;
     }
-    
-    function set_nombre($valor){
+
+    public function set_nombre($valor)
+    {
         $this->nombre = $valor;
     }
-    
-    function set_correo($valor){
+
+    public function set_correo($valor)
+    {
         $this->correo = $valor;
     }
-    
-    function set_telefonos($telefonos){
+
+    public function set_telefonos($telefonos)
+    {
         $this->telefonos = $telefonos;
     }
-    
-    function set_cargo($valor){
+
+    public function set_cargo($valor)
+    {
         $this->cargo = $valor;
     }
 
-    
-    
-    function get_cedula_personal(){
+    // Getters
+    public function get_cedula_personal()
+    {
         return $this->cedula_personal;
     }
-    
-    function get_apellido(){
+
+    public function get_apellido()
+    {
         return $this->apellido;
     }
-    
-    function get_nombre(){
+
+    public function get_nombre()
+    {
         return $this->nombre;
     }
-    
-    function get_correo(){
+
+    public function get_correo()
+    {
         return $this->correo;
     }
-    
-    function get_telefonos(){
+
+    public function get_telefonos()
+    {
         return $this->telefonos;
     }
-    
-    function get_cargo(){
+
+    public function get_cargo()
+    {
         return $this->cargo;
     }
 
-    
-    
-    
-    function incluir(){
-        $r = array();
-        if(!$this->existe($this->cedula_personal)){
-            $co = $this->conecta();
-            $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        
-            try {
-                // Iniciar transacción
-                $co->beginTransaction();
-                
-                // Insertar datos básicos del personal
-                $co->query("Insert into personal(
-                    cedula_personal,
-                    apellido,
-                    nombre,
-                    correo,
-                    cargo
-                    )
-                    Values(
-                    '$this->cedula_personal',
-                    '$this->apellido',
-                    '$this->nombre',
-                    '$this->correo',
-                    '$this->cargo'
-                    )");
-                
-                foreach($this->telefonos as $telefono){
-                    $co->query("Insert into telefonos_personal(
-                        cedula_personal,
-                        telefono
-                        )
-                        Values(
-                        '$this->cedula_personal',
-                        '$telefono'
-                        )");
+    // Método unificado para gestionar personal
+    public function gestionar_personal($datos)
+    {
+        $this->set_cedula_personal($datos['cedula_personal'] ?? '');
+        $this->set_nombre($datos['nombre'] ?? '');
+        $this->set_apellido($datos['apellido'] ?? '');
+        $this->set_correo($datos['correo'] ?? '');
+        $this->set_cargo($datos['cargo'] ?? '');
+
+        // Manejar teléfonos - ahora viene como JSON string o array
+        $telefonos = [];
+        if (!empty($datos['telefonos'])) {
+            if (is_string($datos['telefonos'])) {
+                $telefonos = json_decode($datos['telefonos'], true);
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    $telefonos = [$datos['telefonos']];
                 }
-                
-                $co->commit();
-                $r['resultado'] = 'incluir';
-                $r['mensaje'] = 'Registro Incluido';
-            } catch(Exception $e) {
-                $co->rollBack();
-                $r['resultado'] = 'error';
-                $r['mensaje'] = $e->getMessage();
+            } elseif (is_array($datos['telefonos'])) {
+                $telefonos = $datos['telefonos'];
             }
         }
-        else{
-            $r['resultado'] = 'incluir';
-            $r['mensaje'] = 'Ya existe la cedula';
+        $this->set_telefonos($telefonos);
+
+        switch ($datos['accion']) {
+            case 'incluir':
+                return $this->incluir();
+            case 'modificar':
+                return $this->modificar();
+            case 'eliminar':
+                return $this->eliminar();
+            default:
+                return array("resultado" => "error", "mensaje" => "Acción no válida");
         }
-        return $r;
     }
-    
-    function modificar(){
+
+    private function incluir()
+    {
+        $r = array();
         $co = $this->conecta();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $r = array();
-        if($this->existe($this->cedula_personal)){
-            try {
-                $co->beginTransaction();
-                
-                $co->query("Update personal set 
-                    apellido = '$this->apellido',
-                    nombre = '$this->nombre',
-                    correo = '$this->correo',
-                    cargo = '$this->cargo'
-                    where
-                    cedula_personal = '$this->cedula_personal'
-                    ");
-                
-                $co->query("Delete from telefonos_personal where cedula_personal = '$this->cedula_personal'");
-                
-                foreach($this->telefonos as $telefono){
-                    $co->query("Insert into telefonos_personal(
-                        cedula_personal,
-                        telefono
-                        )
-                        Values(
-                        '$this->cedula_personal',
-                        '$telefono'
-                        )");
-                }
-                
-                $co->commit();
-                $r['resultado'] = 'modificar';
-                $r['mensaje'] = 'Registro Modificado';
-            } catch(Exception $e) {
-                $co->rollBack();
-                $r['resultado'] = 'error';
-                $r['mensaje'] = $e->getMessage();
-            }
-        }
-        else{
-            $r['resultado'] = 'modificar';
-            $r['mensaje'] = 'Cedula no registrada';
-        }
-        return $r;
-    }
-    
-    function eliminar(){
-        $co = $this->conecta();
-        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $r = array();
-        if($this->existe($this->cedula_personal)){
-            try {
-                $co->beginTransaction();
-                
-                $co->query("Delete from telefonos_personal where cedula_personal = '$this->cedula_personal'");
-                
-                $co->query("Delete from personal where cedula_personal = '$this->cedula_personal'");
-                
-                $co->commit();
-                $r['resultado'] = 'eliminar';
-                $r['mensaje'] = 'Registro Eliminado';
-            } catch(Exception $e) {
-                $co->rollBack();
-                $r['resultado'] = 'error';
-                $r['mensaje'] = $e->getMessage();
-            }
-        }
-        else{
-            $r['resultado'] = 'eliminar';
-            $r['mensaje'] = 'No existe la cedula';
-        }
-        return $r;
-    }
-    
-    
-    public function consultar(){
-        
-        $co = $this->conecta();
-        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $r = array();
+
         try {
-            $resultado = $co->query("SELECT p.*, 
-                                   GROUP_CONCAT(tp.telefono SEPARATOR ', ') as telefonos 
-                                   FROM personal p
-                                   LEFT JOIN telefonos_personal tp ON p.cedula_personal = tp.cedula_personal
-                                   GROUP BY p.cedula_personal");
-            
-            if ($resultado) {
-                $r['resultado'] = 'consultar';
-                $r['datos'] = $resultado->fetchAll(PDO::FETCH_ASSOC);
-            } else {
-                $r['resultado'] = 'consultar';
-                $r['datos'] = array();
+            // Iniciar transacción
+            $co->beginTransaction();
+
+            // Insertar datos básicos del personal
+            $sql = "INSERT INTO personal(
+                cedula_personal,
+                apellido,
+                nombre,
+                correo,
+                cargo
+                )
+                VALUES(
+                :cedula,
+                :apellido,
+                :nombre,
+                :correo,
+                :cargo
+                )";
+
+            $stmt = $co->prepare($sql);
+            $stmt->execute(array(
+                ':cedula' => $this->cedula_personal,
+                ':apellido' => $this->apellido,
+                ':nombre' => $this->nombre,
+                ':correo' => $this->correo,
+                ':cargo' => $this->cargo
+            ));
+
+            // Insertar teléfonos
+            foreach ($this->telefonos as $telefono) {
+                $sql = "INSERT INTO telefonos_personal(
+                    cedula_personal,
+                    telefono
+                    )
+                    VALUES(
+                    :cedula,
+                    :telefono
+                    )";
+
+                $stmt = $co->prepare($sql);
+                $stmt->execute(array(
+                    ':cedula' => $this->cedula_personal,
+                    ':telefono' => $telefono
+                ));
             }
+
+            $co->commit();
+            $r['resultado'] = 'incluir';
+            $r['mensaje'] = 'Registro Incluido';
+        } catch (Exception $e) {
+            $co->rollBack();
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $e->getMessage();
+        }
+
+        return $r;
+    }
+
+    private function modificar()
+    {
+        $co = $this->conecta();
+        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $r = array();
+
+        try {
+            $co->beginTransaction();
+
+            // Actualizar datos básicos
+            $sql = "UPDATE personal SET 
+                apellido = :apellido,
+                nombre = :nombre,
+                correo = :correo,
+                cargo = :cargo
+                WHERE
+                cedula_personal = :cedula";
+
+            $stmt = $co->prepare($sql);
+            $stmt->execute(array(
+                ':apellido' => $this->apellido,
+                ':nombre' => $this->nombre,
+                ':correo' => $this->correo,
+                ':cargo' => $this->cargo,
+                ':cedula' => $this->cedula_personal
+            ));
+
+            // Eliminar teléfonos antiguos
+            $sql = "DELETE FROM telefonos_personal WHERE cedula_personal = :cedula";
+            $stmt = $co->prepare($sql);
+            $stmt->execute([':cedula' => $this->cedula_personal]);
+
+            // Insertar nuevos teléfonos
+            foreach ($this->telefonos as $telefono) {
+                $sql = "INSERT INTO telefonos_personal(
+                    cedula_personal,
+                    telefono
+                    )
+                    VALUES(
+                    :cedula,
+                    :telefono
+                    )";
+
+                $stmt = $co->prepare($sql);
+                $stmt->execute(array(
+                    ':cedula' => $this->cedula_personal,
+                    ':telefono' => $telefono
+                ));
+            }
+
+            $co->commit();
+            $r['resultado'] = 'modificar';
+            $r['mensaje'] = 'Registro Modificado';
+        } catch (Exception $e) {
+            $co->rollBack();
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $e->getMessage();
+        }
+
+        return $r;
+    }
+
+    private function eliminar()
+    {
+        $co = $this->conecta();
+        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $r = array();
+
+        try {
+            $co->beginTransaction();
+
+            // Eliminar teléfonos primero
+            $sql = "DELETE FROM telefonos_personal WHERE cedula_personal = :cedula";
+            $stmt = $co->prepare($sql);
+            $stmt->execute([':cedula' => $this->cedula_personal]);
+
+            // Luego eliminar el personal
+            $sql = "DELETE FROM personal WHERE cedula_personal = :cedula";
+            $stmt = $co->prepare($sql);
+            $stmt->execute([':cedula' => $this->cedula_personal]);
+
+            $co->commit();
+            $r['resultado'] = 'eliminar';
+            $r['mensaje'] = 'Registro Eliminado';
+        } catch (Exception $e) {
+            $co->rollBack();
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $e->getMessage();
+        }
+
+        return $r;
+    }
+
+    public function consultar()
+    {
+        $co = $this->conecta();
+        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $r = array();
+
+        try {
+            $sql = "SELECT p.*, 
+                   GROUP_CONCAT(tp.telefono SEPARATOR ', ') as telefonos 
+                   FROM personal p
+                   LEFT JOIN telefonos_personal tp ON p.cedula_personal = tp.cedula_personal
+                   GROUP BY p.cedula_personal
+                   ORDER BY p.apellido, p.nombre";
+
+            $stmt = $co->prepare($sql);
+            $stmt->execute();
+
+            $r['resultado'] = 'consultar';
+            $r['datos'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
             $r['resultado'] = 'error';
             $r['mensaje'] = $e->getMessage();
         }
+
         return $r;
     }
-        
-    private function existe($cedula_personal){
+
+    public function obtener_doctores()
+    {
         $co = $this->conecta();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        try{
-            
-            $resultado = $co->query("Select * from personal where cedula_personal ='$cedula_personal'");
-            
-            
-            $fila = $resultado->fetchAll(PDO::FETCH_BOTH);
-            if($fila){
+        $r = array();
 
-                return true;
-                
-            }
-            else{
-                
-                return false;;
-            }
-            
-        }catch(Exception $e){
-            return false;
+        try {
+            $sql = "SELECT cedula_personal, CONCAT(nombre, ' ', apellido) as nombre_completo
+                    FROM personal 
+                    WHERE cargo = 'Doctor' 
+                    ORDER BY apellido, nombre";
+
+            $stmt = $co->prepare($sql);
+            $stmt->execute();
+
+            $r['resultado'] = 'consultar';
+            $r['datos'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $e->getMessage();
         }
+
+        return $r;
     }
-    
-    public static function obtenerUsuarioPersonal($cedula_personal) {
+
+    public static function obtenerUsuarioPersonal($cedula_personal)
+    {
         $co = (new self())->conecta();
         $stmt = $co->prepare("SELECT nombre, apellido FROM personal WHERE cedula_personal = ?");
         $stmt->execute([$cedula_personal]);
@@ -261,4 +334,3 @@ class personal extends datos{
         return $usuario;
     }
 }
-?>

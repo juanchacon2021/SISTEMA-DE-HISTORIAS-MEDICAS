@@ -20,46 +20,44 @@ require_once("comunes/notificaciones.php");
     ?>
 
     <div class="wrapper">
-    <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
-        Jornadas Médicas
-    </div>
+        <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
+            Jornadas Médicas
+        </div>
         <div class="container espacio">
             <section class="content">
-
-                <div class="container-fluid">
-                    <div class="cardd">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-md-6">
-                                </div>
-                                <div class="col-md-6 text-right">
-                                    <button type="button" class="btn botonverde" onclick="mostrarModalJornada('incluir')">
-                                        <i class="fas fa-plus mr-1"></i> Nueva Jornada
-                                    </button>
-                                    <a href="vista/fpdf/jornadas.php" target="_blank" class="btn btn-primary">
-                                        <i class="fas fa-file-pdf mr-1"></i> Generar Reporte
-                                    </a>
-                                </div>
+                <div class="cardd mt-3">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <!-- Filtros pueden ir aquí si son necesarios -->
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <button type="button" class="btn botonverde" onclick="mostrarModalJornada('incluir')">
+                                    <i class="fas fa-plus me-2"></i> Nueva Jornada
+                                </button>
+                                <button type="button" class="btn botonreporte" onclick="mostrarModalReportes()">
+                                    <i class="fas fa-file-pdf me-2"></i> Generar Reporte
+                                </button>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-hover" id="tablaJornadas" style="width:100%">
-                                    <thead class="thead-dark">
-                                        <tr>
-                                            <th>Fecha</th>
-                                            <th>Ubicación</th>
-                                            <th>Total Pacientes</th>
-                                            <th>Hombres</th>
-                                            <th>Mujeres</th>
-                                            <th>Embarazadas</th>
-                                            <th>Responsable</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="resultadoJornadas"></tbody>
-                                </table>
-                            </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover" id="tablaJornadas" style="width:100%">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Ubicación</th>
+                                        <th>Total Pacientes</th>
+                                        <th>Hombres</th>
+                                        <th>Mujeres</th>
+                                        <th>Embarazadas</th>
+                                        <th>Responsable</th>
+                                        <th class="text-center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="resultadoJornadas"></tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -106,12 +104,6 @@ require_once("comunes/notificaciones.php");
                             </div>
 
                             <div class="row">
-                                <div style="display: none;">
-                                    <div class="form-group">
-                                        <label for="total_pacientes">Total Pacientes</label>
-                                        <input type="number" class="form-control" id="total_pacientes" name="total_pacientes" min="0" value="0" readonly>
-                                    </div>
-                                </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="pacientes_masculinos">Pacientes Masculinos</label>
@@ -130,11 +122,16 @@ require_once("comunes/notificaciones.php");
                                         <input type="number" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="pacientes_embarazadas" name="pacientes_embarazadas" min="0" value="0">
                                     </div>
                                 </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="total_pacientes">Total Pacientes</label>
+                                        <input type="number" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="total_pacientes" name="total_pacientes" min="0" value="0" readonly>
+                                    </div>
+                                </div>
                             </div>
                             <div class="row mt-2">
                                 <div class="col-md-12">
                                     <div class="alert alert-info p-2 small" id="contador-container">
-                                        <div>Total de Pacientes: <strong><span id="suma-mf">0</span></strong></div>
                                         <div class="text-danger font-weight-bold" id="mensaje-validacion"></div>
                                     </div>
                                 </div>
@@ -161,7 +158,7 @@ require_once("comunes/notificaciones.php");
                                             <thead>
                                                 <tr>
                                                     <th>Nombre</th>
-                                                    <th>Acciones</th>
+                                                    <th class="text-center">Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="listaParticipantes"></tbody>
@@ -174,6 +171,40 @@ require_once("comunes/notificaciones.php");
                     <div class="modal-footer">
                         <button type="button" class="btn boton" data-bs-dismiss="modal">Cancelar</button>
                         <button type="button" class="btn botonverde" id="btnGuardarJornada">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para Reportes -->
+        <div class="modal fade" id="modalReportes" tabindex="-1" aria-labelledby="modalReportesLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content" style="padding: 25px 25px 0px 25px;">
+                    <div class="text-light text-end" style="margin: 20px 20px 0px 0px;">
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div style="margin: 0em 2em 0em 2em;">
+                        <h1 class="text 2x1 font-bold mb-2" id="modalReportesLabel">
+                           Generar Reporte
+                        </h1>
+                        <div>
+                            <div class="col-md-2 mb-4 p-1 rounded-full" style="background-color: rgb(220 38 38);"></div>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="d-grid gap-3">
+                            <button type="button" class="btn btn-success text-start" onclick="generarReporte('jornadas')">
+                                <i class="fas fa-list me-2"></i> Listado de Jornadas
+                            </button>
+                            <button type="button" class="btn btn-success text-start" onclick="generarReporte('participantes')">
+                                <i class="fas fa-users me-2"></i> Participantes por Jornada
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn boton" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </button>
                     </div>
                 </div>
             </div>

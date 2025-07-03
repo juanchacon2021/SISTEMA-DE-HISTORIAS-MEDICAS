@@ -45,38 +45,37 @@ function cargarJornadas() {
 
       respuesta.datos.forEach(function (jornada) {
         var fila = `
-                <tr>
-                    <td>${formatearFecha(jornada.fecha_jornada)}</td>
-                    <td>${jornada.ubicacion}</td>
-                    <td>${jornada.total_pacientes}</td>
-                    <td>${jornada.pacientes_masculinos}</td>
-                    <td>${jornada.pacientes_femeninos}</td>
-                    <td>${jornada.pacientes_embarazadas}</td>
-                    <td>${jornada.responsable}</td>
-                    <td class="text-center">
-                        <div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
-                            <button type="button" class="btn btn-success" onclick='editarJornada(${
-                              jornada.cod_jornada
-                            })'>
-                                <img src="img/lapiz.svg" style="width: 20px">
-                            </button>
-                            <button type="button" class="btn btn-danger" onclick='confirmarEliminar(${
-                              jornada.cod_jornada
-                            })'>
-                                <img src="img/basura.svg" style="width: 20px">
-                            </button>
-                        </div>
-                    </td>
-                </tr>`;
+        <tr>
+            <td>${formatearFecha(jornada.fecha_jornada)}</td>
+            <td>${jornada.ubicacion}</td>
+            <td>${jornada.total_pacientes}</td>
+            <td>${jornada.pacientes_masculinos}</td>
+            <td>${jornada.pacientes_femeninos}</td>
+            <td>${jornada.pacientes_embarazadas}</td>
+            <td>${jornada.responsable}</td>
+            <td class="text-center">
+                <div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
+                    <button type="button" class="btn btn-success" onclick='editarJornada(${jornada.cod_jornada})'>
+                        <img src="img/lapiz.svg" style="width: 20px">
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick='confirmarEliminar(${jornada.cod_jornada})'>
+                        <img src="img/basura.svg" style="width: 20px">
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick='generarReporteIndividual(${jornada.cod_jornada})'>
+                        <img src="img/descarga.svg" style="width: 20px">
+                    </button>
+                </div>
+            </td>
+        </tr>`;
         $("#resultadoJornadas").append(fila);
       });
 
       tablaJornadas = $("#tablaJornadas").DataTable({
         language: {
           lengthMenu: "Mostrar _MENU_ por página",
-          zeroRecords: "No se encontró jornadas",
+          zeroRecords: "No se encontraron registros",
           info: "Mostrando página _PAGE_ de _PAGES_",
-          infoEmpty: "No hay jornadas registradas",
+          infoEmpty: "No hay registros disponibles",
           infoFiltered: "(filtrado de _MAX_ registros totales)",
           search: "Buscar:",
           paginate: {
@@ -89,10 +88,10 @@ function cargarJornadas() {
         responsive: true,
         autoWidth: false,
         columnDefs: [
-          { orderable: false, targets: [7] }, // Columna de acciones
-          { className: "text-center", targets: [7] }, // Centrar contenido de acciones
+          { orderable: false, targets: -1 }, // Hace que la última columna (acciones) no sea ordenable
+          { className: "text-center", targets: -1 }, // Centra el contenido de la columna de acciones
         ],
-        order: [[0, "desc"]], // Ordenar por fecha descendente
+        order: [[0, "desc"]], // Ordena por fecha de inicio (más reciente primero) por defecto
       });
     }
   });
@@ -184,6 +183,7 @@ function editarJornada(codigo) {
 }
 
 function confirmarEliminar(codigo) {
+  modoActual = "jornada";
   idActual = codigo;
   $("#mensajeConfirmacion").html(
     "¿Está seguro de eliminar esta jornada médica?<br>Esta acción no se puede deshacer."
@@ -368,6 +368,19 @@ function formatearFecha(fecha) {
   return fecha;
 }
 
+function mostrarModalReportes() {
+    $('#modalReportes').modal('show');
+}
+
+function generarReporte(tipo) {
+    $('#modalReportes').modal('hide');
+    window.open(`vista/fpdf/jornadas_reportes.php?tipo=${tipo}`, '_blank');
+}
+
+function generarReporteIndividual(codigo) {
+    window.open(`vista/fpdf/jornadas_reportes.php?tipo=individual&codigo=${codigo}`, '_blank');
+}
+
 function enviaAjax(datos, callback) {
   $.ajax({
     async: true,
@@ -400,47 +413,6 @@ function enviaAjax(datos, callback) {
   });
 }
 
-<<<<<<< HEAD
-function muestraMensaje(mensaje, tipo = 'error') {
-    const modal = $('#mostrarmodal');
-    const contenido = $('#contenidodemodal');
-    
-    contenido.html(mensaje);
-    
-    if(tipo == 'error') {
-        modal.find('.modal-header').removeClass('bg-success').addClass('bg-danger');
-    } else {
-        modal.find('.modal-header').removeClass('bg-danger').addClass('bg-success');
-    }
-    
-    modal.modal('show');
-    
-    setTimeout(function() {
-        modal.modal('hide');
-    }, 5000);
-}
-
-
-// NOTIFICACIONES
-const ws = new WebSocket('ws://localhost:8080');
-
-ws.onopen = function() {
-    console.log('Conectado al WebSocket');
-};
-
-ws.onclose = function() {
-    console.log('WebSocket cerrado');
-};
-
-ws.onerror = function(error) {
-    console.error('WebSocket error:', error);
-};
-
-// Ejemplo: enviar un mensaje (puedes quitar esto si solo quieres recibir)
-function enviarNotificacion(msg) {
-    ws.send(msg);
-}
-=======
 function muestraMensaje(mensaje, tipo = "error") {
   const modal = $("#mostrarmodal");
   const contenido = $("#contenidodemodal");
@@ -459,4 +431,3 @@ function muestraMensaje(mensaje, tipo = "error") {
     modal.modal("hide");
   }, 5000);
 }
->>>>>>> a5aba03ad16c3745bb648bf150066e4bfaed281b

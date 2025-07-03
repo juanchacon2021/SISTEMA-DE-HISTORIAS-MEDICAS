@@ -135,9 +135,9 @@
     font-family: 'Sora';
     background-color: rgb(46, 99, 49);
     border-radius: 0.5rem;
-    color: white;
+    border: 0.5rem solid rgb(46, 99, 49);
     width: auto;
-    font-size: 15px;
+    color: white
 }
 
 .publicar {

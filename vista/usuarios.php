@@ -2,9 +2,6 @@
 require_once("comunes/encabezado.php"); 
 require_once("comunes/sidebar.php");  
 require_once("comunes/notificaciones.php");  
-<?php
-require_once("comunes/encabezado.php");
-require_once("comunes/sidebar.php");
 ?>
 
 <body class="hold-transition sidebar-mini layout-fixed">
