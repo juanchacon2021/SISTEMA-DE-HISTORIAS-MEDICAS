@@ -53,6 +53,7 @@ require_once("comunes/notificaciones.php");
                     <div class="mb-3">
                         <label for="imagen" class="form-label">Imagen (opcional)</label>
                         <input class="form-control" type="file" id="imagen" name="imagen" accept="image/*">
+                        <img id="imagenVistaPrevia" src="" style="display:none; max-width: 100%; max-height: 200px;">
                     </div>
                     
                     <div class="d-flex justify-content-end gap-2">

@@ -80,12 +80,16 @@ function mostrarFormularioPublicacion() {
     $("#formPublicacionData")[0].reset();
     $("#accion").val('incluir_publicacion');
     $("#procesoPublicacion").text('Publicar');
+    // Limpiar la vista previa de la imagen
+    $("#imagenVistaPrevia").attr("src", "").hide();
     window.scrollTo(0, 0);
 }
 
 // Ocultar formulario de publicación
 function ocultarFormularioPublicacion() {
     $("#formPublicacion").hide();
+    // Limpiar la vista previa de la imagen también al ocultar
+    $("#imagenVistaPrevia").attr("src", "").hide();
 }
 
 // Editar publicación
@@ -153,7 +157,7 @@ $(document).on('click', '#procesoPublicacion', function() {
         console.log("Respuesta AJAX:", respuesta); 
         var lee = JSON.parse(respuesta);
         console.log("Objeto parseado:", lee); 
-        if (lee.resultado == "incluir_publicacion" || lee.resultado == "modificar_publicacion") {
+        if (lee.resultado == "incluir" || lee.resultado == "modificar") {
             muestraMensaje(lee.mensaje);
             ocultarFormularioPublicacion();
             cargarPublicaciones();
