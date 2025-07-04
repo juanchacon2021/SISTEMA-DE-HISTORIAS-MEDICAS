@@ -1,10 +1,11 @@
-<?php 
-require_once("comunes/encabezado.php"); 
-require_once("comunes/sidebar.php");    
+<?php
+require_once("comunes/encabezado.php");
+require_once("comunes/sidebar.php");
 require_once("comunes/notificaciones.php");
 ?>
+
 <body class="hold-transition sidebar-mini layout-fixed">
-    <?php  
+    <?php
     if (!isset($_SESSION['permisos']) || !is_array($_SESSION['permisos'])) {
         header("Location: ?pagina=login");
         exit();
@@ -16,24 +17,21 @@ require_once("comunes/notificaciones.php");
                 <a href="?pagina=principal" class="btn btn-primary">Volver al inicio</a>
              </div>');
     }
-?>
+    ?>
 
-<div class="wrapper">
-    <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
-        Bitácora del Sistema
-    </div>
-    
-    <div class="container espacio">
-        <section class="content">
+    <div class="wrapper">
+        <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
+            Bitácora del Sistema
+        </div>
 
-            <div class="container-fluid">
-                <div class="container">
-                    <div class="card-header bg-primary text-white">
+        <div class="container espacio">
+            <section class="content">
+                <div class="cardd mt-3">
+                    <div class="card-header">
                         <div class="row">
                             <div class="col-md-6">
-                                <h3 class="card-title mb-0" style="text-align: center;">Registros de Actividad</h3>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 text-right">
                                 <div class="input-group">
                                     <input type="text" class="form-control" id="filtroBitacora" placeholder="Filtrar...">
                                     <button class="btn btn-light" type="button" id="btnFiltrar">
@@ -48,7 +46,7 @@ require_once("comunes/notificaciones.php");
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover" id="tablaBitacora">
+                            <table class="table table-bordered table-striped table-hover" id="tablaBitacora" style="width:100%">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>Fecha/Hora</th>
@@ -63,14 +61,33 @@ require_once("comunes/notificaciones.php");
                         </div>
                     </div>
                 </div>
+            </section>
+        </div>
+
+        <!-- Modal de confirmación -->
+        <div class="modal fade" id="modalConfirmacion" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmación</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="mensajeConfirmacion">
+                        ¿Está seguro de eliminar este registro?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn boton" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn botonrojo" id="btnConfirmarEliminar">Eliminar</button>
+                    </div>
+                </div>
             </div>
-        </section>
+        </div>
+
+        <?php require_once("comunes/modal.php"); ?>
+        <?php require_once("comunes/footer.php"); ?>
     </div>
 
-    <?php require_once("comunes/modal.php"); ?>
-    <?php require_once("comunes/footer.php"); ?>
-</div>
-
-<script src="js/bitacora.js"></script>
+    <script src="js/bitacora.js"></script>
 </body>
+
 </html>

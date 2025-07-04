@@ -10,7 +10,7 @@
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
                     <span class="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
                 </span>
-                <a href="?pagina=principal"><img class="w-10 h-8 mx-2 my-2 p-2 bg-red-800 rounded-md text-white hover:text-white" src="img/home.svg" alt=""></a>
+                <a href="?pagina=principal" class="flex items-center"><img class="w-10 h-8 mx-2 my-2 p-2 bg-red-800 rounded-md text-white hover:text-white" src="img/home.svg" alt=""></a>
                 <a href="?pagina=principal" class="text-[18px] ml-3 text-stone-600 font-bold cursor-pointer hover:text-stone-800">CDI - Carmen Estella Mendoza de Flores</a>
                 <a href="#" class="ml-8"><img src="img/x.svg" alt="" onclick="Openbar()" style="width: 60px;"></a>
             </div>
@@ -28,123 +28,157 @@
                 </script>
             <?php endif; ?>
                 <!-- Inicio siempre visible -->
-                <div class="iconos p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
-                    <img class="w-6 h-8 imagen" src="img/home.svg" alt="">
-                    <a href="?pagina=principal"><span class="text-[15px] ml-4 text-lg hover:text-white">Inicio</span></a>
-                </div>
+                <a href="?pagina=principal" class="block">
+                    <div class="iconos p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
+                        <img class="w-6 h-8 imagen" src="img/home.svg" alt="">
+                        <span class="text-[15px] ml-4 text-lg hover:text-white">Inicio</span>
+                    </div>
+                </a>
                 <hr class="my-2 text-gray-600">
                 
                 <?php if(isset($permisos['modulos']) && in_array('Pacientes', $permisos['modulos'])): ?>
-                <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
-                    <img class="w-6 h-8 imagen" src="img/usuario.svg" alt="">
-                    <a href="?pagina=pacientes"><span class="text-[15px] ml-4 text-lg hover:text-white">Pacientes</span></a>
-                </div>
+                <a href="?pagina=pacientes" class="block">
+                    <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
+                        <img class="w-6 h-8 imagen" src="img/usuario.svg" alt="">
+                        <span class="text-[15px] ml-4 text-lg hover:text-white">Pacientes</span>
+                    </div>
+                </a>
                 <?php endif; ?>
                 
                 <?php if(isset($permisos['modulos']) && in_array('Personal', $permisos['modulos'])): ?>
-                <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
-                    <img class="w-6 h-8 imagen" src="img/personal.svg" alt="">
-                    <a href="?pagina=personal"><span class="text-[15px] ml-4 text-lg hover:text-white">Personal</span></a>
-                </div>
+                <a href="?pagina=personal" class="block">
+                    <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
+                        <img class="w-6 h-8 imagen" src="img/personal.svg" alt="">
+                        <span class="text-[15px] ml-4 text-lg hover:text-white">Personal</span>
+                    </div>
+                </a>
                 <?php endif; ?>
 
                 <?php if(isset($permisos['modulos']) && in_array('Usuarios', $permisos['modulos'])): ?>
-                <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
-                    <img class="w-6 h-8 imagen" src="img/user.svg" alt="">
-                    <a href="?pagina=usuarios"><span class="text-[15px] ml-4 text-lg hover:text-white">Usuarios</span></a>
-                </div>
+                <a href="?pagina=usuarios" class="block">
+                    <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
+                        <img class="w-6 h-8 imagen" src="img/user.svg" alt="">
+                        <span class="text-[15px] ml-4 text-lg hover:text-white">Usuarios</span>
+                    </div>
+                </a>
                 <?php endif; ?>
                 
                 <?php if(isset($permisos['modulos']) && in_array('Examenes', $permisos['modulos'])): ?>
-                <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
-                    <img class="w-6 h-8 imagen" src="img/examen.svg" alt="">
-                    <a href="?pagina=examenes"><span class="text-[15px] ml-4 text-lg hover:text-white">Examenes</span></a>
-                </div>
+                <a href="?pagina=examenes" class="block">
+                    <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
+                        <img class="w-6 h-8 imagen" src="img/examen.svg" alt="">
+                        <span class="text-[15px] ml-4 text-lg hover:text-white">Examenes</span>
+                    </div>
+                </a>
                 <?php endif; ?>
                 
                 <?php if(isset($permisos['modulos']) && in_array('Emergencias', $permisos['modulos'])): ?>
-                <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
-                    <img class="w-6 h-8 imagen" src="img/exclamacion.svg" alt="">
-                    <a href="?pagina=emergencias"><span class="text-[15px] ml-4 text-lg hover:text-white">Emergencias</span></a>
-                </div>
+                <a href="?pagina=emergencias" class="block">
+                    <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
+                        <img class="w-6 h-8 imagen" src="img/exclamacion.svg" alt="">
+                        <span class="text-[15px] ml-4 text-lg hover:text-white">Emergencias</span>
+                    </div>
+                </a>
                 <?php endif; ?>
                 
                 <?php if(isset($permisos['modulos']) && in_array('Planificacion', $permisos['modulos'])): ?>
-                <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
-                    <img class="w-6 h-8 imagen" src="img/pen.svg" alt="">
-                    <a href="?pagina=planificacion"><span class="text-[15px] ml-4 text-lg hover:text-white">Planificación</span></a>
-                </div>
+                <a href="?pagina=planificacion" class="block">
+                    <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
+                        <img class="w-6 h-8 imagen" src="img/pen.svg" alt="">
+                        <span class="text-[15px] ml-4 text-lg hover:text-white">Planificación</span>
+                    </div>
+                </a>
                 <?php endif; ?>
                 
                 <?php if(isset($permisos['modulos']) && in_array('Consultas', $permisos['modulos'])): ?>
-                <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
-                    <img class="w-6 h-8 imagen" src="img/chart.svg" alt="">
-                    <a href="?pagina=consultasm"><span class="text-[15px] ml-4 text-lg hover:text-white">Consultas</span></a>
-                </div>
+                <a href="?pagina=consultasm" class="block">
+                    <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
+                        <img class="w-6 h-8 imagen" src="img/chart.svg" alt="">
+                        <span class="text-[15px] ml-4 text-lg hover:text-white">Consultas</span>
+                    </div>
+                </a>
                 <?php endif; ?>
 
                 <?php if(isset($permisos['modulos']) && in_array('Historias', $permisos['modulos'])): ?>
-                <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
-                    <img class="w-6 h-8 imagen" src="img/pdf.svg" alt="">
-                    <a href="?pagina=historias"><span class="text-[15px] ml-4 text-lg hover:text-white">Historias Médicas</span></a>
-                </div>
+                <a href="?pagina=historias" class="block">
+                    <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
+                        <img class="w-6 h-8 imagen" src="img/pdf.svg" alt="">
+                        <span class="text-[15px] ml-4 text-lg hover:text-white">Historias Médicas</span>
+                    </div>
+                </a>
                 <?php endif; ?>
                 
                 <?php if(isset($permisos['modulos']) && in_array('Pasantías', $permisos['modulos'])): ?>
-                <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
-                    <img class="w-6 h-8 imagen" src="img/student.svg" alt="">
-                    <a href="?pagina=pasantias"><span class="text-[15px] ml-4 text-lg hover:text-white">Pasantías</span></a>
-                </div>
+                <a href="?pagina=pasantias" class="block">
+                    <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
+                        <img class="w-6 h-8 imagen" src="img/student.svg" alt="">
+                        <span class="text-[15px] ml-4 text-lg hover:text-white">Pasantías</span>
+                    </div>
+                </a>
                 <?php endif; ?>
                 
                 <?php if(isset($permisos['modulos']) && in_array('Pacientes crónicos', $permisos['modulos'])): ?>
-                <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
-                    <img class="w-6 h-8 imagen" src="img/cronico.svg" alt="">
-                    <a href="?pagina=p_cronicos"><span class="text-[15px] ml-4 text-lg hover:text-white">Pacientes Crónicos</span></a>
-                </div>
+                <a href="?pagina=p_cronicos" class="block">
+                    <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
+                        <img class="w-6 h-8 imagen" src="img/cronico.svg" alt="">
+                        <span class="text-[15px] ml-4 text-lg hover:text-white">Pacientes Crónicos</span>
+                    </div>
+                </a>
                 <?php endif; ?>
                 
                 <?php if(isset($permisos['modulos']) && in_array('Jornadas', $permisos['modulos'])): ?>
-                <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
-                    <img class="w-6 h-8 imagen" src="img/jornadas.svg" alt="">
-                    <a href="?pagina=jornadas"><span class="text-[15px] ml-4 text-lg hover:text-white">Jornadas</span></a>
-                </div>
+                <a href="?pagina=jornadas" class="block">
+                    <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
+                        <img class="w-6 h-8 imagen" src="img/jornadas.svg" alt="">
+                        <span class="text-[15px] ml-4 text-lg hover:text-white">Jornadas</span>
+                    </div>
+                </a>
                 <?php endif; ?>
                 
                 <?php if(isset($permisos['modulos']) && in_array('Inventario', $permisos['modulos'])): ?>
-                <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
-                    <img class="w-6 h-8 imagen" src="img/truck.svg" alt="">
-                    <a href="?pagina=inventario"><span class="text-[15px] ml-4 text-lg hover:text-white">Inventario</span></a>
-                </div>
+                <a href="?pagina=inventario" class="block">
+                    <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
+                        <img class="w-6 h-8 imagen" src="img/truck.svg" alt="">
+                        <span class="text-[15px] ml-4 text-lg hover:text-white">Inventario</span>
+                    </div>
+                </a>
                 <?php endif; ?>
                 
                 <?php if(isset($permisos['modulos']) && in_array('Estadistica', $permisos['modulos'])): ?>
-                <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
-                    <img class="w-6 h-8 imagen" src="img/chart.svg" alt="">
-                    <a href="?pagina=estadistica"><span class="text-[15px] ml-4 text-lg hover:text-white">Estadísticas</span></a>
-                </div>
+                <a href="?pagina=estadistica" class="block">
+                    <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
+                        <img class="w-6 h-8 imagen" src="img/chart.svg" alt="">
+                        <span class="text-[15px] ml-4 text-lg hover:text-white">Estadísticas</span>
+                    </div>
+                </a>
                 <?php endif; ?>
                 
                 <?php if(isset($permisos['modulos']) && in_array('Bitácora', $permisos['modulos'])): ?>
-                <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
-                    <img class="w-6 h-8 imagen" src="img/bitacora.svg" alt="">
-                    <a href="?pagina=bitacora"><span class="text-[15px] ml-4 text-lg hover:text-white">Bitácora</span></a>
-                </div>
+                <a href="?pagina=bitacora" class="block">
+                    <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
+                        <img class="w-6 h-8 imagen" src="img/bitacora.svg" alt="">
+                        <span class="text-[15px] ml-4 text-lg hover:text-white">Bitácora</span>
+                    </div>
+                </a>
                 <?php endif; ?>
                 
                 <!-- Cerrar Sesión -->
-                <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
-                    <img class="w-6 h-8 imagen" src="img/bracket.svg" alt="">
-                    <a href="?pagina=salida" class="text-[15px] ml-4 text-lg">Cerrar Sesión</a>
-                </div>
+                <a href="?pagina=salida" class="block">
+                    <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
+                        <img class="w-6 h-8 imagen" src="img/bracket.svg" alt="">
+                        <span class="text-[15px] ml-4 text-lg">Cerrar Sesión</span>
+                    </div>
+                </a>
             <?php
             } else {
             ?>
                 <!-- Mostrar opción de login si no hay usuario autenticado -->
-                <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
-                    <img class="w-6 h-8 imagen" src="img/user.svg" alt="">
-                    <a href="?pagina=login" class="text-[15px] ml-4 text-lg">Iniciar Sesión</a>
-                </div>
+                <a href="?pagina=login" class="block">
+                    <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
+                        <img class="w-6 h-8 imagen" src="img/user.svg" alt="">
+                        <span class="text-[15px] ml-4 text-lg">Iniciar Sesión</span>
+                    </div>
+                </a>
             <?php
             }
             ?>
