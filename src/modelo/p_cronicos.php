@@ -8,37 +8,6 @@ use Exception;
 
 class p_cronicos extends datos{
 	
-	
-	private $cod_patologia; 
-	private $cedula_paciente;
-	private $tratamiento;
-	private $administracion_t;
-
-	
-	function set_cod_patologia($valor){
-		$this->cod_patologia = $valor;
-	}
-	
-	function set_cedula_paciente($valor){
-		$this->cedula_paciente = $valor;
-	}
-
-	function set_tratamiento($valor){
-		$this->tratamiento = $valor;
-	}
-	function set_administracion_t($valor){
-		$this->administracion_t = $valor;
-	}
-	
-	
-	function get_cod_patologia(){
-		return $this->cod_patologia;
-	}
-	
-	function get_cedula_paciente(){
-		return $this->cedula_paciente;
-	}
-
 
 	function listadopacientes() {
 		$co = $this->conecta();
@@ -58,10 +27,10 @@ class p_cronicos extends datos{
 		return $r;
 	}
 
-   function incluir($cedula_paciente, $patologias = array()) {
+   function incluir($datos, $patologias = array()) {
 		$r = array();
 		$co = $this->conecta();
-		if(!$this->existe($cedula_paciente)){
+		if(!$this->existe($datos['cedula_paciente'])){
 
 				$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			try {
@@ -71,7 +40,7 @@ class p_cronicos extends datos{
 						
 		
 							$stmt->execute([
-								$cedula_paciente,
+								$datos['cedula_paciente'],
 								$pat['cod_patologia'],
 								$pat['tratamiento'],
 								$pat['administracion_t']
@@ -102,14 +71,14 @@ class p_cronicos extends datos{
 	
 	
 
-	function modificar($patologias = array()) {
+	function modificar($datos, $patologias = array()) {
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$r = array();
 		
 		try {
 			// Verificar si el paciente tiene patologías registradas
-			if(!$this->existe($this->cedula_paciente)) {
+			if(!$this->existe($datos['cedula_paciente'])) {
 				$r['resultado'] = 'error';
 				$r['mensaje'] = 'El paciente no tiene patologías registradas para modificar';
 				return $r;
@@ -117,7 +86,7 @@ class p_cronicos extends datos{
 
 			// 1. Eliminar todas las patologías actuales del paciente
 			$stmtDelete = $co->prepare("DELETE FROM padece WHERE cedula_paciente = ?");
-			$stmtDelete->execute([$this->cedula_paciente]);
+			$stmtDelete->execute([$datos['cedula_paciente']]);
 
 			// 2. Insertar las nuevas patologías
 			if (!empty($patologias)) {
@@ -127,7 +96,7 @@ class p_cronicos extends datos{
 				
 				foreach ($patologias as $pat) {
 					$stmtInsert->execute([
-						$this->cedula_paciente,
+						$datos['cedula_paciente'],
 						$pat['cod_patologia'],
 						$pat['tratamiento'] ?? null,
 						$pat['administracion_t'] ?? null
@@ -146,18 +115,18 @@ class p_cronicos extends datos{
 		return $r;
 	}
 	
-	function eliminar() {
+	function eliminar($datos) {
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$r = array();
-		
+
 		try {
 			// Verificar si el paciente tiene patologías registradas
-			if($this->existe($this->cedula_paciente)) {
+			if($this->existe($datos['cedula_paciente'])) {
 				// Eliminar todas las patologías del paciente
 				$stmtDelete = $co->prepare("DELETE FROM padece WHERE cedula_paciente = ?");
-				$stmtDelete->execute([$this->cedula_paciente]);
-				
+				$stmtDelete->execute([$datos['cedula_paciente']]);
+
 				$r['resultado'] = 'eliminar';
 				$r['mensaje'] = 'Registro Eliminado';
 			} else {
@@ -168,7 +137,7 @@ class p_cronicos extends datos{
 			$r['resultado'] = 'error';
 			$r['mensaje'] = 'Error al eliminar: ' . $e->getMessage();
 		}
-		
+
 		return $r;
 	}
 	
@@ -236,16 +205,6 @@ class p_cronicos extends datos{
 
 class patologias extends datos{
 
-	private $cod_patologia;
-	private $nombre_patologia;
-
-	function set_cod_patologia($valor){
-		$this->cod_patologia = $valor;
-	}
-
-	function set_nombre_patologia($valor){
-		$this->nombre_patologia = $valor;
-	}
 
 	function listado_patologias() {
     $co = $this->conecta();
@@ -277,60 +236,46 @@ class patologias extends datos{
     return $r;
 }
 
-	function incluir2() {
+	function incluir2($datos) {
 		$r = array();
-		
-		if(!$this->existe2($this->cod_patologia)) {
+
+		// Verifica si ya existe una patología con ese nombre
+		if(!$this->existeNombrePatologia($datos['nombre_patologia'])) {
 			$co = $this->conecta();
 			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 			try {
-				// Consulta preparada con parámetros
 				$stmt = $co->prepare("INSERT INTO patologia(nombre_patologia) VALUES(:nombre)");
-				
-				// Vinculamos los parámetros
-				$stmt->bindParam(':nombre', $this->nombre_patologia);
-				
-				// Ejecutamos la consulta
-				$stmt->execute();
-				
+				$stmt->execute([':nombre' => $datos['nombre_patologia']]);
+
 				$r['resultado'] = 'agregar';
 				$r['mensaje'] = 'Registro Incluido';
-				
 			} catch(Exception $e) {
 				$r['resultado'] = 'error';
 				$r['mensaje'] = $e->getMessage();
 			}
 		} else {
 			$r['resultado'] = 'agregar';
-			$r['mensaje'] = 'Ya existe el Cod de Consulta';
+			$r['mensaje'] = 'Ya existe el nombre de patología';
 		}
-		
+
 		return $r;
 	}
 
-	function modificar2() {
+	function modificar2($datos) {
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$r = array();
-		
-		if($this->existe2($this->cod_patologia)) {
+
+		if($this->existe2($datos['cod_patologia'])) {
 			try {
-				// Consulta preparada con parámetros
-				$stmt = $co->prepare("UPDATE patologia SET 
-									nombre_patologia = :nombre
-									WHERE cod_patologia = :cod");
-				
-				// Vinculamos los parámetros
-				$stmt->bindParam(':nombre', $this->nombre_patologia);
-				$stmt->bindParam(':cod', $this->cod_patologia);
-				
-				// Ejecutamos la consulta
-				$stmt->execute();
-				
+				$stmt = $co->prepare("UPDATE patologia SET nombre_patologia = :nombre WHERE cod_patologia = :cod");
+				$stmt->execute([
+					':nombre' => $datos['nombre_patologia'],
+					':cod' => $datos['cod_patologia']
+				]);
 				$r['resultado'] = 'actualizar';
 				$r['mensaje'] = 'Registro Modificado';
-				
 			} catch(Exception $e) {
 				$r['resultado'] = 'error';
 				$r['mensaje'] = $e->getMessage();
@@ -339,20 +284,17 @@ class patologias extends datos{
 			$r['resultado'] = 'actualizar';
 			$r['mensaje'] = 'Código de patología no registrado';
 		}
-		
 		return $r;
 	}
 
-	function eliminar2(){
-
+	function eliminar2($datos) {
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$r = array();
-		if($this->existe2($this->cod_patologia)){
+		if($this->existe2($datos['cod_patologia'])){
 			try {
 				$stmt = $co->prepare("DELETE FROM patologia WHERE cod_patologia = :cod_patologia");
-				$stmt->bindParam(':cod_patologia', $this->cod_patologia);
-				$stmt->execute();
+				$stmt->execute([':cod_patologia' => $datos['cod_patologia']]);
 				$r['resultado'] = 'descartar';
 				$r['mensaje'] =  'Registro Eliminado';
 			} catch(Exception $e) {
@@ -366,31 +308,6 @@ class patologias extends datos{
 		}
 		return $r;
 	}
-
-	/* private function existe2($cod_patologia){
-		$co = $this->conecta();
-		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		try{
-
-			$resultado = $co->query("SELECT * FROM patologia c WHERE c.cod_patologia = '$cod_patologia'");
-
-			$fila = $resultado->fetchAll(PDO::FETCH_BOTH);
-			if($fila){
-
-				return true;
-			    
-			}
-			else{
-
-				return false;
-			}
-			
-		}catch(Exception $e){
-
-			return false;
-
-		}
-	} */
 
 	private function existe2($cod_patologia) {
 		$co = $this->conecta();
@@ -411,6 +328,20 @@ class patologias extends datos{
 			return false;
 		}
 	}
+
+	private function existeNombrePatologia($nombre_patologia) {
+    $co = $this->conecta();
+    $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    try {
+        $stmt = $co->prepare("SELECT * FROM patologia WHERE nombre_patologia = :nombre");
+        $stmt->execute([':nombre' => $nombre_patologia]);
+        $fila = $stmt->fetch();
+        return (bool)$fila;
+    } catch(Exception $e) {
+        return false;
+    }
+}
 
 
 }

@@ -14,7 +14,7 @@ require_once("modelo/bitacora.php");
 		$o = new emergencias();   
 
 		$accion = $_POST['accion'];
-		  
+		$datos = $_POST;
 		switch ($accion) {
 			case 'consultar':
 				echo json_encode($o->consultar());
@@ -30,38 +30,17 @@ require_once("modelo/bitacora.php");
 				echo json_encode($respuesta);
 				break;
 				
-			case 'eliminar':
-				
-				$o->setDatos($_POST, $accion);		
-				$resultado = $o->eliminar();
-				bitacora::registrarYNotificar(
-					'Eliminar',
-					'Se ha eliminado la emergencia del paciente: '.$_POST['cedula_paciente'],
-					$_SESSION['usuario']
-				);
+			case 'eliminar':		
+				$resultado = $o->eliminar($datos);	
 				echo json_encode($resultado);
 				break;
 				
-			case 'incluir':
-			
-				$o->setDatos($_POST, $accion);
-				$resultado = $o->incluir();
-				bitacora::registrarYNotificar(
-					'Registrar',
-					'Se ha registrado una emergencia para el paciente: '.$_POST['cedula_paciente'],
-					$_SESSION['usuario']
-				);
+			case 'incluir':				
+				$resultado = $o->incluir($datos);
 				echo json_encode($resultado);
 				break;
-				
 			case 'modificar':
-				$o->setDatos($_POST, $accion);
-				$resultado = $o->modificar();
-				bitacora::registrarYNotificar(
-					'Modificar',
-					'Se ha modificado la emergencia del paciente: '.$_POST['cedula_paciente'],
-					$_SESSION['usuario']
-				);
+				$resultado = $o->modificar($datos);
 				echo json_encode($resultado);
 				break;
 				

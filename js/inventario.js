@@ -177,11 +177,12 @@ function procesarEntradaSalida() {
 }
 
 $('#btnConfirmarEliminar').off('click').on('click', function() {
+    let $btn = $(this);
     if (codMedicamentoAEliminar) {
         var datos = new FormData();
         datos.append('accion', 'eliminar_medicamento');
         datos.append('cod_medicamento', codMedicamentoAEliminar);
-        enviaAjax(datos);
+        enviaAjax(datos, $btn, "Procesando...", "Eliminar");
         codMedicamentoAEliminar = null;
         $('#modalConfirmacion').modal('hide');
     }
@@ -240,37 +241,37 @@ $(document).ready(function() {
     });
 
     $("#procesoMedicamento").on("click", function() {
-        if ($(this).text() == "INCLUIR") {
+        let $btn = $(this);
+        if ($btn.text() == "INCLUIR") {
             if (validarFormulario()) {
                 var datos = new FormData($("#formMedicamento")[0]);
                 datos.append('accion', 'incluir_medicamento');
-                enviaAjax(datos);
+                enviaAjax(datos, $btn, "Procesando...", "INCLUIR");
             }
-        } else if ($(this).text() == "MODIFICAR") {
+        } else if ($btn.text() == "MODIFICAR") {
             if (validarFormulario()) {
                 var datos = new FormData($("#formMedicamento")[0]);
                 datos.append('accion', 'modificar_medicamento');
-                enviaAjax(datos);
+                enviaAjax(datos, $btn, "Procesando...", "MODIFICAR");
             }
         }
     });
     
     $("#btnProcesarEntradaSalida").on("click", function() {
-        // Si hay lotes temporales, procesar todos juntos
+        let $btn = $(this);
         if (lotesTemporales.length > 0) {
             var datos = new FormData();
             datos.append('accion', 'registrar_entrada_multiple');
             datos.append('lotes', JSON.stringify(lotesTemporales));
-            enviaAjax(datos);
+            enviaAjax(datos, $btn, "Procesando...", "Procesar");
             lotesTemporales = [];
             actualizarListaLotesTemporales();
             $("#modalEntradaSalida").modal("hide");
         } else {
-            // Si no hay lotes temporales, validar el formulario individual
             if (!validarFormularioEntradaSalida()) return;
             var datos = new FormData($("#formEntradaSalida")[0]);
             datos.append('accion', 'registrar_entrada');
-            enviaAjax(datos);
+            enviaAjax(datos, $btn, "Procesando...", "Procesar");
             $("#modalEntradaSalida").modal("hide");
         }
     });
@@ -317,6 +318,7 @@ $(document).ready(function() {
     });
     
     $("#btnProcesarSalidaGlobal").on("click", function() {
+        let $btn = $(this);
         if (salidasTemporales.length === 0) {
             muestraMensaje("Debe agregar al menos un lote a la salida");
             return;
@@ -324,7 +326,7 @@ $(document).ready(function() {
         var datos = new FormData();
         datos.append('accion', 'registrar_salida_multiple');
         datos.append('salidas', JSON.stringify(salidasTemporales));
-        enviaAjax(datos);
+        enviaAjax(datos, $btn, "Procesando...", "Registrar Salida");
         $("#modalSalidaGlobal").modal("hide");
     });
     
@@ -366,7 +368,17 @@ function muestraMensaje(mensaje) {
     }, 2000);
 }
 
-function enviaAjax(datos) {
+function setBotonProcesando($btn, textoProcesando, textoNormal, estadoProcesando) {
+    if (estadoProcesando) {
+        $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> ' + textoProcesando);
+    } else {
+        $btn.prop('disabled', false).text(textoNormal);
+    }
+}
+
+// Modifica enviaAjax para aceptar el botón y textos
+function enviaAjax(datos, $btn = null, textoProcesando = "Procesando...", textoNormal = null) {
+    if ($btn) setBotonProcesando($btn, textoProcesando, textoNormal || $btn.text(), true);
     $.ajax({
         url: '', 
         type: 'POST',
@@ -380,6 +392,9 @@ function enviaAjax(datos) {
         },
         error: function(xhr, status, error) {
             console.log('Error en la petición AJAX: ', error);
+        },
+        complete: function() {
+            if ($btn) setBotonProcesando($btn, textoProcesando, textoNormal || $btn.text(), false);
         }
     });
 }

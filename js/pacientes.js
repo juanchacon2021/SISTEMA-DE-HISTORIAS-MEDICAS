@@ -216,12 +216,71 @@ function pone(pos, accion) {
     if (accion === 0) {
         $("#proceso").text("MODIFICAR");
         $("#accion").val("modificar");
-        cargarAntecedentes(pacienteEditando);
+        $("#cedula_paciente").prop("readonly", true);
+
+        // Cargar antecedentes familiares y llenar variable temporal
+        $.ajax({
+            url: "",
+            type: "POST",
+            data: {accion: "consultarAntecedentes", cedula_paciente: pacienteEditando},
+            success: function(respuesta) {
+                try {
+                    const lee = JSON.parse(respuesta);
+                    if(
+                        (lee.resultado === "consultar" || lee.resultado === "consultarAntecedentes")
+                        && lee.datos && lee.datos.length > 0
+                    ) {
+                        familiaresTemporales = lee.datos.map(f => ({
+                            nom_familiar: f.nom_familiar,
+                            ape_familiar: f.ape_familiar,
+                            relacion_familiar: f.relacion_familiar,
+                            observaciones: f.observaciones
+                        }));
+                    } else {
+                        familiaresTemporales = [];
+                    }
+                    actualizarListaFamiliares();
+                } catch(e) {
+                    familiaresTemporales = [];
+                    actualizarListaFamiliares();
+                }
+            }
+        });
+
+        // Cargar patologías crónicas y llenar variable temporal
+        $.ajax({
+            url: "",
+            type: "POST",
+            data: {accion: "obtener_patologias_paciente", cedula_paciente: pacienteEditando},
+            success: function(respuesta) {
+                try {
+                    const lee = JSON.parse(respuesta);
+                    if(lee.resultado === "obtener_patologias_paciente" && lee.datos && lee.datos.length > 0) {
+                        patologiasPaciente = lee.datos.map(p => ({
+                            cod_patologia: p.cod_patologia,
+                            nombre_patologia: p.nombre_patologia,
+                            tratamiento: p.tratamiento,
+                            administracion: p.administracion_t
+                        }));
+                    } else {
+                        patologiasPaciente = [];
+                    }
+                    actualizarListaPatologiasPaciente();
+                } catch(e) {
+                    patologiasPaciente = [];
+                    actualizarListaPatologiasPaciente();
+                }
+            }
+        });
+
     } else {
         $("#proceso").text("INCLUIR");
         $("#accion").val("incluir");
+        $("#cedula_paciente").prop("readonly", false);
         familiaresTemporales = [];
         $("#listaFamiliares").html('<div class="alert alert-info">Agregue antecedentes familiares</div>');
+        patologiasPaciente = [];
+        actualizarListaPatologiasPaciente();
     }
 
     // Resetear pasos
@@ -230,15 +289,8 @@ function pone(pos, accion) {
     
     // Mostrar modal
     $("#modal1").modal("show");
-
-    if(accion === 0) {
-        // Si es modificar, cargar patologías del paciente
-        cargarPatologiasPaciente(pacienteEditando);
-    } else {
-        patologiasPaciente = [];
-        actualizarListaPatologiasPaciente();
-    }
 }
+
 
 // Función para limpiar el formulario
 function limpiarFormulario() {
@@ -887,3 +939,10 @@ ws.onerror = function(error) {
 function enviarNotificacion(msg) {
     ws.send(msg);
 }
+
+// Limitar la cédula a 8 caracteres
+$("#cedula_paciente").on("input", function() {
+    if (this.value.length > 8) {
+        this.value = this.value.slice(0, 8);
+    }
+});

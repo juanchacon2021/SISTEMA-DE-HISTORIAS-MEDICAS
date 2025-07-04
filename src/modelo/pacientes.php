@@ -211,7 +211,7 @@ class pacientes extends datos {
                 $co->prepare("DELETE FROM antecedentes_familiares WHERE cedula_paciente = :cedula_paciente")
                     ->execute(['cedula_paciente' => $datos['cedula_paciente']]);
                 foreach ($datos['antecedentes_familiares'] as $familiar) {
-                    $stmtF = $co->prepare("UPDATE INTO antecedentes_familiares (cedula_paciente, nom_familiar, ape_familiar, relacion_familiar, observaciones) VALUES (:cedula_paciente, :nom_familiar, :ape_familiar, :relacion_familiar, :observaciones)");
+                    $stmtF = $co->prepare("INSERT INTO antecedentes_familiares (cedula_paciente, nom_familiar, ape_familiar, relacion_familiar, observaciones) VALUES (:cedula_paciente, :nom_familiar, :ape_familiar, :relacion_familiar, :observaciones)");
                     $stmtF->execute([
                         'cedula_paciente' => $datos['cedula_paciente'],
                         'nom_familiar' => $familiar['nom_familiar'] ?? '',
@@ -223,13 +223,15 @@ class pacientes extends datos {
             }
             // Actualizar patologías
             if (!empty($datos['patologias']) && is_array($datos['patologias'])) {
-                foreach ($datos['patologias'] as $patologia) {
-                    $stmtP = $co->prepare("UPDATE INTO padece (cedula_paciente, cod_patologia, tratamiento, administracion_t) VALUES (:cedula_paciente, :cod_patologia, :tratamiento, :administracion_t)");
+                $co->prepare("DELETE FROM padece WHERE cedula_paciente = :cedula_paciente")
+                    ->execute(['cedula_paciente' => $datos['cedula_paciente']]);
+                foreach ($datos['patologias'] as $pat) {
+                    $stmtP = $co->prepare("INSERT INTO padece (cedula_paciente, cod_patologia, tratamiento, administracion_t) VALUES (:cedula_paciente, :cod_patologia, :tratamiento, :administracion_t)");
                     $stmtP->execute([
                         'cedula_paciente' => $datos['cedula_paciente'],
-                        'cod_patologia' => $patologia,
-                        'tratamiento' => '', // O puedes poner NULL si la columna lo permite
-                        'administracion_t' => ''
+                        'cod_patologia' => $pat['cod_patologia'],
+                        'tratamiento' => $pat['tratamiento'] ?? '',
+                        'administracion_t' => $pat['administracion_t'] ?? ''
                     ]);
                 }
             }
@@ -301,6 +303,26 @@ class pacientes extends datos {
             ]);
             $r['resultado'] = 'eliminarFamiliar';
             $r['mensaje'] = 'Familiar eliminado';
+        } catch(Exception $e) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $e->getMessage();
+        }
+        return $r;
+    }
+
+    public function obtener_patologias_paciente($datos) {
+        $co = $this->conecta();
+        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $r = array();
+        try {
+            $cedula = $datos['cedula_paciente'] ?? '';
+            $stmt = $co->prepare("SELECT p.cod_patologia, pa.nombre_patologia, p.tratamiento, p.administracion_t 
+                FROM padece p 
+                JOIN patologia pa ON pa.cod_patologia = p.cod_patologia 
+                WHERE p.cedula_paciente = :cedula");
+            $stmt->execute(['cedula' => $cedula]);
+            $r['resultado'] = 'obtener_patologias_paciente';
+            $r['datos'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch(Exception $e) {
             $r['resultado'] = 'error';
             $r['mensaje'] = $e->getMessage();
