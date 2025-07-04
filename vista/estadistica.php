@@ -21,7 +21,21 @@
 
 <div class="container mt-3" style="margin-left: 300px;">
 
-  <div id="carrusel" class="d-flex align-items-stretch position-relative" style="overflow:hidden; width:80%; height: 80%; margin-top: 5%;">
+
+
+  <div class="row mb-4" style="width:85%;">
+      <div class="col-12 d-flex justify-content-between align-items-center">
+          <a href="?pagina=principal" class="boton">Volver</a>
+          <a id="btnDescargarPDF" class="btn botonrojo" href="#" target="_blank" style="width: 15%;">
+              Generar reporte
+              <img src="img/descarga.svg" style="width: 20px; margin-left: 8px;">
+          </a>
+      </div>
+  </div>
+
+
+
+  <div id="carrusel" class="d-flex align-items-stretch position-relative" style="overflow:hidden; width:85%; height: 80%; margin-top: 2%;">
     <button id="prevBtn" class="btn btn-secondary carrusel-btn carrusel-btn-left"><img class="w-6 h-8 imagen" src="img/angulo-izquierdo.png" alt=""></button>
     <div id="carrusel-inner" class="d-flex" style="transition: transform 0.5s;">
       <!-- Aquí van tus cards -->
@@ -78,7 +92,7 @@
 
             <div class="mt-4">
               <h2 class="fw-bold text-center">Distribución por uso de medicamento</h2>
-              <canvas class="mt-4" style="width: 70%; min-width: 500px; height: 70%;" id="graficoMedicamentos"></canvas>
+              <canvas class="mt-4" style="width: 70%; min-width: 300px; height: 70%;" id="graficoMedicamentos"></canvas>
             </div>
             <p class="fw-bold text-center" id="Medicamento_mas_usado"></p>
           </div>
@@ -98,7 +112,7 @@
 
             <div class="mt-4">
               <h3 class="fw-bold text-center">Distribución por Fecha de Caducidad</h3>
-              <canvas class="mt-4" style="width: 70%; min-width: 500px; height: 70%;" id="graficoMedicamentosPorVencer"></canvas>
+              <canvas class="mt-4" style="width: 70%; min-width: 300px; height: 70%;" id="graficoMedicamentosPorVencer"></canvas>
             </div>
             <p class="fw-bold text-center" id="lote_por_expirar"></p> 
           </div>
@@ -212,58 +226,7 @@
     <span class="indicador-dot"></span>
   </div>
 
-            <a id="btnDescargarPDF" class="btn btn-danger" href="#" target="_blank">
-              <img src="img/descarga.svg" style="width: 20px;">
-            </a>
-
-  <style>
-    .carrusel-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    opacity: 0.85;
-  
-  }
-  .carrusel-btn-left {
-    left: 10px;
-  
-  }
-  .carrusel-btn-right {
-    right: 10px;
-    
-  }
-
-
-
-  .indicador-dot {
-    display: inline-block;
-    width: 14px;
-    height: 14px;
-    margin: 0 6px;
-    background: #222;
-    border-radius: 50%;
-    opacity: 0.4;
-    transition: opacity 0.2s;
-  }
-  .indicador-dot.activo {
-    opacity: 1;
-    background: #222;
-  }
-  </style>
-
-
-
-
-
-
-
-
-    
-
+              
  
 </div>
 

@@ -43,7 +43,7 @@ Pacientes cronicos
 	<div class="container">
     <div class="table-responsive">
         <table class="table table-striped table-hover" id="tablapersonal">
-            <thead>
+            <thead class="table-dark">>
                 <tr>
                     <th style="text-align: center;">Cedula Pacientes</th>
                     <th style="text-align: center;">Nombre</th>

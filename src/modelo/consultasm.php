@@ -7,63 +7,6 @@ use Exception;
 
 
 class consultasm extends datos{
-	
-	
-	private $cod_consulta; 
-	private $fechaconsulta;
-	private $Horaconsulta;
-	private $consulta;
-	private $diagnostico;
-	private $tratamientos;
-	private $cedula_personal;
-	private $cedula_paciente;
-
-
-	
-/* 	function set_cod_consulta($valor){
-		$this->cod_consulta = $valor;
-	}
-
-	function set_fechaconsulta($valor){
-		$this->fechaconsulta = $valor;
-	}
-	
-	
-	function set_Horaconsulta($valor){
-		$this->Horaconsulta = $valor;
-	}
-		
-	function set_consulta($valor){
-		$this->consulta = $valor;
-	}
-
-	function set_diagnostico($valor){
-		$this->diagnostico = $valor;
-	}
-
-	function set_tratamientos($valor){
-		$this->tratamientos = $valor;
-	}
-	
-	function set_cedula_personal($valor){
-		$this->cedula_personal = $valor;
-	}
-	
-	
-	function set_cedula_paciente($valor){
-		$this->cedula_paciente = $valor;
-	} */
-
-	public function setDatos($datos) {
-		if (isset($datos['cod_consulta']))      $this->cod_consulta = $datos['cod_consulta'];
-		if (isset($datos['fechaconsulta']))     $this->fechaconsulta = $datos['fechaconsulta'];
-		if (isset($datos['Horaconsulta']))      $this->Horaconsulta = $datos['Horaconsulta'];
-		if (isset($datos['consulta']))          $this->consulta = $datos['consulta'];
-		if (isset($datos['diagnostico']))       $this->diagnostico = $datos['diagnostico'];
-		if (isset($datos['tratamientos']))      $this->tratamientos = $datos['tratamientos'];
-		if (isset($datos['cedula_personal']))   $this->cedula_personal = $datos['cedula_personal'];
-		if (isset($datos['cedula_paciente']))   $this->cedula_paciente = $datos['cedula_paciente'];
-	}
    
 	function listadopersonal() {
 		$co = $this->conecta();
@@ -126,12 +69,12 @@ class consultasm extends datos{
 		return $r;
 	}
 
-	function incluir($observaciones = array()) {
+	function incluir($datos, $observaciones = array()) {
 		$r = array();
-		if(!$this->existe($this->cod_consulta)) {
+		if(!$this->existe($datos['cod_consulta'])) {
 			$co = $this->conecta();
 			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			
+
 			try {
 				// Iniciar transacción
 				$co->beginTransaction();
@@ -146,15 +89,15 @@ class consultasm extends datos{
 					:cedula_personal, 
 					:cedula_paciente, 
 					@cod_generado)");
-				
+
 				$stmtConsulta->execute([
-					':fecha' => $this->fechaconsulta,
-					':hora' => $this->Horaconsulta,
-					':consulta' => $this->consulta,
-					':diagnostico' => $this->diagnostico,
-					':tratamiento' => $this->tratamientos,
-					':cedula_personal' => $this->cedula_personal,
-					':cedula_paciente' => $this->cedula_paciente
+					':fecha' => $datos['fechaconsulta'],
+					':hora' => $datos['Horaconsulta'],
+					':consulta' => $datos['consulta'],
+					':diagnostico' => $datos['diagnostico'],
+					':tratamiento' => $datos['tratamientos'],
+					':cedula_personal' => $datos['cedula_personal'],
+					':cedula_paciente' => $datos['cedula_paciente']
 				]);
 
 				// Obtener el código generado por el procedimiento
@@ -167,7 +110,7 @@ class consultasm extends datos{
 					$stmtObservaciones = $co->prepare("INSERT INTO observacion_consulta 
 						(cod_consulta, cod_observacion, observacion) 
 						VALUES (?, ?, ?)");
-					
+
 					foreach ($observaciones as $obs) {
 						if (!empty($obs['cod_observacion']) && isset($obs['observacion'])) {
 							$stmtObservaciones->execute([
@@ -199,9 +142,9 @@ class consultasm extends datos{
 		return $r;
 	}
 	
-	function modificar($observaciones = array()) {
+	function modificar($datos, $observaciones = array()) {
 		$r = array();
-		if($this->existe($this->cod_consulta)) {
+		if($this->existe($datos['cod_consulta'])) {
 			$co = $this->conecta();
 			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			
@@ -221,19 +164,19 @@ class consultasm extends datos{
 					WHERE cod_consulta = ?");
 				
 				$stmtUpdate->execute([
-					$this->fechaconsulta,
-					$this->Horaconsulta,
-					$this->consulta,
-					$this->diagnostico,
-					$this->tratamientos,
-					$this->cedula_personal,
-					$this->cedula_paciente,
-					$this->cod_consulta
+					$datos['fechaconsulta'],
+					$datos['Horaconsulta'],
+					$datos['consulta'],
+					$datos['diagnostico'],
+					$datos['tratamientos'],
+					$datos['cedula_personal'],
+					$datos['cedula_paciente'],
+					$datos['cod_consulta']
 				]);
 
 				// 2. Eliminar observaciones anteriores (CONSULTA PREPARADA)
 				$stmtDelete = $co->prepare("DELETE FROM observacion_consulta WHERE cod_consulta = ?");
-				$stmtDelete->execute([$this->cod_consulta]);
+				$stmtDelete->execute([$datos['cod_consulta']]);
 
 				// 3. Insertar nuevas observaciones (si existen)
 				if (!empty($observaciones) && is_array($observaciones)) {
@@ -244,7 +187,7 @@ class consultasm extends datos{
 					foreach ($observaciones as $obs) {
 						if (!empty($obs['cod_observacion']) && isset($obs['observacion'])) {
 							$stmtInsert->execute([
-								$this->cod_consulta,
+								$datos['cod_consulta'],
 								$obs['cod_observacion'],
 								$obs['observacion']
 							]);
@@ -257,7 +200,7 @@ class consultasm extends datos{
 
 				$r['resultado'] = 'modificar';
 				$r['mensaje'] = 'Registro Modificado';
-				$r['cod_consulta'] = $this->cod_consulta;
+				$r['cod_consulta'] = $datos['cod_consulta'];
 
 			} catch(Exception $e) {
 				// Revertir en caso de error
@@ -283,23 +226,23 @@ class consultasm extends datos{
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 	
-	function eliminar() {
+	function eliminar($datos) {
 		$co = $this->conecta();
 		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$r = array();
 		
-		if ($this->existe($this->cod_consulta)) {
+		if ($this->existe($datos['cod_consulta'])) {
 			try {
 				// Iniciar transacción para asegurar atomicidad
 				$co->beginTransaction();
 
 				// 1. Eliminar observaciones primero (por integridad referencial)
 				$stmt1 = $co->prepare("DELETE FROM observacion_consulta WHERE cod_consulta = ?");
-				$stmt1->execute([$this->cod_consulta]);
+				$stmt1->execute([$datos['cod_consulta']]);
 
 				// 2. Eliminar la consulta
 				$stmt2 = $co->prepare("DELETE FROM consulta WHERE cod_consulta = ?");
-				$stmt2->execute([$this->cod_consulta]);
+				$stmt2->execute([$datos['cod_consulta']]);
 
 				// Confirmar cambios
 				$co->commit();
@@ -378,17 +321,6 @@ class consultasm extends datos{
 }
 class observaciones extends datos {
 	
-	private $cod_observacion;
-	private $nom_observaciones;
-
-	public function setDatos($datos) {
-		if (isset($datos['cod_observacion'])) {
-			$this->cod_observacion = $datos['cod_observacion'];
-		}
-		if (isset($datos['nom_observaciones'])) {
-			$this->nom_observaciones = $datos['nom_observaciones'];
-		}
-	}
 
 	function listado_observaciones() {
 		$co = $this->conecta();
@@ -422,92 +354,89 @@ class observaciones extends datos {
 	}
 
 
-		function incluir2() {
-		$r = array();
-		
-		$co = $this->conecta();
-		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-		try {
-			// Llamar al procedimiento simple
-			$stmt = $co->prepare("CALL sp_insertar_observacion_simple(?, @codigo)");
-			$stmt->execute([$this->nom_observaciones]);
-			
-			// Obtener código generado
-			$cod_generado = $co->query("SELECT @codigo")->fetchColumn();
-			
-			// Verificar si realmente se insertó
-			if($this->existe2($cod_generado)) {
-				$r['resultado'] = 'agregar';
-				$r['mensaje'] = 'Registro Incluido';
-			} else {
-				$r['resultado'] = 'error';
-				$r['mensaje'] = 'No se pudo generar el código';
-			}
-			
-		} catch(Exception $e) {
-			$r['resultado'] = 'error';
-			$r['mensaje'] = $e->getMessage();
-		}
-		
-		return $r;
-	}
+    function incluir2($datos) {
+        $r = array();
+        $co = $this->conecta();
+        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-	function eliminar2(){
-		$co = $this->conecta();
-		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$r = array();
-		if($this->existe2($this->cod_observacion)){
-			try {
-				$stmt = $co->prepare("DELETE FROM tipo_observacion WHERE cod_observacion = :cod_observacion");
-				$stmt->bindParam(':cod_observacion', $this->cod_observacion);
-				$stmt->execute();
-				$r['resultado'] = 'descartar';
-				$r['mensaje'] =  'Registro Eliminado';
-			} catch(Exception $e) {
-				$r['resultado'] = 'error';
-				$r['mensaje'] =  $e->getMessage();
-			}
-		}
-		else{
-			$r['resultado'] = 'descartar';
-			$r['mensaje'] =  'No existe el registro';
-		}
-		return $r;
-	}
+        try {
+            // Llamar al procedimiento simple
+            $stmt = $co->prepare("CALL sp_insertar_observacion_simple(?, @codigo)");
+            $stmt->execute([$datos['nom_observaciones']]);
 
-	function modificar2() {
-		$co = $this->conecta();
-		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$r = array();
-		
-		if($this->existe2($this->cod_observacion)) {
-			try {
-				// Consulta preparada
-				$stmt = $co->prepare("UPDATE tipo_observacion SET 
-									nom_observaciones = ?
-									WHERE cod_observacion = ?");
-				
-				// Ejecutar con parámetros
-				$stmt->execute([
-					$this->nom_observaciones,
-					$this->cod_observacion
-				]);
-				
-				$r['resultado'] = 'actualizar';
-				$r['mensaje'] = 'Registro Modificado';
-				
-			} catch(Exception $e) {
-				$r['resultado'] = 'error';
-				$r['mensaje'] = $e->getMessage();
-			}
-		} else {
-			$r['resultado'] = 'actualizar';
-			$r['mensaje'] = 'Código no registrado';
-		}
-		
-		return $r;
-	}
+            // Obtener código generado
+            $cod_generado = $co->query("SELECT @codigo")->fetchColumn();
+
+            // Verificar si realmente se insertó
+            if($this->existe2($cod_generado)) {
+                $r['resultado'] = 'agregar';
+                $r['mensaje'] = 'Registro Incluido';
+            } else {
+                $r['resultado'] = 'error';
+                $r['mensaje'] = 'No se pudo generar el código';
+            }
+
+        } catch(Exception $e) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $e->getMessage();
+        }
+
+        return $r;
+    }
+
+
+    function eliminar2($datos){
+        $co = $this->conecta();
+        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $r = array();
+        if($this->existe2($datos['cod_observacion'])){
+            try {
+                $stmt = $co->prepare("DELETE FROM tipo_observacion WHERE cod_observacion = :cod_observacion");
+                $stmt->execute([':cod_observacion' => $datos['cod_observacion']]);
+                $r['resultado'] = 'descartar';
+                $r['mensaje'] =  'Registro Eliminado';
+            } catch(Exception $e) {
+                $r['resultado'] = 'error';
+                $r['mensaje'] =  $e->getMessage();
+            }
+        }
+        else{
+            $r['resultado'] = 'descartar';
+            $r['mensaje'] =  'No existe el registro';
+        }
+        return $r;
+    }
+
+    function modificar2($datos) {
+        $co = $this->conecta();
+        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $r = array();
+
+        if($this->existe2($datos['cod_observacion'])) {
+            try {
+                // Consulta preparada
+                $stmt = $co->prepare("UPDATE tipo_observacion SET 
+                                    nom_observaciones = ?
+                                    WHERE cod_observacion = ?");
+                // Ejecutar con parámetros
+                $stmt->execute([
+                    $datos['nom_observaciones'],
+                    $datos['cod_observacion']
+                ]);
+                $r['resultado'] = 'actualizar';
+                $r['mensaje'] = 'Registro Modificado';
+            } catch(Exception $e) {
+                $r['resultado'] = 'error';
+                $r['mensaje'] = $e->getMessage();
+            }
+        } else {
+            $r['resultado'] = 'actualizar';
+            $r['mensaje'] = 'Código no registrado';
+        }
+
+        return $r;
+    }
 
 	private function existe2($cod_observacion) {
 		$co = $this->conecta();

@@ -981,3 +981,42 @@ background: linear-gradient(90deg, #ff0000,#ff8080);/* W3C, IE 10+/ Edge, Firefo
   padding-right: 8px; */
   padding-right: 0;
 }
+
+/*estilos de estadistica */
+
+    .carrusel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    opacity: 0.85;
+  
+  }
+  .carrusel-btn-left {
+    left: 10px;
+  
+  }
+  .carrusel-btn-right {
+    right: 10px;
+    
+  }
+
+
+
+  .indicador-dot {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin: 0 6px;
+    background: #222;
+    border-radius: 50%;
+    opacity: 0.4;
+    transition: opacity 0.2s;
+  }
+  .indicador-dot.activo {
+    opacity: 1;
+    background: #222;
+  }

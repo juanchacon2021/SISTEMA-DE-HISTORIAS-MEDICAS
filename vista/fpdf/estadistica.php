@@ -269,17 +269,17 @@ if ($datos_reporte) {
     $pdf->SetFillColor(226, 37, 53); // colorFondo
     $pdf->SetTextColor(255, 255, 255); // colorTexto
     $pdf->SetDrawColor(0, 0, 0); // colorBorde
-    $pdf->SetFont('Arial', 'B', 7);
-    $pdf->Cell(190, 7, utf8_decode('Información sobre la población'), 1, 1, 'C', 1);
+    $pdf->SetFont('Arial', 'B', 12);
+    $pdf->Cell(190, 7, utf8_decode('INFORMACIÓN SOBRE LA POBLACIÓN'), 1, 1, 'C', 1);
 
     $pdf->SetTextColor(0, 0, 0); // colorTexto
-    $pdf->SetFont('Arial', '', 8);
+    $pdf->SetFont('Arial', 'B', 10);
     $pdf->MultiCell(190, 5, utf8_decode('Número total de historias registradas: ' . $total_historias), 1, 'C',0);
 
     $pdf->SetFillColor(255, 255, 255); // colorFondo
     $pdf->SetTextColor(0, 0, 0); // colorTexto
     $pdf->SetDrawColor(0, 0, 0); // colorBorde
-    $pdf->SetFont('Arial', '', 8);
+    $pdf->SetFont('Arial', 'B', 9);
     $pdf->Cell(70, 7, utf8_decode('Rango de edades'), 1, 0, 'C', 1);
     $pdf->Cell(50, 7, utf8_decode('Cantidad'), 1, 0, 'C', 1);
     $pdf->Cell(70, 7, utf8_decode('Porcentaje'), 1, 1, 'C', 1);
@@ -306,21 +306,22 @@ if ($datos_reporte) {
     $pdf->SetFillColor(226, 37, 53); // colorFondo
     $pdf->SetTextColor(255, 255, 255); // colorTexto
     $pdf->SetDrawColor(0, 0, 0); // colorBorde
-    $pdf->SetFont('Arial', 'B', 7);
-    $pdf->Cell(190, 7, utf8_decode('Información sobre los pacientes crónicos'), 1, 1, 'C', 1);
+    $pdf->SetFont('Arial', 'B', 12);
+    $pdf->Cell(190, 7, utf8_decode('INFORMACIÓN SOBRE LOS PACIENTES CRÓNICOS'), 1, 1, 'C', 1);
 
     $pdf->SetTextColor(0, 0, 0); // colorTexto
-    $pdf->SetFont('Arial', '', 8);
+    $pdf->SetFont('Arial', 'B', 10);
     $pdf->MultiCell(190, 5, utf8_decode('Número total de pacientes crónicos registrados:  ' . $total_cronicos), 1, 'C',0);
     $pdf->SetFillColor(255, 255, 255); // colorFondo
     $pdf->SetTextColor(0, 0, 0); // colorTexto
     $pdf->SetDrawColor(0, 0, 0); // colorBorde
-    $pdf->SetFont('Arial', '', 8);
+    $pdf->SetFont('Arial', 'B', 9);
     $pdf->Cell(70, 7, utf8_decode('Patologias'), 1, 0, 'C', 1);
     $pdf->Cell(50, 7, utf8_decode('Cantidad'), 1, 0, 'C', 1);
     $pdf->Cell(70, 7, utf8_decode('Porcentaje'), 1, 1, 'C', 1);
 
     foreach ($datos_cronicos as $row) {
+        $pdf->SetFont('Arial', '', 8);
         $pdf->Cell(70, 7, utf8_decode($row->nombre_patologia), 1, 0, 'C', 1);
         $pdf->Cell(50, 7, utf8_decode($row->pacientes), 1, 0, 'C', 1);
         $pdf->Cell(70, 7, utf8_decode(($total_cronicos > 0 ? number_format($row->pacientes * 100 / $total_cronicos, 2) : '0.00') . '%'), 1, 1, 'C', 1);
@@ -330,11 +331,11 @@ if ($datos_reporte) {
     $pdf->SetFillColor(226, 37, 53); // colorFondo
     $pdf->SetTextColor(255, 255, 255); // colorTexto
     $pdf->SetDrawColor(0, 0, 0); // colorBorde
-    $pdf->SetFont('Arial', 'B', 7);
-    $pdf->Cell(190, 7, utf8_decode('Top 10 Medicamentos más usados'), 1, 1, 'C', 1);
+    $pdf->SetFont('Arial', 'B', 12);
+    $pdf->Cell(190, 7, utf8_decode('TOP 10 MEDICAMENTOS MÁS USADOS'), 1, 1, 'C', 1);
 
     $pdf->SetTextColor(0, 0, 0); // colorTexto
-    $pdf->SetFont('Arial', '', 8);
+    $pdf->SetFont('Arial', 'B', 10);
 
     // Mostrar el medicamento más usado y cuántas veces fue utilizado
     if (count($datos_mas_usados) > 0) {
@@ -353,39 +354,40 @@ if ($datos_reporte) {
     $pdf->SetFillColor(255, 255, 255); // colorFondo
     $pdf->SetTextColor(0, 0, 0); // colorTexto
     $pdf->SetDrawColor(0, 0, 0); // colorBorde
-    $pdf->SetFont('Arial', '', 8);
+    $pdf->SetFont('Arial', 'B', 9);
     // Encabezado de tabla
-    $pdf->Cell(120, 7, utf8_decode('Medicamento'), 1, 0, 'C', 1);
-    $pdf->Cell(70, 7, utf8_decode('Cantidad Total'), 1, 1, 'C', 1);
-
+    $pdf->Cell( 95, 7, utf8_decode('Medicamento'), 1, 0, 'C', 1);
+    $pdf->Cell( 95, 7, utf8_decode('Cantidad Total'), 1, 1, 'C', 1);
+    $pdf->SetFont('Arial', '', 8);
     // Filas de la tabla
     foreach ($datos_mas_usados as $row) {
-        $pdf->Cell(120, 7, utf8_decode($row->medicamento), 1, 0, 'C', 1);
-        $pdf->Cell(70, 7, utf8_decode($row->cantidad_total), 1, 1, 'C', 1);
+        
+        $pdf->Cell(95, 7, utf8_decode($row->medicamento), 1, 0, 'C', 1);
+        $pdf->Cell(95, 7, utf8_decode($row->cantidad_total), 1, 1, 'C', 1);
     }
 
     $pdf->Ln(10);
     $pdf->SetFillColor(226, 37, 53); // colorFondo
     $pdf->SetTextColor(255, 255, 255); // colorTexto
     $pdf->SetDrawColor(0, 0, 0); // colorBorde
-    $pdf->SetFont('Arial', 'B', 7);
-    $pdf->Cell(190, 7, utf8_decode('Medicamentos por vencer (Top 10 próximos)'), 1, 1, 'C', 1);
+    $pdf->SetFont('Arial', 'B', 12);
+    $pdf->Cell(190, 7, utf8_decode('MEDICAMENTOS POR VENCER (TOP 10 PRÓXIMOS)'), 1, 1, 'C', 1);
 
     $pdf->SetTextColor(0, 0, 0); // colorTexto
-    $pdf->SetFont('Arial', '', 8);
+    $pdf->SetFont('Arial', 'B', 10);
     $pdf->MultiCell(190, 5, utf8_decode('Cantidad total de medicamentos ya vencidos: ' . $total_vencidos), 1, 'C', 0);
 
     $pdf->SetFillColor(255, 255, 255); // colorFondo
     $pdf->SetTextColor(0, 0, 0); // colorTexto
     $pdf->SetDrawColor(0, 0, 0); // colorBorde
-    $pdf->SetFont('Arial', '', 8);
+    $pdf->SetFont('Arial', 'B', 9);
     // Encabezado de tabla
     $pdf->Cell(30, 7, utf8_decode('Lote'), 1, 0, 'C', 1);
     $pdf->Cell(60, 7, utf8_decode('Medicamento'), 1, 0, 'C', 1);
     $pdf->Cell(30, 7, utf8_decode('Unidad'), 1, 0, 'C', 1);
     $pdf->Cell(40, 7, utf8_decode('Vence'), 1, 0, 'C', 1);
     $pdf->Cell(30, 7, utf8_decode('Cantidad'), 1, 1, 'C', 1);
-
+    $pdf->SetFont('Arial', '', 8);
     // Filas de la tabla
     foreach ($datos_medicamentos as $row) {
         $pdf->Cell(30, 7, utf8_decode($row->cod_lote), 1, 0, 'C', 1);
@@ -398,19 +400,20 @@ if ($datos_reporte) {
     $pdf->Ln(100);
     $pdf->SetFillColor(226, 37, 53); // fondo rojo
     $pdf->SetTextColor(255, 255, 255); // letras blancas
-    $pdf->SetFont('Arial', 'B', 7);
-    $pdf->Cell(190, 7, utf8_decode("Consultas por día en $mesConsulta/$anioConsulta"), 1, 1, 'C', 1);
+    $pdf->SetFont('Arial', 'B', 12);
+    $pdf->Cell(190, 7, utf8_decode("CONSULTAS POR DÍA EN $mesConsulta/$anioConsulta"), 1, 1, 'C', 1);
 
     $pdf->SetTextColor(0, 0, 0); // colorTexto
-    $pdf->SetFont('Arial', '', 8);
+    $pdf->SetFont('Arial', 'B', 10);
     $pdf->MultiCell(190, 5, utf8_decode('Numero total de consultas este mes:' . $total_consultas), 1, 'C', 0);
 
     // Resto de la tabla en blanco con letras negras
     $pdf->SetFillColor(255, 255, 255); // fondo blanco
     $pdf->SetTextColor(0, 0, 0); // letras negras
-    $pdf->SetFont('Arial', '', 8);
+    $pdf->SetFont('Arial', 'B', 9);
     $pdf->Cell(95, 7, utf8_decode('Día'), 1, 0, 'C', 1);
     $pdf->Cell(95, 7, utf8_decode('Total Consultas'), 1, 1, 'C', 1);
+    $pdf->SetFont('Arial', '', 8);
 
     foreach ($datos_consultas as $row) {
         $pdf->Cell(95, 7, utf8_decode($row->dia), 1, 0, 'C', 1);
@@ -420,19 +423,20 @@ if ($datos_reporte) {
     $pdf->Ln(10);
     $pdf->SetFillColor(226, 37, 53); // fondo rojo
     $pdf->SetTextColor(255, 255, 255); // letras blancas
-    $pdf->SetFont('Arial', 'B', 7);
-    $pdf->Cell(190, 7, utf8_decode("Emergencias por día en $mesEmergencia/$anioEmergencia"), 1, 1, 'C', 1);
+    $pdf->SetFont('Arial', 'B', 12);
+    $pdf->Cell(190, 7, utf8_decode("EMERGENCIAS POR DÍA EN $mesEmergencia/$anioEmergencia"), 1, 1, 'C', 1);
 
     $pdf->SetTextColor(0, 0, 0); // colorTexto
-    $pdf->SetFont('Arial', '', 8);
+    $pdf->SetFont('Arial', 'B', 10);
     $pdf->MultiCell(190, 5, utf8_decode('Numero total de emergencias este mes:' . $total_emergencias), 1, 'C', 0);
 
     // Encabezado de tabla en blanco con letras negras
     $pdf->SetFillColor(255, 255, 255); // fondo blanco
     $pdf->SetTextColor(0, 0, 0); // letras negras
-    $pdf->SetFont('Arial', '', 8);
+    $pdf->SetFont('Arial', 'B', 9);
     $pdf->Cell(95, 7, utf8_decode('Día'), 1, 0, 'C', 1);
     $pdf->Cell(95, 7, utf8_decode('Total Emergencias'), 1, 1, 'C', 1);
+    $pdf->SetFont('Arial', '', 8);
 
     foreach ($datos_emergencias as $row) {
         $pdf->Cell(95, 7, utf8_decode($row->dia), 1, 0, 'C', 1);

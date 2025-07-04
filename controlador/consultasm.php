@@ -15,6 +15,7 @@ if(is_file("vista/".$pagina.".php")) {
         $p = new observaciones();
 
         $accion = $_POST['accion'];
+        $datos = $_POST;
 
         switch ($accion) {
             case 'consultar':
@@ -37,35 +38,17 @@ if(is_file("vista/".$pagina.".php")) {
                 break;
 
             case 'eliminar':
-                $o->setDatos($_POST);
-                $resultado = $o->eliminar();
-                bitacora::registrarYNotificar(
-                    'Eliminar',
-                    'Se ha eliminado la consulta: '.$_POST['cod_consulta'],
-                    $_SESSION['usuario']
-                );
+                $resultado = $o->eliminar($datos);
                 echo json_encode($resultado);
                 break;
 
             case 'agregar':
-                $p->setDatos($_POST);
-                $resultado = $p->incluir2();
-                bitacora::registrarYNotificar(
-                    'Registrar',
-                    'Se ha registrado una observación: '.$_POST['nom_observaciones'] ?? '',
-                    $_SESSION['usuario']
-                );
+                $resultado = $p->incluir2($datos);
                 echo json_encode($resultado);
                 break;
 
             case 'actualizar':
-                $p->setDatos($_POST);
-                $resultado = $p->modificar2();
-                bitacora::registrarYNotificar(
-                    'Modificar',
-                    'Se ha modificado la observación: '.$_POST['nom_observaciones'] ?? '',
-                    $_SESSION['usuario']
-                );
+                $resultado = $p->modificar2($datos);
                 echo json_encode($resultado);
                 break;
 
@@ -79,19 +62,13 @@ if(is_file("vista/".$pagina.".php")) {
                 break;
 
             case 'descartar':
-                $p->setDatos($_POST);
-                $resultado = $p->eliminar2();
-                bitacora::registrarYNotificar(
-                    'Eliminar',
-                    'Se ha descartado la observación: '.$_POST['cod_observacion'] ?? '',
-                    $_SESSION['usuario']
-                );
+                $resultado = $p->eliminar2($datos);
                 echo json_encode($resultado);
                 break;
 
             case 'incluir':
             case 'modificar':
-                $o->setDatos($_POST);
+
 
                 // Prepara el array de observaciones
                 $observaciones = [];
@@ -105,19 +82,9 @@ if(is_file("vista/".$pagina.".php")) {
                 }
 
                 if ($accion == 'incluir') {
-                    $resultado = $o->incluir($observaciones);
-                    bitacora::registrarYNotificar(
-                        'Registrar',
-                        'Se ha registrado una consulta: '.$_POST['cod_consulta'],
-                        $_SESSION['usuario']
-                    );
+                    $resultado = $o->incluir($datos ,$observaciones);
                 } else {
-                    $resultado = $o->modificar($observaciones);
-                    bitacora::registrarYNotificar(
-                        'Modificar',
-                        'Se ha modificado la consulta: '.$_POST['cod_consulta'],
-                        $_SESSION['usuario']
-                    );
+                    $resultado = $o->modificar($datos ,$observaciones);
                 }
                 echo json_encode($resultado);
                 break;
