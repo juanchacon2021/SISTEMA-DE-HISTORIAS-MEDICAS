@@ -145,7 +145,10 @@ $(document).on('click', '#procesoPublicacion', function() {
         muestraMensaje("Debes escribir algo en la publicación");
         return;
     }
-    
+
+    // Deshabilitar botón y mostrar "Procesando..."
+    $('#procesoPublicacion').prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Procesando...');
+
     $.ajax({
         url: '', 
         type: 'POST',
@@ -153,32 +156,39 @@ $(document).on('click', '#procesoPublicacion', function() {
         processData: false,
         contentType: false,
         success: function(respuesta) {
-    try {
-        console.log("Respuesta AJAX:", respuesta); 
-        var lee = JSON.parse(respuesta);
-        console.log("Objeto parseado:", lee); 
-        if (lee.resultado == "incluir" || lee.resultado == "modificar") {
-            muestraMensaje(lee.mensaje);
-            ocultarFormularioPublicacion();
-            cargarPublicaciones();
-        } else {
-            muestraMensaje(lee.mensaje);
-        }
-    } catch (e) {
-        console.error("Error al procesar la respuesta:", e);
-        muestraMensaje("Error al procesar la publicación");
-    }
-},
+            try {
+                var lee = JSON.parse(respuesta);
+                if (lee.resultado == "incluir" || lee.resultado == "modificar") {
+                    muestraMensaje(lee.mensaje);
+                    ocultarFormularioPublicacion();
+                    cargarPublicaciones();
+                } else {
+                    muestraMensaje(lee.mensaje);
+                }
+            } catch (e) {
+                console.error("Error al procesar la respuesta:", e);
+                muestraMensaje("Error al procesar la publicación");
+            }
+        },
         error: function(xhr, status, error) {
             console.error("Error en la petición AJAX:", error);
             muestraMensaje("Error al guardar la publicación");
+        },
+        complete: function() {
+            // Restaurar botón
+            $('#procesoPublicacion').prop('disabled', false).text(
+                $('#accion').val() === 'modificar_publicacion' ? 'Modificar' : 'Publicar'
+            );
         }
     });
 });
 
 // Eliminar publicación confirmada
 $('#btnConfirmarEliminar').off('click').on('click', function() {
+    var $btn = $(this);
     if (codPublicacionAEliminar) {
+        // Deshabilitar botón y mostrar spinner
+        $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Procesando...');
         $.ajax({
             url: '',
             type: 'POST',
@@ -196,6 +206,15 @@ $('#btnConfirmarEliminar').off('click').on('click', function() {
                 }
                 $('#modalConfirmacion').modal('hide');
                 codPublicacionAEliminar = null;
+            },
+            error: function() {
+                muestraMensaje('Error al eliminar');
+                $('#modalConfirmacion').modal('hide');
+                codPublicacionAEliminar = null;
+            },
+            complete: function() {
+                // Restaurar botón
+                $btn.prop('disabled', false).text('Eliminar');
             }
         });
     }
