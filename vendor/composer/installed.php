@@ -3,7 +3,7 @@
         'name' => 'shm/shm',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'f157b160f24512fcce86d6be64837d11c0717d03',
+        'reference' => '82805fe7ffa8e7d69dfbedbf6e9ae306963a6ffb',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -169,7 +169,7 @@
         'shm/shm' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'f157b160f24512fcce86d6be64837d11c0717d03',
+            'reference' => '82805fe7ffa8e7d69dfbedbf6e9ae306963a6ffb',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
