@@ -81,12 +81,23 @@ require_once("comunes/notificaciones.php");
             <div class="modal-body">
                 <p>¿Estás seguro de que deseas eliminar esta publicación?</p>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer botones">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-danger" id="btnConfirmarEliminar">Eliminar</button>
+                <button type="button" class="btn botonrojo" id="btnConfirmarEliminar">Eliminar</button>
             </div>
         </div>
     </div>
+</div>
+
+<!-- Modal para imagen ampliada -->
+<div class="modal fade" id="modalImagenPublicacion" tabindex="-1" aria-labelledby="modalImagenPublicacionLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-transparent border-0">
+      <div class="modal-body text-center p-0">
+        <img id="imagenAmpliadaPublicacion" src="" class="img-fluid rounded" style="max-width: 90vw; max-height: 80vh;">
+      </div>
+    </div>
+  </div>
 </div>
 
 <?php require_once("comunes/modal.php"); ?>

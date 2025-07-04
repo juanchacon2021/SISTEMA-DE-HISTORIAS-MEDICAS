@@ -2,68 +2,80 @@
 if (!is_file("src/modelo/".$pagina.".php")){
     echo "Falta definir la clase ".$pagina;
     exit;
-}  
+}
 
-
-use Shm\Shm\modelo\planificacion; 
+use Shm\Shm\modelo\planificacion;
+require_once("modelo/bitacora.php");
 
 if(is_file("vista/".$pagina.".php")) {
-    $o = new planificacion();
-
     if(!empty($_POST)){
-        if(isset($_POST['cod_pub'])) $o->set_cod_pub($_POST['cod_pub']);
-        if(isset($_POST['contenido'])) $o->set_contenido($_POST['contenido']);
-        if(isset($_FILES['imagen'])) $o->set_imagen($_FILES['imagen']);
-
-        // Cambia esto:
-        // $o->set_id_usuario($_SESSION['usuario']);
-        // Por esto:
-        $o->set_cedula_personal($_SESSION['usuario']);
-
+        $o = new planificacion();
         $accion = $_POST['accion'];
+        $datos = $_POST;
+
+        // Si hay imagen, agregarla al array
+        if(isset($_FILES['imagen'])) {
+            $datos['imagen'] = $_FILES['imagen'];
+        }
+
+        // Agregar cedula_personal desde la sesión
+        $datos['cedula_personal'] = $_SESSION['usuario'];
 
         switch($accion) {
             case 'consultar_publicaciones':
-                $publicaciones = $o->consultar_publicaciones();
-                $publicaciones['cedula_actual'] = $_SESSION['usuario']; // Agrega esto
+                $publicaciones = $o->consultar_publicaciones($datos);
+                $publicaciones['cedula_actual'] = $_SESSION['usuario'];
                 echo json_encode($publicaciones);
                 exit;
             case 'obtener_publicacion':
-                echo json_encode($o->obtener_publicacion());
+                echo json_encode($o->obtener_publicacion($datos));
                 exit;
             case 'incluir_publicacion':
-                echo json_encode($o->incluir());
-                bitacora::registrar('Registrar', 'Se ha registrado una publicación con codigo: '.$o->get_cod_pub());
+                $resultado = $o->incluir($datos);
+                echo json_encode($resultado);
+                bitacora::registrarYNotificar(
+                    'Registrar',
+                    'Se ha registrado una publicación con codigo: '.$resultado['cod_pub'],
+                    $_SESSION['usuario']
+                );
                 exit;
             case 'modificar_publicacion':
-                echo json_encode($o->modificar());
-                bitacora::registrar('Modificar', 'Se ha modificado una publicación con codigo: '.$o->get_cod_pub());
+                $resultado = $o->modificar($datos);
+                echo json_encode($resultado);
+                bitacora::registrarYNotificar(
+                    'Modificar',
+                    'Se ha modificado una publicación con codigo: '.$datos['cod_pub'],
+                    $_SESSION['usuario']
+                );
                 exit;
             case 'eliminar_publicacion':
-                $co = $o->conecta();
-                $verificar = $co->query("SELECT cedula_personal FROM feed WHERE cod_pub = '".$o->get_cod_pub()."'");
-                $publicacion = $verificar->fetch(PDO::FETCH_ASSOC);
-
-                if(!$publicacion || $publicacion['cedula_personal'] != $o->get_cedula_personal()) {
+                // Verificar permisos antes de eliminar
+                $verificar = $o->verificar_autor($datos);
+                if(!$verificar) {
                     echo json_encode([
                         'resultado' => 'error',
                         'mensaje' => 'No tienes permisos para esta acción'
                     ]);
                     exit;
                 }
-                echo json_encode($o->eliminar());
-                bitacora::registrar('Eliminar', 'Se ha eliminado una publicación con codigo: '.$o->get_cod_pub());
+                $resultado = $o->eliminar($datos);
+                echo json_encode($resultado);
+                bitacora::registrarYNotificar(
+                    'Eliminar',
+                    'Se ha eliminado una publicación con codigo: '.$datos['cod_pub'],
+                    $_SESSION['usuario']
+                );
                 exit;
         }
     }
 
-    // Cargar datos iniciales para la vista (opcional, si quieres cargar publicaciones por PHP)
-    $o->set_id_usuario($_SESSION['usuario']);
-    $publicaciones = $o->consultar_publicaciones();
+    // Cargar datos iniciales para la vista
+    $o = new planificacion();
+    $datos = ['cedula_personal' => $_SESSION['usuario']];
+    $publicaciones = $o->consultar_publicaciones($datos);
 
     require_once("vista/".$pagina.".php");
-}
-else{
+} else {
     echo "Página en construcción";
 }
 ?>

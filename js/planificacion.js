@@ -25,38 +25,50 @@ function cargarPublicaciones() {
         success: function(res) {
             if (res.resultado === 'consultar_publicaciones') {
                 let html = '';
-                let cedulaActual = res.cedula_actual; // <-- la cédula del usuario logueado
-                res.datos.forEach(function(pub) {
-                    html += `<div class="publicacion cardd mb-3">
-                        <div class="card-body">
-                            <div class="d-flex justify-between">
-                                <div>
-                                    <h5 class="card-title mb-1"><strong>${pub.nombre_usuario || ''}</strong></h5>
-                                    <h6 class="card-subtitle mb-2 text-muted">${pub.fecha}</h6>
-                                </div>
-                                 <div class="d-flex gap-2">`;
-                                // Mostrar botones solo si la publicación es del usuario logueado
-                                if (pub.cedula_personal == cedulaActual) {
-                                    html += `
-                                        <button class="btn btn-sm btn-warning me-2" onclick="editarPublicacion('${pub.cod_pub}')" style="height:40px;">
-                                            <img src="img/lapiz.svg" alt="Editar" style="width:20px;">
-                                        </button>
-                                        <button class="btn btn-sm btn-danger" onclick="confirmarEliminacion('${pub.cod_pub}')" style="height:40px;">
-                                            <img src="img/basura.svg" alt="Eliminar" style="width:20px;">
-                                        </button>
-                                    `;
-                                }
-                                html += `</div>
-                            </div>
-                            
-                           
-                            <p class="card-text my-2">${pub.contenido}</p>
-                            <center>${pub.imagen ? `<img src="${pub.imagen}">` : ''}</center>
-                            
+                let cedulaActual = res.cedula_actual;
+                if (!res.datos || res.datos.length === 0) {
+                    html = `
+                        <div class="d-flex justify-content-center align-items-center" style="height:200px;">
+                            <center><div class="alert alert-danger text-center" style="font-size:1.2rem;">
+                                No hay publicaciones
+                            </div></center>
                         </div>
-                    </div>`;
-                });
+                    `;
+                } else {
+                    res.datos.forEach(function(pub) {
+                        html += `<div class="publicacion cardd mb-3">
+                            <div class="card-body">
+                                <div class="d-flex justify-between">
+                                    <div>
+                                        <h5 class="card-title mb-1"><strong>${pub.nombre_usuario || ''}</strong></h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">${pub.fecha}</h6>
+                                    </div>
+                                    <div class="d-flex gap-2">`;
+                        if (pub.cedula_personal == cedulaActual) {
+                            html += `
+                                <button class="btn btn-sm btn-warning me-2" onclick="editarPublicacion('${pub.cod_pub}')" style="height:40px;">
+                                    <img src="img/lapiz.svg" alt="Editar" style="width:20px;">
+                                </button>
+                                <button class="btn btn-sm btn-danger" onclick="confirmarEliminacion('${pub.cod_pub}')" style="height:40px;">
+                                    <img src="img/basura.svg" alt="Eliminar" style="width:20px;">
+                                </button>
+                            `;
+                        }
+                        html += `</div>
+                                </div>
+                                <p class="card-text my-2">${pub.contenido}</p>
+                                <center>${pub.imagen ? `<img src="${pub.imagen}" class="img-publicacion-ampliable" style="cursor:pointer;max-height:350px;">` : ''}</center>
+                            </div>
+                        </div>`;
+                    });
+                }
                 $("#listadoPublicaciones").html(html);
+
+                // Evento para ampliar imagen
+                $(".img-publicacion-ampliable").off("click").on("click", function() {
+                    $("#imagenAmpliadaPublicacion").attr("src", $(this).attr("src"));
+                    $("#modalImagenPublicacion").modal("show");
+                });
             }
         }
     });
@@ -196,3 +208,23 @@ $(document).ready(function() {
         }
     });
 });
+
+// NOTIFICACIONES
+const ws = new WebSocket('ws://localhost:8080');
+
+ws.onopen = function() {
+    console.log('Conectado al WebSocket');
+};
+
+ws.onclose = function() {
+    console.log('WebSocket cerrado');
+};
+
+ws.onerror = function(error) {
+    console.error('WebSocket error:', error);
+};
+
+// Ejemplo: enviar un mensaje (puedes quitar esto si solo quieres recibir)
+function enviarNotificacion(msg) {
+    ws.send(msg);
+}
