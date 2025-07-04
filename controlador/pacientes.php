@@ -23,9 +23,9 @@ if(is_file("vista/".$pagina.".php")){
         // Armar array de datos
         $datos = $_POST;
         // Procesar familiares si existen (JSON)
-        if(!empty($_POST['antecedentes_familiares'])) {
-            $familiares = json_decode($_POST['antecedentes_familiares'], true);
-            if(json_last_error() === JSON_ERROR_NONE) {
+        if (isset($datos['familiares'])) {
+            $familiares = json_decode($datos['familiares'], true);
+            if (json_last_error() === JSON_ERROR_NONE) {
                 $datos['antecedentes_familiares'] = $familiares;
             }
         }
@@ -55,12 +55,7 @@ if(is_file("vista/".$pagina.".php")){
                 echo json_encode($o->agregar_patologia($datos));
                 exit;
             case 'obtener_patologias_paciente':
-                require_once("src/modelo/p_cronicos.php");
-                $pat = new \Shm\Shm\modelo\p_cronicos();
-                echo json_encode([
-                    "resultado" => "success",
-                    "datos" => $pat->obtener_patologias_paciente($datos['cedula_paciente'])
-                ]);
+                echo json_encode($o->obtener_patologias_paciente($datos));
                 exit;
             case 'incluir':
                 try {
