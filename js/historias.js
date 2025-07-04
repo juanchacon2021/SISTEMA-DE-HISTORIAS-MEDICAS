@@ -60,9 +60,11 @@ function enviaAjax(datos) {
                                 <td>${p.edad}</td>
                                 <td>${p.telefono}</td>
                                 <td>
-                                    <button class="btn botonrojo" onclick="abrirModalSeleccionPDF('${p.cedula_paciente}')">
-                                        <img src="img/descarga.svg" style="width: 20px;"> PDF Personalizado
-                                    </button>
+                                    <center>
+                                        <button class="btn botonrojo" onclick="abrirModalSeleccionPDF('${p.cedula_paciente}')">
+                                            <img src="img/descarga.svg" style="width: 20px;"> PDF Personalizado
+                                        </button>
+                                    </center>
                                 </td>
                             </tr>`;
                     });

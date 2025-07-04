@@ -120,7 +120,7 @@
 
 .boton-ced {
     display: flex; 
-    width: 25rem;
+    width: 100%;
 }
 
 .boton-lista {

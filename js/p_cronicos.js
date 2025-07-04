@@ -437,9 +437,10 @@ function cedulaExisteEnListado(cedula) {
     return existe;
 }
 
+// Variable global para saber el modo actual
+let modoActual = "";
 
-
-
+// Modifica la función pone:
 function pone(pos, accion) {
     // Configuración inicial común
     $("#cedula_paciente").prop("readonly", false);
@@ -455,6 +456,7 @@ function pone(pos, accion) {
     // Manejo de acciones
     switch (accion) {
         case 0: // MODIFICAR
+            modoActual = "modificar";
             $("#proceso").text("MODIFICAR");
             boton_h.style.display = '';
             limpiarm();
@@ -470,6 +472,7 @@ function pone(pos, accion) {
             break;
 
         case 1: // ELIMINAR
+            modoActual = "eliminar";
             $("#proceso").text("ELIMINAR");
             $("#cedula_paciente").prop("readonly", true);
             $("#patologia_options").hide();
@@ -490,7 +493,8 @@ function pone(pos, accion) {
             }, 50);
             break;
 
-        case 2: // CERRAR
+        case 2: // CERRAR (VER)
+            modoActual = "ver";
             $("#proceso").text("CERRAR");
             $("#cedula_paciente").prop("readonly", true);
             $("#patologia_options").hide();
@@ -512,6 +516,7 @@ function pone(pos, accion) {
             break;
 
         case 3: // INCLUIR
+            modoActual = "incluir";
             $("#proceso").text("INCLUIR");
             boton_h.style.display = '';
             $("#patologia_options input[type='checkbox']").prop('checked', false);
@@ -529,7 +534,7 @@ function pone(pos, accion) {
             $("#cod_patologia").val($(linea).find("td:eq(0)").text());
             $("#nombre_patologia").val($(pos).attr('nombre_patologia'));
             $("#nombre_patologia").prop("readonly", true);
-            $("#proceso2").text("descartar");
+            $("#proceso2").text("Descartar");
             $("#modal2").modal("show");
             break;
 
@@ -537,7 +542,7 @@ function pone(pos, accion) {
             $("#cod_patologia").val($(linea).find("td:eq(0)").text());
             $("#nombre_patologia").val($(pos).attr('nombre_patologia'));
             $("#nombre_patologia").prop("readonly", false);
-            $("#proceso2").text("actualizar");
+            $("#proceso2").text("Actualizar");
             $("#modal2").modal("show");
             break;
     }
@@ -596,8 +601,6 @@ function enviaAjax(datos) {
 										apellido="${fila.apellido}">
 										<img src="img/ojo.svg" style="width: 20px">
 									</a>
-														
-									<!-- Agrega los demás botones aquí -->
 								</div>
 							</td>
 						</tr>`;
@@ -678,7 +681,7 @@ function enviaAjax(datos) {
 								placeholder="Administración del tratamiento">${pat.administracion_t || ''}</textarea>
 						</div>
 					</div>
-					<button type="button" class="btn btn-danger btn-sm bt_quitar" onclick="$('#pat_${pat.cod_patologia}').remove()">Quitar</button>
+					${modoActual === "modificar" ? `<button type="button" class="btn btn-danger btn-sm bt_quitar" onclick="$('#pat_${pat.cod_patologia}').remove()">Quitar</button>` : ""}
 				</div>
 				`;
 				$("#patologias_container").append(html);

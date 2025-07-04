@@ -12,7 +12,12 @@ class planificacion extends datos {
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
         try {
-            $stmt = $co->query("SELECT * FROM feed ORDER BY fecha DESC");
+            $stmt = $co->query("
+                SELECT f.*, p.nombre AS nombre_usuario, p.apellido AS apellido_usuario
+                FROM feed f
+                LEFT JOIN personal p ON p.cedula_personal = f.cedula_personal
+                ORDER BY f.fecha DESC
+            ");
             $r['resultado'] = 'consultar_publicaciones';
             $r['datos'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch(Exception $e) {

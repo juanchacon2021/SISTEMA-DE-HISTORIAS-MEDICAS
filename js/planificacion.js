@@ -40,7 +40,7 @@ function cargarPublicaciones() {
                             <div class="card-body">
                                 <div class="d-flex justify-between">
                                     <div>
-                                        <h5 class="card-title mb-1"><strong>${pub.nombre_usuario || ''}</strong></h5>
+                                        <h5 class="card-title mb-1"><strong>${pub.nombre_usuario || ''} ${pub.apellido_usuario || ''}</strong></h5>
                                         <h6 class="card-subtitle mb-2 text-muted">${pub.fecha}</h6>
                                     </div>
                                     <div class="d-flex gap-2">`;
@@ -149,21 +149,22 @@ $(document).on('click', '#procesoPublicacion', function() {
         processData: false,
         contentType: false,
         success: function(respuesta) {
-            try {
-                var lee = JSON.parse(respuesta);
-                if (lee.resultado == "incluir_publicacion" || lee.resultado == "modificar_publicacion") {
-                    muestraMensaje(lee.mensaje);
-                    ocultarFormularioPublicacion();
-                    // Actualizar las publicaciones inmediatamente después de la acción
-                    cargarPublicaciones();
-                } else {
-                    muestraMensaje(lee.mensaje);
-                }
-            } catch (e) {
-                console.error("Error al procesar la respuesta:", e);
-                muestraMensaje("Error al procesar la publicación");
-            }
-        },
+    try {
+        console.log("Respuesta AJAX:", respuesta); 
+        var lee = JSON.parse(respuesta);
+        console.log("Objeto parseado:", lee); 
+        if (lee.resultado == "incluir_publicacion" || lee.resultado == "modificar_publicacion") {
+            muestraMensaje(lee.mensaje);
+            ocultarFormularioPublicacion();
+            cargarPublicaciones();
+        } else {
+            muestraMensaje(lee.mensaje);
+        }
+    } catch (e) {
+        console.error("Error al procesar la respuesta:", e);
+        muestraMensaje("Error al procesar la publicación");
+    }
+},
         error: function(xhr, status, error) {
             console.error("Error en la petición AJAX:", error);
             muestraMensaje("Error al guardar la publicación");
@@ -183,7 +184,7 @@ $('#btnConfirmarEliminar').off('click').on('click', function() {
             },
             success: function(respuesta) {
                 const data = JSON.parse(respuesta);
-                if(data.resultado === 'eliminar_publicacion') {
+                if(data.resultado === 'eliminar' || data.resultado === 'eliminar_publicacion') {
                     cargarPublicaciones(); // Recargar listado
                     muestraMensaje('Publicación eliminada');
                 } else {

@@ -56,8 +56,8 @@ require_once("comunes/notificaciones.php");
                     </div>
                     
                     <div class="d-flex justify-content-end gap-2">
-                        <button type="button" class="btn btn-secondary" onclick="ocultarFormularioPublicacion()">Cancelar</button>
-                        <button type="button" id="procesoPublicacion" class="btn btn-primary">Publicar</button>
+                        <button type="button" class="btn botonrojo" onclick="ocultarFormularioPublicacion()">Cancelar</button>
+                        <button type="button" id="procesoPublicacion" class="btn botonverde">Publicar</button>
                     </div>
                 </form>
             </div>
@@ -67,6 +67,18 @@ require_once("comunes/notificaciones.php");
     <!-- Listado de publicaciones -->
     <div class="container" id="listadoPublicaciones">
         <!-- Las publicaciones se cargarán aquí via AJAX -->
+        <table id="tablaPublicaciones" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Fecha</th>
+                    <th>Contenido</th>
+                    <th>Imagen</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tbodyPublicaciones"></tbody>
+        </table>
     </div>
 </div>
 

@@ -25,25 +25,25 @@ Pacientes cronicos
 <div class="container espacio">
 	<div class="container">
 		<div class="row mt-3 botones">
-		    <div style="color: white;" class="col-md-2 botonverde" style="cursor: pointer;" onclick='pone(this,3), limpiarm()' >
-				Registrar pacientes cronicos
+		    <div style="color: white;" class="btn botonverde" style="cursor: pointer;" onclick='pone(this,3), limpiarm()' >
+				Registrar Paciente Crónico
 			</div>
 
 			<div class="col-md-2">
 				<button type="button" class="btn botonverde" data-bs-toggle="modal" data-bs-target="#modalopatologias">
-					patologias
+					Patologías
 				</button>
 			</div>
 
-			<div class="col-md-2 recortar">	
-                <a href="?pagina=principal" class="boton">Volver</a>
-			</div>
+			<div class="btn botonrojo">    
+                <a href="?pagina=principal">Volver</a>
+            </div>
 		</div>
 	</div>
 	<div class="container">
     <div class="table-responsive">
         <table class="table table-striped table-hover" id="tablapersonal">
-            <thead class="table-dark">>
+            <thead class="table-dark">
                 <tr>
                     <th style="text-align: center;">Cedula Pacientes</th>
                     <th style="text-align: center;">Nombre</th>
@@ -60,28 +60,33 @@ Pacientes cronicos
 </div>
 
 
-<div class="modal fade" tabindex="-1" role="dialog"  id="modal1">
-	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header text-light bg-info gradiente">
-				<h5 class="modal-title">Formulario de pacientes cronicos</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
+<div class="modal fade" tabindex="-1" role="dialog" id="modal1">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content" style="width: 60rem;">
+      <div class="text-light text-end" style="margin: 20px 20px 0px 0px;">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
 			<div class="container">
 				<form method="post" id="f" autocomplete="off">
 					<input autocomplete="off" type="text" class="form-control" name="accion" id="accion" style="display: none;">
 					<div class="container">	
+						<h1 class="text-2xl font-bold mb-2">Formulario de Pacientes Crónicos</h1>
+
+						<div>
+							<div class="col-md-1 mb-4 p-1 rounded-full" style="background-color: rgb(220 38 38);">
+							</div>
+						</div>
 
 						<br>
 						<div class="row mb-3">
 
 							<div class="col-md-12">
 
-								<label class="texto-inicio font-medium" for="cedula_paciente">Cedula del Paciente</label>
+								<label for="edad" class="texto-inicio font-medium mb-2">Cédula del Paciente</label>
 								<div class="boton-ced">
-									<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_paciente" name="cedula_paciente" />				
+									<input class="form-control bg-gray-200 rounded-lg border-white p-3 text" placeholder="Cedula" type="text" id="cedula_paciente" name="cedula_paciente" />				
 									<input class="form-control bg-gray-200 rounded-lg border-white" type="text" id="cedula_pacienteistoria" name="cedula_pacienteistoria" style="display:none"/>
-									<button type="button" class="btn btn-primary boton-lista" id="listadodepacientes" name="listadodepacientes">LISTADO DE PACIENTES</button>
+									<button type="button" class="btn botonrojo boton-lista" id="listadodepacientes" name="listadodepacientes">LISTADO DE PACIENTES</button>
 								</div>
 								<span id="scedula_paciente"></span>
 								<div class="row">
@@ -137,12 +142,21 @@ Pacientes cronicos
 
 <!-- seccion del modal historias -->
 <div class="modal fade" tabindex="-1" role="dialog"  id="modalpacientes">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-header text-light bg-info gradiente">
-        <h5 class="modal-title">Listado de Pacientes</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  <div class="modal-dialog modal-lg" role="document" style="box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);">
+    <div class="modal-header text-light bg-white d-flex justify-between" style="padding: 25px 25px">
+		<div>
+			<h1 class="text-2xl font-bold mb-2 text-black">Listado de Pacientes</h1>
+
+			<div>
+				<div class="col-md-3 mb-4 p-1 rounded-full" style="background-color: rgb(220 38 38);">
+				</div>
+			</div>
+		</div>
+        <div class="text-light text-end" style="margin: 20px 20px 0px 0px; cursor: pointer;">
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		</div>
     </div>
-    <div class="modal-content">
+    <div class="modal-content" style="box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);">
 		<table class="table table-striped table-hover" id="tablahistorias">
 		<thead>
 		  <tr>
@@ -162,12 +176,20 @@ Pacientes cronicos
 <!--fin de seccion modal-->
 
 
+
+
 <!--modal de patologias-->
 <div class="modal fade" tabindex="-1" id="modalopatologias">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
-			<div class="modal-header text-light bg-info gradiente">
-				<h5 class="modal-title">Listado de Patologías</h5>
+			<div class="modal-header text-light d-flex" style="padding: 25px 25px">
+				<div>
+					<h1 class="text-2xl font-bold mb-2 text-black">Listado de Pacientes</h1>
+					<div>
+						<div class="col-md-3 mb-4 p-1 rounded-full" style="background-color: rgb(220 38 38);">
+						</div>
+					</div>
+				</div>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
@@ -190,7 +212,7 @@ Pacientes cronicos
 				</div>
 
 				<div class="row mt-3 justify-content-center mb-4">
-					<div style="color: white;" class="col-md-2 botonverde" style="cursor: pointer;" onclick='pone(this,4)' >
+					<div style="color: white;" class="btn botonverde" style="cursor: pointer;" onclick='pone(this,4)' >
 						Registrar Patologia
 					</div>			
 				</div>
