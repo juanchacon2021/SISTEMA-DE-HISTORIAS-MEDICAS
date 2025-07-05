@@ -44,31 +44,53 @@ class planificacion extends datos {
         return $r;
     }
 
-    // Incluir publicación
     public function incluir($datos) {
         $co = $this->conecta();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
+        
         try {
+            // Procesar datos
             $contenido = $datos['contenido'] ?? '';
             $cedula_personal = $datos['cedula_personal'] ?? '';
             $imagen = '';
+            
+            // Manejo de la imagen
             if(isset($datos['imagen']) && is_array($datos['imagen']) && $datos['imagen']['tmp_name']) {
                 $nombreArchivo = uniqid('pub_').basename($datos['imagen']['name']);
                 $ruta = "img/publicaciones/".$nombreArchivo;
                 move_uploaded_file($datos['imagen']['tmp_name'], $ruta);
                 $imagen = $ruta;
             }
-            $sql = "INSERT INTO feed (contenido, imagen, cedula_personal, fecha) VALUES ('$contenido', '$imagen', '$cedula_personal', NOW())";
-            $co->exec($sql);
-            $cod_pub = $co->lastInsertId();
+            
+            // Llamar al procedimiento almacenado
+            $sql = "CALL insertar_publicacion_feed(:contenido, :imagen, :cedula, @cod_generado)";
+            $stmt = $co->prepare($sql);
+            $stmt->bindParam(':contenido', $contenido);
+            $stmt->bindParam(':imagen', $imagen);
+            $stmt->bindParam(':cedula', $cedula_personal);
+            $stmt->execute();
+            
+            // Obtener el código generado
+            $stmt = $co->query("SELECT @cod_generado as codigo");
+            $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+            $cod_pub = $resultado['codigo'];
+            
             $r['resultado'] = 'incluir';
             $r['mensaje'] = 'Publicación registrada exitosamente';
             $r['cod_pub'] = $cod_pub;
+            
         } catch(Exception $e) {
             $r['resultado'] = 'error';
             $r['mensaje'] = $e->getMessage();
+            $r['cod_pub'] = null;
+        } finally {
+            // Cerrar conexión si es necesario
+            if(isset($co)) {
+                $co = null;
+            }
         }
+        
         return $r;
     }
 

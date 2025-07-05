@@ -245,18 +245,32 @@ class patologias extends datos{
 			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 			try {
-				$stmt = $co->prepare("INSERT INTO patologia(nombre_patologia) VALUES(:nombre)");
+				// Llamar al procedimiento almacenado
+				$stmt = $co->prepare("CALL insertar_patologia(:nombre, @cod_generado)");
 				$stmt->execute([':nombre' => $datos['nombre_patologia']]);
+				
+				// Obtener el código generado
+				$stmt = $co->query("SELECT @cod_generado as codigo");
+				$resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+				$cod_patologia = $resultado['codigo'];
 
 				$r['resultado'] = 'agregar';
-				$r['mensaje'] = 'Registro Incluido';
+				$r['mensaje'] = 'Patología registrada exitosamente';
+				$r['cod_patologia'] = $cod_patologia;
 			} catch(Exception $e) {
 				$r['resultado'] = 'error';
 				$r['mensaje'] = $e->getMessage();
+				$r['cod_patologia'] = null;
+			} finally {
+				// Cerrar conexión
+				if(isset($co)) {
+					$co = null;
+				}
 			}
 		} else {
-			$r['resultado'] = 'agregar';
-			$r['mensaje'] = 'Ya existe el nombre de patología';
+			$r['resultado'] = 'error';
+			$r['mensaje'] = 'Ya existe una patología con ese nombre';
+			$r['cod_patologia'] = null;
 		}
 
 		return $r;

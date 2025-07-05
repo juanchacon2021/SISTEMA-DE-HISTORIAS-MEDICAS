@@ -151,13 +151,19 @@ class inventario extends datos {
         $r = array();
         try {
             $co->beginTransaction();
-            $stmt = $co->prepare("INSERT INTO medicamentos(nombre, descripcion, unidad_medida) VALUES (?, ?, ?)");
+
+            // Llamar al procedimiento almacenado
+            $stmt = $co->prepare("CALL insertar_medicamento(:nombre, :descripcion, :unidad_medida, @cod_generado)");
             $stmt->execute([
-                $datos['nombre'] ?? '',
-                $datos['descripcion'] ?? '',
-                $datos['unidad_medida'] ?? ''
+                ':nombre' => $datos['nombre'] ?? '',
+                ':descripcion' => $datos['descripcion'] ?? '',
+                ':unidad_medida' => $datos['unidad_medida'] ?? ''
             ]);
-            $cod_medicamento = $co->lastInsertId();
+
+            // Obtener el código generado
+            $cod = $co->query("SELECT @cod_generado AS cod_medicamento")->fetch(PDO::FETCH_ASSOC);
+            $cod_medicamento = $cod['cod_medicamento'] ?? null;
+
             $co->commit();
             $r['resultado'] = 'incluir_medicamento';
             $r['mensaje'] = 'Medicamento registrado con éxito';
@@ -303,21 +309,27 @@ class inventario extends datos {
         $co = $this->conecta();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
+        $codigos_generados = [];
         try {
             $co->beginTransaction();
             foreach($datos['lotes'] as $lote) {
-                $stmt = $co->prepare("INSERT INTO lotes(cantidad, fecha_vencimiento, proveedor, cod_medicamento, cedula_personal) VALUES (?, ?, ?, ?, ?)");
+                // Llamar al procedimiento almacenado para cada lote
+                $stmt = $co->prepare("CALL insertar_lote(:cantidad, :fecha_vencimiento, :proveedor, :cod_medicamento, :cedula_personal, @cod_generado)");
                 $stmt->execute([
-                    $lote['cantidad'],
-                    $lote['fecha_vencimiento'],
-                    $lote['proveedor'],
-                    $lote['cod_medicamento'],
-                    $datos['cedula_personal']
+                    ':cantidad' => $lote['cantidad'],
+                    ':fecha_vencimiento' => $lote['fecha_vencimiento'],
+                    ':proveedor' => $lote['proveedor'],
+                    ':cod_medicamento' => $lote['cod_medicamento'],
+                    ':cedula_personal' => $datos['cedula_personal']
                 ]);
+                // Obtener el código generado para este lote
+                $cod = $co->query("SELECT @cod_generado AS cod_lote")->fetch(PDO::FETCH_ASSOC);
+                $codigos_generados[] = $cod['cod_lote'] ?? null;
             }
             $co->commit();
             $r['resultado'] = 'registrar_entrada';
             $r['mensaje'] = 'Entradas de lotes registradas con éxito';
+            $r['codigos_lotes'] = $codigos_generados;
         } catch(Exception $e) {
             $co->rollBack();
             $r['resultado'] = 'error';
