@@ -85,6 +85,23 @@ require_once("comunes/notificaciones.php");
 
         </div>
 
+         <div class="container busqueda card" style="width: 90%;">
+            <table class="table table-striped table-hover" id="tablapersonal">
+            <table class="table table-striped table-hover" id="tablapersonal">
+                <thead class="table-dark">
+                    <tr id="cabecerastable">
+                        <!-- Aquí se insertará la cabecera -->
+                    </tr>
+                </thead>
+                <tbody id="resultadoconsulta">
+                    <!-- Aquí van los resultados -->
+                </tbody>
+            </table>
+                
+            </tbody>
+        </table>
+         </div>
+
            
 
 

@@ -10,13 +10,14 @@ use \Shm\Shm\modelo\reportes;
 if(is_file("vista/".$pagina.".php")) {
     // Verificar permisos antes de cualquier acción
     // Instanciar el modelo
-   $reportesModel = new reportes();
+   $o = new reportes();
 
     // Manejo de solicitudes AJAX
     if(!empty($_POST)) {
         $respuesta = array();
         $modulo = $_POST['modulo'];
         $datos = $_POST;
+        
         
         try {
 
@@ -29,7 +30,10 @@ if(is_file("vista/".$pagina.".php")) {
                        
                     } else {
 
-                        throw new Exception("no tiene fecha");
+                      
+                        $respuesta = $o->buscar_emergencias($datos);
+                        echo json_encode($respuesta);
+                        exit;
                     }
                     break;
                     

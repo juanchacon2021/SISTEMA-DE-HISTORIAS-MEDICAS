@@ -1,3 +1,53 @@
+function destruyeDT(){
+	if ($.fn.DataTable.isDataTable("#tablarespuesta")) {
+            $("#tablarespuesta").DataTable().destroy();
+    }
+}
+function crearDT(){
+    if (!$.fn.DataTable.isDataTable("#tablarespuesta")) {
+            $("#tablarespuesta").DataTable({
+              language: {
+                lengthMenu: "Mostrar _MENU_ por página",
+                zeroRecords: "No se encontró ninguna Emergencia",
+                info: "Mostrando página _PAGE_ de _PAGES_",
+                infoEmpty: "No hay emergencias registradas",
+                infoFiltered: "(filtrado de _MAX_ registros totales)",
+                search: "Buscar:",
+                paginate: {
+                  first: "Primera",
+                  last: "Última",
+                  next: "Siguiente",
+                  previous: "Anterior",
+                },
+              },
+              autoWidth: false,
+              order: [[1, "asc"]],
+            });
+    }         
+}
+function generarCabecera(modulo) {
+    var cabecera = '';
+    switch(modulo) {
+        case 'emergencias':
+            cabecera = `
+                <th class="text-center">Nombre</th>
+                <th class="text-center">Apellido</th>
+                <th class="text-center">Hora de Ingreso</th>
+                <th class="text-center">Fecha de Ingreso</th>
+                <th class="text-center">Cédula del Paciente</th>
+                <th class="text-center">Nombre del Personal</th>
+                <th class="text-center">Apellido del Personal</th>
+                <th class="text-center">Cédula del Personal</th>
+                <th class="text-center">Acciones</th>
+            `;
+            break;
+        // ...otros casos...
+        default:
+            // ...código existente...
+    }
+    return cabecera;
+}
+
 $(document).ready(function() {
     // ...otros listeners...
 
@@ -7,10 +57,11 @@ $(document).ready(function() {
         var texto = $("#selectParametro").val();
         var mes = $("#selectMes").val();
         var ano = $("#selectAnio").val();
+        generarCabecera(modulo)
 
          switch(modulo) {
         case "emergencias":
-            console.log("holaa")
+            console.log("holaa");
             break;
         default:
             console.log("default case");
@@ -44,12 +95,28 @@ function enviaAjax(datos) {
         contentType: false,
         dataType: 'json',
         success: function(respuesta) {
-            // Procesa la respuesta aquí o llama a otra función
-            console.log(respuesta);
+            try{
+                if (respuesta.resultado == "listadopersonal") {
+                    console.log("Resultados encontrados");
+                }
+                else {
+                    console.log("No se encontraron resultados ", respuesta);
+                }
+            }catch (e){
+                alert("Error en JSON " + e.name);
+            }
         },
-        error: function(xhr, status, error) {
-            alert("Error en la solicitud: " + error);
+       error: function (request, status, err) {
+      
+        if (status == "timeout") {
+            
+            muestraMensaje("Servidor ocupado, intente de nuevo");
+        } else {
+            
+            muestraMensaje("ERROR: <br/>" + request + status + err);
         }
+        },
+        complete: function () {},
     });
 }
 

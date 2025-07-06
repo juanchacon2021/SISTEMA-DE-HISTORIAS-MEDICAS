@@ -8,46 +8,51 @@ use Exception;
 
 class reportes extends datos{
 
-    function buscar_emergencias() {
-		$co = $this->conecta();
-		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$r = array();  
-		
-		try {
-			// Consulta preparada
-			$stmt = $co->prepare("SELECT *
-            FROM emergencia
-            WHERE 
-            motingreso LIKE CONCAT('%', :termino_busqueda, '%') OR
-            diagnostico_e LIKE CONCAT('%', :termino_busqueda, '%') OR
-            tratamientos LIKE CONCAT('%', :termino_busqueda, '%') OR
-            procedimiento LIKE CONCAT('%', :termino_busqueda, '%') OR
-            CAST(cedula_paciente AS CHAR) LIKE CONCAT('%', :termino_busqueda, '%') OR
-            CAST(cedula_personal AS CHAR) LIKE CONCAT('%', :termino_busqueda, '%') OR
-            horaingreso LIKE CONCAT('%', :termino_busqueda, '%') OR
-            DATE_FORMAT(fechaingreso, '%d/%m/%Y') LIKE CONCAT('%', :termino_busqueda, '%')");			
-			// Ejecutar la consulta
-			$stmt->execute();
-			// Obtener resultados
-			$resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);		
-			if ($resultados) {
-				$r['resultado'] = 'buscar_emergencias';
-				$r['datos'] = $resultados; 
-			} else {
-				$r['resultado'] = 'buscar_emergencias';
-				$r['datos'] = array(); 
-			}
-			// Cerrar el cursor
-			$stmt->closeCursor();
-			
-		} catch (Exception $e) {
-			$r['resultado'] = 'error';
-			$r['mensaje'] = $e->getMessage(); 
-		}
-		
-		return $r;
-	}
+    // filepath: c:\xampp\htdocs\SHM\src\modelo\reportes_p.php
+    function buscar_emergencias($datos) {
+        $co = $this->conecta();
+        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $r = array();  
 
+    
+        try {
+            // Consulta preparada con parámetros posicionales
+            $stmt = $co->prepare("SELECT *
+                FROM emergencia
+                WHERE 
+                    motingreso LIKE ? OR
+                    diagnostico_e LIKE ? OR
+                    tratamientos LIKE ? OR
+                    procedimiento LIKE ? OR
+                    cedula_paciente LIKE ? OR
+                    cedula_personal LIKE ? OR
+                    horaingreso LIKE ? OR
+                    fechaingreso LIKE ?
+            ");
+            $texto = '%' . $datos['texto'] . '%';
+            // Ejecutar la consulta pasando el mismo texto para todos los campos
+            $stmt->execute([
+                $texto, $texto, $texto, $texto, $texto, $texto, $texto, $texto
+            ]);
+            // Obtener resultados
+            $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);		
+            if ($resultados) {
+                $r['resultado'] = 'buscar_emergencias';
+                $r['datos'] = $resultados; 
+            } else {
+                $r['resultado'] = 'buscar_emergencias';
+                $r['datos'] = array(); 
+            }
+            // Cerrar el cursor
+            $stmt->closeCursor();
+    
+        } catch (Exception $e) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $e->getMessage(); 
+        }
+    
+        return $r;
+    }
 
 
 
