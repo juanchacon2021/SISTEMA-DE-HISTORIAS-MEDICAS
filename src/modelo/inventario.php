@@ -198,6 +198,21 @@ class inventario extends datos {
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
         try {
+            // Calcular stock actual
+            $stmt = $co->prepare("SELECT COALESCE(SUM(cantidad),0) FROM lotes WHERE cod_medicamento = ?");
+            $stmt->execute([$datos['cod_medicamento']]);
+            $stock_actual = $stmt->fetchColumn();
+
+            $cantidad_nueva = intval($datos['cantidad']);
+            $stock_maximo = 250;
+
+            if (($stock_actual + $cantidad_nueva) > $stock_maximo) {
+                $cantidad_permitida = $stock_maximo - $stock_actual;
+                $r['resultado'] = 'error';
+                $r['mensaje'] = "El stock máximo es de 250. Solo puedes agregar $cantidad_permitida unidades.";
+                return $r;
+            }
+
             $co->beginTransaction();
             $stmt = $co->prepare("INSERT INTO lotes(cantidad, fecha_vencimiento, proveedor, cod_medicamento, cedula_personal) VALUES (?, ?, ?, ?, ?)");
             $stmt->execute([
@@ -304,6 +319,24 @@ class inventario extends datos {
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
         try {
+            // Calcular stock actual
+            $stmt = $co->prepare("SELECT COALESCE(SUM(cantidad),0) FROM lotes WHERE cod_medicamento = ?");
+            $stmt->execute([$datos['lotes'][0]['cod_medicamento']]);
+            $stock_actual = $stmt->fetchColumn();
+
+            // Calcular total a ingresar
+            $total_a_ingresar = 0;
+            foreach($datos['lotes'] as $lote) {
+                $total_a_ingresar += intval($lote['cantidad']);
+            }
+            $stock_maximo = 250;
+            if (($stock_actual + $total_a_ingresar) > $stock_maximo) {
+                $cantidad_permitida = $stock_maximo - $stock_actual;
+                $r['resultado'] = 'error';
+                $r['mensaje'] = "El stock máximo es de 250. Solo puedes agregar $cantidad_permitida unidades.";
+                return $r;
+            }
+
             $co->beginTransaction();
             foreach($datos['lotes'] as $lote) {
                 $stmt = $co->prepare("INSERT INTO lotes(cantidad, fecha_vencimiento, proveedor, cod_medicamento, cedula_personal) VALUES (?, ?, ?, ?, ?)");

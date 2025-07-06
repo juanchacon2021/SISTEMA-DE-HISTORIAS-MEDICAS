@@ -60,14 +60,14 @@ if(is_file("vista/".$pagina.".php")) {
             case 'incluir_medicamento':
                 try {
                     $resultado = $o->incluir($datos);
-                    while(ob_get_length()) ob_end_clean();
-                    header('Content-Type: application/json');
                     echo json_encode($resultado);
-                    bitacora::registrarYNotificar(
-                        'Registrar',
-                        'Se ha registrado un medicamento: '.$datos['nombre'],
-                        $_SESSION['usuario']
-                    );
+                    if ($resultado['resultado'] !== 'error') {
+                        bitacora::registrarYNotificar(
+                            'Registrar',
+                            'Se ha registrado un medicamento: '.$datos['nombre'],
+                            $_SESSION['usuario']
+                        );
+                    }
                     exit;
                 } catch(Exception $e) {
                     while(ob_get_length()) ob_end_clean();
@@ -82,11 +82,13 @@ if(is_file("vista/".$pagina.".php")) {
                 try {
                     $resultado = $o->modificar($datos);
                     echo json_encode($resultado);
-                    bitacora::registrarYNotificar(
-                        'Modificar',
-                        'Se ha modificado un medicamento: '.$datos['nombre'],
-                        $_SESSION['usuario']
-                    );
+                    if ($resultado['resultado'] !== 'error') {
+                        bitacora::registrarYNotificar(
+                            'Modificar',
+                            'Se ha modificado un medicamento: '.$datos['nombre'],
+                            $_SESSION['usuario']
+                        );
+                    }
                     exit;
                 } catch(Exception $e) {
                     echo json_encode([
@@ -132,6 +134,27 @@ if(is_file("vista/".$pagina.".php")) {
                     exit;
                 }
 
+            case 'registrar_entrada_multiple':
+                if (!isset($datos['lotes'])) {
+                    exit;
+                }
+                $lotes = json_decode($datos['lotes'], true);
+                if (!is_array($lotes) || count($lotes) == 0) {
+                    echo json_encode(['resultado' => 'error', 'mensaje' => 'No hay lotes válidos para entrada']);
+                    exit;
+                }
+                $datos['lotes'] = $lotes;
+                $resultado = $o->registrar_entrada_multiple($datos);
+                echo json_encode($resultado);
+                if (isset($resultado['resultado']) && $resultado['resultado'] !== 'error') {
+                    bitacora::registrarYNotificar(
+                        'Entrada',
+                        'Entrada múltiple de medicamentos',
+                        $_SESSION['usuario']
+                    );
+                }
+                exit;
+
             case 'registrar_salida_multiple':
                 if (!isset($datos['salidas'])) {
                     exit;
@@ -144,11 +167,13 @@ if(is_file("vista/".$pagina.".php")) {
                 $datos['salidas'] = $salidas;
                 $resultado = $o->registrar_salida_multiple($datos);
                 echo json_encode($resultado);
-                bitacora::registrarYNotificar(
-                    'Salida',
-                    'Salida múltiple de medicamentos',
-                    $_SESSION['usuario']
-                );
+                if (isset($resultado['resultado']) && $resultado['resultado'] !== 'error') {
+                    bitacora::registrarYNotificar(
+                        'Salida',
+                        'Salida múltiple de medicamentos',
+                        $_SESSION['usuario']
+                    );
+                }
                 exit;
 
             case 'eliminar_medicamento':
@@ -170,25 +195,6 @@ if(is_file("vista/".$pagina.".php")) {
                     ]);
                     exit;
                 }
-
-            case 'registrar_entrada_multiple':
-                if (!isset($datos['lotes'])) {
-                    exit;
-                }
-                $lotes = json_decode($datos['lotes'], true);
-                if (!is_array($lotes) || count($lotes) == 0) {
-                    echo json_encode(['resultado' => 'error', 'mensaje' => 'No hay lotes válidos para entrada']);
-                    exit;
-                }
-                $datos['lotes'] = $lotes;
-                $resultado = $o->registrar_entrada_multiple($datos);
-                echo json_encode($resultado);
-                bitacora::registrarYNotificar(
-                    'Entrada',
-                    'Entrada múltiple de medicamentos',
-                    $_SESSION['usuario']
-                );
-                exit;
         }
         exit;
     }
