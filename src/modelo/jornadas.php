@@ -77,15 +77,11 @@ class jornadas extends datos
         try {
             $conexion->beginTransaction();
             
-            $stmt = $conexion->prepare("INSERT INTO jornadas_medicas (
-                fecha_jornada, ubicacion, descripcion, total_pacientes, 
-                pacientes_masculinos, pacientes_femeninos, pacientes_embarazadas, 
-                created_at
-            ) VALUES (
+            // Llamar al procedimiento almacenado para insertar la jornada
+            $stmt = $conexion->prepare("CALL insertar_jornada_medica(
                 :fecha, :ubicacion, :descripcion, :total, 
                 :masculinos, :femeninos, :embarazadas, 
-                NOW()
-            )");
+                @cod_jornada_generado)");
             
             $stmt->execute(array(
                 ':fecha' => $this->fecha_jornada,
@@ -97,8 +93,15 @@ class jornadas extends datos
                 ':embarazadas' => $this->pacientes_embarazadas
             ));
             
-            $cod_jornada = $conexion->lastInsertId();
+            // Obtener el código generado
+            $stmt = $conexion->query("SELECT @cod_jornada_generado as codigo");
+            $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+            $cod_jornada = $resultado['codigo'];
             
+            if(empty($cod_jornada)) {
+                throw new Exception("No se pudo generar el código de la jornada");
+            }
+
             // Insertar responsable
             $stmt = $conexion->prepare("INSERT INTO participantes_jornadas (
                 cod_jornada, cedula_personal, tipo_participante
@@ -110,7 +113,7 @@ class jornadas extends datos
                 ':personal' => $this->cedula_responsable
             ));
             
-            // Insertar participantes
+            // Insertar participantes (excluyendo al responsable si está en la lista)
             foreach($this->participantes as $participante) {
                 if($participante != $this->cedula_responsable) {
                     $stmt = $conexion->prepare("INSERT INTO participantes_jornadas (
@@ -127,12 +130,14 @@ class jornadas extends datos
             
             $conexion->commit();
             
-            $r['resultado'] = 'incluir';
+            $r['resultado'] = 'success';
             $r['mensaje'] = 'Jornada registrada exitosamente';
+            $r['cod_jornada'] = $cod_jornada;
         } catch(Exception $e) {
             $conexion->rollBack();
             $r['resultado'] = 'error';
             $r['mensaje'] = $e->getMessage();
+            $r['cod_jornada'] = null;
         } finally {
             $this->cerrar_conexion($conexion);
         }

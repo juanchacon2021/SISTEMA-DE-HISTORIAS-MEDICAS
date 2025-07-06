@@ -410,32 +410,39 @@ class pasantias extends datos
         return $r;
     }
 
-    private function incluir_area()
-    {
-        $r = array();
-        $conexion = $this->conecta();
+private function incluir_area()
+{
+    $r = array();
+    $conexion = $this->conecta();
 
-        try {
-            $sql = "INSERT INTO areas_pasantias (nombre_area, descripcion, cedula_responsable) 
-                    VALUES(:nombre, :descripcion, :responsable)";
-
-            $stmt = $conexion->prepare($sql);
-            $stmt->execute(array(
-                ':nombre' => $this->nombre_area,
-                ':descripcion' => $this->descripcion,
-                ':responsable' => $this->cedula_personal
-            ));
-
-            $r['resultado'] = 'incluir';
-            $r['mensaje'] = 'Área registrada exitosamente';
-        } catch (Exception $e) {
-            $r['resultado'] = 'error';
-            $r['mensaje'] = $e->getMessage();
-        } finally {
-            $this->cerrar_conexion($conexion);
-        }
-        return $r;
+    try {
+        // Llamamos al procedimiento almacenado que genera el código automático
+        $sql = "CALL insertar_area_pasantia(:nombre, :descripcion, :responsable, @cod_generado)";
+        
+        $stmt = $conexion->prepare($sql);
+        $stmt->execute(array(
+            ':nombre' => $this->nombre_area,
+            ':descripcion' => $this->descripcion,
+            ':responsable' => $this->cedula_personal
+        ));
+        
+        // Obtenemos el código generado
+        $stmt = $conexion->query("SELECT @cod_generado as codigo");
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        $codigo_generado = $resultado['codigo'];
+        
+        $r['resultado'] = 'incluir';
+        $r['mensaje'] = 'Área registrada exitosamente';
+        $r['codigo'] = $codigo_generado; // Devolvemos el código generado
+    } catch (Exception $e) {
+        $r['resultado'] = 'error';
+        $r['mensaje'] = $e->getMessage();
+        $r['codigo'] = null;
+    } finally {
+        $this->cerrar_conexion($conexion);
     }
+    return $r;
+}
 
     private function modificar_area()
     {

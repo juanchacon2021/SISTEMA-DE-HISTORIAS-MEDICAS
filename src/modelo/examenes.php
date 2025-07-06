@@ -93,36 +93,56 @@ class examenes extends datos
     // Métodos para tipos de examen
     private function incluir_tipo()
     {
-        $r = array();
+        $r = array(
+            'resultado' => 'error',
+            'mensaje' => '',
+            'cod_examen' => null
+        );
+
         $conexion = $this->conecta();
+        $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         try {
+            // Validar nombre del examen
+            if(empty($this->nombre_examen)) {
+                throw new Exception("El nombre del examen es requerido");
+            }
+
+            // Verificar si ya existe el tipo de examen
+            if($this->existe_tipo($this->nombre_examen)) {
+                $r['mensaje'] = 'Ya existe un tipo de examen con ese nombre';
+                return $r;
+            }
+
             $conexion->beginTransaction();
 
-            if (!$this->existe_tipo($this->nombre_examen)) {
-                $sql = "INSERT INTO tipo_de_examen (nombre_examen, descripcion_examen) 
-                        VALUES(:nombre, :descripcion)";
+            // Llamar al procedimiento almacenado
+            $stmt = $conexion->prepare("CALL insertar_tipo_examen(:nombre, :descripcion, @cod_generado)");
+            $stmt->execute(array(
+                ':nombre' => $this->nombre_examen,
+                ':descripcion' => $this->descripcion_examen
+            ));
 
-                $stmt = $conexion->prepare($sql);
-                $stmt->execute(array(
-                    ':nombre' => $this->nombre_examen,
-                    ':descripcion' => $this->descripcion_examen
-                ));
+            // Obtener el código generado
+            $stmt = $conexion->query("SELECT @cod_generado as codigo");
+            $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+            $cod_examen = $resultado['codigo'];
 
-                $conexion->commit();
-                $r['resultado'] = 'incluir';
-                $r['mensaje'] = 'Tipo de examen registrado exitosamente';
-            } else {
-                $r['resultado'] = 'error';
-                $r['mensaje'] = 'Ya existe un tipo de examen con ese nombre';
-            }
+            $conexion->commit();
+
+            $r['resultado'] = 'success';
+            $r['mensaje'] = 'Tipo de examen registrado exitosamente';
+            $r['cod_examen'] = $cod_examen;
+
         } catch (Exception $e) {
-            $conexion->rollBack();
-            $r['resultado'] = 'error';
-            $r['mensaje'] = $e->getMessage();
+            if($conexion->inTransaction()) {
+                $conexion->rollBack();
+            }
+            $r['mensaje'] = 'Error al registrar: ' . $e->getMessage();
         } finally {
             $this->cerrar_conexion($conexion);
         }
+
         return $r;
     }
 
