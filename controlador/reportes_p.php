@@ -26,8 +26,10 @@ if(is_file("vista/".$pagina.".php")) {
                     // Lógica específica para el módulo de emergencias
                     if ($datos['mes'] && $datos['ano']) {
 
-                        throw new Exception("si tiene fecha");
-                       
+                        $respuesta = $o->buscar_emergencias_date($datos);
+                        echo json_encode($respuesta);
+                        exit;
+
                     } else {
 
                       

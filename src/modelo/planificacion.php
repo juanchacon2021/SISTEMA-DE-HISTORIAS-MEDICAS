@@ -156,5 +156,81 @@ class planificacion extends datos {
         $publicacion = $stmt->fetch(PDO::FETCH_ASSOC);
         return ($publicacion && $publicacion['cedula_personal'] == $cedula_personal);
     }
+
+    // Obtener medicamento
+    public function obtener_medicamento($cod_medicamento) {
+        $co = $this->conecta();
+        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $r = array();
+        try {
+            $stmt = $co->prepare("SELECT * FROM medicamentos WHERE cod_medicamento = ?");
+            $stmt->execute([$cod_medicamento]);
+            $fila = $stmt->fetch(PDO::FETCH_ASSOC);
+            if($fila) {
+                $fila['stock_minimo'] = 0;   // Valor fijo
+                $fila['stock_maximo'] = 250; // Valor fijo
+                $r['resultado'] = 'obtener_medicamento';
+                $r['datos'] = $fila;
+                // Lotes
+                $lotes = $this->consultar_lotes_medicamento($cod_medicamento);
+                if($lotes['resultado'] == 'consultar_lotes') {
+                    $r['lotes'] = $lotes['datos'];
+                }
+            } else {
+                $r['resultado'] = 'error';
+                $r['mensaje'] = 'Medicamento no encontrado';
+            }
+        } catch(Exception $e) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $e->getMessage();
+        }
+        return $r;
+    }
+
+    // Consultar medicamentos
+    public function consultar_medicamentos() {
+        $co = $this->conecta();
+        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $r = array();
+        try {
+            $resultado = $co->query("
+                SELECT m.*, COALESCE(SUM(l.cantidad), 0) as stock_total
+                FROM medicamentos m
+                LEFT JOIN lotes l ON m.cod_medicamento = l.cod_medicamento
+                GROUP BY m.cod_medicamento
+                ORDER BY m.nombre
+            ");
+            $datos = $resultado->fetchAll(PDO::FETCH_ASSOC);
+            // Agregar stock_minimo y stock_maximo a cada medicamento
+            foreach ($datos as &$med) {
+                $med['stock_minimo'] = 0;
+                $med['stock_maximo'] = 250;
+            }
+            $r['resultado'] = 'consultar_medicamentos';
+            $r['datos'] = $datos;
+        } catch(Exception $e) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $e->getMessage();
+        }
+        return $r;
+    }
+
+    // Consultar lotes de un medicamento
+    public function consultar_lotes_medicamento($cod_medicamento) {
+        $co = $this->conecta();
+        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $r = array();
+        try {
+            $stmt = $co->prepare("SELECT * FROM lotes WHERE cod_medicamento = ? ORDER BY fecha_vencimiento ASC");
+            $stmt->execute([$cod_medicamento]);
+            $datos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $r['resultado'] = 'consultar_lotes';
+            $r['datos'] = $datos;
+        } catch(Exception $e) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $e->getMessage();
+        }
+        return $r;
+    }
 }
 ?>

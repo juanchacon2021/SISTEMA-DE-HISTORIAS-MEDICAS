@@ -54,6 +54,58 @@ class reportes extends datos{
         return $r;
     }
 
+function buscar_emergencias_date($datos) {
+    $co = $this->conecta();
+    $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $r = array();  
+
+    try {
+        // Construir SQL con filtro por mes y año
+        $sql = "SELECT *
+                FROM emergencia
+                WHERE (
+                    motingreso LIKE ? OR
+                    diagnostico_e LIKE ? OR
+                    tratamientos LIKE ? OR
+                    procedimiento LIKE ? OR
+                    cedula_paciente LIKE ? OR
+                    cedula_personal LIKE ? OR
+                    horaingreso LIKE ? OR
+                    fechaingreso LIKE ?
+                )";
+        // Si se pasan mes y año, agrega el filtro
+        if (!empty($datos['mes']) && !empty($datos['ano'])) {
+            $sql .= " AND MONTH(fechaingreso) = ? AND YEAR(fechaingreso) = ?";
+        }
+
+        $stmt = $co->prepare($sql);
+
+        $texto = '%' . $datos['texto'] . '%';
+        $params = [$texto, $texto, $texto, $texto, $texto, $texto, $texto, $texto];
+
+        if (!empty($datos['mes']) && !empty($datos['ano'])) {
+            $params[] = $datos['mes'];
+            $params[] = $datos['ano'];
+        }
+
+        $stmt->execute($params);
+
+        // Obtener resultados
+        $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);		
+        $r['resultado'] = 'buscar_emergencias';
+        $r['datos'] = $resultados ?: array();
+
+        $stmt->closeCursor();
+
+    } catch (Exception $e) {
+        $r['resultado'] = 'error';
+        $r['mensaje'] = $e->getMessage(); 
+    }
+
+    return $r;
+}
+
+
 
 
 
