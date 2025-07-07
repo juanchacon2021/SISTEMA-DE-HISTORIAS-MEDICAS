@@ -88,6 +88,9 @@
         <div style="font-weight: bold; color: rgb(220,38,38); font-size: 1.1rem;">Calendario</div>
         <div id="calendar"></div>
     </div>
+
+    
+
     <!-- Contenedor de tarjetas -->
     <div style="display: flex; justify-content: flex-end; margin-top: 40px;">
         <div class="panel-container" style="gap: 25px;">
@@ -104,6 +107,25 @@
         </div>
     </div>
 
+<!-- Advertencia de medicamentos por vencer -->
+    <div id="alerta-medicamentos-vencer" style="
+        display:none;
+        position: fixed;
+        left: 350px;
+        bottom: 200px;
+        background: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeeba;
+        border-radius: 1rem;
+        box-shadow: 0 2px 8px #eee;
+        padding: 1.2rem 2rem;
+        max-width: 400px;
+        font-size: 1.1rem;
+        z-index: 1004;
+    ">
+        <b>Advertencia:</b> Los siguientes medicamentos están próximos a vencer:
+        <ul id="lista-medicamentos-vencer" style="margin-top: 10px;"></ul>
+    </div>
     <!-- Frase motivacional -->
     <div id="frase-motivacional" style="
         position: fixed;
@@ -126,6 +148,8 @@
     ">
     </div>
 
+    
+
     <script>
     // Frases motivacionales modernas
     const frases = [
@@ -138,7 +162,23 @@
         "El esfuerzo de hoy es el bienestar de mañana.",
         "¡Gracias por ser parte de este equipo humano!",
         "La sonrisa es el mejor remedio.",
-        "Juntos construimos salud y esperanza."
+        "Juntos construimos salud y esperanza.",
+        "El compromiso con la salud es el motor de nuestro trabajo.",
+        "Donde otros ven un paciente, tú ves una vida que cuidar.",
+        "La pasión por servir es la mejor medicina.",
+        "Cada día es una nueva oportunidad para sanar corazones.",
+        "Tu entrega deja huella en cada historia de vida.",
+        "La esperanza también se receta.",
+        "El respeto y la calidez curan más de lo que imaginas.",
+        "El trabajo en equipo multiplica los milagros.",
+        "Tu vocación es la luz en los días difíciles.",
+        "La salud es un puente hacia los sueños.",
+        "Un trato humano es el primer paso hacia la recuperación.",
+        "La dedicación de hoy es el bienestar de muchos mañana.",
+        "Gracias por cuidar con el corazón y la mente.",
+        "Tu esfuerzo es la esperanza de muchas familias.",
+        "La salud es el arte de escuchar, comprender y acompañar.",
+        "¡Nunca subestimes el poder de tu sonrisa en un día difícil!"
     ];
     // Selecciona una frase aleatoria
     document.getElementById('frase-motivacional').textContent =
