@@ -102,29 +102,13 @@ if(is_file("vista/".$pagina.".php")) {
                 try {
                     $resultado = $o->registrar_entrada($datos);
                     echo json_encode($resultado);
-                    bitacora::registrarYNotificar(
-                        'Entrada',
-                        'Entrada de medicamento: '.$datos['cod_medicamento'],
-                        $_SESSION['usuario']
-                    );
-                    exit;
-                } catch(Exception $e) {
-                    echo json_encode([
-                        'resultado' => 'error',
-                        'mensaje' => 'Error en el servidor: ' . $e->getMessage()
-                    ]);
-                    exit;
-                }
-
-            case 'registrar_salida':
-                try {
-                    $resultado = $o->registrar_salida($datos);
-                    echo json_encode($resultado);
-                    bitacora::registrarYNotificar(
-                        'Salida',
-                        'Salida de medicamento: '.$datos['cod_medicamento'],
-                        $_SESSION['usuario']
-                    );
+                    if ($resultado['resultado'] !== 'error') {
+                        bitacora::registrarYNotificar(
+                            'Entrada',
+                            'Entrada de medicamento: '.$datos['cod_medicamento'],
+                            $_SESSION['usuario']
+                        );
+                    }
                     exit;
                 } catch(Exception $e) {
                     echo json_encode([
@@ -146,7 +130,7 @@ if(is_file("vista/".$pagina.".php")) {
                 $datos['lotes'] = $lotes;
                 $resultado = $o->registrar_entrada_multiple($datos);
                 echo json_encode($resultado);
-                if (isset($resultado['resultado']) && $resultado['resultado'] !== 'error') {
+                if ($resultado['resultado'] !== 'error') {
                     bitacora::registrarYNotificar(
                         'Entrada',
                         'Entrada múltiple de medicamentos',
@@ -154,6 +138,26 @@ if(is_file("vista/".$pagina.".php")) {
                     );
                 }
                 exit;
+
+            case 'registrar_salida':
+                try {
+                    $resultado = $o->registrar_salida($datos);
+                    echo json_encode($resultado);
+                    if ($resultado['resultado'] !== 'error') {
+                        bitacora::registrarYNotificar(
+                            'Salida',
+                            'Salida de medicamento: '.$datos['cod_medicamento'],
+                            $_SESSION['usuario']
+                        );
+                    }
+                    exit;
+                } catch(Exception $e) {
+                    echo json_encode([
+                        'resultado' => 'error',
+                        'mensaje' => 'Error en el servidor: ' . $e->getMessage()
+                    ]);
+                    exit;
+                }
 
             case 'registrar_salida_multiple':
                 if (!isset($datos['salidas'])) {
@@ -167,13 +171,11 @@ if(is_file("vista/".$pagina.".php")) {
                 $datos['salidas'] = $salidas;
                 $resultado = $o->registrar_salida_multiple($datos);
                 echo json_encode($resultado);
-                if (isset($resultado['resultado']) && $resultado['resultado'] !== 'error') {
-                    bitacora::registrarYNotificar(
-                        'Salida',
-                        'Salida múltiple de medicamentos',
-                        $_SESSION['usuario']
-                    );
-                }
+                bitacora::registrarYNotificar(
+                    'Salida',
+                    'Salida múltiple de medicamentos',
+                    $_SESSION['usuario']
+                );
                 exit;
 
             case 'eliminar_medicamento':

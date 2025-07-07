@@ -152,12 +152,13 @@ class inventario extends datos {
         try {
             $co->beginTransaction();
 
-            // Llamar al procedimiento almacenado
-            $stmt = $co->prepare("CALL insertar_medicamento(:nombre, :descripcion, :unidad_medida, @cod_generado)");
+            // Llamar al procedimiento almacenado con stock_min
+            $stmt = $co->prepare("CALL insertar_medicamento(:nombre, :descripcion, :unidad_medida, :stock_min, @cod_generado)");
             $stmt->execute([
                 ':nombre' => $datos['nombre'] ?? '',
                 ':descripcion' => $datos['descripcion'] ?? '',
-                ':unidad_medida' => $datos['unidad_medida'] ?? ''
+                ':unidad_medida' => $datos['unidad_medida'] ?? '',
+                ':stock_min' => intval($datos['stock_min'] ?? 0)
             ]);
 
             // Obtener el código generado
@@ -182,11 +183,12 @@ class inventario extends datos {
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
         try {
-            $stmt = $co->prepare("UPDATE medicamentos SET nombre = ?, descripcion = ?, unidad_medida = ? WHERE cod_medicamento = ?");
+            $stmt = $co->prepare("UPDATE medicamentos SET nombre = ?, descripcion = ?, unidad_medida = ?, stock_min = ? WHERE cod_medicamento = ?");
             $stmt->execute([
                 $datos['nombre'] ?? '',
                 $datos['descripcion'] ?? '',
                 $datos['unidad_medida'] ?? '',
+                intval($datos['stock_min'] ?? 0),
                 $datos['cod_medicamento']
             ]);
             $r['resultado'] = 'modificar_medicamento';
@@ -246,17 +248,27 @@ class inventario extends datos {
         $r = array();
         try {
             $co->beginTransaction();
-            // Verificar stock
-            $stmt = $co->prepare("SELECT SUM(cantidad) FROM lotes WHERE cod_medicamento = ?");
-            $stmt->execute([$datos['cod_medicamento']]);
-            $stock = $stmt->fetchColumn();
-            if($stock < $datos['cantidad']) {
+            // Verificar stock actual y stock mínimo
+            $stmt = $co->prepare("SELECT SUM(cantidad) as stock, (SELECT stock_min FROM medicamentos WHERE cod_medicamento = ?) as stock_min FROM lotes WHERE cod_medicamento = ?");
+            $stmt->execute([$datos['cod_medicamento'], $datos['cod_medicamento']]);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $stock = intval($row['stock']);
+            $stock_min = intval($row['stock_min']);
+            $cantidad_salida = intval($datos['cantidad']);
+
+            // DEPURACIÓN: log temporal
+            file_put_contents('debug_stock.txt', date('Y-m-d H:i:s')." | cod_medicamento: {$datos['cod_medicamento']} | stock: $stock | stock_min: $stock_min | cantidad_salida: $cantidad_salida\n", FILE_APPEND);
+
+            if($stock < $cantidad_salida) {
                 throw new Exception("No hay suficiente stock disponible (Stock actual: $stock)");
             }
-            // Registrar salida
-            $stmt = $co->prepare("INSERT INTO salida_medicamento(fecha, hora, cedula_personal) VALUES (CURDATE(), TIME_FORMAT(NOW(), '%H:%i'), ?)");
+            if(($stock - $cantidad_salida) < $stock_min) {
+                throw new Exception("No puedes realizar esta salida porque el stock quedaría por debajo del mínimo permitido ($stock_min). Stock actual: $stock");
+            }
+            // Registrar salida usando procedure
+            $stmt = $co->prepare("CALL registrar_salida_medicamento(CURDATE(), TIME_FORMAT(NOW(), '%H:%i'), ?, @cod_salida)");
             $stmt->execute([$datos['cedula_personal']]);
-            $cod_salida = $co->lastInsertId();
+            $cod_salida = $co->query("SELECT @cod_salida AS cod_salida")->fetch(PDO::FETCH_ASSOC)['cod_salida'];
             // FIFO para lotes
             $lotes = $co->prepare("SELECT cod_lote, cantidad FROM lotes WHERE cod_medicamento = ? AND cantidad > 0 ORDER BY fecha_vencimiento ASC, cod_lote ASC");
             $lotes->execute([$datos['cod_medicamento']]);
@@ -265,8 +277,8 @@ class inventario extends datos {
                 if($cantidad <= 0) break;
                 $usar = min($cantidad, $lote['cantidad']);
                 // Registrar insumo
-                $co->prepare("INSERT INTO insumos(cod_movimiento, cod_lote, cantidad) VALUES (?, ?, ?)")
-                    ->execute([$cod_salida, $lote['cod_lote'], $usar]);
+                $co->prepare("INSERT INTO insumos(cod_movimiento, cod_lote, cantidad) VALUES (?, ?, ?)
+                ")->execute([$cod_salida, $lote['cod_lote'], $usar]);
                 // Actualizar lote
                 $co->prepare("UPDATE lotes SET cantidad = cantidad - ? WHERE cod_lote = ?")
                     ->execute([$usar, $lote['cod_lote']]);
@@ -378,9 +390,11 @@ class inventario extends datos {
         $r = array();
         try {
             $co->beginTransaction();
-            $stmt = $co->prepare("INSERT INTO salida_medicamento(fecha, hora, cedula_personal) VALUES (CURDATE(), TIME_FORMAT(NOW(), '%H:%i'), ?)");
+            // Generar cod_salida usando el procedure
+            $stmt = $co->prepare("CALL registrar_salida_medicamento(CURDATE(), TIME_FORMAT(NOW(), '%H:%i'), ?, @cod_salida)");
             $stmt->execute([$datos['cedula_personal']]);
-            $cod_salida = $co->lastInsertId();
+            $cod_salida = $co->query("SELECT @cod_salida AS cod_salida")->fetch(PDO::FETCH_ASSOC)['cod_salida'];
+
             foreach($datos['salidas'] as $salida) {
                 $cod_lote = $salida['cod_lote'];
                 $cantidad = intval($salida['cantidad']);
@@ -390,8 +404,8 @@ class inventario extends datos {
                     throw new Exception("Stock insuficiente en el lote $cod_lote (Stock actual: $stock)");
                 }
                 // Registrar insumo
-                $co->prepare("INSERT INTO insumos(cod_movimiento, cod_lote, cantidad) VALUES (?, ?, ?)")
-                    ->execute([$cod_salida, $cod_lote, $cantidad]);
+                $co->prepare("INSERT INTO insumos(cod_movimiento, cod_lote, cantidad) VALUES (?, ?, ?)
+                ")->execute([$cod_salida, $cod_lote, $cantidad]);
                 // Actualizar lote
                 $co->prepare("UPDATE lotes SET cantidad = cantidad - ? WHERE cod_lote = ?")
                     ->execute([$cantidad, $cod_lote]);

@@ -88,73 +88,100 @@ function mostrarFormularioMedicamento() {
     $("#modalMedicamento").modal("show");
 }
 
-function mostrarFormularioEntradaSalida(cod_medicamento, modo) {
-    modoEntradaSalida = modo;
-    limpiaFormularioEntradaSalida();
-    
+// function mostrarFormularioEntradaSalida(cod_medicamento, tipo) {
+//     modoEntradaSalida = tipo;
+//     limpiaFormularioEntradaSalida();
+
+//     var datos = new FormData();
+//     datos.append('accion', 'obtener_medicamento');
+//     datos.append('cod_medicamento', cod_medicamento);
+
+//     $.ajax({
+//         url: '',
+//         type: 'POST',
+//         data: datos,
+//         processData: false,
+//         contentType: false,
+//         dataType: 'json',
+//         success: function(res) {
+//             if (res.resultado === "obtener_medicamento" && res.datos) {
+//                 $("#cod_medicamento_es").val(res.datos.cod_medicamento);
+//                 $("#nombre_medicamento_es").val(res.datos.nombre);
+
+//                 // Calcular stock actual sumando los lotes
+//                 let stockActual = 0;
+//                 if (res.lotes && Array.isArray(res.lotes)) {
+//                     stockActual = res.lotes.reduce((sum, lote) => sum + parseInt(lote.cantidad), 0);
+//                 }
+//                 let stockMin = parseInt(res.datos.stock_min || 0);
+
+//                 $("#cantidad")
+//                     .attr("data-stock-actual", stockActual)
+//                     .attr("data-stock-min", stockMin);
+
+//                 $("#infoStockMaximo").remove();
+
+//                 if (tipo === 'salida') {
+//                     $("#modalEntradaSalidaLabel").text("Registrar Salida de Medicamento");
+//                     $("#btnProcesarEntradaSalida").text("Registrar Salida").removeClass("btn-success").addClass("btn-danger");
+//                     $("#camposEntrada").hide();
+//                     $("#cantidad").after(`<div id="infoStockMaximo" class="text-muted small mt-1">
+//                         Stock actual: ${stockActual}. <b>El stock mínimo permitido es: ${stockMin}</b>.<br>
+//                         No puedes retirar una cantidad que deje el stock por debajo de este valor.
+//                     </div>`);
+//                 } else {
+//                     $("#modalEntradaSalidaLabel").text("Registrar Entrada de Medicamento");
+//                     $("#btnProcesarEntradaSalida").text("Registrar Entrada").removeClass("btn-danger").addClass("btn-success");
+//                     $("#camposEntrada").show();
+//                     // Puedes mostrar aquí el stock mínimo si lo deseas también para entradas
+//                 }
+
+//                 $("#modalEntradaSalida").modal("show");
+//             } else {
+//                 muestraMensaje("No se pudo obtener la información del medicamento", "error");
+//             }
+//         },
+//         error: function() {
+//             muestraMensaje("Error al consultar el medicamento", "error");
+//         }
+//     });
+// }
+
+function editarMedicamento(cod_medicamento) {
     var datos = new FormData();
     datos.append('accion', 'obtener_medicamento');
     datos.append('cod_medicamento', cod_medicamento);
-    
+
     $.ajax({
-        url: '', 
+        url: '',
         type: 'POST',
         data: datos,
         processData: false,
         contentType: false,
         dataType: 'json',
         success: function(res) {
-            try {
-                var lee = res;
-                if (lee.resultado == "obtener_medicamento") {
-                    $("#cod_medicamento_es").val(lee.datos.cod_medicamento);
-                    $("#nombre_medicamento_es").val(lee.datos.nombre);
-                    
-                    if(modo == 'entrada') {
-                        $("#modalEntradaSalidaLabel").text("Registrar Entrada de Medicamento");
-                        $("#btnProcesarEntradaSalida").text("Registrar Entrada").removeClass("btn-danger").addClass("btn-success");
-                        $("#camposEntrada").show();
-                    } else {
-                        $("#modalEntradaSalidaLabel").text("Registrar Salida de Medicamento");
-                        $("#btnProcesarEntradaSalida").text("Registrar Salida").removeClass("btn-success").addClass("btn-danger");
-                        $("#camposEntrada").hide();
-                        
-                        // Mostrar lotes disponibles
-                        if(lee.lotes && lee.lotes.length > 0) {
-                            var html = '<div class="mb-3"><label class="form-label">Lotes Disponibles</label><div class="list-group">';
-                            lee.lotes.forEach(function(lote) {
-                                html += `<div class="list-group-item">
-                                    <div class="d-flex justify-content-between">
-                                        <span>Lote ${lote.cod_lote} - Vence: ${new Date(lote.fecha_vencimiento).toLocaleDateString()}</span>
-                                        <span class="badge bg-primary">${lote.cantidad} ${lee.datos.unidad_medida}</span>
-                                    </div>
-                                    <small class="text-muted">Proveedor: ${lote.proveedor}</small>
-                                </div>`;
-                            });
-                            html += '</div></div>';
-                            $("#infoLotes").html(html);
-                        } else {
-                            $("#infoLotes").html('<div class="alert alert-warning">No hay lotes disponibles</div>');
-                        }
-                    }
-                    
-                    $("#modalEntradaSalida").modal("show");
-                }
-            } catch (e) {
-                muestraMensaje("Error al procesar los datos del medicamento");
+            if (res.resultado === "obtener_medicamento" && res.datos) {
+                // Precargar los datos en el formulario de medicamento
+                $("#cod_medicamento").val(res.datos.cod_medicamento);
+                $("#nombre").val(res.datos.nombre);
+                $("#descripcion").val(res.datos.descripcion);
+                $("#unidad_medida").val(res.datos.unidad_medida);
+                $("#stock_min").val(res.datos.stock_min);
+
+                // Cambiar el texto del botón y del modal
+                $("#procesoMedicamento").text("MODIFICAR");
+                $("#modalMedicamentoLabel").text("Editar Medicamento");
+
+                // Mostrar el modal de medicamento
+                $("#modalMedicamento").modal("show");
+            } else {
+                muestraMensaje("No se pudo obtener la información del medicamento", "error");
             }
         },
-        error: function(xhr, status, error) {
-            muestraMensaje("Error en la petición AJAX");
+        error: function() {
+            muestraMensaje("Error al consultar el medicamento", "error");
         }
     });
-}
-
-function editarMedicamento(cod_medicamento) {
-    var datos = new FormData();
-    datos.append('accion', 'obtener_medicamento');
-    datos.append('cod_medicamento', cod_medicamento);
-    enviaAjax(datos);
 }
 
 function confirmarEliminacion(cod_medicamento) {
@@ -204,6 +231,18 @@ function limpiaFormularioEntradaSalida() {
     $("#infoLotes").html("");
 }
 
+function limpiaFormularioSalida() {
+    // Limpia campos del formulario de salida
+    $("#selectMedicamentoSalida").val("").trigger("change");
+    $("#lotesDisponiblesSalida").html('<div class="alert alert-info">Seleccione un medicamento para ver los lotes disponibles</div>');
+    $("#salidasMultiples").html('<div class="alert alert-info">No hay lotes agregados a la salida</div>');
+    $("#cantidad").val("");
+    $("#cantidad").removeAttr("data-stock-actual").removeAttr("data-stock-min");
+    $("#infoStockAdvertencia").remove();
+    $("#infoStockMaximo").remove();
+    salidasTemporales = [];
+}
+
 function validarFormulario() {
     if($("#nombre").val().trim() == "") {
         muestraMensaje("El nombre del medicamento es requerido");
@@ -213,19 +252,27 @@ function validarFormulario() {
         muestraMensaje("Debe seleccionar una unidad de medida");
         return false;
     }
+    // Validación de stock mínimo
+    const stockMin = $("#stock_min").val();
+    if (stockMin === "" || isNaN(stockMin) || parseInt(stockMin) < 0) {
+        muestraMensaje("El stock mínimo debe ser un número positivo");
+        return false;
+    }
     return true;
 }
 
 // Al abrir el formulario de entrada, consulta el stock actual y ajusta el máximo permitido
 function mostrarFormularioEntrada(cod_medicamento, nombre_medicamento) {
+    modoEntradaSalida = 'entrada'; // <-- IMPORTANTE: define el modo correctamente
     $("#formEntradaSalida")[0].reset();
     $("#cod_medicamento_es").val(cod_medicamento);
     $("#accion_es").val("registrar_entrada");
-    $("#nombre_medicamento_es").val(nombre_medicamento); // Aquí se muestra el nombre
+    $("#nombre_medicamento_es").val(nombre_medicamento);
     $("#modalEntradaSalidaLabel").text("Registrar Entrada de Lote");
-    $("#modalEntradaSalida").modal("show");
+    $("#btnProcesarEntradaSalida").text("Registrar Entrada").removeClass("btn-danger").addClass("btn-success");
+    $("#camposEntrada").show();
 
-    // Consultar stock actual
+    // Consultar stock actual y stock mínimo
     $.ajax({
         url: '',
         type: 'POST',
@@ -239,31 +286,49 @@ function mostrarFormularioEntrada(cod_medicamento, nombre_medicamento) {
                 }
                 let maxPermitido = 250 - stock_actual;
                 if (maxPermitido < 0) maxPermitido = 0;
+                let stockMin = parseInt(res.datos.stock_min || 0);
 
                 // Limita el input cantidad
-                $("#cantidad").attr("max", maxPermitido);
+                $("#cantidad")
+                    .attr("max", maxPermitido)
+                    .removeAttr("data-stock-actual")
+                    .removeAttr("data-stock-min");
                 $("#cantidad").val(""); // Limpia el campo
 
-                // Muestra el stock actual y el máximo permitido
+                // Muestra el stock actual, máximo permitido y el stock mínimo informativo
                 $("#infoStockMaximo").remove();
-                $("#cantidad").after(`<div id="infoStockMaximo" class="text-muted small mt-1">Stock actual: ${stock_actual}. Puedes ingresar hasta <b>${maxPermitido}</b> unidades.</div>`);
+                $("#cantidad").after(`<div id="infoStockMaximo" class="text-muted small mt-1">
+                    Stock actual: ${stock_actual}. Puedes ingresar hasta <b>${maxPermitido}</b> unidades.<br>
+                    <b>El stock mínimo recomendado para este medicamento es: ${stockMin}</b>.
+                </div>`);
             }
         }
     });
+
+    $("#modalEntradaSalida").modal("show");
 }
 
 // Validación antes de enviar
 function validarFormularioEntradaSalida() {
     const cantidad = parseInt($("#cantidad").val(), 10);
     const max = parseInt($("#cantidad").attr("max"), 10);
+    const stockActual = parseInt($("#cantidad").data("stock-actual") || 0, 10);
+    const stockMin = parseInt($("#cantidad").data("stock-min") || 0, 10);
 
     if (cantidad <= 0) {
         muestraMensaje("La cantidad debe ser mayor a cero");
         return false;
     }
-    if (cantidad > max) {
+    if (!isNaN(max) && cantidad > max) {
         muestraMensaje("El stock máximo es de 250. Solo puedes agregar " + max + " unidades.");
         return false;
+    }
+    // Validación de stock mínimo para salida
+    if (modoEntradaSalida == 'salida') {
+        if ((stockActual - cantidad) < stockMin) {
+            muestraMensaje(`No puedes retirar esa cantidad. El stock mínimo permitido es ${stockMin} y el stock actual es ${stockActual}.`);
+            return false;
+        }
     }
     if (modoEntradaSalida == 'entrada' && $("#fecha_vencimiento").val() == "") {
         muestraMensaje("La fecha de vencimiento es requerida para entradas");
@@ -320,7 +385,7 @@ $(document).ready(function() {
         }
     });
     
-    $("#btnProcesarSalidaGlobal").on("click", function() {
+    $("#btnProcesarSalida").on("click", function() {
         let $btn = $(this);
         if (salidasTemporales.length === 0) {
             muestraMensaje("Debe agregar al menos un lote a la salida");
@@ -330,13 +395,38 @@ $(document).ready(function() {
         datos.append('accion', 'registrar_salida_multiple');
         datos.append('salidas', JSON.stringify(salidasTemporales));
         enviaAjax(datos, $btn, "Procesando...", "Registrar Salida");
-        $("#modalSalidaGlobal").modal("hide");
+        $("#modalSalida").modal("hide");
     });
     
     $("#btnAgregarLoteSalida").on("click", function() {
         let $btn = $(this);
         setBotonProcesando($btn, "Procesando...", "Agregar Lote", true);
         setTimeout(() => {
+            // Obtener stock actual y stock mínimo del medicamento seleccionado
+            const cod_medicamento = $("#selectMedicamentoSalida").val();
+            let stockActual = 0;
+            let stockMin = 0;
+            // Busca el stock actual y mínimo en los atributos del select o consulta AJAX si lo necesitas
+            // Aquí asumimos que ya tienes los datos cargados en el select o puedes guardarlos en variables globales
+
+            // Puedes guardar los datos en variables globales al cargar los lotes
+            stockActual = parseInt($("#selectMedicamentoSalida option:selected").data("stock-actual") || 0, 10);
+            stockMin = parseInt($("#selectMedicamentoSalida option:selected").data("stock-min") || 0, 10);
+
+            // Si no tienes los datos en el select, puedes calcular el stock sumando los lotes disponibles
+            // Aquí un ejemplo usando los lotes mostrados en la tabla:
+            let totalStockDisponible = 0;
+            $(".chkLoteSalida").each(function() {
+                totalStockDisponible += parseInt($(this).data("max") || 0, 10);
+            });
+            stockActual = totalStockDisponible;
+
+            // Sumar las cantidades ya agregadas a la salida
+            let totalARetirar = 0;
+            salidasTemporales.forEach(s => {
+                totalARetirar += parseInt(s.cantidad, 10);
+            });
+
             // Recorre los checkboxes de lotes seleccionados
             $(".chkLoteSalida:checked").each(function() {
                 let cod_lote = $(this).val();
@@ -346,19 +436,30 @@ $(document).ready(function() {
 
                 if (!cantidad || cantidad <= 0 || cantidad > max) {
                     muestraMensaje("Cantidad inválida para el lote " + cod_lote);
-                    return;
+                    setBotonProcesando($btn, "Procesando...", "Agregar Lote", false);
+                    return false;
                 }
 
                 // Evita duplicados
                 if (salidasTemporales.some(s => s.cod_lote == cod_lote)) {
                     muestraMensaje("Ya agregaste este lote a la salida");
-                    return;
+                    setBotonProcesando($btn, "Procesando...", "Agregar Lote", false);
+                    return false;
+                }
+
+                // Validar stock mínimo global
+                let totalARetirarNuevo = totalARetirar + cantidad;
+                if ((stockActual - totalARetirarNuevo) < stockMin) {
+                    muestraMensaje(`No puedes retirar esa cantidad. El stock mínimo permitido es ${stockMin} y el stock quedaría en ${stockActual - totalARetirarNuevo}.`);
+                    setBotonProcesando($btn, "Procesando...", "Agregar Lote", false);
+                    return false;
                 }
 
                 salidasTemporales.push({
                     cod_lote: cod_lote,
                     cantidad: cantidad
                 });
+                totalARetirar += cantidad;
             });
 
             // Actualiza la lista visual de lotes agregados a la salida
@@ -367,7 +468,62 @@ $(document).ready(function() {
         }, 500); // Simula un pequeño retardo visual
     });
 
-    // Si tienes otros botones que hacen AJAX, pásales el $btn a enviaAjax igual que arriba
+    // Evento para mostrar lotes al seleccionar un medicamento en salida global
+    $("#selectMedicamentoSalida").on("change", function() {
+        const cod_medicamento = $(this).val();
+        if (!cod_medicamento) {
+            $("#lotesDisponiblesSalida").html('<div class="alert alert-info">Seleccione un medicamento para ver los lotes disponibles</div>');
+            return;
+        }
+        // Consulta los lotes disponibles para ese medicamento
+        $.ajax({
+            url: '',
+            type: 'POST',
+            data: { accion: 'consultar_lotes', cod_medicamento: cod_medicamento },
+            dataType: 'json',
+            success: function(res) {
+                if (res.resultado === 'consultar_lotes' && res.datos.length > 0) {
+                    let html = '<div class="mb-3"><label class="form-label">Lotes Disponibles</label><div class="list-group">';
+                    res.datos.forEach(function(lote) {
+                        html += `<div class="d-flex justify-between">
+                            <div>
+                                <input type="checkbox" class="form-check-input chkLoteSalida" value="${lote.cod_lote}" data-max="${lote.cantidad}">
+                                <span>Lote ${lote.cod_lote} - Vence: ${new Date(lote.fecha_vencimiento).toLocaleDateString()}
+                            </div>
+                            <div>
+                                <b>${lote.cantidad}</b> unidades disponibles</span>
+                                <input type="number" class="form-control inputCantidadLoteSalida d-inline-block ms-2" style="width:200px" min="1" max="${lote.cantidad}" data-cod="${lote.cod_lote}" placeholder="Cantidad">
+                            </div>
+                        </div>`;
+                    });
+                    html += '</div></div>';
+                    $("#lotesDisponiblesSalida").html(html);
+                } else {
+                    $("#lotesDisponiblesSalida").html('<div class="alert alert-warning">No hay lotes disponibles para este medicamento</div>');
+                }
+            }
+        });
+    });
+
+    // Evento para advertir si la cantidad dejaría el stock por debajo del mínimo
+    $("#cantidad").on("input", function() {
+        // Solo mostrar advertencia en modo salida
+        if (modoEntradaSalida !== 'salida') {
+            $("#infoStockAdvertencia").remove();
+            return;
+        }
+        const cantidad = parseInt($(this).val(), 10) || 0;
+        const stockActual = parseInt($(this).data("stock-actual") || 0, 10);
+        const stockMin = parseInt($(this).data("stock-min") || 0, 10);
+
+        $("#infoStockAdvertencia").remove();
+
+        if ((stockActual - cantidad) < stockMin) {
+            $(this).after(`<div id="infoStockAdvertencia" class="text-danger small mt-1">
+                <b>Advertencia:</b> Esta cantidad dejaría el stock por debajo del mínimo permitido (${stockMin}).
+            </div>`);
+        }
+    });
 });
 
 function muestraMensaje(mensaje) {
@@ -425,13 +581,13 @@ function procesarRespuesta(respuesta) {
                     <td>${fila.unidad_medida}</td>
                     <td>
                         <div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
-                            <a type="button" class="btn btn-success" onclick="editarMedicamento(${fila.cod_medicamento})">
+                            <a type="button" class="btn btn-success" onclick="editarMedicamento('${fila.cod_medicamento}')">
                                 <img src="img/lapiz.svg" style="width: 20px">
                             </a>
-                            <a type="button" class="btn btn-primary" onclick="mostrarFormularioEntrada(${fila.cod_medicamento}, '${fila.nombre.replace(/'/g, "\\'")}')">
+                            <a type="button" class="btn btn-primary" onclick="mostrarFormularioEntrada('${fila.cod_medicamento}', '${fila.nombre.replace(/'/g, "\\'")}')">
                                 <img src="img/mas.svg" style="width: 20px">
                             </a>
-                            <a type="button" class="btn btn-danger" onclick="confirmarEliminacion(${fila.cod_medicamento})">
+                            <a type="button" class="btn btn-danger" onclick="confirmarEliminacion('${fila.cod_medicamento}')">
                                 <img src="img/basura.svg" style="width: 20px">
                             </a>
                         </div>
@@ -479,14 +635,56 @@ function procesarRespuesta(respuesta) {
             crearDTMovimientos();
         }
         else if (lee.resultado == "obtener_medicamento") {
-            $("#cod_medicamento").val(lee.datos.cod_medicamento);
-            $("#nombre").val(lee.datos.nombre);
-            $("#descripcion").val(lee.datos.descripcion);
-            $("#unidad_medida").val(lee.datos.unidad_medida);
+            $("#cod_medicamento_es").val(lee.datos.cod_medicamento);
+            $("#nombre_medicamento_es").val(lee.datos.nombre);
 
-            $("#procesoMedicamento").text("MODIFICAR");
-            $("#modalMedicamentoLabel").text("Editar Medicamento");
-            $("#modalMedicamento").modal("show");
+            if(modoEntradaSalida == 'entrada') {
+                $("#modalEntradaSalidaLabel").text("Registrar Entrada de Medicamento");
+                $("#btnProcesarEntradaSalida").text("Registrar Entrada").removeClass("btn-danger").addClass("btn-success");
+                $("#camposEntrada").show();
+            } else {
+                $("#modalEntradaSalidaLabel").text("Registrar Salida de Medicamento");
+                $("#btnProcesarEntradaSalida").text("Registrar Salida").removeClass("btn-success").addClass("btn-danger");
+                $("#camposEntrada").hide();
+
+                // Mostrar lotes disponibles
+                if(lee.lotes && lee.lotes.length > 0) {
+                    var html = '<div class="mb-3"><label class="form-label">Lotes Disponibles</label><div class="list-group">';
+                    lee.lotes.forEach(function(lote) {
+                        html += `<div class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <span>Lote ${lote.cod_lote} - Vence: ${new Date(lote.fecha_vencimiento).toLocaleDateString()}</span>
+                                <span class="badge bg-primary">${lote.cantidad} ${lee.datos.unidad_medida}</span>
+                            </div>
+                            <small class="text-muted">Proveedor: ${lote.proveedor}</small>
+                        </div>`;
+                    });
+                    html += '</div></div>';
+                    $("#infoLotes").html(html);
+                } else {
+                    $("#infoLotes").html('<div class="alert alert-warning">No hay lotes disponibles</div>');
+                }
+
+                // Calcular stock actual sumando los lotes
+                let stockActual = 0;
+                if (lee.lotes && Array.isArray(lee.lotes)) {
+                    stockActual = lee.lotes.reduce((sum, lote) => sum + parseInt(lote.cantidad), 0);
+                }
+                // Obtener el stock mínimo del medicamento
+                let stockMin = parseInt(lee.datos.stock_min || 0);
+
+                $("#cantidad")
+                    .attr("data-stock-actual", stockActual)
+                    .attr("data-stock-min", stockMin);
+
+                // Mostrar info visual al usuario
+                $("#infoStockMaximo").remove();
+                $("#cantidad").after(`<div id="infoStockMaximo" class="text-muted small mt-1">
+                    Stock actual: ${stockActual}. <b>El stock mínimo permitido es: ${stockMin}</b>.<br>
+                    No puedes retirar una cantidad que deje el stock por debajo de este valor.
+                </div>`);
+            }
+            $("#modalEntradaSalida").modal("show");
         }
         else if (
             lee.resultado == "incluir_medicamento" ||
@@ -496,43 +694,50 @@ function procesarRespuesta(respuesta) {
             lee.resultado == "eliminar_medicamento"
         ) {
             muestraMensaje(lee.mensaje);
+            limpiarTodosLosFormularios();
             $("#modalMedicamento").modal("hide");
             $("#modalEntradaSalida").modal("hide");
             $('#modalConfirmacion').modal("hide");
             consultarMedicamentos();
             consultarMovimientos();
         }
-        else if (lee.resultado == "error") {
-            muestraMensaje(lee.mensaje);
+        else if (lee.resultado === "error") {
+            muestraMensaje(lee.mensaje, "error");
+            return;
         }
     } catch (e) {
-        muestraMensaje("Error al procesar la respuesta del servidor");
+        muestraMensaje("Error procesando respuesta del servidor: " + e.message, "error");
     }
 }
 
-function mostrarFormularioSalidaGlobal() {
+function mostrarFormularioSalida() {
     salidasTemporales = [];
     limpiaFormularioEntradaSalida();
     $("#salidasMultiples").html("");
     $("#cod_medicamento_es").val("");
     $("#nombre_medicamento_es").val("");
-    $("#modalEntradaSalidaLabel").text("Registrar Entrada/Salida de Medicamentos");
+    $("#modalEntradaSalidaLabel").text("Registrar Salida de Medicamentos");
     $("#btnProcesarEntradaSalida").text("Registrar").removeClass("btn-danger btn-success").addClass("btn-primary");
     $("#camposEntrada").show();
     $("#infoLotes").html('<div class="alert alert-info">Puede registrar varias entradas o salidas de lotes.</div>');
-    cargarMedicamentosEnSelect(); // <-- Agrega esta línea
-    $("#modalSalidaGlobal").modal("show");
+    cargarMedicamentosEnSelect();
+    $("#modalSalida").modal("show");
+    $("#modalSalida").on("hidden.bs.modal", function() {
+        limpiaFormularioSalida();
+    });
 }
 
 function mostrarFormularioEntrada(cod_medicamento, nombre_medicamento) {
+    modoEntradaSalida = 'entrada'; // <-- IMPORTANTE: define el modo correctamente
     $("#formEntradaSalida")[0].reset();
     $("#cod_medicamento_es").val(cod_medicamento);
     $("#accion_es").val("registrar_entrada");
-    $("#nombre_medicamento_es").val(nombre_medicamento); // Aquí se muestra el nombre
+    $("#nombre_medicamento_es").val(nombre_medicamento);
     $("#modalEntradaSalidaLabel").text("Registrar Entrada de Lote");
-    $("#modalEntradaSalida").modal("show");
+    $("#btnProcesarEntradaSalida").text("Registrar Entrada").removeClass("btn-danger").addClass("btn-success");
+    $("#camposEntrada").show();
 
-    // Consultar stock actual
+    // Consultar stock actual y stock mínimo
     $.ajax({
         url: '',
         type: 'POST',
@@ -546,17 +751,26 @@ function mostrarFormularioEntrada(cod_medicamento, nombre_medicamento) {
                 }
                 let maxPermitido = 250 - stock_actual;
                 if (maxPermitido < 0) maxPermitido = 0;
+                let stockMin = parseInt(res.datos.stock_min || 0);
 
                 // Limita el input cantidad
-                $("#cantidad").attr("max", maxPermitido);
+                $("#cantidad")
+                    .attr("max", maxPermitido)
+                    .removeAttr("data-stock-actual")
+                    .removeAttr("data-stock-min");
                 $("#cantidad").val(""); // Limpia el campo
 
-                // Muestra el stock actual y el máximo permitido
+                // Muestra el stock actual, máximo permitido y el stock mínimo informativo
                 $("#infoStockMaximo").remove();
-                $("#cantidad").after(`<div id="infoStockMaximo" class="text-muted small mt-1">Stock actual: ${stock_actual}. Puedes ingresar hasta <b>${maxPermitido}</b> unidades.</div>`);
+                $("#cantidad").after(`<div id="infoStockMaximo" class="text-muted small mt-1">
+                    Stock actual: ${stock_actual}. Puedes ingresar hasta <b>${maxPermitido}</b> unidades.<br>
+                    <b>El stock mínimo recomendado para este medicamento es: ${stockMin}</b>.
+                </div>`);
             }
         }
     });
+
+    $("#modalEntradaSalida").modal("show");
 }
 
 function agregarLoteTemporal() {
@@ -640,6 +854,18 @@ function cargarMedicamentosEnSelect() {
     });
 }
 
+// Limpiar formulario y variables al cerrar el modal de salida
+$("#modalSalida").on("hidden.bs.modal", function() {
+    limpiaFormularioEntradaSalida();
+    salidasTemporales = [];
+    actualizarListaSalidasTemporales();
+});
+
+function eliminarSalidaTemporal(idx) {
+    salidasTemporales.splice(idx, 1);
+    actualizarListaSalidasTemporales();
+}
+
 function actualizarListaSalidasTemporales() {
     let html = "";
     if (salidasTemporales.length === 0) {
@@ -672,7 +898,29 @@ ws.onerror = function(error) {
     console.error('WebSocket error:', error);
 };
 
-// Ejemplo: enviar un mensaje (puedes quitar esto si solo quieres recibir)
+// Ejemplo: enviar un mensaje
 function enviarNotificacion(msg) {
     ws.send(msg);
+}
+
+function limpiarTodosLosFormularios() {
+    // Formulario principal de medicamentos
+    $("#formMedicamento")[0]?.reset();
+    // Formulario de entrada/salida de lotes
+    $("#formEntradaSalida")[0]?.reset();
+    // Limpia selects y campos auxiliares
+    $("#cod_medicamento").val("");
+    $("#nombre").val("");
+    $("#descripcion").val("");
+    $("#unidad_medida").val("");
+    $("#stock_min").val("");
+    $("#cod_medicamento_es").val("");
+    $("#nombre_medicamento_es").val("");
+    $("#cantidad").val("");
+    $("#fecha_vencimiento").val("");
+    $("#proveedor").val("");
+    $("#infoLotes").html("");
+    $("#infoStockMaximo").remove();
+    $("#lotesMultiples").html("");
+    $("#salidasMultiples").html("");
 }

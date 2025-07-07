@@ -30,7 +30,7 @@ require_once("comunes/notificaciones.php");
                 Registrar Medicamento
             </a>
 
-            <button type="button" class="btn botonrojo d-flex" onclick="mostrarFormularioSalidaGlobal()">
+            <button type="button" class="btn botonrojo d-flex" onclick="mostrarFormularioSalida()">
                 Registrar Salida
             </button>
             
@@ -100,10 +100,12 @@ require_once("comunes/notificaciones.php");
                     <input type="hidden" id="accion" name="accion" value="incluir_medicamento">
                     
                     <div class="row mb-3">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <label for="nombre" class="texto-inicio font-medium mb-2">Nombre del Medicamento</label>
                             <input type="text" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="nombre" name="nombre" placeholder="Nombre del Medicamento" required>
                         </div>
+                    </div>
+                    <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="unidad_medida" class="texto-inicio font-medium mb-2">Unidad de Medida</label>
                             <select class="form-select bg-gray-200 rounded-lg border-white p-3 text" id="unidad_medida" name="unidad_medida" required>
@@ -115,6 +117,13 @@ require_once("comunes/notificaciones.php");
                                 <option value="ampollas">ampollas</option>
                                 <option value="comprimidos">comprimidos</option>
                             </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="stock_min" class="texto-inicio font-medium mb-2">Stock Mínimo</label>
+                            <input type="number" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="stock_min" name="stock_min" min="0" required>
+                            <div id="infoStockMin" class="text-muted small mt-1">
+                                Este es el mínimo de unidades que debe mantenerse en stock para este medicamento.
+                            </div>
                         </div>
                     </div>
                     
@@ -181,11 +190,11 @@ require_once("comunes/notificaciones.php");
 </div>
 
 <!-- Modal para salida global de medicamentos -->
-<div class="modal fade" id="modalSalidaGlobal" tabindex="-1" aria-labelledby="modalSalidaGlobalLabel" aria-hidden="true">
+<div class="modal fade" id="modalSalida" tabindex="-1" aria-labelledby="modalSalidaLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content" style="padding: 25px 25px 0px 25px;">
             <div class="modal-body">
-                <form id="formSalidaGlobal" autocomplete="off">
+                <form id="formSalida" autocomplete="off">
                     <div class="mb-3">
                         <label for="selectMedicamentoSalida" class="form-label">Medicamento</label>
                         <select class="form-select" id="selectMedicamentoSalida">
@@ -197,7 +206,7 @@ require_once("comunes/notificaciones.php");
                     <div id="salidasMultiples"></div>
                     <div class="modal-footer">
                         <button type="button" class="btn boton" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" id="btnProcesarSalidaGlobal" class="btn botonverde">Registrar Salida</button>
+                        <button type="button" id="btnProcesarSalida" class="btn botonverde">Registrar Salida</button>
                     </div>
                 </form>
             </div>
