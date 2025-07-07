@@ -16,17 +16,18 @@ if(is_file("vista/".$pagina.".php")){
             case 'consultar':
                 $registros = bitacora::consultar($filtro);
                 echo json_encode(array(
-                    'resultado' => 'exito',
-                    'datos' => $registros
+                    'data' => $registros, // Cambiado de 'datos' a 'data' para DataTables
+                    'draw' => 1,
+                    'recordsTotal' => count($registros),
+                    'recordsFiltered' => count($registros)
                 ));
-                break;
+                exit;
             default:
                 echo json_encode(array(
-                    'resultado' => 'error',
-                    'mensaje' => 'Acción no válida'
+                    'error' => 'Acción no válida'
                 ));
+                exit;
         }
-        exit;
     }
     
     require_once("vista/".$pagina.".php"); 

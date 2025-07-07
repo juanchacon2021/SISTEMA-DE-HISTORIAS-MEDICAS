@@ -266,9 +266,9 @@ class examenes extends datos
         try {
             $conexion->beginTransaction();
 
-            $sql = "INSERT INTO examen (fecha_e, hora_e, cedula_paciente, cod_examen, observacion_examen) 
-                    VALUES(:fecha, :hora, :cedula, :examen, :observacion)";
-
+            // Insertar examen directamente SIN procedure
+            $sql = "INSERT INTO examen (fecha_e, hora_e, cedula_paciente, cod_examen, observacion_examen)
+                    VALUES (:fecha, :hora, :cedula, :examen, :observacion)";
             $stmt = $conexion->prepare($sql);
             $stmt->execute(array(
                 ':fecha' => $this->fecha_e,
@@ -286,7 +286,6 @@ class examenes extends datos
                 if (move_uploaded_file($_FILES['imagenarchivo']['tmp_name'], $ruta)) {
                     $sql = "UPDATE examen SET ruta_imagen = :ruta 
                             WHERE cedula_paciente = :cedula AND fecha_e = :fecha AND cod_examen = :examen";
-
                     $stmt = $conexion->prepare($sql);
                     $stmt->execute([
                         ':ruta' => $ruta,
@@ -318,22 +317,14 @@ class examenes extends datos
         try {
             $conexion->beginTransaction();
 
-            $sql = "UPDATE examen SET
-                    fecha_e = :fecha,
-                    hora_e = :hora,
-                    cod_examen = :examen,
-                    observacion_examen = :observacion
-                    WHERE cedula_paciente = :cedula AND fecha_e = :fecha_original AND cod_examen = :examen_original";
-
-            $stmt = $conexion->prepare($sql);
+            // Usar procedure para modificar examen
+            $stmt = $conexion->prepare("CALL modificar_examen(:fecha, :hora, :cedula, :examen, :observacion)");
             $stmt->execute(array(
                 ':fecha' => $this->fecha_e,
                 ':hora' => $this->hora_e,
-                ':examen' => $this->cod_examen,
-                ':observacion' => $this->observacion_examen,
                 ':cedula' => $this->cedula_paciente,
-                ':fecha_original' => $this->fecha_e,
-                ':examen_original' => $this->cod_examen
+                ':examen' => $this->cod_examen,
+                ':observacion' => $this->observacion_examen
             ));
 
             // Actualizar imagen si existe
@@ -344,7 +335,6 @@ class examenes extends datos
                 if (move_uploaded_file($_FILES['imagenarchivo']['tmp_name'], $ruta)) {
                     $sql = "UPDATE examen SET ruta_imagen = :ruta 
                             WHERE cedula_paciente = :cedula AND fecha_e = :fecha AND cod_examen = :examen";
-
                     $stmt = $conexion->prepare($sql);
                     $stmt->execute([
                         ':ruta' => $ruta,
@@ -390,9 +380,8 @@ class examenes extends datos
                 unlink($fila['ruta_imagen']);
             }
 
-            // Luego eliminar el registro
-            $sql = "DELETE FROM examen WHERE cedula_paciente = :cedula AND fecha_e = :fecha AND cod_examen = :examen";
-            $stmt = $conexion->prepare($sql);
+            // Usar procedure para eliminar examen
+            $stmt = $conexion->prepare("CALL eliminar_examen(:cedula, :fecha, :examen)");
             $stmt->execute([
                 ':cedula' => $this->cedula_paciente,
                 ':fecha' => $this->fecha_e,

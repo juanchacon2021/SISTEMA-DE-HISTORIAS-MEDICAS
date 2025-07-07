@@ -168,9 +168,8 @@ class pasantias extends datos
 
     private function ejecutar_insert_estudiante($conexion)
     {
-        $sql = "INSERT INTO estudiantes_pasantia (cedula_estudiante, nombre, apellido, institucion, telefono) 
-                VALUES(:cedula, :nombre, :apellido, :institucion, :telefono)";
-
+        // Usar procedure para insertar estudiante de pasantía
+        $sql = "CALL insertar_estudiante_pasantia(:cedula, :nombre, :apellido, :institucion, :telefono)";
         $stmt = $conexion->prepare($sql);
         $stmt->execute(array(
             ':cedula' => $this->cedula_estudiante,
@@ -184,9 +183,8 @@ class pasantias extends datos
     private function ejecutar_insert_asistencia($conexion)
     {
         $fechaActual = date('Y-m-d');
-        $sql = "INSERT INTO asistencia (cod_area, cedula_estudiante, fecha_inicio, activo) 
-                VALUES(:area, :cedula, :inicio, 1)";
-
+        // Usar procedure para insertar asistencia
+        $sql = "CALL insertar_asistencia_pasantia(:area, :cedula, :inicio)";
         $stmt = $conexion->prepare($sql);
         $stmt->execute(array(
             ':area' => $this->cod_area,
@@ -201,20 +199,15 @@ class pasantias extends datos
         $conexion = $this->conecta();
 
         try {
-            $sql = "UPDATE estudiantes_pasantia SET 
-                    nombre = :nombre, 
-                    apellido = :apellido, 
-                    institucion = :institucion,
-                    telefono = :telefono
-                    WHERE cedula_estudiante = :cedula";
-
+            // Usar procedure para modificar estudiante
+            $sql = "CALL modificar_estudiante_pasantia(:cedula, :nombre, :apellido, :institucion, :telefono)";
             $stmt = $conexion->prepare($sql);
             $stmt->execute(array(
+                ':cedula' => $this->cedula_estudiante,
                 ':nombre' => $this->nombre,
                 ':apellido' => $this->apellido,
                 ':institucion' => $this->institucion,
-                ':telefono' => $this->telefono,
-                ':cedula' => $this->cedula_estudiante
+                ':telefono' => $this->telefono
             ));
 
             $r['resultado'] = 'modificar';
@@ -236,8 +229,15 @@ class pasantias extends datos
         try {
             $conexion->beginTransaction();
 
-            $this->ejecutar_delete_asistencias($conexion);
-            $this->ejecutar_delete_estudiante($conexion);
+            // Usar procedure para eliminar asistencias del estudiante
+            $sql = "CALL eliminar_asistencias_pasantia(:cedula)";
+            $stmt = $conexion->prepare($sql);
+            $stmt->execute([':cedula' => $this->cedula_estudiante]);
+
+            // Usar procedure para eliminar estudiante
+            $sql2 = "CALL eliminar_estudiante_pasantia(:cedula)";
+            $stmt2 = $conexion->prepare($sql2);
+            $stmt2->execute([':cedula' => $this->cedula_estudiante]);
 
             $conexion->commit();
             $r['resultado'] = 'eliminar';
@@ -250,20 +250,6 @@ class pasantias extends datos
             $this->cerrar_conexion($conexion);
         }
         return $r;
-    }
-
-    private function ejecutar_delete_asistencias($conexion)
-    {
-        $sql = "DELETE FROM asistencia WHERE cedula_estudiante = :cedula";
-        $stmt = $conexion->prepare($sql);
-        $stmt->execute([':cedula' => $this->cedula_estudiante]);
-    }
-
-    private function ejecutar_delete_estudiante($conexion)
-    {
-        $sql = "DELETE FROM estudiantes_pasantia WHERE cedula_estudiante = :cedula";
-        $stmt = $conexion->prepare($sql);
-        $stmt->execute([':cedula' => $this->cedula_estudiante]);
     }
 
     // Métodos para consultas
@@ -297,7 +283,8 @@ class pasantias extends datos
         $conexion = $this->conecta();
 
         try {
-            $sql = "INSERT INTO asistencia VALUES(:area, :cedula, :inicio, :fin, :activo)";
+            // Usar procedure para insertar asistencia
+            $sql = "CALL insertar_asistencia_pasantia_completa(:area, :cedula, :inicio, :fin, :activo)";
             $stmt = $conexion->prepare($sql);
             $stmt->execute(array(
                 ':area' => $this->cod_area,
@@ -324,19 +311,15 @@ class pasantias extends datos
         $conexion = $this->conecta();
 
         try {
-            $sql = "UPDATE asistencia SET
-                    cod_area = :area,
-                    fecha_fin = :fin,
-                    activo = :activo
-                    WHERE cedula_estudiante = :cedula AND fecha_inicio = :inicio";
-
+            // Usar procedure para modificar asistencia
+            $sql = "CALL modificar_asistencia_pasantia(:area, :cedula, :inicio, :fin, :activo)";
             $stmt = $conexion->prepare($sql);
             $stmt->execute(array(
                 ':area' => $this->cod_area,
-                ':fin' => $this->fecha_fin,
-                ':activo' => $this->activo,
                 ':cedula' => $this->cedula_estudiante,
-                ':inicio' => $this->fecha_inicio
+                ':inicio' => $this->fecha_inicio,
+                ':fin' => $this->fecha_fin,
+                ':activo' => $this->activo
             ));
 
             $r['resultado'] = 'modificar';
@@ -356,10 +339,8 @@ class pasantias extends datos
         $conexion = $this->conecta();
 
         try {
-            $sql = "DELETE FROM asistencia 
-                    WHERE cedula_estudiante = :cedula 
-                    AND fecha_inicio = :fecha_inicio";
-
+            // Usar procedure para eliminar asistencia
+            $sql = "CALL eliminar_asistencia_pasantia(:cedula, :fecha_inicio)";
             $stmt = $conexion->prepare($sql);
             $stmt->execute(array(
                 ':cedula' => $this->cedula_estudiante,

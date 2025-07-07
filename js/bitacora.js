@@ -25,7 +25,7 @@ $(document).ready(function () {
           filtro: $("#filtroBitacora").val(),
         };
       },
-      dataSrc: "datos",
+      dataSrc: "data", // Cambiado de 'datos' a 'data'
     },
     columns: [
       {
@@ -35,11 +35,12 @@ $(document).ready(function () {
         },
       },
       { data: "usuario_nombre" },
+      { data: "usuario_rol" },
       { data: "modulo_nombre" },
       { data: "accion" },
       { data: "descripcion" },
     ],
-    order: [[0, "desc"]], // Ordenar por la primera columna (fecha) descendente
+    order: [[0, "desc"]],
     responsive: true,
     autoWidth: false,
   });

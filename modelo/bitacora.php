@@ -70,9 +70,10 @@ class bitacora extends datos {
         
         try {
             $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $sql = "SELECT b.*, u.nombre as usuario_nombre, m.nombre as modulo_nombre 
+            $sql = "SELECT b.*, u.nombre as usuario_nombre, r.nombre as usuario_rol, m.nombre as modulo_nombre 
                     FROM bitacora b
                     JOIN usuario u ON b.usuario_id = u.id
+                    JOIN rol r ON u.rol_id = r.id
                     JOIN modulo m ON b.modulo_id = m.id";
             
             $params = array();
