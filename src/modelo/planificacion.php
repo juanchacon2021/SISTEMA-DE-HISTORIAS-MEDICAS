@@ -34,7 +34,8 @@ class planificacion extends datos {
         $r = array();
         try {
             $cod_pub = $datos['cod_pub'] ?? '';
-            $stmt = $co->query("SELECT * FROM feed WHERE cod_pub = '$cod_pub' LIMIT 1");
+            $stmt = $co->prepare("SELECT * FROM feed WHERE cod_pub = :cod_pub LIMIT 1");
+            $stmt->execute([':cod_pub' => $cod_pub]);
             $r['resultado'] = 'obtener_publicacion';
             $r['datos'] = $stmt->fetch(PDO::FETCH_ASSOC);
         } catch(Exception $e) {
@@ -50,7 +51,6 @@ class planificacion extends datos {
         $r = array();
         
         try {
-            // Procesar datos
             $contenido = $datos['contenido'] ?? '';
             $cedula_personal = $datos['cedula_personal'] ?? '';
             $imagen = '';
@@ -63,7 +63,7 @@ class planificacion extends datos {
                 $imagen = $ruta;
             }
             
-            // Llamar al procedimiento almacenado
+            // Llamar al procedimiento almacenado para insertar publicación
             $sql = "CALL insertar_publicacion_feed(:contenido, :imagen, :cedula, @cod_generado)";
             $stmt = $co->prepare($sql);
             $stmt->bindParam(':contenido', $contenido);
@@ -85,7 +85,6 @@ class planificacion extends datos {
             $r['mensaje'] = $e->getMessage();
             $r['cod_pub'] = null;
         } finally {
-            // Cerrar conexión si es necesario
             if(isset($co)) {
                 $co = null;
             }
@@ -94,7 +93,7 @@ class planificacion extends datos {
         return $r;
     }
 
-    // Modificar publicación
+    // Modificar publicación usando procedure
     public function modificar($datos) {
         $co = $this->conecta();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -108,11 +107,15 @@ class planificacion extends datos {
                 $ruta = "img/publicaciones/".$nombreArchivo;
                 move_uploaded_file($datos['imagen']['tmp_name'], $ruta);
                 $imagen = $ruta;
-                $sql = "UPDATE feed SET contenido='$contenido', imagen='$imagen' WHERE cod_pub='$cod_pub'";
-            } else {
-                $sql = "UPDATE feed SET contenido='$contenido' WHERE cod_pub='$cod_pub'";
             }
-            $co->exec($sql);
+            // Usar procedure para modificar publicación
+            $sql = "CALL modificar_publicacion_feed(:cod_pub, :contenido, :imagen)";
+            $stmt = $co->prepare($sql);
+            $stmt->bindParam(':cod_pub', $cod_pub);
+            $stmt->bindParam(':contenido', $contenido);
+            $stmt->bindParam(':imagen', $imagen);
+            $stmt->execute();
+
             $r['resultado'] = 'modificar';
             $r['mensaje'] = 'Publicación modificada exitosamente';
         } catch(Exception $e) {
@@ -122,15 +125,17 @@ class planificacion extends datos {
         return $r;
     }
 
-    // Eliminar publicación
+    // Eliminar publicación usando procedure
     public function eliminar($datos) {
         $co = $this->conecta();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
         try {
             $cod_pub = $datos['cod_pub'] ?? '';
-            $sql = "DELETE FROM feed WHERE cod_pub='$cod_pub'";
-            $co->exec($sql);
+            $sql = "CALL eliminar_publicacion_feed(:cod_pub)";
+            $stmt = $co->prepare($sql);
+            $stmt->bindParam(':cod_pub', $cod_pub);
+            $stmt->execute();
             $r['resultado'] = 'eliminar';
             $r['mensaje'] = 'Publicación eliminada exitosamente';
         } catch(Exception $e) {
@@ -146,7 +151,8 @@ class planificacion extends datos {
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $cod_pub = $datos['cod_pub'] ?? '';
         $cedula_personal = $datos['cedula_personal'] ?? '';
-        $stmt = $co->query("SELECT cedula_personal FROM feed WHERE cod_pub = '$cod_pub'");
+        $stmt = $co->prepare("SELECT cedula_personal FROM feed WHERE cod_pub = :cod_pub");
+        $stmt->execute([':cod_pub' => $cod_pub]);
         $publicacion = $stmt->fetch(PDO::FETCH_ASSOC);
         return ($publicacion && $publicacion['cedula_personal'] == $cedula_personal);
     }

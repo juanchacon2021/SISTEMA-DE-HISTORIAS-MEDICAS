@@ -161,6 +161,15 @@
                     </div>
                 </a>
                 <?php endif; ?>
+
+                 <?php if(isset($permisos['modulos']) && in_array('Reportes Parametrizados', $permisos['modulos'])): ?>
+                <a href="?pagina=bitacora" class="block">
+                    <div class="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-800 hover:text-white text-stone-600">
+                        <img class="w-6 h-8 imagen" src="img/pdf2.svg" alt="">
+                        <span class="text-[15px] ml-4 text-lg hover:text-white">Reportes</span>
+                    </div>
+                </a>
+                <?php endif; ?>
                 
                 <!-- Cerrar Sesión -->
                 <a href="?pagina=salida" class="block">

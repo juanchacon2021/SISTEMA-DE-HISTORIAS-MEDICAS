@@ -77,7 +77,7 @@ class jornadas extends datos
         try {
             $conexion->beginTransaction();
             
-            // Llamar al procedimiento almacenado para insertar la jornada
+            // Usar procedure para insertar la jornada
             $stmt = $conexion->prepare("CALL insertar_jornada_medica(
                 :fecha, :ubicacion, :descripcion, :total, 
                 :masculinos, :femeninos, :embarazadas, 
@@ -102,12 +102,8 @@ class jornadas extends datos
                 throw new Exception("No se pudo generar el código de la jornada");
             }
 
-            // Insertar responsable
-            $stmt = $conexion->prepare("INSERT INTO participantes_jornadas (
-                cod_jornada, cedula_personal, tipo_participante
-            ) VALUES (
-                :jornada, :personal, 'responsable'
-            )");
+            // Insertar responsable usando procedure (si tienes uno, si no, deja el INSERT)
+            $stmt = $conexion->prepare("CALL insertar_participante_jornada(:jornada, :personal, 'responsable')");
             $stmt->execute(array(
                 ':jornada' => $cod_jornada,
                 ':personal' => $this->cedula_responsable
@@ -116,11 +112,7 @@ class jornadas extends datos
             // Insertar participantes (excluyendo al responsable si está en la lista)
             foreach($this->participantes as $participante) {
                 if($participante != $this->cedula_responsable) {
-                    $stmt = $conexion->prepare("INSERT INTO participantes_jornadas (
-                        cod_jornada, cedula_personal, tipo_participante
-                    ) VALUES (
-                        :jornada, :personal, 'participante'
-                    )");
+                    $stmt = $conexion->prepare("CALL insertar_participante_jornada(:jornada, :personal, 'participante')");
                     $stmt->execute(array(
                         ':jornada' => $cod_jornada,
                         ':personal' => $participante

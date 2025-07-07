@@ -51,6 +51,7 @@ require_once("comunes/notificaciones.php");
                                     <tr>
                                         <th>Fecha/Hora</th>
                                         <th>Usuario</th>
+                                        <th>Rol</th> <!-- Nueva columna -->
                                         <th>Módulo</th>
                                         <th>Acción</th>
                                         <th>Detalles</th>

@@ -37,7 +37,7 @@ Emergencias
     <div class="table-responsive">
         <table class="table table-striped table-hover" id="tablapersonal">
             <thead class="table-dark">
-              <!--   <tr>
+                <tr>
 					<th class="text-center">Nombre</th>
 					<th class="text-center">Apellido</th>
 					<th class="text-center">Hora de Ingreso</th>
@@ -47,7 +47,7 @@ Emergencias
 					<th class="text-center">Apellido del Personal</th>
 					<th class="text-center">Cédula del Personal</th>
 					<th class="text-center">Acciones</th>
-				</tr> -->
+				</tr>
             </thead>
             <tbody id="resultadoconsulta">
                 
