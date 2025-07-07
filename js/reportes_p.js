@@ -25,28 +25,48 @@ function crearDT(){
             });
     }         
 }
-function generarCabecera(modulo) {
-    var cabecera = '';
+
+function insertarCabecera(modulo) {
+    let cabecera = '';
     switch(modulo) {
-        case 'emergencias':
+        case 'pacientes':
             cabecera = `
+                <th class="text-center">Cédula</th>
                 <th class="text-center">Nombre</th>
                 <th class="text-center">Apellido</th>
-                <th class="text-center">Hora de Ingreso</th>
-                <th class="text-center">Fecha de Ingreso</th>
-                <th class="text-center">Cédula del Paciente</th>
-                <th class="text-center">Nombre del Personal</th>
-                <th class="text-center">Apellido del Personal</th>
-                <th class="text-center">Cédula del Personal</th>
-                <th class="text-center">Acciones</th>
+                <th class="text-center">Fecha Nac.</th>
+                <th class="text-center">Teléfono</th>
+                <th class="text-center">Dirección</th>
             `;
             break;
-        // ...otros casos...
+        case 'personal':
+            cabecera = `
+                <th class="text-center">Cédula</th>
+                <th class="text-center">Nombre</th>
+                <th class="text-center">Apellido</th>
+                <th class="text-center">Cargo</th>
+                <th class="text-center">Correo</th>
+            `;
+            break;
+        case 'emergencias':
+            cabecera = `
+                <th class="text-center">Hora ingreso</th>
+                <th class="text-center">Fecha ingreso</th>
+                <th class="text-center">Motivo de ingreso</th>
+                <th class="text-center">Diagnóstico</th>
+                <th class="text-center">Tratamientos</th>
+                <th class="text-center">Procedimientos</th>
+                <th class="text-center">Cédula paciente</th>
+                <th class="text-center">Cédula personal</th>
+            `;
+            break;
+        // Agrega más módulos según necesites...
         default:
-            // ...código existente...
+            cabecera = `<th class="text-center">Resultados</th>`;
     }
-    return cabecera;
+    $("#cabecerastable").html(cabecera);
 }
+
 
 $(document).ready(function() {
     // ...otros listeners...
@@ -57,7 +77,7 @@ $(document).ready(function() {
         var texto = $("#selectParametro").val();
         var mes = $("#selectMes").val();
         var ano = $("#selectAnio").val();
-        generarCabecera(modulo)
+        insertarCabecera($("#modulo").val());
 
          switch(modulo) {
         case "emergencias":
@@ -72,6 +92,13 @@ $(document).ready(function() {
         buscarReporte(modulo, texto, mes, ano);
         console.log(modulo, texto, mes, ano);
     });
+
+    $("#modulo").on("change", function() {
+        insertarCabecera($(this).val());
+    });
+
+    // O al hacer click en el botón de búsqueda:
+   
 });
 
 // Ejemplo de función de búsqueda
@@ -96,8 +123,25 @@ function enviaAjax(datos) {
         dataType: 'json',
         success: function(respuesta) {
             try{
-                if (respuesta.resultado == "listadopersonal") {
+                if (respuesta.resultado == "buscar_emergencias") {
                     console.log("Resultados encontrados");
+                   
+                    var html = '';
+                    respuesta.datos.forEach(function(fila) {
+                        html += `<tr>
+                            <td>${fila.horaingreso}</td>
+                            <td>${fila.fechaingreso}</td>
+                            <td>${fila.motingreso}</td>
+                            <td>${fila.diagnostico_e}</td>
+                            <td>${fila.tratamientos}</td>
+                            <td>${fila.procedimiento}</td>
+                            <td>${fila.cedula_paciente}</td>
+                            <td>${fila.cedula_personal}</td>
+                        </tr>`;
+                    });
+                    $("#resultadoconsulta").html(html);
+                    // Aquí puedes agregar el código para mostrar los resultados
+                    
                 }
                 else {
                     console.log("No se encontraron resultados ", respuesta);
