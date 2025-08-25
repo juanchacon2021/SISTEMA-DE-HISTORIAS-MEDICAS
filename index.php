@@ -1,10 +1,14 @@
 <?php
-$pagina = "principal";
-require_once("vendor/autoload.php");
-if (!empty($_GET['pagina'])){
-    $pagina = $_GET['pagina'];  
+session_start();
+$pagina = $_GET['pagina'] ?? 'principal';
+
+// Si no hay usuario autenticado, forzar login
+if (!isset($_SESSION['usuario']) && $pagina !== 'login') {
+    header("Location: ?pagina=login");
+    exit();
 }
 
+require_once("vendor/autoload.php");
 $nivel = ""; 
 if (is_file("modelo/verifica.php")) {
     require_once("modelo/verifica.php");    

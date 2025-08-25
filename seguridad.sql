@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: seguridad
 -- ------------------------------------------------------
--- Server version	8.4.0
+-- Server version	5.5.5-10.4.32-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -23,18 +23,18 @@ DROP TABLE IF EXISTS `bitacora`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `bitacora` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `usuario_id` int NOT NULL,
-  `modulo_id` int NOT NULL,
-  `accion` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `descripcion` text COLLATE utf8mb4_general_ci,
-  `fecha_hora` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `usuario_id` int(11) NOT NULL,
+  `modulo_id` int(11) NOT NULL,
+  `accion` varchar(100) NOT NULL,
+  `descripcion` text DEFAULT NULL,
+  `fecha_hora` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `usuario_id` (`usuario_id`),
   KEY `modulo_id` (`modulo_id`),
   CONSTRAINT `bitacora_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`),
   CONSTRAINT `bitacora_ibfk_2` FOREIGN KEY (`modulo_id`) REFERENCES `modulo` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `bitacora` (
 
 LOCK TABLES `bitacora` WRITE;
 /*!40000 ALTER TABLE `bitacora` DISABLE KEYS */;
-INSERT INTO `bitacora` VALUES (1,32014004,5,'Modificar','Se ha modificado una publicación','2025-05-23 03:47:41'),(2,32014004,5,'Modificar','Se ha modificado una publicación','2025-05-23 03:48:09'),(3,32014004,5,'Modificar','Se ha modificado una publicación','2025-05-23 03:54:37'),(4,32014004,5,'Modificar','Se ha modificado una publicación','2025-05-23 03:54:43'),(5,32014004,5,'Eliminar','Se ha eliminado una publicación','2025-05-23 03:54:57'),(6,32014005,5,'Registrar','Se ha registrado una publicación','2025-05-23 03:56:05'),(7,32014005,5,'Registrar','Se ha registrado una publicación','2025-05-23 04:33:36'),(8,32014004,5,'Modificar','Se ha modificado una publicación','2025-05-23 18:01:52'),(9,32014005,5,'Eliminar','Se ha eliminado una publicación','2025-05-23 18:02:41'),(10,32014005,5,'Registrar','Se ha registrado una publicación','2025-05-23 18:03:49'),(11,32014005,5,'Eliminar','Se ha eliminado una publicación','2025-05-23 18:04:04'),(12,32014005,5,'Registrar','Se ha registrado una publicación','2025-05-23 18:04:51'),(13,32014007,5,'Registrar','Se ha registrado una publicación','2025-05-23 18:08:50'),(14,32014005,5,'Registrar','Se ha registrado una publicación','2025-05-24 02:01:35'),(15,32014005,5,'Eliminar','Se ha eliminado una publicación','2025-05-24 02:01:54'),(16,32014005,10,'Registrar','Se ha registrado un medicamento','2025-05-24 13:49:03'),(17,32014005,10,'Modificar','Se ha modificado un medicamento','2025-05-24 13:49:10'),(18,32014005,10,'Modificar','Se ha modificado un medicamento','2025-05-24 13:49:20'),(19,32014005,5,'Modificar','Se ha modificado una publicación','2025-05-24 14:28:05'),(20,32014005,5,'Modificar','Se ha modificado una publicación','2025-05-24 14:29:33'),(21,32014004,5,'Modificar','Se ha modificado una publicación','2025-05-24 14:31:57'),(22,32014007,5,'Modificar','Se ha modificado una publicación','2025-05-24 14:32:39'),(23,32014007,7,'Registrar','Se ha registrado un estudiante','2025-05-24 14:33:29');
+INSERT INTO `bitacora` VALUES (32,32014004,1,'modificar','Modificó una historia clínica con cédula: 4234235','2025-05-30 00:22:28'),(34,32014004,5,'Modificar','Se ha modificado una publicación con codigo: 110','2025-05-30 00:30:12'),(36,32014004,2,'modificar','Modificó un personal con cédula: 23045014','2025-05-30 02:00:30'),(40,32014004,9,'eliminar','Eliminó una jornada con código: 3','2025-05-30 03:19:07'),(41,32014004,9,'incluir','Incluyó una nueva jornada con ubicacion: Barquisimeto y fecha: 2025-05-14','2025-05-30 03:19:47'),(42,32014004,9,'modificar','Modificó una jornada con código:  y ubicacion: Barquisimeto','2025-05-30 03:20:00'),(43,32014004,9,'modificar','Modificó una jornada con código:  y ubicacion: Barquisimeto','2025-05-30 03:20:24'),(44,32014004,9,'modificar','Modificó una jornada con código:  y ubicacion: Barquisimeto','2025-05-30 03:20:57'),(45,32014004,9,'modificar','Modificó una jornada con código: 4 y ubicacion: Barquisimeto','2025-05-30 03:31:16'),(46,32014004,9,'modificar','Modificó una jornada con código: 4 y ubicacion: Barquisimeto','2025-05-30 03:31:33'),(48,32014004,9,'modificar','Modificó una jornada con código: 4 y ubicacion: Barquisimeto','2025-05-30 03:46:50'),(49,32014004,9,'modificar','Modificó una jornada con código: 4 y ubicacion: Barquisimeto','2025-05-30 03:56:54'),(50,32014004,9,'modificar','Modificó una jornada con código: 4 y ubicacion: Barquisimeto','2025-05-30 03:57:04'),(51,32014004,9,'modificar','Modificó una jornada con código: 4 y ubicacion: Barquisimeto','2025-05-30 03:59:18'),(52,32014004,9,'modificar','Modificó una jornada con código: 4 y ubicacion: Barquisimeto','2025-05-30 03:59:22'),(53,32014004,9,'modificar','Modificó una jornada con código: 4 y ubicacion: Barquisimeto','2025-05-30 03:59:28'),(54,32014004,9,'modificar','Modificó una jornada con código: 4 y ubicacion: Barquisimeto','2025-05-30 04:00:33'),(55,32014004,9,'modificar','Modificó una jornada con código: 4 y ubicacion: Barquisimeto','2025-05-30 04:00:52'),(56,32014004,9,'modificar','Modificó una jornada con código: 4 y ubicacion: Barquisimeto','2025-05-30 04:07:57'),(62,32014004,2,'incluir','Incluyó un nuevo personal con cédula: 12345678','2025-06-02 02:55:06'),(63,32014004,2,'incluir','Incluyó un nuevo personal con cédula: 1234567','2025-06-02 03:05:47'),(64,32014004,7,'Registrar','Se ha registrado un área con nombre: Cardiologia','2025-06-02 03:16:53'),(65,32014004,7,'Registrar','Se ha registrado un área con nombre: Cardiologia','2025-06-02 03:16:55'),(66,32014004,7,'Registrar','Se ha registrado un área con nombre: cardiologia','2025-06-02 03:37:17'),(68,32014004,7,'Registrar','Se ha registrado un área con nombre: Cardiologia','2025-06-05 02:21:36'),(69,32014004,7,'Registrar','Se ha registrado un área con nombre: Cardiologia','2025-06-05 02:21:50'),(70,32014004,7,'Registrar','Se ha registrado un área con nombre: Cardiologia','2025-06-05 02:21:59'),(71,32014004,7,'Registrar','Se ha registrado un área con nombre: Cardiologia','2025-06-05 02:22:01'),(72,32014004,7,'Registrar','Se ha registrado un área con nombre: Cardiologia','2025-06-05 02:22:27'),(73,32014004,7,'Registrar','Se ha registrado un área con nombre: Cardiologia','2025-06-05 02:23:15'),(74,32014004,7,'Modificar','Se ha modificado un área con código: 1','2025-06-05 02:23:27'),(75,32014004,7,'Registrar','Se ha registrado un estudiante con cédula: 31111553','2025-06-05 02:24:18'),(76,32014004,7,'Modificar','Se ha modificado un estudiante con cédula: 31111553','2025-06-05 02:24:52'),(77,32014004,7,'Modificar','Se ha modificado un estudiante con cédula: 31111553','2025-06-05 02:25:32'),(78,32014004,7,'Registrar','Se ha registrado un estudiante con cédula: 32123213','2025-06-05 02:28:26'),(79,32014004,7,'Modificar','Se ha modificado un estudiante con cédula: 32123213','2025-06-05 02:29:09'),(80,32014004,7,'Eliminar','Se ha eliminado un estudiante con cédula: 31111553','2025-06-05 02:37:56'),(81,32014004,7,'Eliminar','Se ha eliminado un estudiante con cédula: 32123213','2025-06-05 02:37:58'),(82,32014004,7,'Registrar','Se ha registrado un estudiante con cédula: 31111553','2025-06-05 02:38:39'),(83,32014004,7,'Modificar','Se ha modificado un estudiante con cédula: 31111553','2025-06-05 02:38:58'),(84,32014004,7,'Modificar','Se ha modificado un estudiante con cédula: 31111553','2025-06-05 02:39:12'),(86,32014004,7,'Registrar','Se ha registrado un estudiante con cédula: 31111553','2025-06-06 01:30:16'),(87,32014004,7,'Registrar','Se ha registrado asistencia para estudiante: 31111553','2025-06-06 01:43:57'),(88,32014004,7,'Eliminar','Se ha eliminado una asistencia del estudiante con cédula: 31111553','2025-06-06 01:44:01'),(89,32014004,7,'Eliminar','Se ha eliminado una asistencia del estudiante con cédula: 31111553','2025-06-06 01:44:03'),(90,32014004,7,'Eliminar','Se ha eliminado una asistencia del estudiante con cédula: 31111553','2025-06-06 01:44:05'),(91,32014004,7,'Eliminar','Se ha eliminado una asistencia del estudiante con cédula: 31111553','2025-06-06 01:44:08'),(92,32014004,7,'Modificar','Se ha modificado un estudiante con cédula: 31111553','2025-06-06 01:44:37');
 /*!40000 ALTER TABLE `bitacora` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -55,12 +55,12 @@ DROP TABLE IF EXISTS `modulo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `modulo` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `descripcion` text COLLATE utf8mb4_general_ci,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(50) NOT NULL,
+  `descripcion` text DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,7 +69,7 @@ CREATE TABLE `modulo` (
 
 LOCK TABLES `modulo` WRITE;
 /*!40000 ALTER TABLE `modulo` DISABLE KEYS */;
-INSERT INTO `modulo` VALUES (1,'Pacientes','Gestion de Pacientes'),(2,'Personal','Gestion de Personal'),(3,'Examenes','Gestion de Examenes'),(4,'Emergencias','Gestion de Emergencias'),(5,'Planificacion','Gestion de Planificacion'),(6,'Consultas','Gestion de Consultas'),(7,'Pasantías','Gestion de Pasantias'),(8,'Pacientes crónicos','Gestion de Consultas'),(9,'Jornadas','Gestion de Jornadas'),(10,'Inventario','Gestion de Inventario'),(11,'Bitácora','Registro de actividades del sistema'),(12,'Usuarios','Gestion de Usuarios');
+INSERT INTO `modulo` VALUES (1,'Pacientes','Gestion de Pacientes'),(2,'Personal','Gestion de Personal'),(3,'Examenes','Gestion de Examenes'),(4,'Emergencias','Gestion de Emergencias'),(5,'Planificacion','Gestion de Planificacion'),(6,'Consultas','Gestion de Consultas'),(7,'Pasantías','Gestion de Pasantias'),(8,'Pacientes crónicos','Gestion de Consultas'),(9,'Jornadas','Gestion de Jornadas'),(10,'Inventario','Gestion de Inventario'),(11,'Bitácora','Registro de actividades del sistema'),(12,'Usuarios','Gestion de Usuarios'),(13,'Estadistica','Visualizacion de estadisticas del sistema');
 /*!40000 ALTER TABLE `modulo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -81,8 +81,11 @@ DROP TABLE IF EXISTS `permiso`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `permiso` (
-  `rol_id` int NOT NULL,
-  `modulo_id` int NOT NULL,
+  `rol_id` int(11) NOT NULL,
+  `modulo_id` int(11) NOT NULL,
+  `registrar` tinyint(1) DEFAULT 0,
+  `modificar` tinyint(1) DEFAULT 0,
+  `eliminar` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`rol_id`,`modulo_id`),
   KEY `modulo_id` (`modulo_id`),
   CONSTRAINT `permiso_ibfk_1` FOREIGN KEY (`rol_id`) REFERENCES `rol` (`id`) ON DELETE CASCADE,
@@ -96,7 +99,7 @@ CREATE TABLE `permiso` (
 
 LOCK TABLES `permiso` WRITE;
 /*!40000 ALTER TABLE `permiso` DISABLE KEYS */;
-INSERT INTO `permiso` VALUES (1,1),(3,1),(1,2),(3,2),(1,3),(3,3),(1,4),(3,4),(1,5),(3,5),(1,6),(3,6),(4,6),(1,7),(3,7),(1,8),(3,8),(1,9),(3,9),(1,10),(3,10),(1,12),(3,12);
+INSERT INTO `permiso` VALUES (1,1,0,0,0),(1,2,0,0,0),(1,3,0,0,0),(1,4,0,0,0),(1,5,0,0,0),(1,6,0,0,0),(1,7,0,0,0),(1,8,0,0,0),(1,9,0,0,0),(1,10,0,0,0),(1,13,0,0,0),(3,1,0,0,0),(3,2,0,0,0),(3,3,0,0,0),(3,4,0,0,0),(3,5,0,0,0),(3,6,0,0,0),(3,7,0,0,0),(3,8,0,0,0),(3,9,0,0,0),(3,10,0,0,0),(3,11,0,0,0),(3,12,0,0,0),(3,13,0,0,0),(4,3,0,0,0),(4,4,0,0,0),(4,5,0,0,0),(4,6,0,0,0),(4,7,0,0,0),(4,8,0,0,0),(4,9,0,0,0),(4,10,0,0,0),(4,13,0,0,0);
 /*!40000 ALTER TABLE `permiso` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -108,9 +111,9 @@ DROP TABLE IF EXISTS `rol`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `rol` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `descripcion` text COLLATE utf8mb4_general_ci,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(50) NOT NULL,
+  `descripcion` text DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -134,15 +137,15 @@ DROP TABLE IF EXISTS `usuario`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuario` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `rol_id` int NOT NULL,
-  `fecha_creacion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `foto_perfil` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(50) NOT NULL,
+  `cedula_personal` int(11) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `rol_id` int(11) NOT NULL,
+  `fecha_creacion` timestamp NOT NULL DEFAULT current_timestamp(),
+  `foto_perfil` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `email` (`cedula_personal`),
   KEY `rol_id` (`rol_id`),
   CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`rol_id`) REFERENCES `rol` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=32014008 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -154,7 +157,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (32014004,'Miguel Torres','eduinmeneses@gmail.com','$2y$10$PgIc9yAtsajStfxliESh4.HKw8Yf0TK/Cw3trtdNDPwgd8vobqu/O',3,'2025-05-15 04:00:00','6831d82f81b40.png'),(32014005,'Juan Esteban','juanchacon@gmail.com','$2y$10$x4r96.20FzIaeM75XPtiQ.v63OvvRduWOmDI85eff7hrzxq/Q39HS',3,'2025-05-19 16:49:46','6831d84911e98.jpg'),(32014007,'Jose Mendoza','anthoangonzalez@gmail.com','$2y$10$8UULM2PRHVZt0vF3DGegOOvUkRJjz0MazIu/d1KhbJ4tQHaVZBMP2',1,'2025-05-23 18:07:37','6831d81f1adde.jpg');
+INSERT INTO `usuario` VALUES (32014004,'Eduin Meneses',32014004,'$2y$10$PgIc9yAtsajStfxliESh4.HKw8Yf0TK/Cw3trtdNDPwgd8vobqu/O',3,'2025-05-15 04:00:00','6831d82f81b40.png');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -167,4 +170,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-26 23:20:02
+-- Dump completed on 2025-06-07 21:14:02

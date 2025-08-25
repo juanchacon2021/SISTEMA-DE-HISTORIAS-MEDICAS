@@ -71,31 +71,3 @@ function cargarTotalesGenerales() {
     });
 }
 
-function cargarMedicamentosPorVencer() {
-    $.ajax({
-        url: 'index.php?pagina=estadistica',
-        type: 'POST',
-        data: { accion: 'medicamentosPorVencer' },
-        dataType: 'json',
-        success: function(data) {
-            if (data.resultado === 'medicamentosPorVencer' && Array.isArray(data.datos) && data.datos.length > 0) {
-                const top3 = data.datos.slice(0, 3);
-                let html = '';
-                top3.forEach(function(med) {
-                    html += `<li>
-                        <b>${med.medicamento}</b> (Lote: ${med.cod_lote}) - Vence: <span style="color:#b71c1c">${med.fecha_vencimiento}</span>
-                        <span style="color:#b71c1c; font-weight:bold;">[${med.cantidad} unidades]</span>
-                    </li>`;
-                });
-                $("#lista-medicamentos-vencer").html(html);
-                $("#alerta-medicamentos-vencer").show();
-            } else {
-                $("#alerta-medicamentos-vencer").hide();
-            }
-        },
-        error: function(xhr, status, error) {
-            $("#alerta-medicamentos-vencer").hide();
-            console.error("Error al cargar medicamentos por vencer:", error);
-        }
-    });
-}

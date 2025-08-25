@@ -76,41 +76,29 @@ class consultasm extends datos{
 			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 			try {
-				// Iniciar transacción
 				$co->beginTransaction();
 
-				// 1. Llamar al procedimiento almacenado para insertar la consulta
-				$stmtConsulta = $co->prepare("CALL insertar_consulta(
-					:fecha, 
-					:hora, 
-					:consulta, 
-					:diagnostico, 
-					:tratamiento, 
-					:cedula_personal, 
-					:cedula_paciente, 
-					@cod_generado)");
-
+				// 1. Insertar la consulta directamente
+				$stmtConsulta = $co->prepare("INSERT INTO consulta (
+					fechaconsulta, Horaconsulta, consulta, diagnostico, tratamientos, cedula_personal, cedula_paciente
+				) VALUES (?, ?, ?, ?, ?, ?, ?)");
 				$stmtConsulta->execute([
-					':fecha' => $datos['fechaconsulta'],
-					':hora' => $datos['Horaconsulta'],
-					':consulta' => $datos['consulta'],
-					':diagnostico' => $datos['diagnostico'],
-					':tratamiento' => $datos['tratamientos'],
-					':cedula_personal' => $datos['cedula_personal'],
-					':cedula_paciente' => $datos['cedula_paciente']
+					$datos['fechaconsulta'],
+					$datos['Horaconsulta'],
+					$datos['consulta'],
+					$datos['diagnostico'],
+					$datos['tratamientos'],
+					$datos['cedula_personal'],
+					$datos['cedula_paciente']
 				]);
 
-				// Obtener el código generado por el procedimiento
-				$stmtCodigo = $co->query("SELECT @cod_generado AS cod_consulta");
-				$result = $stmtCodigo->fetch(PDO::FETCH_ASSOC);
-				$cod_consulta = $result['cod_consulta'];
+				$cod_consulta = $co->lastInsertId(); // <-- Este valor debe existir en consulta
 
 				// 2. Insertar observaciones (si existen)
 				if (!empty($observaciones) && is_array($observaciones)) {
 					$stmtObservaciones = $co->prepare("INSERT INTO observacion_consulta 
 						(cod_consulta, cod_observacion, observacion) 
 						VALUES (?, ?, ?)");
-
 					foreach ($observaciones as $obs) {
 						if (!empty($obs['cod_observacion']) && isset($obs['observacion'])) {
 							$stmtObservaciones->execute([
@@ -122,15 +110,13 @@ class consultasm extends datos{
 					}
 				}
 
-				// Confirmar transacción
 				$co->commit();
 
 				$r['resultado'] = 'incluir';
 				$r['mensaje'] = 'Registro Incluido';
-				$r['cod_consulta'] = $cod_consulta; // Devuelve el código generado
+				$r['cod_consulta'] = $cod_consulta;
 
 			} catch(Exception $e) {
-				// Revertir en caso de error
 				$co->rollBack();
 				$r['resultado'] = 'error';
 				$r['mensaje'] = $e->getMessage();
@@ -361,12 +347,12 @@ class observaciones extends datos {
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         try {
-            // Llamar al procedimiento simple
-            $stmt = $co->prepare("CALL sp_insertar_observacion_simple(?, @codigo)");
+            // Insertar observación directamente
+            $stmt = $co->prepare("INSERT INTO tipo_observacion (nom_observaciones) VALUES (?)");
             $stmt->execute([$datos['nom_observaciones']]);
 
-            // Obtener código generado
-            $cod_generado = $co->query("SELECT @codigo")->fetchColumn();
+            // Obtener el código generado
+            $cod_generado = $co->lastInsertId();
 
             // Verificar si realmente se insertó
             if($this->existe2($cod_generado)) {
