@@ -428,7 +428,7 @@ function enviaAjax(datos) {
                             <td class="transsanguineo" style="display: none;">${fila.transsanguineo}</td>
                             <td>
                                 <div class="button-containerotro">
-                                    <a type="button" class="btn btn-success" onclick="pone(this,0)"
+                                    <a type="button" class="btn btn-success modificar" onclick="pone(this,0)"
                                         cedula_paciente="${fila.cedula_paciente}"
                                         apellido="${fila.apellido}"
                                         nombre="${fila.nombre}"
@@ -447,7 +447,7 @@ function enviaAjax(datos) {
                                         psicosocial="${fila.psicosocial}">
                                         <img src="img/lapiz.svg" style="width: 20px">
                                     </a>
-                                    <a class="btn btn-danger" href="vista/fpdf/historia.php?cedula_paciente=${fila.cedula_paciente}" target="_blank">
+                                    <a class="btn btn-danger pdf" href="vista/fpdf/historia.php?cedula_paciente=${fila.cedula_paciente}" target="_blank">
                                         <img src="img/descarga.svg" style="width: 20px;">
                                     </a>
                                 </div>
@@ -945,4 +945,71 @@ $("#cedula_paciente").on("input", function() {
     if (this.value.length > 8) {
         this.value = this.value.slice(0, 8);
     }
+});
+
+// Intro.js
+introJs().setOptions({
+    steps: [
+        {
+            element: document.querySelector('.botonverde'),
+            intro: 'Haz click aquí para registrar un nuevo paciente.'
+        },
+        {
+            element: document.querySelector('.botonrojo'),
+            intro: 'Haz click aquí para volver al panel principal.'
+        },
+        {
+            element: document.querySelector('.modificar'),
+            intro: 'Haz click aqui para modificar la informacion del paciente'
+        },
+        {
+            element: document.querySelector('.pdf'),
+            intro: 'Haz click aqui para ver el PDF de la historia clinica'
+        }
+    ],
+    showProgress: true,
+    exitOnOverlayClick: true,
+    showBullets: false,
+    nextLabel: 'Siguiente',
+    prevLabel: 'Anterior',
+    skipLabel: 'X',
+    doneLabel: 'Finalizar'
+}).oncomplete(function() {
+    localStorage.setItem('tutorialPacientesVisto', 'true');
+}).onexit(function() {
+    localStorage.setItem('tutorialPacientesVisto', 'true');
+}).start();
+
+$("#btnTutorial").on("click", function() {
+    introJs().setOptions({
+        steps: [
+            {
+                element: document.querySelector('.botonverde'),
+                intro: 'Haz click aquí para registrar un nuevo paciente.'
+            },
+            {
+                element: document.querySelector('.botonrojo'),
+                intro: 'Haz click aquí para volver al panel principal.'
+            },
+            {
+                element: document.querySelector('.modificar'),
+                intro: 'Haz click aqui para modificar la informacion del paciente'
+            },
+            {
+                element: document.querySelector('.pdf'),
+                intro: 'Haz click aqui para ver el PDF de la historia clinica'
+            }
+        ],
+        showProgress: true,
+        exitOnOverlayClick: true,
+        showBullets: false,
+        nextLabel: 'Siguiente',
+        prevLabel: 'Anterior',
+        skipLabel: 'X',
+        doneLabel: 'Finalizar'
+    }).oncomplete(function() {
+        localStorage.setItem('tutorialPacientesVisto', 'true');
+    }).onexit(function() {
+        localStorage.setItem('tutorialPacientesVisto', 'true');
+    }).start();
 });

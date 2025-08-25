@@ -1020,3 +1020,51 @@ background: linear-gradient(90deg, #ff0000,#ff8080);/* W3C, IE 10+/ Edge, Firefo
     opacity: 1;
     background: #222;
   }
+
+/* INTRO.JS */
+
+/* Cambia el fondo del overlay */
+.introjs-overlay {
+    background: rgba(44, 62, 80, 0.7) !important;
+}
+
+/* Cambia el colrgb(255, 255, 255)rde del tooltip */
+.introjs-tooltip {
+    background: #ffffff !important;
+    color: #222 !important;
+    border-radius: 16px !important;
+    box-shadow: 0 8px 32px 0 rgba(220,38,38,0.15);
+    font-size: 1.1em;
+}
+
+/* Cambia el color del título */
+.introjs-tooltip-title {
+    color: #dc2626 !important;
+    font-weight: bold;
+}
+
+/* Cambia el color de los botones */
+.introjs-button {
+    background: #dc2626 !important;
+    color: #fff !important;
+    border-radius: 8px !important;
+    border: none !important;
+    padding: 8px 18px !important;
+    font-weight: bold;
+}
+
+.introjs-button.introjs-skipbutton,
+.introjs-button.introjs-donebutton {
+    background: #333 !important;
+    color: #fff !important;
+}
+
+/* Cambia el color del paso activo en la barra de progreso */
+.introjs-progressbar {
+    background: #dc2626 !important;
+}
+
+/* Cambia el color del highlight del elemento */
+.introjs-helperLayer {
+    border-radius: 12px !important;
+}

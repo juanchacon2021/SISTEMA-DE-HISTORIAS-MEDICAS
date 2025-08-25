@@ -26,6 +26,11 @@
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/jquery.jscroll.js"></script>
     <script src="chartjs/dist/chart.umd.js"></script>
+
+    <!-- Linea del Intro.js -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js"></script>
+
     <!--Lineas para usar el DataTblet-->
     <link rel="stylesheet" type="text/css" href="datatables/datatables.css"/> 
     <script type="text/javascript" src="datatables/datatables.min.js"></script>
