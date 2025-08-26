@@ -53,12 +53,16 @@ require_once("comunes/notificaciones.php");
                         <div class="cardd mt-3">
                             <div class="card-header">
                                 <div class="row">
-                                    <div class="col-md-6">
-                                    </div>
-                                    <div class="col-md-6 text-right">
-                                        <button type="button" class="btn btn-success" onclick="mostrarModalUsuario('incluir')">
+                                    <div class="col-md-12 botones">
+                                        <button type="button" class="btn botonverde nuevousuario" onclick="mostrarModalUsuario('incluir')">
                                             <i class="fas fa-plus mr-1"></i> Nuevo Usuario
                                         </button>
+                                        
+                                        <button id="btnTutorial" class="botonverde">Comenzar Tutorial</button>
+
+                                        <div class="btn botonrojo">
+                                            <a href="?pagina=principal">Volver</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

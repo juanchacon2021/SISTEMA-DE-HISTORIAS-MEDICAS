@@ -19,24 +19,28 @@ if (!isset($_SESSION['permisos']) || !is_array($_SESSION['permisos'])) {
 }
 ?>
 
+<div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
+    Personal
+</div>
 <div class="wrapper">
-    <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
-        Personal
-    </div>
     <div class="container espacio">
         <section class="content">
             <div class="cardd mt-3">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-md-6">
-                        </div>
-                        <div class="col-md-6 text-right">
+                        <div class="col-md-12 botones">
                             <button type="button" class="btn botonverde" onclick="mostrarModalPersonal('incluir')">
                                 <i class="fas fa-plus me-2"></i>Nuevo Personal
                             </button>
                             <button type="button" class="btn botonreporte">
                                 <a style="color: white;" href='vista/fpdf/personal.php' target='_blank'>Generar Reporte</a>
                             </button>
+                            
+                            <button id="btnTutorial" class="botonverde">Comenzar Tutorial</button>
+
+                            <div class="btn botonrojo">
+                                <a href="?pagina=principal">Volver</a>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -88,65 +88,6 @@ function mostrarFormularioMedicamento() {
     $("#modalMedicamento").modal("show");
 }
 
-// function mostrarFormularioEntradaSalida(cod_medicamento, tipo) {
-//     modoEntradaSalida = tipo;
-//     limpiaFormularioEntradaSalida();
-
-//     var datos = new FormData();
-//     datos.append('accion', 'obtener_medicamento');
-//     datos.append('cod_medicamento', cod_medicamento);
-
-//     $.ajax({
-//         url: '',
-//         type: 'POST',
-//         data: datos,
-//         processData: false,
-//         contentType: false,
-//         dataType: 'json',
-//         success: function(res) {
-//             if (res.resultado === "obtener_medicamento" && res.datos) {
-//                 $("#cod_medicamento_es").val(res.datos.cod_medicamento);
-//                 $("#nombre_medicamento_es").val(res.datos.nombre);
-
-//                 // Calcular stock actual sumando los lotes
-//                 let stockActual = 0;
-//                 if (res.lotes && Array.isArray(res.lotes)) {
-//                     stockActual = res.lotes.reduce((sum, lote) => sum + parseInt(lote.cantidad), 0);
-//                 }
-//                 let stockMin = parseInt(res.datos.stock_min || 0);
-
-//                 $("#cantidad")
-//                     .attr("data-stock-actual", stockActual)
-//                     .attr("data-stock-min", stockMin);
-
-//                 $("#infoStockMaximo").remove();
-
-//                 if (tipo === 'salida') {
-//                     $("#modalEntradaSalidaLabel").text("Registrar Salida de Medicamento");
-//                     $("#btnProcesarEntradaSalida").text("Registrar Salida").removeClass("btn-success").addClass("btn-danger");
-//                     $("#camposEntrada").hide();
-//                     $("#cantidad").after(`<div id="infoStockMaximo" class="text-muted small mt-1">
-//                         Stock actual: ${stockActual}. <b>El stock mínimo permitido es: ${stockMin}</b>.<br>
-//                         No puedes retirar una cantidad que deje el stock por debajo de este valor.
-//                     </div>`);
-//                 } else {
-//                     $("#modalEntradaSalidaLabel").text("Registrar Entrada de Medicamento");
-//                     $("#btnProcesarEntradaSalida").text("Registrar Entrada").removeClass("btn-danger").addClass("btn-success");
-//                     $("#camposEntrada").show();
-//                     // Puedes mostrar aquí el stock mínimo si lo deseas también para entradas
-//                 }
-
-//                 $("#modalEntradaSalida").modal("show");
-//             } else {
-//                 muestraMensaje("No se pudo obtener la información del medicamento", "error");
-//             }
-//         },
-//         error: function() {
-//             muestraMensaje("Error al consultar el medicamento", "error");
-//         }
-//     });
-// }
-
 function editarMedicamento(cod_medicamento) {
     var datos = new FormData();
     datos.append('accion', 'obtener_medicamento');
@@ -524,6 +465,103 @@ $(document).ready(function() {
             </div>`);
         }
     });
+
+
+// INTRO.JS
+
+    introJs().setOptions({
+        steps: [
+                {
+                    element: document.querySelector('.botonverde'),
+                    intro: 'Haz clic aquí para registrar un nuevo medicamento en el inventario.'
+                },
+                {
+                    element: document.querySelector('.botonrojo'),
+                    intro: 'Haz clic aquí para registrar una salida de medicamentos.'
+                },
+                {
+                    element: document.querySelector('.btn.botonrojo a[href="?pagina=principal"]'),
+                    intro: 'Haz clic aquí para volver al panel principal.'
+                },
+                {
+                    element: document.querySelector('#tablaMedicamentos'),
+                    intro: 'Aquí puedes ver el listado de medicamentos registrados.'
+                },
+                {
+                    element: document.querySelector('.modificar'),
+                    intro: 'Haz click aqui para modificar el medicamento'
+                },
+                {
+                    element: document.querySelector('.agregarlote'),
+                    intro: 'Haz click aqui para agregar un lote de medicamento'
+                },
+                {
+                    element: document.querySelector('.eliminar'),
+                    intro: 'Haz click aqui para eliminar un medicamento'
+                },
+                {
+                    element: document.querySelector('#tablaMovimientos'),
+                    intro: 'Aquí puedes ver el historial de movimientos de entrada y salida de medicamentos.'
+                }
+            ],
+            showProgress: true,
+            exitOnOverlayClick: true,
+            showBullets: false,
+            nextLabel: 'Siguiente',
+            prevLabel: 'Anterior',
+            skipLabel: 'X',
+            doneLabel: 'Finalizar'
+    })
+
+    $("#btnTutorial").on("click", function() {
+        introJs().setOptions({
+            steps: [
+                {
+                    element: document.querySelector('.botonverde'),
+                    intro: 'Haz clic aquí para registrar un nuevo medicamento en el inventario.'
+                },
+                {
+                    element: document.querySelector('.botonrojo'),
+                    intro: 'Haz clic aquí para registrar una salida de medicamentos.'
+                },
+                {
+                    element: document.querySelector('.btn.botonrojo a[href="?pagina=principal"]'),
+                    intro: 'Haz clic aquí para volver al panel principal.'
+                },
+                {
+                    element: document.querySelector('#tablaMedicamentos'),
+                    intro: 'Aquí puedes ver el listado de medicamentos registrados.'
+                },
+                {
+                    element: document.querySelector('.modificar'),
+                    intro: 'Haz click aqui para modificar el medicamento'
+                },
+                {
+                    element: document.querySelector('.agregarlote'),
+                    intro: 'Haz click aqui para agregar un lote de medicamento'
+                },
+                {
+                    element: document.querySelector('.eliminar'),
+                    intro: 'Haz click aqui para eliminar un medicamento'
+                },
+                {
+                    element: document.querySelector('#tablaMovimientos'),
+                    intro: 'Aquí puedes ver el historial de movimientos de entrada y salida de medicamentos.'
+                }
+            ],
+            showProgress: true,
+            exitOnOverlayClick: true,
+            showBullets: false,
+            nextLabel: 'Siguiente',
+            prevLabel: 'Anterior',
+            skipLabel: 'X',
+            doneLabel: 'Finalizar'
+        }).oncomplete(function() {
+            localStorage.setItem('tutorialPacientesVisto', 'true');
+        }).onexit(function() {
+            localStorage.setItem('tutorialPacientesVisto', 'true');
+        }).start();
+    });
 });
 
 function muestraMensaje(mensaje) {
@@ -581,13 +619,13 @@ function procesarRespuesta(respuesta) {
                     <td>${fila.unidad_medida}</td>
                     <td>
                         <div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
-                            <a type="button" class="btn btn-success" onclick="editarMedicamento('${fila.cod_medicamento}')">
+                            <a type="button" class="btn btn-success modificar" onclick="editarMedicamento('${fila.cod_medicamento}')">
                                 <img src="img/lapiz.svg" style="width: 20px">
                             </a>
-                            <a type="button" class="btn btn-primary" onclick="mostrarFormularioEntrada('${fila.cod_medicamento}', '${fila.nombre.replace(/'/g, "\\'")}')">
+                            <a type="button" class="btn btn-primary agregarlote" onclick="mostrarFormularioEntrada('${fila.cod_medicamento}', '${fila.nombre.replace(/'/g, "\\'")}')">
                                 <img src="img/mas.svg" style="width: 20px">
                             </a>
-                            <a type="button" class="btn btn-danger" onclick="confirmarEliminacion('${fila.cod_medicamento}')">
+                            <a type="button" class="btn btn-danger eliminar" onclick="confirmarEliminacion('${fila.cod_medicamento}')">
                                 <img src="img/basura.svg" style="width: 20px">
                             </a>
                         </div>

@@ -37,6 +37,8 @@ require_once("comunes/notificaciones.php");
             <div class="btn botonrojo">    
                 <a href="?pagina=principal">Volver</a>
             </div>
+
+            <button id="btnTutorial" class="botonverde ms-2">Comenzar tutorial</button>
         </div>
     </div>
 

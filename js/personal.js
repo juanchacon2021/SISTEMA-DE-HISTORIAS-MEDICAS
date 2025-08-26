@@ -77,10 +77,10 @@ function cargarPersonal() {
                     <td>${personal.cargo}</td>
                     <td class="text-center">
                         <div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
-                            <button type="button" class="btn btn-success" onclick='editarPersonal(${JSON.stringify(personal)})'>
+                            <button type="button" class="btn btn-success modificar" onclick='editarPersonal(${JSON.stringify(personal)})'>
                                 <img src="img/lapiz.svg" style="width: 20px">
                             </button>
-                            <button type="button" class="btn btn-danger" onclick='confirmarEliminar("personal", "${personal.cedula_personal}")'>
+                            <button type="button" class="btn btn-danger eliminar" onclick='confirmarEliminar("personal", "${personal.cedula_personal}")'>
                                 <img src="img/basura.svg" style="width: 20px">
                             </button>
                         </div>
@@ -391,3 +391,77 @@ ws.onerror = function(error) {
 function enviarNotificacion(msg) {
     ws.send(msg);
 }
+
+introJs().setOptions({
+    steps: [
+        {
+            element: document.querySelector('.botonverde'),
+            intro: 'Haz click aquí para registrar un nuevo personal.'
+        },
+        {
+            element: document.querySelector('.botonreporte'),
+            intro: 'Haz click aquí para generar un reporte.'
+        },
+        {
+            element: document.querySelector('.botonrojo'),
+            intro: 'Haz click aquí para volver al panel principal.'
+        },
+        {
+            element: document.querySelector('.modificar'),
+            intro: 'Haz click aqui para modificar la informacion del paciente'
+        },
+        {
+            element: document.querySelector('.eliminar'),
+            intro: 'Haz click aqui para eliminar el registro del personal'
+        }
+    ],
+    showProgress: true,
+    exitOnOverlayClick: true,
+    showBullets: false,
+    nextLabel: 'Siguiente',
+    prevLabel: 'Anterior',
+    skipLabel: 'X',
+    doneLabel: 'Finalizar'
+}).oncomplete(function() {
+    localStorage.setItem('tutorialPacientesVisto', 'true');
+}).onexit(function() {
+    localStorage.setItem('tutorialPacientesVisto', 'true');
+}).start();
+
+$("#btnTutorial").on("click", function() {
+    introJs().setOptions({
+        steps: [
+            {
+                element: document.querySelector('.botonverde'),
+                intro: 'Haz click aquí para registrar un nuevo personal.'
+            },
+            {
+                element: document.querySelector('.botonreporte'),
+                intro: 'Haz click aquí para generar un reporte.'
+            },
+            {
+                element: document.querySelector('.botonrojo'),
+                intro: 'Haz click aquí para volver al panel principal.'
+            },
+            {
+                element: document.querySelector('.modificar'),
+                intro: 'Haz click aqui para modificar la informacion del paciente'
+            },
+            {
+                element: document.querySelector('.eliminar'),
+                intro: 'Haz click aqui para eliminar el registro del personal'
+            }
+        ],
+        showProgress: true,
+        exitOnOverlayClick: true,
+        showBullets: false,
+        nextLabel: 'Siguiente',
+        prevLabel: 'Anterior',
+        skipLabel: 'X',
+        doneLabel: 'Finalizar'
+    }).oncomplete(function() {
+        localStorage.setItem('tutorialPacientesVisto', 'true');
+    }).onexit(function() {
+        localStorage.setItem('tutorialPacientesVisto', 'true');
+    }).start();
+});

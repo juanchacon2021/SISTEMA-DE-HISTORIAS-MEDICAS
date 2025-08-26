@@ -519,12 +519,12 @@ function cargarModulosTabla() {
                     <td>${modulo.descripcion || "N/A"}</td>
                     <td class="text-center">
                         <div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
-                            <button type="button" class="btn btn-success" onclick='editarModulo(${JSON.stringify(
+                            <button type="button" class="btn btn-success modificar" onclick='editarModulo(${JSON.stringify(
                               modulo
                             )})'>
                                 <img src="img/lapiz.svg" style="width: 20px">
                             </button>
-                            <button type="button" class="btn btn-danger" onclick='confirmarEliminar("modulo", "${
+                            <button type="button" class="btn btn-danger eliminar" onclick='confirmarEliminar("modulo", "${
                               modulo.id
                             }")'>
                                 <img src="img/basura.svg" style="width: 20px">
@@ -957,3 +957,38 @@ ws.onerror = function(error) {
 function enviarNotificacion(msg) {
     ws.send(msg);
 }
+
+
+$("#btnTutorial").on("click", function() {
+    introJs().setOptions({
+        steps: [
+            {
+                element: document.querySelector('.nuevousuario'),
+                intro: 'Haz click aquí para registrar un nuevo usuario.'
+            },
+            {
+                element: document.querySelector('.botonrojo'),
+                intro: 'Haz click aquí para volver al panel principal.'
+            },
+            {
+                element: document.querySelector('.modificar'),
+                intro: 'Haz click aqui para modificar la informacion del paciente'
+            },
+            {
+                element: document.querySelector('.eliminar'),
+                intro: 'Haz click aqui para eliminar el registro del personal'
+            }
+        ],
+        showProgress: true,
+        exitOnOverlayClick: true,
+        showBullets: false,
+        nextLabel: 'Siguiente',
+        prevLabel: 'Anterior',
+        skipLabel: 'X',
+        doneLabel: 'Finalizar'
+    }).oncomplete(function() {
+        localStorage.setItem('tutorialPacientesVisto', 'true');
+    }).onexit(function() {
+        localStorage.setItem('tutorialPacientesVisto', 'true');
+    }).start();
+});
