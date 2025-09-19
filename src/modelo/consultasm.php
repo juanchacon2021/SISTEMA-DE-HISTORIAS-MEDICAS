@@ -78,10 +78,8 @@ class consultasm extends datos{
 			try {
 				$co->beginTransaction();
 
-				// 1. Insertar la consulta directamente
-				$stmtConsulta = $co->prepare("INSERT INTO consulta (
-					fechaconsulta, Horaconsulta, consulta, diagnostico, tratamientos, cedula_personal, cedula_paciente
-				) VALUES (?, ?, ?, ?, ?, ?, ?)");
+				// 1. Llamar al procedimiento almacenado para insertar la consulta
+				$stmtConsulta = $co->prepare("CALL insertar_consulta(?, ?, ?, ?, ?, ?, ?, @cod_generado)");
 				$stmtConsulta->execute([
 					$datos['fechaconsulta'],
 					$datos['Horaconsulta'],
@@ -92,7 +90,10 @@ class consultasm extends datos{
 					$datos['cedula_paciente']
 				]);
 
-				$cod_consulta = $co->lastInsertId(); // <-- Este valor debe existir en consulta
+				// Obtener el código generado por el procedimiento
+				$stmtCodigo = $co->query("SELECT @cod_generado as cod_consulta");
+				$resultadoCodigo = $stmtCodigo->fetch(PDO::FETCH_ASSOC);
+				$cod_consulta = $resultadoCodigo['cod_consulta'];
 
 				// 2. Insertar observaciones (si existen)
 				if (!empty($observaciones) && is_array($observaciones)) {
@@ -341,35 +342,38 @@ class observaciones extends datos {
 
 
 
-    function incluir2($datos) {
-        $r = array();
-        $co = $this->conecta();
-        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	function incluir2($datos) {
+		$r = array();
+		$co = $this->conecta();
+		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        try {
-            // Insertar observación directamente
-            $stmt = $co->prepare("INSERT INTO tipo_observacion (nom_observaciones) VALUES (?)");
-            $stmt->execute([$datos['nom_observaciones']]);
+		try {
+			// Llamar al procedimiento almacenado para insertar la observación y generar el código
+			$stmt = $co->prepare("CALL sp_insertar_observacion_simple(?, @cod_generado)");
+			$stmt->execute([$datos['nom_observaciones']]);
+			$stmt->closeCursor();
 
-            // Obtener el código generado
-            $cod_generado = $co->lastInsertId();
+			// Obtener el código generado por el procedimiento
+			$stmtCod = $co->query("SELECT @cod_generado AS cod_observacion");
+			$cod_generado = $stmtCod->fetchColumn();
 
-            // Verificar si realmente se insertó
-            if($this->existe2($cod_generado)) {
-                $r['resultado'] = 'agregar';
-                $r['mensaje'] = 'Registro Incluido';
-            } else {
-                $r['resultado'] = 'error';
-                $r['mensaje'] = 'No se pudo generar el código';
-            }
+			// Verificar si realmente se insertó
+			if($this->existe2($cod_generado)) {
+				$r['resultado'] = 'agregar';
+				$r['mensaje'] = 'Registro Incluido';
+				$r['cod_observacion'] = $cod_generado;
+			} else {
+				$r['resultado'] = 'error';
+				$r['mensaje'] = 'No se pudo generar el código';
+			}
 
-        } catch(Exception $e) {
-            $r['resultado'] = 'error';
-            $r['mensaje'] = $e->getMessage();
-        }
+		} catch(Exception $e) {
+			$r['resultado'] = 'error';
+			$r['mensaje'] = $e->getMessage();
+		}
 
-        return $r;
-    }
+		return $r;
+	}
 
 
     function eliminar2($datos){
