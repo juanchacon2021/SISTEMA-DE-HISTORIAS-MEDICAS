@@ -665,6 +665,534 @@ LOCK TABLES `tipo_observacion` WRITE;
 INSERT INTO `tipo_observacion` VALUES ('Ox00000002','pureba_2'),('Ox00000003','Prueba_3'),('Ox00000004','Prueba_1'),('Ox00000005','prueba_4'),('Ox00000006','prueba'),('Ox00000007','cardiovacular');
 /*!40000 ALTER TABLE `tipo_observacion` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping events for database 'sgm'
+--
+
+--
+-- Dumping routines for database 'sgm'
+--
+/*!50003 DROP PROCEDURE IF EXISTS `insertar_area_pasantia` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_area_pasantia`(
+    IN p_nombre_area VARCHAR(50),
+    IN p_descripcion VARCHAR(200),
+    IN p_cedula_responsable INT,
+    OUT p_cod_generado VARCHAR(10)
+)
+BEGIN
+    DECLARE v_ultimo_numero INT DEFAULT 0;
+    DECLARE v_nuevo_codigo VARCHAR(10);
+    
+    -- Obtener el último número usado en códigos que empiezan con 'AP'
+    SELECT IFNULL(MAX(CAST(SUBSTRING(cod_area, 3) AS UNSIGNED)), 0)
+    INTO v_ultimo_numero
+    FROM areas_pasantias
+    WHERE cod_area LIKE 'Ax%';
+    
+    -- Generar nuevo código (AP001, AP002, etc.)
+    SET v_nuevo_codigo = CONCAT('Ax', LPAD(v_ultimo_numero + 1, 8, '0'));
+    
+    -- Insertar nueva área de pasantía
+    INSERT INTO areas_pasantias(
+        cod_area,
+        nombre_area,
+        descripcion,
+        cedula_responsable
+    ) VALUES (
+        v_nuevo_codigo,
+        p_nombre_area,
+        p_descripcion,
+        p_cedula_responsable
+    );
+    
+    -- Devolver el código generado
+    SET p_cod_generado = v_nuevo_codigo;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `insertar_consulta` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_consulta`(
+    IN p_fecha DATE,
+    IN p_hora VARCHAR(7),
+    IN p_consulta TEXT,
+    IN p_diagnostico TEXT,
+    IN p_tratamiento TEXT,
+    IN p_cedula_personal INT,
+    IN p_cedula_paciente INT,
+    OUT p_cod_generado VARCHAR(30)
+)
+BEGIN
+
+    DECLARE v_ultimo_numero INT DEFAULT 0;
+    DECLARE v_nuevo_codigo VARCHAR(10);
+    
+	SELECT IFNULL(MAX(CAST(SUBSTRING(cod_consulta, 3) AS UNSIGNED)), 0)
+    INTO v_ultimo_numero
+    FROM consulta
+    WHERE cod_consulta LIKE 'Cx%';
+    
+     SET v_nuevo_codigo = CONCAT('Cx', LPAD(v_ultimo_numero + 1, 8, '0'));
+
+    
+    -- Insertar consulta principal
+    INSERT INTO consulta(
+        cod_consulta,
+        fechaconsulta,
+        Horaconsulta,
+        consulta,
+        diagnostico,
+        tratamientos,
+        cedula_personal,
+        cedula_paciente
+    ) VALUES (
+        v_nuevo_codigo,
+        p_fecha,
+        p_hora,
+        p_consulta,
+        p_diagnostico,
+        p_tratamiento,
+        p_cedula_personal,
+        p_cedula_paciente
+    );
+    
+    -- Las observaciones se insertarán después desde PHP
+    SET p_cod_generado = v_nuevo_codigo;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `insertar_jornada_medica` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_jornada_medica`(
+    IN p_fecha_jornada DATE,
+    IN p_ubicacion VARCHAR(255),
+    IN p_descripcion TEXT,
+    IN p_total_pacientes INT,
+    IN p_pacientes_masculinos INT,
+    IN p_pacientes_femeninos INT,
+    IN p_pacientes_embarazadas INT,
+    OUT p_cod_generado VARCHAR(30)
+)
+BEGIN
+    DECLARE v_ultimo_numero INT DEFAULT 0;
+    DECLARE v_nuevo_codigo VARCHAR(30);
+    
+    -- Obtener el último número usado en códigos que empiezan con 'JM'
+    SELECT IFNULL(MAX(CAST(SUBSTRING(cod_jornada, 3) AS UNSIGNED)), 0)
+    INTO v_ultimo_numero
+    FROM jornadas_medicas
+    WHERE cod_jornada LIKE 'Jx%';
+    
+    -- Generar nuevo código (JM000001, JM000002, etc.)
+    SET v_nuevo_codigo = CONCAT('Jx', LPAD(v_ultimo_numero + 1, 8, '0'));
+    
+    -- Insertar nueva jornada médica
+    INSERT INTO jornadas_medicas(
+        cod_jornada,
+        fecha_jornada,
+        ubicacion,
+        descripcion,
+        total_pacientes,
+        pacientes_masculinos,
+        pacientes_femeninos,
+        pacientes_embarazadas
+    ) VALUES (
+        v_nuevo_codigo,
+        p_fecha_jornada,
+        p_ubicacion,
+        p_descripcion,
+        p_total_pacientes,
+        p_pacientes_masculinos,
+        p_pacientes_femeninos,
+        p_pacientes_embarazadas
+    );
+    
+    -- Devolver el código generado
+    SET p_cod_generado = v_nuevo_codigo;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `insertar_lote` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_lote`(
+    IN p_cantidad INT,
+    IN p_fecha_vencimiento DATE,
+    IN p_proveedor VARCHAR(50),
+    IN p_cod_medicamento VARCHAR(30),
+    IN p_cedula_personal INT,
+    OUT p_cod_generado VARCHAR(30)
+)
+BEGIN
+    DECLARE v_ultimo_numero INT DEFAULT 0;
+    DECLARE v_nuevo_codigo VARCHAR(30);
+    
+    -- Obtener el último número de lote
+    SELECT IFNULL(MAX(CAST(SUBSTRING(cod_lote, 3) AS UNSIGNED)), 0)
+    INTO v_ultimo_numero
+    FROM lotes
+    WHERE cod_lote LIKE 'Lx%';
+    
+    -- Generar nuevo código (LOT0001, LOT0002, etc.)
+    SET v_nuevo_codigo = CONCAT('Lx', LPAD(v_ultimo_numero + 1, 8, '0'));
+    
+    -- Insertar nuevo lote
+    INSERT INTO lotes(
+        cod_lote,
+        cantidad,
+        fecha_vencimiento,
+        proveedor,
+        cod_medicamento,
+        cedula_personal
+    ) VALUES (
+        v_nuevo_codigo,
+        p_cantidad,
+        p_fecha_vencimiento,
+        p_proveedor,
+        p_cod_medicamento,
+        p_cedula_personal
+    );
+    
+    -- Devolver el código generado
+    SET p_cod_generado = v_nuevo_codigo;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `insertar_medicamento` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_medicamento`(
+    IN p_nombre VARCHAR(50),
+    IN p_descripcion VARCHAR(200),
+    IN p_unidad_medida VARCHAR(20),
+    IN p_stock_min INT,
+    OUT p_cod_generado VARCHAR(30)
+)
+BEGIN
+    DECLARE v_ultimo_numero INT DEFAULT 0;
+    DECLARE v_nuevo_codigo VARCHAR(30);
+
+    SELECT IFNULL(MAX(CAST(SUBSTRING(cod_medicamento, 3) AS UNSIGNED)), 0)
+    INTO v_ultimo_numero
+    FROM medicamentos
+    WHERE cod_medicamento LIKE 'Mx%';
+
+    SET v_nuevo_codigo = CONCAT('Mx', LPAD(v_ultimo_numero + 1, 8, '0'));
+
+    INSERT INTO medicamentos(
+        cod_medicamento,
+        nombre,
+        descripcion,
+        unidad_medida,
+        stock_min
+    ) VALUES (
+        v_nuevo_codigo,
+        p_nombre,
+        p_descripcion,
+        p_unidad_medida,
+        p_stock_min
+    );
+
+    SET p_cod_generado = v_nuevo_codigo;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `insertar_patologia` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_patologia`(
+    IN p_nombre_patologia VARCHAR(100),
+    OUT p_cod_generado VARCHAR(30)
+)
+BEGIN
+    DECLARE v_ultimo_numero INT DEFAULT 0;
+    DECLARE v_nuevo_codigo VARCHAR(30);
+    
+    -- Obtener el último número usado en códigos que empiezan con 'Px'
+    SELECT IFNULL(MAX(CAST(SUBSTRING(cod_patologia, 3) AS UNSIGNED)), 0)
+    INTO v_ultimo_numero
+    FROM patologia
+    WHERE cod_patologia LIKE 'Px%';
+    
+    -- Generar nuevo código (Px00000001, Px00000002, etc.)
+    SET v_nuevo_codigo = CONCAT('Px', LPAD(v_ultimo_numero + 1, 8, '0'));
+    
+    -- Insertar nueva patología
+    INSERT INTO patologia(
+        cod_patologia,
+        nombre_patologia
+    ) VALUES (
+        v_nuevo_codigo,
+        p_nombre_patologia
+    );
+    
+    -- Devolver el código generado
+    SET p_cod_generado = v_nuevo_codigo;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `insertar_publicacion_feed` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_publicacion_feed`(
+    IN p_contenido VARCHAR(300),
+    IN p_imagen TEXT,
+    IN p_cedula_personal INT,
+    OUT p_cod_generado VARCHAR(30)
+)
+BEGIN
+    DECLARE v_ultimo_numero INT DEFAULT 0;
+    DECLARE v_nuevo_codigo VARCHAR(30);
+    DECLARE v_fecha_actual DATETIME;
+    
+    -- Obtener el último número usado en códigos que empiezan con 'Px'
+    SELECT IFNULL(MAX(CAST(SUBSTRING(cod_pub, 3) AS UNSIGNED)), 0)
+    INTO v_ultimo_numero
+    FROM feed
+    WHERE cod_pub LIKE 'fx%';
+    
+    -- Generar nuevo código (Px00000001, Px00000002, etc.)
+    SET v_nuevo_codigo = CONCAT('fx', LPAD(v_ultimo_numero + 1, 8, '0'));
+    
+    -- Obtener fecha y hora actual
+    SET v_fecha_actual = NOW();
+    
+    -- Insertar nueva publicación
+    INSERT INTO feed(
+        cod_pub,
+        fecha,
+        contenido,
+        imagen,
+        cedula_personal
+    ) VALUES (
+        v_nuevo_codigo,
+        v_fecha_actual,
+        p_contenido,
+        p_imagen,
+        p_cedula_personal
+    );
+    
+    -- Devolver el código generado
+    SET p_cod_generado = v_nuevo_codigo;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `insertar_tipo_examen` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_tipo_examen`(
+    IN p_nombre_examen VARCHAR(100),
+    IN p_descripcion_examen VARCHAR(300),
+    OUT p_cod_generado VARCHAR(30)
+)
+BEGIN
+    DECLARE v_ultimo_numero INT DEFAULT 0;
+    DECLARE v_nuevo_codigo VARCHAR(30);
+    
+    -- Obtener el último número usado en códigos que empiezan con 'EX'
+    SELECT IFNULL(MAX(CAST(SUBSTRING(cod_examen, 3) AS UNSIGNED)), 0)
+    INTO v_ultimo_numero
+    FROM tipo_de_examen
+    WHERE cod_examen LIKE 'Ex%';
+    
+    -- Generar nuevo código (EX000001, EX000002, etc.)
+    SET v_nuevo_codigo = CONCAT('Ex', LPAD(v_ultimo_numero + 1, 8, '0'));
+    
+    -- Insertar nuevo tipo de examen
+    INSERT INTO tipo_de_examen(
+        cod_examen,
+        nombre_examen,
+        descripcion_examen
+    ) VALUES (
+        v_nuevo_codigo,
+        p_nombre_examen,
+        p_descripcion_examen
+    );
+    
+    -- Devolver el código generado
+    SET p_cod_generado = v_nuevo_codigo;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `registrar_salida_medicamento` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `registrar_salida_medicamento`(
+    IN p_fecha DATE,
+    IN p_hora VARCHAR(7),
+    IN p_cedula_personal INT,
+    OUT p_cod_salida VARCHAR(30)
+)
+BEGIN
+    DECLARE v_ultimo_numero INT DEFAULT 0;
+    DECLARE v_nuevo_codigo VARCHAR(30);
+    
+    -- Obtener el último número de salida
+    SELECT IFNULL(MAX(CAST(SUBSTRING(cod_salida, 3) AS UNSIGNED)), 0)
+    INTO v_ultimo_numero
+    FROM salida_medicamento
+    WHERE cod_salida LIKE 'Sx%';
+    
+    -- Generar nuevo código (SAL0001, SAL0002, etc.)
+    SET v_nuevo_codigo = CONCAT('Sx', LPAD(v_ultimo_numero + 1, 8, '0'));
+    
+    -- Insertar nueva salida
+    INSERT INTO salida_medicamento(
+        cod_salida,
+        fecha,
+        hora,
+        cedula_personal
+    ) VALUES (
+        v_nuevo_codigo,
+        p_fecha,
+        p_hora,
+        p_cedula_personal
+    );
+    
+    -- Devolver el código generado
+    SET p_cod_salida = v_nuevo_codigo;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `sp_insertar_observacion_simple` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_insertar_observacion_simple`(
+    IN p_nom_observaciones VARCHAR(30),
+    OUT p_cod_generado VARCHAR(10)
+)
+BEGIN
+    DECLARE v_ultimo_numero INT DEFAULT 0;
+    DECLARE v_nuevo_codigo VARCHAR(10);
+    
+    -- Obtener el último número usado
+    SELECT IFNULL(MAX(CAST(SUBSTRING(cod_observacion, 3) AS UNSIGNED)), 0)
+    INTO v_ultimo_numero
+    FROM tipo_observacion
+    WHERE cod_observacion LIKE 'Ox%';
+    
+    -- Generar nuevo código
+    SET v_nuevo_codigo = CONCAT('Ox', LPAD(v_ultimo_numero + 1, 8, '0'));
+    
+    -- Insertar solo si no existe (por si acaso)
+    INSERT INTO tipo_observacion(cod_observacion, nom_observaciones)
+    SELECT v_nuevo_codigo, p_nom_observaciones
+    FROM dual
+    WHERE NOT EXISTS (
+        SELECT 1 FROM tipo_observacion 
+        WHERE cod_observacion = v_nuevo_codigo
+    );
+    
+    -- Devolver el código generado (aunque no se haya insertado)
+    SET p_cod_generado = v_nuevo_codigo;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -675,4 +1203,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-07-26 11:14:06
+-- Dump completed on 2025-09-18 21:50:41

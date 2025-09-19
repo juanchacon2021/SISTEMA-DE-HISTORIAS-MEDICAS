@@ -33,7 +33,7 @@
                 <a href="?pagina=principal">Volver</a>
             </div>
             
-            <button id="btnTutorial" class="botonverde">Comenzar tutorial</button>
+            <button id="btnTutorial" class="botonverde">Comenzar Tutorial</button>
         </div>
     </div>
     <div class="container">
