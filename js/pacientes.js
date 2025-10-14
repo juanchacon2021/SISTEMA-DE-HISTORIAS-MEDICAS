@@ -948,37 +948,37 @@ $("#cedula_paciente").on("input", function() {
 });
 
 // Intro.js
-introJs().setOptions({
-    steps: [
-        {
-            element: document.querySelector('.botonverde'),
-            intro: 'Haz click aquí para registrar un nuevo paciente.'
-        },
-        {
-            element: document.querySelector('.botonrojo'),
-            intro: 'Haz click aquí para volver al panel principal.'
-        },
-        {
-            element: document.querySelector('.modificar'),
-            intro: 'Haz click aqui para modificar la informacion del paciente'
-        },
-        {
-            element: document.querySelector('.pdf'),
-            intro: 'Haz click aqui para ver el PDF de la historia clinica'
-        }
-    ],
-    showProgress: true,
-    exitOnOverlayClick: true,
-    showBullets: false,
-    nextLabel: 'Siguiente',
-    prevLabel: 'Anterior',
-    skipLabel: 'X',
-    doneLabel: 'Finalizar'
-}).oncomplete(function() {
-    localStorage.setItem('tutorialPacientesVisto', 'true');
-}).onexit(function() {
-    localStorage.setItem('tutorialPacientesVisto', 'true');
-}).start();
+// introJs().setOptions({
+//     steps: [
+//         {
+//             element: document.querySelector('.botonverde'),
+//             intro: 'Haz click aquí para registrar un nuevo paciente.'
+//         },
+//         {
+//             element: document.querySelector('.botonrojo'),
+//             intro: 'Haz click aquí para volver al panel principal.'
+//         },
+//         {
+//             element: document.querySelector('.modificar'),
+//             intro: 'Haz click aqui para modificar la informacion del paciente'
+//         },
+//         {
+//             element: document.querySelector('.pdf'),
+//             intro: 'Haz click aqui para ver el PDF de la historia clinica'
+//         }
+//     ],
+//     showProgress: true,
+//     exitOnOverlayClick: true,
+//     showBullets: false,
+//     nextLabel: 'Siguiente',
+//     prevLabel: 'Anterior',
+//     skipLabel: 'X',
+//     doneLabel: 'Finalizar'
+// }).oncomplete(function() {
+//     localStorage.setItem('tutorialPacientesVisto', 'true');
+// }).onexit(function() {
+//     localStorage.setItem('tutorialPacientesVisto', 'true');
+// }).start();
 
 $("#btnTutorial").on("click", function() {
     introJs().setOptions({
