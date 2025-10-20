@@ -334,7 +334,7 @@ class patologias extends datos{
 			$stmt->execute();
 			
 			// Manteniendo tu lógica original con fetchAll()
-			$fila = $stmt->fetchAll(PDO::FETCH_BOTH);
+			$fila = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			
 			return !empty($fila); // Retorna true si hay resultados, false si no
 				

@@ -1,14 +1,17 @@
 <?php
 use PHPUnit\Framework\TestCase;
 use Shm\Shm\modelo\emergencias;
+
+
+
 class testemergencia extends TestCase{
 
     private $resultado;
+
     public function setUp(): void {
         $this->resultado = new emergencias();
     }
-
-    public function testListadopersonalReturnsArray(){
+    public function testListadopersonal(){
         $emergencias = new emergencias();
         $resultado = $emergencias->listadopersonal();
 
@@ -20,7 +23,7 @@ class testemergencia extends TestCase{
     }
 
 
-    public function testlistadopacientesReturnsArray(){
+    public function testlistadopacientes(){
         $emergencias = new emergencias();
         $resultado = $emergencias->listadopacientes();
 
@@ -31,8 +34,10 @@ class testemergencia extends TestCase{
         $this->assertIsArray($resultado['datos']);
     }
 
-    public function testIncluirReturnsArray(){
+    public function testIncluir(){
         $emergencias = new emergencias();
+
+
         $datos = [
             'horaingreso' => '12:00',
             'fechaingreso' => '2025-09-16',
@@ -48,11 +53,12 @@ class testemergencia extends TestCase{
 
         $this->assertIsArray($resultado);
         $this->assertArrayHasKey('resultado', $resultado);
+        $this->assertEquals('incluir', $resultado['resultado']);
         $this->assertArrayHasKey('mensaje', $resultado);
-        $this->assertContains($resultado['resultado'], ['incluir', 'error']);
+        $this->assertEquals('Registro Incluido', $resultado['mensaje']);
     }
 
-    public function testExisteReturnsTrueForExistingRecord(){
+    public function testExiste(){
         $emergencias = new emergencias();
         // Usa los mismos datos que insertaste en testIncluirReturnsArray
         $cedula_paciente = 10000001;
@@ -70,7 +76,8 @@ class testemergencia extends TestCase{
         $this->assertTrue($resultado);
     }
 
-    public function testModificarReturnsArray(){
+
+    public function testModificar(){
         $emergencias = new emergencias();
         // Datos originales (debe existir en la BD, igual al testIncluir)
         $datos = [
@@ -92,11 +99,12 @@ class testemergencia extends TestCase{
 
         $this->assertIsArray($resultado);
         $this->assertArrayHasKey('resultado', $resultado);
+        $this->assertEquals('modificar', $resultado['resultado']);
         $this->assertArrayHasKey('mensaje', $resultado);
-        $this->assertContains($resultado['resultado'], ['modificar', 'error']);
-    }    
+        $this->assertEquals('Registro Modificado', $resultado['mensaje']);
+    }
 
-    public function testEliminarReturnsArray(){
+    public function testEliminar(){
         $emergencias = new emergencias();
         $datos = [
             'cedula_paciente' => 10000001,
@@ -109,9 +117,10 @@ class testemergencia extends TestCase{
 
         $this->assertIsArray($resultado);
         $this->assertArrayHasKey('resultado', $resultado);
+        $this->assertEquals('eliminar', $resultado['resultado']);
         $this->assertArrayHasKey('mensaje', $resultado);
-        $this->assertContains($resultado['resultado'], ['eliminar', 'error']);
-    }
+        $this->assertEquals('Registro Eliminado', $resultado['mensaje']);
+    } 
 
 
 }

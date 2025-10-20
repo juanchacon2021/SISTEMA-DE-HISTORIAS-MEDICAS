@@ -15,7 +15,7 @@ class testconsultasm extends TestCase{
         $this->observaciones = new observaciones();
     }
 
-    public function testListadopersonalReturnsArray(){
+    public function testListadopersonal(){
         $resultado = $this->consultasm->listadopersonal();
 
         $this->assertIsArray($resultado);
@@ -25,7 +25,7 @@ class testconsultasm extends TestCase{
         $this->assertIsArray($resultado['datos']);
     }
 
-    public function testListadopacientesReturnsArray(){
+    public function testListadopacientes(){
         $resultado = $this->consultasm->listadopacientes();
 
         $this->assertIsArray($resultado);
@@ -35,7 +35,7 @@ class testconsultasm extends TestCase{
         $this->assertIsArray($resultado['datos']);
     }
 
-    public function testConsultarReturnsArray(){
+    public function testConsultar(){
         $resultado = $this->consultasm->consultar();
 
         $this->assertIsArray($resultado);
@@ -46,8 +46,9 @@ class testconsultasm extends TestCase{
     }
 
   
-    public function testIncluirConsultaGeneraCodigoCorrectoYGuarda(){
+    public function testIncluirConsulta(){
         $datos = [
+            'cod_consulta' => 'Cx' . uniqid(),
             'fechaconsulta' => '2025-09-18',
             'Horaconsulta' => '09:00',
             'consulta' => 'Consulta PHPUnit',
@@ -62,13 +63,19 @@ class testconsultasm extends TestCase{
         ];
         $resultado = $this->consultasm->incluir($datos, $observaciones);
 
-        // Guarda el código para otros tests
-        self::$cod_consulta = $resultado['cod_consulta'];
-    }
+        $this->assertIsArray($resultado);
+        $this->assertArrayHasKey('resultado', $resultado);
+        $this->assertEquals('incluir', $resultado['resultado']);
+        $this->assertArrayHasKey('mensaje', $resultado);
+        $this->assertEquals('Registro Incluido', $resultado['mensaje']);
 
-    public function testExisteReturnsTrueForExistingRecord(){
+        // Guarda el código para otros tests
+         self::$cod_consulta = $resultado['cod_consulta'];
+    }
+ 
+    public function testExiste(){
         // Usa los mismos datos que insertaste en testIncluirConsultaGeneraCodigoCorrectoYGuarda
-        $cod_consulta = 'Cx00000001';
+        $cod_consulta = self::$cod_consulta;
 
         $reflection = new \ReflectionClass($this->consultasm);
         $method = $reflection->getMethod('existe');
@@ -80,7 +87,7 @@ class testconsultasm extends TestCase{
     }
 
 
-   public function testModificarConsultaModificaDatosDeIncluir(){
+   public function testModificarConsulta(){
         // Usa el código generado en el test de inclusión
         $cod_consulta = self::$cod_consulta;
 
@@ -107,7 +114,7 @@ class testconsultasm extends TestCase{
         $this->assertEquals($cod_consulta, $resultado_modificar['cod_consulta']);
     }
 
-    public function testEliminarConsultaEliminaObservacionesYConsulta(){
+    public function testEliminarConsulta(){
         // Usa el código generado en el test de inclusión
         $cod_consulta = self::$cod_consulta;
 
@@ -131,7 +138,7 @@ class testconsultasm extends TestCase{
 
     //este test es para las operaciones CRUD de consultas medicas
 
-    public function testListadoObservacionesReturnsArray(){
+    public function testListadoObservaciones(){
         $resultado = $this->observaciones->listado_observaciones();
 
         $this->assertIsArray($resultado);
@@ -141,7 +148,7 @@ class testconsultasm extends TestCase{
         $this->assertIsArray($resultado['datos']);
     }
 
-    public function testIncluir2AgregaObservacionCorrectamente(){
+    public function testIncluirObservacion(){
         $datos = [
             'nom_observaciones' => 'Observación de prueba PHPUnit'
         ];
@@ -160,7 +167,7 @@ class testconsultasm extends TestCase{
     }
 
 
-    public function testExiste2ReturnsTrueForExistingObservacion(){
+    public function testExisteObservacion(){
         // Usa el código generado en el test anterior
         $cod_observacion = self::$cod_observacion;
 
@@ -172,7 +179,7 @@ class testconsultasm extends TestCase{
 
         $this->assertTrue($existe, "La observación con código $cod_observacion debería existir.");
     }
-    public function testModificar2ActualizaObservacionCorrectamente(){
+    public function testModificarObservacion(){
         // Usa el código generado en el test de inclusión
         $cod_observacion = self::$cod_observacion;
 
@@ -195,7 +202,7 @@ class testconsultasm extends TestCase{
         $this->assertEquals('Observación modificada PHPUnit', $nom_observaciones);
     }
 
-    public function testEliminar2EliminaObservacionCorrectamente(){
+    public function testEliminarObservacion(){
     // Usa el código generado en el test de inclusión
     $cod_observacion = self::$cod_observacion;
 
