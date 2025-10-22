@@ -1,2 +1,15 @@
 
-/vendor/
+vendor/
+vendor/composer/autoload_classmap.php
+vendor/composer/autoload_static.php
+vendor/composer/installed.json
+vendor/composer/installed.php
+vendor/composer/platform_check.php
+vendor/guzzlehttp/psr7
+vendor/phrity/util-errorhandler
+vendor/psr/http-message
+vendor/react/promise
+vendor/setasign/fpdf
+vendor/symfony/http-foundation
+vendor/symfony/polyfill-php83
+vendor/symfony/routing
