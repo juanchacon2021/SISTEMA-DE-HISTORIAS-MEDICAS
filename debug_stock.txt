@@ -1,0 +1,2 @@
+2025-10-22 04:51:12 | cod_medicamento: Mx00000002 | stock: 0 | stock_min: 8 | cantidad_salida: 1
+2025-10-22 05:03:18 | cod_medicamento: Mx00000005 | stock: 0 | stock_min: 0 | cantidad_salida: 1
