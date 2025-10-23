@@ -594,7 +594,7 @@ function enviaAjax(datos) {
 
 				   <td>
 					   <div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
-						   <a type="button" class="btn btn-success" onclick="pone(this,0)"
+						   <a type="button" class="btn btn-success modificar" onclick="pone(this,0)"
 							   horaingreso="${fila.horaingreso}"
 							   fechaingreso="${fila.fechaingreso}"
 							   motingreso="${fila.motingreso}"
@@ -610,7 +610,7 @@ function enviaAjax(datos) {
 							   apellido_h="${fila.apellido_h}">
 							   <img src="img/lapiz.svg" style="width: 20px">
 						   </a>
-						   <a type="button" class="btn btn-danger" onclick="pone(this,1)"
+						   <a type="button" class="btn btn-danger eliminar" onclick="pone(this,1)"
 							   horaingreso="${fila.horaingreso}"
 							   fechaingreso="${fila.fechaingreso}"
 							   motingreso="${fila.motingreso}"
@@ -626,7 +626,7 @@ function enviaAjax(datos) {
 							   apellido_h="${fila.apellido_h}">
 							   <img src="img/basura.svg" style="width: 20px">
 						   </a>
-						   <a type="button" class="btn btn-primary" onclick="pone(this,2)"
+						   <a type="button" class="btn btn-primary ver" onclick="pone(this,2)"
 							   horaingreso="${fila.horaingreso}"
 							   fechaingreso="${fila.fechaingreso}"
 							   motingreso="${fila.motingreso}"
@@ -643,7 +643,7 @@ function enviaAjax(datos) {
 							   <img src="img/ojo.svg" style="width: 20px">
 						   </a>
 						   
-						    <a class="btn btn-danger" 
+						    <a class="btn btn-danger descargar" 
 								href="vista/fpdf/emergencias.php?cedula_paciente=${fila.cedula_paciente}&cedula_personal=${fila.cedula_personal}&fechaingreso=${fila.fechaingreso}&horaingreso=${fila.horaingreso}"  
 								target="_blank">
 									<img src="img/descarga.svg" style="width: 20px;">
@@ -781,3 +781,45 @@ ws.onerror = function(error) {
 function enviarNotificacion(msg) {
 	ws.send(msg);
 }
+
+$("#btnTutorial").on("click", function() {
+    introJs().setOptions({
+        steps: [
+            {
+                element: document.querySelector('.botonverde'),
+                intro: 'Haz click aquí para registrar una nueva emergencia.'
+            },
+            {
+                element: document.querySelector('.botonrojo'),
+                intro: 'Haz click aquí para volver al panel principal.'
+            },
+            {
+                element: document.querySelector('.modificar'),
+                intro: 'Haz click aqui para modificar la informacion de la emergencia'
+            },
+            {
+                element: document.querySelector('.eliminar'),
+                intro: 'Haz click aqui para eliminar la informacion de la emergencia'
+            },
+            {
+                element: document.querySelector('.ver'),
+                intro: 'Haz click aqui para ver la informacion de la emergencia'
+            },
+            {
+                element: document.querySelector('.descargar'),
+                intro: 'Haz click aqui para descargar en PDF la informacion de la emergencia'
+            }
+        ],
+        showProgress: true,
+        exitOnOverlayClick: true,
+        showBullets: false,
+        nextLabel: 'Siguiente',
+        prevLabel: 'Anterior',
+        skipLabel: 'X',
+        doneLabel: 'Finalizar'
+    }).oncomplete(function() {
+        localStorage.setItem('tutorialPacientesVisto', 'true');
+    }).onexit(function() {
+        localStorage.setItem('tutorialPacientesVisto', 'true');
+    }).start();
+});

@@ -24,13 +24,15 @@ Emergencias
 <div class="container espacio">
 	<div class="container">
 		<div class="row mt-3 botones">
-		    <div style="color: white;" class="col-md-2 botonverde" style="cursor: pointer;" onclick='pone(this,3), limpiarm()' >
+		    <div style="color: white;" class="btn botonverde" style="cursor: pointer;" onclick='pone(this,3), limpiarm()' >
 				Registrar Emergencias
 			</div>
 
-			<div class="col-md-2 recortar">	
+			<div class="btn botonrojo">	
                 <a href="?pagina=principal" class="boton">Volver</a>
 			</div>
+
+			<button id="btnTutorial" class="botonverde">Comenzar tutorial</button>
 		</div>
 	</div>
 	<div class="container">
