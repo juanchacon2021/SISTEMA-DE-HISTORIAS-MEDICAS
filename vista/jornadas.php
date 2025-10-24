@@ -118,7 +118,7 @@ require_once("comunes/notificaciones.php");
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label for="pacientes_embarazadas">Pacientes Embarazadas</label>
+                                        <label for="pacientes_embarazadas">Embarazadas</label>
                                         <input type="number" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="pacientes_embarazadas" name="pacientes_embarazadas" min="0" value="0">
                                     </div>
                                 </div>

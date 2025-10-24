@@ -228,7 +228,7 @@ function cargarRegistrosExamen() {
                             ? `<button type="button" class="btn btn-primary" onclick='mostrarImagenExamen("${registro.ruta_imagen}")'>
                               <img src="img/ojo.svg" style="width: 20px">
                           </button>`
-                            : '<button type="button" class="btn btn-danger" disabled><img src="img/ojo-cruzado.svg" style="width: 20px"></button>'
+                            : '<button type="button" class="btn btn-danger" disabled><img src="img/ojo.svg" style="width: 20px"></button>'
                         }
                         <button type="button" class="btn btn-danger" onclick='generarReporteExamen("${
                           registro.cedula_paciente

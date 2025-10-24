@@ -2,7 +2,7 @@
 class datos
 {
     private $ip = "localhost";
-    private $bd = "SGM";
+    private $bd = "sgm2";
     private $bd2 = "seguridad";
     private $usuario = "root";
     private $contrasena = "";

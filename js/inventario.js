@@ -1,4 +1,3 @@
-// Variable global para guardar el código a eliminar
 let codMedicamentoAEliminar = null;
 let modoEntradaSalida = null;
 let lotesTemporales = [];

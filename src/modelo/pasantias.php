@@ -372,7 +372,7 @@ class pasantias extends datos
                     a.activo, 
                     a.cod_area,
                     ar.nombre_area
-                FROM asistencia a
+                FROM periodo_pasantias a
                 JOIN estudiantes_pasantia e ON a.cedula_estudiante = e.cedula_estudiante
                 JOIN areas_pasantias ar ON a.cod_area = ar.cod_area
                 ORDER BY a.fecha_inicio DESC";
@@ -462,7 +462,7 @@ private function incluir_area()
         $conexion = $this->conecta();
 
         try {
-            $sql = "SELECT COUNT(*) as total FROM asistencia 
+            $sql = "SELECT COUNT(*) as total FROM periodo_pasantias
                    WHERE cod_area = :cod_area";
             $stmt = $conexion->prepare($sql);
             $stmt->execute([':cod_area' => $this->cod_area]);

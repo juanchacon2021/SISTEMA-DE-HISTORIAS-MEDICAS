@@ -1,15 +1,21 @@
 <?php
 require_once("modelo/datos.php");
+
 class verifica {
+    
     function leesesion() {
-        if(empty($_SESSION)) {
+        // La verificación correcta de si la sesión está iniciada
+        if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
         return isset($_SESSION['nivel']) ? $_SESSION['nivel'] : "";
     }
     
     function destruyesesion() {
-        session_start();
+        // La verificación es necesaria también para poder llamar a session_destroy()
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         session_destroy();
         header("Location: ?pagina=login");
         exit();
@@ -20,7 +26,8 @@ class verifica {
     }
     
     function validar_captcha($captcha_ingresado) {
-        if(empty($_SESSION)) {
+        // La verificación es necesaria aquí también
+        if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
         
