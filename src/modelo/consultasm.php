@@ -70,139 +70,166 @@ class consultasm extends datos{
 	}
 
 	function incluir($datos, $observaciones = array()) {
-		$r = array();
-		if(!$this->existe($datos['cod_consulta'])) {
-			$co = $this->conecta();
-			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $r = array();
 
-			try {
-				$co->beginTransaction();
+        // Validar cédulas antes de cualquier operación
+        $val = $this->validar_cedulas($datos['cedula_paciente'], $datos['cedula_personal']);
+        if (!is_array($val) || !isset($val['codigo'])) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = 'Error al validar cédulas';
+            return $r;
+        }
+        if ($val['codigo'] !== 0) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $val['mensaje'];
+            return $r;
+        }
 
-				// 1. Llamar al procedimiento almacenado para insertar la consulta
-				$stmtConsulta = $co->prepare("CALL insertar_consulta(?, ?, ?, ?, ?, ?, ?, @cod_generado)");
-				$stmtConsulta->execute([
-					$datos['fechaconsulta'],
-					$datos['Horaconsulta'],
-					$datos['consulta'],
-					$datos['diagnostico'],
-					$datos['tratamientos'],
-					$datos['cedula_personal'],
-					$datos['cedula_paciente']
-				]);
+        if(!$this->existe($datos['cod_consulta'])) {
+            $co = $this->conecta();
+            $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-				// Obtener el código generado por el procedimiento
-				$stmtCodigo = $co->query("SELECT @cod_generado as cod_consulta");
-				$resultadoCodigo = $stmtCodigo->fetch(PDO::FETCH_ASSOC);
-				$cod_consulta = $resultadoCodigo['cod_consulta'];
+            try {
+                $co->beginTransaction();
 
-				// 2. Insertar observaciones (si existen)
-				if (!empty($observaciones) && is_array($observaciones)) {
-					$stmtObservaciones = $co->prepare("INSERT INTO observacion_consulta 
-						(cod_consulta, cod_observacion, observacion) 
-						VALUES (?, ?, ?)");
-					foreach ($observaciones as $obs) {
-						if (!empty($obs['cod_observacion']) && isset($obs['observacion'])) {
-							$stmtObservaciones->execute([
-								$cod_consulta,
-								$obs['cod_observacion'],
-								$obs['observacion']
-							]);
-						}
-					}
-				}
+                // 1. Llamar al procedimiento almacenado para insertar la consulta
+                $stmtConsulta = $co->prepare("CALL insertar_consulta(?, ?, ?, ?, ?, ?, ?, @cod_generado)");
+                $stmtConsulta->execute([
+                    $datos['fechaconsulta'],
+                    $datos['Horaconsulta'],
+                    $datos['consulta'],
+                    $datos['diagnostico'],
+                    $datos['tratamientos'],
+                    $datos['cedula_personal'],
+                    $datos['cedula_paciente']
+                ]);
 
-				$co->commit();
+                // Obtener el código generado por el procedimiento
+                $stmtCodigo = $co->query("SELECT @cod_generado as cod_consulta");
+                $resultadoCodigo = $stmtCodigo->fetch(PDO::FETCH_ASSOC);
+                $cod_consulta = $resultadoCodigo['cod_consulta'];
 
-				$r['resultado'] = 'incluir';
-				$r['mensaje'] = 'Registro Incluido';
-				$r['cod_consulta'] = $cod_consulta;
+                // 2. Insertar observaciones (si existen)
+                if (!empty($observaciones) && is_array($observaciones)) {
+                    $stmtObservaciones = $co->prepare("INSERT INTO observacion_consulta 
+                        (cod_consulta, cod_observacion, observacion) 
+                        VALUES (?, ?, ?)");
+                    foreach ($observaciones as $obs) {
+                        if (!empty($obs['cod_observacion']) && isset($obs['observacion'])) {
+                            $stmtObservaciones->execute([
+                                $cod_consulta,
+                                $obs['cod_observacion'],
+                                $obs['observacion']
+                            ]);
+                        }
+                    }
+                }
 
-			} catch(Exception $e) {
-				$co->rollBack();
-				$r['resultado'] = 'error';
-				$r['mensaje'] = $e->getMessage();
-			}
-		} else {
-			$r['resultado'] = 'incluir';
-			$r['mensaje'] = 'Ya existe el Cod de Consulta';
-		}
-		return $r;
-	}
+                $co->commit();
+
+                $r['resultado'] = 'incluir';
+                $r['mensaje'] = 'Registro Incluido';
+                $r['cod_consulta'] = $cod_consulta;
+
+            } catch(Exception $e) {
+                $co->rollBack();
+                $r['resultado'] = 'error';
+                $r['mensaje'] = $e->getMessage();
+            }
+        } else {
+            $r['resultado'] = 'incluir';
+            $r['mensaje'] = 'Ya existe el Cod de Consulta';
+        }
+        return $r;
+    }
 	
 	function modificar($datos, $observaciones = array()) {
-		$r = array();
-		if($this->existe($datos['cod_consulta'])) {
-			$co = $this->conecta();
-			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			
-			try {
-				// Iniciar transacción
-				$co->beginTransaction();
+        $r = array();
 
-				// 1. Actualizar la consulta principal (CONSULTA PREPARADA)
-				$stmtUpdate = $co->prepare("UPDATE consulta SET
-					fechaconsulta = ?,
-					Horaconsulta = ?,
-					consulta = ?,
-					diagnostico = ?,
-					tratamientos = ?,
-					cedula_personal = ?,
-					cedula_paciente = ?
-					WHERE cod_consulta = ?");
-				
-				$stmtUpdate->execute([
-					$datos['fechaconsulta'],
-					$datos['Horaconsulta'],
-					$datos['consulta'],
-					$datos['diagnostico'],
-					$datos['tratamientos'],
-					$datos['cedula_personal'],
-					$datos['cedula_paciente'],
-					$datos['cod_consulta']
-				]);
+        // Validar cédulas nuevas antes de modificar
+        $val = $this->validar_cedulas($datos['cedula_paciente'], $datos['cedula_personal']);
+        if (!is_array($val) || !isset($val['codigo'])) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = 'Error al validar cédulas';
+            return $r;
+        }
+        if ($val['codigo'] !== 0) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $val['mensaje'];
+            return $r;
+        }
 
-				// 2. Eliminar observaciones anteriores (CONSULTA PREPARADA)
-				$stmtDelete = $co->prepare("DELETE FROM observacion_consulta WHERE cod_consulta = ?");
-				$stmtDelete->execute([$datos['cod_consulta']]);
+        if($this->existe($datos['cod_consulta'])) {
+            $co = $this->conecta();
+            $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-				// 3. Insertar nuevas observaciones (si existen)
-				if (!empty($observaciones) && is_array($observaciones)) {
-					$stmtInsert = $co->prepare("INSERT INTO observacion_consulta 
-						(cod_consulta, cod_observacion, observacion) 
-						VALUES (?, ?, ?)");
-					
-					foreach ($observaciones as $obs) {
-						if (!empty($obs['cod_observacion']) && isset($obs['observacion'])) {
-							$stmtInsert->execute([
-								$datos['cod_consulta'],
-								$obs['cod_observacion'],
-								$obs['observacion']
-							]);
-						}
-					}
-				}
+            try {
+                // Iniciar transacción
+                $co->beginTransaction();
 
-				// Confirmar transacción
-				$co->commit();
+                // 1. Actualizar la consulta principal (CONSULTA PREPARADA)
+                $stmtUpdate = $co->prepare("UPDATE consulta SET
+                    fechaconsulta = ?,
+                    Horaconsulta = ?,
+                    consulta = ?,
+                    diagnostico = ?,
+                    tratamientos = ?,
+                    cedula_personal = ?,
+                    cedula_paciente = ?
+                    WHERE cod_consulta = ?");
+                
+                $stmtUpdate->execute([
+                    $datos['fechaconsulta'],
+                    $datos['Horaconsulta'],
+                    $datos['consulta'],
+                    $datos['diagnostico'],
+                    $datos['tratamientos'],
+                    $datos['cedula_personal'],
+                    $datos['cedula_paciente'],
+                    $datos['cod_consulta']
+                ]);
 
-				$r['resultado'] = 'modificar';
-				$r['mensaje'] = 'Registro Modificado';
-				$r['cod_consulta'] = $datos['cod_consulta'];
+                // 2. Eliminar observaciones anteriores (CONSULTA PREPARADA)
+                $stmtDelete = $co->prepare("DELETE FROM observacion_consulta WHERE cod_consulta = ?");
+                $stmtDelete->execute([$datos['cod_consulta']]);
 
-			} catch(Exception $e) {
-				// Revertir en caso de error
-				$co->rollBack();
-				$r['resultado'] = 'error';
-				$r['mensaje'] = $e->getMessage();
-			}
-		} else {
-			$r['resultado'] = 'modificar';
-			$r['mensaje'] = 'No existe el Cod de Consulta';
-		}
-		return $r;
-	}
+                // 3. Insertar nuevas observaciones (si existen)
+                if (!empty($observaciones) && is_array($observaciones)) {
+                    $stmtInsert = $co->prepare("INSERT INTO observacion_consulta 
+                        (cod_consulta, cod_observacion, observacion) 
+                        VALUES (?, ?, ?)");
+                    
+                    foreach ($observaciones as $obs) {
+                        if (!empty($obs['cod_observacion']) && isset($obs['observacion'])) {
+                            $stmtInsert->execute([
+                                $datos['cod_consulta'],
+                                $obs['cod_observacion'],
+                                $obs['observacion']
+                            ]);
+                        }
+                    }
+                }
+
+                // Confirmar transacción
+                $co->commit();
+
+                $r['resultado'] = 'modificar';
+                $r['mensaje'] = 'Registro Modificado';
+                $r['cod_consulta'] = $datos['cod_consulta'];
+
+            } catch(Exception $e) {
+                // Revertir en caso de error
+                $co->rollBack();
+                $r['resultado'] = 'error';
+                $r['mensaje'] = $e->getMessage();
+            }
+        } else {
+            $r['resultado'] = 'modificar';
+            $r['mensaje'] = 'No existe el Cod de Consulta';
+        }
+        return $r;
+    }
 	
-
 	function obtener_observaciones_consulta($cod_consulta) {
 		$co = $this->conecta();
 		$stmt = $co->prepare("SELECT oc.cod_observacion, tobs.nom_observaciones, oc.observacion
@@ -303,6 +330,51 @@ class consultasm extends datos{
 			return false;
 		}
 	}
+
+		
+    public function validar_cedulas($cedula_paciente, $cedula_personal) {
+        $r = array();
+        $co = $this->conecta();
+        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        try {
+            // Verificar existencia paciente
+            $stmt = $co->prepare("SELECT 1 FROM paciente WHERE cedula_paciente = ? LIMIT 1");
+            $stmt->execute([$cedula_paciente]);
+            $existePaciente = ($stmt->fetchColumn() !== false);
+
+            // Verificar existencia personal
+            $stmt = $co->prepare("SELECT cedula_personal FROM personal WHERE cedula_personal = ? LIMIT 1");
+            $stmt->execute([$cedula_personal]);
+            $existePersonal = ($stmt->fetchColumn() !== false);
+
+            // Código: 0 = ambas existen, 1 = paciente no existe, 2 = personal no existe, 3 = ninguna existe
+            if ($existePaciente && $existePersonal) {
+                $codigo = 0;
+                $mensaje = 'Ambas cédulas existen';
+            } elseif (!$existePaciente && $existePersonal) {
+                $codigo = 1;
+                $mensaje = 'La cédula del paciente no existe';
+            } elseif ($existePaciente && !$existePersonal) {
+                $codigo = 2;
+                $mensaje = 'La cédula del personal no existe';
+            } else {
+                $codigo = 3;
+                $mensaje = 'Ninguna de las cédulas existe';
+            }
+
+            $r['resultado'] = 'validar_cedulas';
+            $r['codigo'] = $codigo;
+            $r['mensaje'] = $mensaje;
+            $r['existe_paciente'] = $existePaciente;
+            $r['existe_personal'] = $existePersonal;
+        } catch (Exception $e) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $e->getMessage();
+        }
+
+        return $r;
+    }
 	
 	
 }
@@ -449,5 +521,3 @@ class observaciones extends datos {
 
 	
 }
-
-?>

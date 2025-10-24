@@ -58,6 +58,54 @@ class testemergencia extends TestCase{
         $this->assertEquals('Registro Incluido', $resultado['mensaje']);
     }
 
+      public function testIncluirConCedulasInvalidas(){
+        $emergencias = new emergencias();
+
+        $datos = [
+            'horaingreso' => '12:00',
+            'fechaingreso' => '2025-09-16',
+            'motingreso' => 'Prueba PHPUnit Error',
+            'diagnostico_e' => 'Diagnóstico de prueba',
+            'tratamientos' => 'Tratamiento de prueba',
+            'cedula_personal' => 99999999, // Cédula que no existe
+            'cedula_paciente' => 88888888, // Cédula que no existe
+            'procedimiento' => 'Procedimiento de prueba'
+        ];
+
+        $resultado = $emergencias->incluir($datos);
+
+        $this->assertIsArray($resultado);
+        $this->assertArrayHasKey('resultado', $resultado);
+        $this->assertEquals('error', $resultado['resultado']);
+        $this->assertArrayHasKey('mensaje', $resultado);
+        $this->assertEquals('Ninguna de las cédulas existe', $resultado['mensaje']); 
+    }
+
+      public function testIncluirConRegistroDuplicado(){
+        $emergencias = new emergencias();
+
+        // Usar los mismos datos que ya existen
+        $datos = [
+            'horaingreso' => '12:00',
+            'fechaingreso' => '2025-09-16',
+            'motingreso' => 'Prueba PHPUnit Duplicado',
+            'diagnostico_e' => 'Diagnóstico de prueba',
+            'tratamientos' => 'Tratamiento de prueba',
+            'cedula_personal' => 20000001,
+            'cedula_paciente' => 10000001,
+            'procedimiento' => 'Procedimiento de prueba'
+        ];
+
+        $resultado = $emergencias->incluir($datos);
+
+        $this->assertIsArray($resultado);
+        // Debería retornar 'incluir' con mensaje de que ya existe
+        $this->assertArrayHasKey('resultado', $resultado);
+        $this->assertEquals('error', $resultado['resultado']);
+        $this->assertArrayHasKey('mensaje', $resultado);
+        $this->assertEquals('Ya existe el registro con estos datos', $resultado['mensaje']);
+    }
+
     public function testExiste(){
         $emergencias = new emergencias();
         // Usa los mismos datos que insertaste en testIncluirReturnsArray
