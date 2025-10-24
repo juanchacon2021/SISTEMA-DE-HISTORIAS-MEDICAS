@@ -46,6 +46,7 @@ class jornadas extends datos
     }
 
     public function gestionar_jornada($datos) {
+    try {
         $this->set_cod_jornada($datos['cod_jornada'] ?? '');
         $this->set_fecha_jornada($datos['fecha_jornada'] ?? '');
         $this->set_ubicacion($datos['ubicacion'] ?? '');
@@ -55,6 +56,9 @@ class jornadas extends datos
         $this->set_pacientes_embarazadas($datos['pacientes_embarazadas'] ?? 0);
         $this->set_cedula_responsable($datos['cedula_responsable'] ?? '');
         $this->set_participantes($datos['participantes'] ?? array());
+
+        // Validación antes de ejecutar acción
+        $this->validarPacientes();
 
         switch ($datos['accion']) {
             case 'incluir':
@@ -66,7 +70,11 @@ class jornadas extends datos
             default:
                 return array("resultado" => "error", "mensaje" => "Acción no válida");
         }
+    } catch (\Exception $e) {
+        return array("resultado" => "error", "mensaje" => $e->getMessage());
     }
+}
+
 
     private function incluir() {
         $this->validarPacientes();
