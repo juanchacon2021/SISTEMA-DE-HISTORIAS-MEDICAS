@@ -542,7 +542,7 @@ function pone(pos, accion) {
             $("#cod_patologia").val($(linea).find("td:eq(0)").text());
             $("#nombre_patologia").val($(pos).attr('nombre_patologia'));
             $("#nombre_patologia").prop("readonly", false);
-            $("#proceso2").text("Actualizar");
+            $("#proceso2").text("actualizar");
             $("#modal2").modal("show");
             break;
     }

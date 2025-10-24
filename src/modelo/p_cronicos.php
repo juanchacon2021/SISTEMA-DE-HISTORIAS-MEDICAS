@@ -27,93 +27,112 @@ class p_cronicos extends datos{
 		return $r;
 	}
 
-   function incluir($datos, $patologias = array()) {
-		$r = array();
-		$co = $this->conecta();
-		if(!$this->existe($datos['cedula_paciente'])){
+    function incluir($datos, $patologias = array()) {
+        $r = array();
 
-				$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			try {
-				if (!empty($patologias) && is_array($patologias)) {
-					$stmt = $co->prepare("INSERT INTO padece (cedula_paciente, cod_patologia, tratamiento, administracion_t) VALUES (?, ?, ?, ?)");
-					foreach ($patologias as $pat) {
-						
-		
-							$stmt->execute([
-								$datos['cedula_paciente'],
-								$pat['cod_patologia'],
-								$pat['tratamiento'],
-								$pat['administracion_t']
-							]);
-						
-					}
-					$r['resultado'] = 'incluir';
-					$r['mensaje'] = 'Registro Incluido';
-				} else {
-					$r['resultado'] = 'error';
-					$r['mensaje'] = 'No se recibieron patologías';
-				}
-			} catch(Exception $e) {
-				$r['resultado'] = 'error';
-				$r['mensaje'] = $e->getMessage();
-			}
+        // Validar que la cédula del paciente exista en la tabla paciente
+        $val = $this->validar_paciente($datos['cedula_paciente']);
+        if (!is_array($val) || !isset($val['codigo'])) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = 'Error al validar paciente';
+            return $r;
+        }
+        if ($val['codigo'] !== 0) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $val['mensaje'];
+            return $r;
+        }
 
+        $co = $this->conecta();
+        if(!$this->existe($datos['cedula_paciente'])){
 
-		}
-		else {
-					$r['resultado'] = 'error';
-					$r['mensaje'] = 'El paciente ya esta registrado ';
-		}
-		
-		return $r;
-	}
+                $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            try {
+                if (!empty($patologias) && is_array($patologias)) {
+                    $stmt = $co->prepare("INSERT INTO padece (cedula_paciente, cod_patologia, tratamiento, administracion_t) VALUES (?, ?, ?, ?)");
+                    foreach ($patologias as $pat) {
+                        $stmt->execute([
+                            $datos['cedula_paciente'],
+                            $pat['cod_patologia'],
+                            $pat['tratamiento'],
+                            $pat['administracion_t']
+                        ]);
+                    }
+                    $r['resultado'] = 'incluir';
+                    $r['mensaje'] = 'Registro Incluido';
+                } else {
+                    $r['resultado'] = 'error';
+                    $r['mensaje'] = 'No se recibieron patologías';
+                }
+            } catch(Exception $e) {
+                $r['resultado'] = 'error';
+                $r['mensaje'] = $e->getMessage();
+            }
+        }
+        else {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = 'El paciente ya esta registrado ';
+        }
 
-	
-	
+        return $r;
+    }
 
-	function modificar($datos, $patologias = array()) {
-		$co = $this->conecta();
-		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$r = array();
-		
-		try {
-			// Verificar si el paciente tiene patologías registradas
-			if(!$this->existe($datos['cedula_paciente'])) {
-				$r['resultado'] = 'error';
-				$r['mensaje'] = 'El paciente no tiene patologías registradas para modificar';
-				return $r;
-			}
+    function modificar($datos, $patologias = array()) {
+        $co = $this->conecta();
+        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $r = array();
 
-			// 1. Eliminar todas las patologías actuales del paciente
-			$stmtDelete = $co->prepare("DELETE FROM padece WHERE cedula_paciente = ?");
-			$stmtDelete->execute([$datos['cedula_paciente']]);
+        // Validar que la cédula del paciente exista en la tabla paciente
+        $val = $this->validar_paciente($datos['cedula_paciente']);
+        if (!is_array($val) || !isset($val['codigo'])) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = 'Error al validar paciente';
+            return $r;
+        }
+        if ($val['codigo'] !== 0) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $val['mensaje'];
+            return $r;
+        }
 
-			// 2. Insertar las nuevas patologías
-			if (!empty($patologias)) {
-				$stmtInsert = $co->prepare("INSERT INTO padece 
-										(cedula_paciente, cod_patologia, tratamiento, administracion_t) 
-										VALUES (?, ?, ?, ?)");
-				
-				foreach ($patologias as $pat) {
-					$stmtInsert->execute([
-						$datos['cedula_paciente'],
-						$pat['cod_patologia'],
-						$pat['tratamiento'] ?? null,
-						$pat['administracion_t'] ?? null
-					]);
-				}
-			}
+        try {
+            // Verificar si el paciente tiene patologías registradas
+            if(!$this->existe($datos['cedula_paciente'])) {
+                $r['resultado'] = 'error';
+                $r['mensaje'] = 'El paciente no tiene patologías registradas para modificar';
+                return $r;
+            }
 
-			$r['resultado'] = 'modificar';
-			$r['mensaje'] = 'Registro Modificado';
-			
-		} catch(PDOException $e) {
-			$r['resultado'] = 'error';
-			$r['mensaje'] = 'Error al modificar patologías: ' . $e->getMessage();
-		}
-		
-		return $r;
-	}
+            // 1. Eliminar todas las patologías actuales del paciente
+            $stmtDelete = $co->prepare("DELETE FROM padece WHERE cedula_paciente = ?");
+            $stmtDelete->execute([$datos['cedula_paciente']]);
+
+            // 2. Insertar las nuevas patologías
+            if (!empty($patologias)) {
+                $stmtInsert = $co->prepare("INSERT INTO padece 
+                                        (cedula_paciente, cod_patologia, tratamiento, administracion_t) 
+                                        VALUES (?, ?, ?, ?)");
+                
+                foreach ($patologias as $pat) {
+                    $stmtInsert->execute([
+                        $datos['cedula_paciente'],
+                        $pat['cod_patologia'],
+                        $pat['tratamiento'] ?? null,
+                        $pat['administracion_t'] ?? null
+                    ]);
+                }
+            }
+
+            $r['resultado'] = 'modificar';
+            $r['mensaje'] = 'Registro Modificado';
+            
+        } catch(PDOException $e) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = 'Error al modificar patologías: ' . $e->getMessage();
+        }
+        
+        return $r;
+    }
 	
 	function eliminar($datos) {
 		$co = $this->conecta();
@@ -199,6 +218,30 @@ class p_cronicos extends datos{
 			return false;
 		}
 	}
+
+	   public function validar_paciente($cedula_paciente) {
+        $r = array();
+        $co = $this->conecta();
+        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        try {
+            $stmt = $co->prepare("SELECT 1 FROM paciente WHERE cedula_paciente = ? LIMIT 1");
+            $stmt->execute([$cedula_paciente]);
+            $existe = ($stmt->fetchColumn() !== false);
+
+            $r['resultado'] = 'validar_paciente';
+            $r['codigo'] = $existe ? 0 : 1; // 0 = existe, 1 = no existe
+            $r['mensaje'] = $existe ? 'Paciente existe' : 'Paciente no encontrado';
+            $r['existe_paciente'] = $existe;
+        } catch (Exception $e) {
+            $r['resultado'] = 'error';
+            $r['codigo'] = 1;
+            $r['mensaje'] = $e->getMessage();
+            $r['existe_paciente'] = false;
+        }
+
+        return $r;
+    }
 	
 	
 }

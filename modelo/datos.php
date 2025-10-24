@@ -2,10 +2,14 @@
 class datos
 {
     private $ip = "localhost";
+<<<<<<< HEAD
     private $bd = "sgm2";
+=======
+    private $bd = "prueva";
+>>>>>>> 62c3445557c6751c97f314a93624eb42e6ebc22d
     private $bd2 = "seguridad";
     private $usuario = "root";
-    private $contrasena = "";
+    private $contrasena = "123456";
 
 
 
