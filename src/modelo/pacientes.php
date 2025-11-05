@@ -88,11 +88,16 @@ class pacientes extends datos {
 
     // AGREGAR PATOLOGÍA
     public function agregar_patologia($datos) {
+        // Validar nombre de patología
+        $nombre = trim($datos['nombre_patologia'] ?? '');
+        if ($nombre === '' || mb_strlen($nombre) > 150) {
+            return ['resultado' => 'error', 'mensaje' => 'Nombre de patología inválido'];
+        }
+
         $co = $this->conecta();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
         try {
-            $nombre = $datos['nombre_patologia'] ?? '';
             $stmt = $co->prepare("INSERT INTO patologia(nombre_patologia) VALUES(:nombre_patologia)");
             $stmt->execute(['nombre_patologia' => $nombre]);
             $r['resultado'] = 'agregar_patologia';
@@ -107,6 +112,15 @@ class pacientes extends datos {
     // ================= MÉTODOS PRIVADOS ===================
 
     private function registrarPaciente($datos) {
+        // Validar campos antes de operar
+        $val = $this->validar_campos($datos);
+        if (!is_array($val) || !isset($val['codigo'])) {
+            return ['resultado' => 'error', 'mensaje' => 'Error al validar campos'];
+        }
+        if ($val['codigo'] !== 0) {
+            return ['resultado' => 'error', 'mensaje' => $val['mensaje']];
+        }
+
         $co = $this->conecta();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
@@ -154,7 +168,6 @@ class pacientes extends datos {
             // Patologías
             if (!empty($datos['patologias']) && is_array($datos['patologias'])) {
                 foreach ($datos['patologias'] as $pat) {
-                    // $pat debe ser un array con cod_patologia, tratamiento y administracion_t
                     $stmtP = $co->prepare("INSERT INTO padece (cedula_paciente, cod_patologia, tratamiento, administracion_t) VALUES (:cedula_paciente, :cod_patologia, :tratamiento, :administracion_t)");
                     $stmtP->execute([
                         'cedula_paciente' => $datos['cedula_paciente'],
@@ -176,6 +189,15 @@ class pacientes extends datos {
     }
 
     private function modificarPaciente($datos) {
+        // Validar campos antes de operar
+        $val = $this->validar_campos($datos);
+        if (!is_array($val) || !isset($val['codigo'])) {
+            return ['resultado' => 'error', 'mensaje' => 'Error al validar campos'];
+        }
+        if ($val['codigo'] !== 0) {
+            return ['resultado' => 'error', 'mensaje' => $val['mensaje']];
+        }
+
         $co = $this->conecta();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
@@ -247,12 +269,17 @@ class pacientes extends datos {
     }
 
     private function eliminarPaciente($datos) {
+        // Validar cédula antes de eliminar
+        $cedula = $datos['cedula_paciente'] ?? '';
+        if (!preg_match('/^[0-9]{7,8}$/', $cedula)) {
+            return ['resultado' => 'error', 'mensaje' => 'Formato de cédula inválido'];
+        }
+
         $co = $this->conecta();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
         try {
             $co->beginTransaction();
-            $cedula = $datos['cedula_paciente'] ?? '';
             $co->prepare("DELETE FROM antecedentes_familiares WHERE cedula_paciente = :cedula_paciente")
                 ->execute(['cedula_paciente' => $cedula]);
             $co->prepare("DELETE FROM padece WHERE cedula_paciente = :cedula_paciente")
@@ -271,15 +298,26 @@ class pacientes extends datos {
     }
 
     private function registrarFamiliar($datos) {
+        // Validar campos del familiar
+        $cedula = $datos['cedula_paciente'] ?? '';
+        $nom = trim($datos['nom_familiar'] ?? '');
+        $ape = trim($datos['ape_familiar'] ?? '');
+        if (!preg_match('/^[0-9]{7,8}$/', $cedula)) {
+            return ['resultado' => 'error', 'mensaje' => 'Cédula de paciente inválida'];
+        }
+        if ($nom === '' || mb_strlen($nom) > 60 || $ape === '' || mb_strlen($ape) > 60) {
+            return ['resultado' => 'error', 'mensaje' => 'Nombre o apellido del familiar inválido'];
+        }
+
         $co = $this->conecta();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
         try {
             $stmt = $co->prepare("INSERT INTO antecedentes_familiares (cedula_paciente, nom_familiar, ape_familiar, relacion_familiar, observaciones) VALUES (:cedula_paciente, :nom_familiar, :ape_familiar, :relacion_familiar, :observaciones)");
             $stmt->execute([
-                'cedula_paciente' => $datos['cedula_paciente'] ?? '',
-                'nom_familiar' => $datos['nom_familiar'] ?? '',
-                'ape_familiar' => $datos['ape_familiar'] ?? '',
+                'cedula_paciente' => $cedula,
+                'nom_familiar' => $nom,
+                'ape_familiar' => $ape,
                 'relacion_familiar' => $datos['relacion_familiar'] ?? '',
                 'observaciones' => $datos['observaciones'] ?? ''
             ]);
@@ -327,6 +365,95 @@ class pacientes extends datos {
             $r['resultado'] = 'error';
             $r['mensaje'] = $e->getMessage();
         }
+        return $r;
+    }
+
+    // Validaciones de campos (similar a consultasm::validar_campos)
+    private function validar_campos($datos) {
+        $r = array('codigo' => 0, 'mensaje' => 'Campos válidos');
+
+        // Cédula paciente requerida y formato
+        if (!isset($datos['cedula_paciente']) || !preg_match('/^[0-9]{7,8}$/', $datos['cedula_paciente'])) {
+            $r['codigo'] = 1;
+            $r['mensaje'] = 'Formato de cédula de paciente inválido (7-8 dígitos)';
+            return $r;
+        }
+
+        // Nombre y apellido
+        if (!isset($datos['nombre']) || !preg_match('/^[A-Za-z\sñÑáéíóúÁÉÍÓÚ]{3,30}$/u', $datos['nombre'])) {
+            $r['codigo'] = 2;
+            $r['mensaje'] = 'Nombre inválido (3-30 letras)';
+            return $r;
+        }
+        if (!isset($datos['apellido']) || !preg_match('/^[A-Za-z\sñÑáéíóúÁÉÍÓÚ]{3,30}$/u', $datos['apellido'])) {
+            $r['codigo'] = 3;
+            $r['mensaje'] = 'Apellido inválido (3-30 letras)';
+            return $r;
+        }
+
+        // Fecha de nacimiento YYYY-MM-DD
+        if (!isset($datos['fecha_nac']) || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $datos['fecha_nac']) || !\DateTime::createFromFormat('Y-m-d', $datos['fecha_nac'])) {
+            $r['codigo'] = 4;
+            $r['mensaje'] = 'Formato de fecha inválido (YYYY-MM-DD)';
+            return $r;
+        }
+
+        // Edad numérica razonable
+        if (!isset($datos['edad']) || !is_numeric($datos['edad']) || $datos['edad'] < 0 || $datos['edad'] > 130) {
+            $r['codigo'] = 5;
+            $r['mensaje'] = 'Edad inválida';
+            return $r;
+        }
+
+        // Teléfono opcional pero si existe debe tener 11 dígitos
+        if (isset($datos['telefono']) && trim($datos['telefono']) !== '' && !preg_match('/^[0-9]{11}$/', $datos['telefono'])) {
+            $r['codigo'] = 6;
+            $r['mensaje'] = 'Teléfono inválido (11 dígitos)';
+            return $r;
+        }
+
+        // Longitudes para textos libres
+        $campos_largos = ['ocupacion'=>100,'direccion'=>300,'hda'=>1000,'alergias'=>1000,'alergias_med'=>1000,'quirurgico'=>1000,'transsanguineo'=>1000,'psicosocial'=>1000,'habtoxico'=>1000];
+        foreach ($campos_largos as $campo => $max) {
+            if (isset($datos[$campo]) && mb_strlen($datos[$campo]) > $max) {
+                $r['codigo'] = 7;
+                $r['mensaje'] = "El campo {$campo} excede la longitud permitida ({$max})";
+                return $r;
+            }
+        }
+
+        // Validar antecedentes_familiares si vienen
+        if (!empty($datos['antecedentes_familiares']) && is_array($datos['antecedentes_familiares'])) {
+            foreach ($datos['antecedentes_familiares'] as $f) {
+                if (isset($f['nom_familiar']) && (!preg_match('/^[A-Za-z\s]{1,60}$/u', $f['nom_familiar']))) {
+                    $r['codigo'] = 8;
+                    $r['mensaje'] = 'Nombre de familiar inválido';
+                    return $r;
+                }
+                if (isset($f['ape_familiar']) && (!preg_match('/^[A-Za-z\s]{1,60}$/u', $f['ape_familiar']))) {
+                    $r['codigo'] = 9;
+                    $r['mensaje'] = 'Apellido de familiar inválido';
+                    return $r;
+                }
+            }
+        }
+
+        // Validar patologías si vienen
+        if (!empty($datos['patologias']) && is_array($datos['patologias'])) {
+            foreach ($datos['patologias'] as $p) {
+                if (!isset($p['cod_patologia']) || !is_numeric($p['cod_patologia'])) {
+                    $r['codigo'] = 10;
+                    $r['mensaje'] = 'Código de patología inválido';
+                    return $r;
+                }
+                if (isset($p['tratamiento']) && mb_strlen($p['tratamiento']) > 1000) {
+                    $r['codigo'] = 11;
+                    $r['mensaje'] = 'Tratamiento demasiado largo';
+                    return $r;
+                }
+            }
+        }
+
         return $r;
     }
 }

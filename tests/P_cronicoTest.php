@@ -3,7 +3,7 @@ use PHPUnit\Framework\TestCase;
 use Shm\Shm\modelo\p_cronicos;
 use Shm\Shm\modelo\patologias;
 
-class testp_cronico extends TestCase{
+class P_cronicoTest extends TestCase{
 
     private static $cod_patologia;
  

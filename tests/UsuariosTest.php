@@ -2,7 +2,7 @@
 use PHPUnit\Framework\TestCase;
 use Shm\Shm\modelo\usuarios;
 
-class testUsuarios extends TestCase{
+class UsuariosTest extends TestCase{
 
     private $usuarios;
     private static $usuario_id;

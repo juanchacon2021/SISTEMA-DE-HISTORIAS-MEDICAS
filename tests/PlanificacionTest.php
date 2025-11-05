@@ -3,7 +3,7 @@
 use PHPUnit\Framework\TestCase;
 use Shm\Shm\modelo\planificacion;
 
-class TestPlanificacion extends TestCase
+class PlanificacionTest extends TestCase
 {
     private $planificacion;
 

@@ -2,7 +2,7 @@
 use PHPUnit\Framework\TestCase;
 use Shm\Shm\modelo\estadisticas;
 
-class testEstadistica extends TestCase{
+class EstadisticaTest extends TestCase{
 
     private $estadisticas;
 

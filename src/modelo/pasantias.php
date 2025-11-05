@@ -137,6 +137,23 @@ class pasantias extends datos
     private function incluir_estudiante()
     {
         $r = array();
+
+        // Validar campos
+        $val = $this->validar_campos([
+            'cedula_estudiante' => $this->cedula_estudiante,
+            'nombre' => $this->nombre,
+            'apellido' => $this->apellido,
+            'institucion' => $this->institucion,
+            'telefono' => $this->telefono,
+            'cod_area' => $this->cod_area
+        ]);
+        if (!is_array($val) || !isset($val['codigo'])) {
+            return ['resultado' => 'error', 'mensaje' => 'Error al validar campos'];
+        }
+        if ($val['codigo'] !== 0) {
+            return ['resultado' => 'error', 'mensaje' => $val['mensaje']];
+        }
+
         $conexion = $this->conecta();
 
         try {
@@ -196,6 +213,22 @@ class pasantias extends datos
     private function modificar_estudiante()
     {
         $r = array();
+
+        // Validar campos
+        $val = $this->validar_campos([
+            'cedula_estudiante' => $this->cedula_estudiante,
+            'nombre' => $this->nombre,
+            'apellido' => $this->apellido,
+            'institucion' => $this->institucion,
+            'telefono' => $this->telefono
+        ]);
+        if (!is_array($val) || !isset($val['codigo'])) {
+            return ['resultado' => 'error', 'mensaje' => 'Error al validar campos'];
+        }
+        if ($val['codigo'] !== 0) {
+            return ['resultado' => 'error', 'mensaje' => $val['mensaje']];
+        }
+
         $conexion = $this->conecta();
 
         try {
@@ -224,6 +257,16 @@ class pasantias extends datos
     private function eliminar_estudiante()
     {
         $r = array();
+
+        // Validar cédula antes de eliminar
+        $val = $this->validar_campos(['cedula_estudiante' => $this->cedula_estudiante]);
+        if (!is_array($val) || !isset($val['codigo'])) {
+            return ['resultado' => 'error', 'mensaje' => 'Error al validar campos'];
+        }
+        if ($val['codigo'] !== 0) {
+            return ['resultado' => 'error', 'mensaje' => $val['mensaje']];
+        }
+
         $conexion = $this->conecta();
 
         try {
@@ -280,6 +323,22 @@ class pasantias extends datos
     private function incluir_asistencia()
     {
         $r = array();
+
+        // Validar asistencia
+        $val = $this->validar_campos([
+            'cedula_estudiante' => $this->cedula_estudiante,
+            'cod_area' => $this->cod_area,
+            'fecha_inicio' => $this->fecha_inicio,
+            'fecha_fin' => $this->fecha_fin,
+            'activo' => $this->activo
+        ]);
+        if (!is_array($val) || !isset($val['codigo'])) {
+            return ['resultado' => 'error', 'mensaje' => 'Error al validar campos'];
+        }
+        if ($val['codigo'] !== 0) {
+            return ['resultado' => 'error', 'mensaje' => $val['mensaje']];
+        }
+
         $conexion = $this->conecta();
 
         try {
@@ -308,6 +367,22 @@ class pasantias extends datos
     private function modificar_asistencia()
     {
         $r = array();
+
+        // Validar asistencia
+        $val = $this->validar_campos([
+            'cedula_estudiante' => $this->cedula_estudiante,
+            'cod_area' => $this->cod_area,
+            'fecha_inicio' => $this->fecha_inicio,
+            'fecha_fin' => $this->fecha_fin,
+            'activo' => $this->activo
+        ]);
+        if (!is_array($val) || !isset($val['codigo'])) {
+            return ['resultado' => 'error', 'mensaje' => 'Error al validar campos'];
+        }
+        if ($val['codigo'] !== 0) {
+            return ['resultado' => 'error', 'mensaje' => $val['mensaje']];
+        }
+
         $conexion = $this->conecta();
 
         try {
@@ -336,6 +411,19 @@ class pasantias extends datos
     private function eliminar_asistencia()
     {
         $r = array();
+
+        // Validar campos
+        $val = $this->validar_campos([
+            'cedula_estudiante' => $this->cedula_estudiante,
+            'fecha_inicio' => $this->fecha_inicio
+        ]);
+        if (!is_array($val) || !isset($val['codigo'])) {
+            return ['resultado' => 'error', 'mensaje' => 'Error al validar campos'];
+        }
+        if ($val['codigo'] !== 0) {
+            return ['resultado' => 'error', 'mensaje' => $val['mensaje']];
+        }
+
         $conexion = $this->conecta();
 
         try {
@@ -394,24 +482,38 @@ class pasantias extends datos
 private function incluir_area()
 {
     $r = array();
+
+    // Validar campos del área
+    $val = $this->validar_campos([
+        'nombre_area' => $this->nombre_area,
+        'descripcion' => $this->descripcion,
+        'cedula_personal' => $this->cedula_personal
+    ]);
+    if (!is_array($val) || !isset($val['codigo'])) {
+        return ['resultado' => 'error', 'mensaje' => 'Error al validar campos'];
+    }
+    if ($val['codigo'] !== 0) {
+        return ['resultado' => 'error', 'mensaje' => $val['mensaje']];
+    }
+
     $conexion = $this->conecta();
 
     try {
         // Llamamos al procedimiento almacenado que genera el código automático
         $sql = "CALL insertar_area_pasantia(:nombre, :descripcion, :responsable, @cod_generado)";
-        
+
         $stmt = $conexion->prepare($sql);
         $stmt->execute(array(
             ':nombre' => $this->nombre_area,
             ':descripcion' => $this->descripcion,
             ':responsable' => $this->cedula_personal
         ));
-        
+
         // Obtenemos el código generado
         $stmt = $conexion->query("SELECT @cod_generado as codigo");
         $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
         $codigo_generado = $resultado['codigo'];
-        
+
         $r['resultado'] = 'incluir';
         $r['mensaje'] = 'Área registrada exitosamente';
         $r['codigo'] = $codigo_generado; // Devolvemos el código generado
@@ -428,6 +530,21 @@ private function incluir_area()
     private function modificar_area()
     {
         $r = array();
+
+        // Validar campos del área
+        $val = $this->validar_campos([
+            'cod_area' => $this->cod_area,
+            'nombre_area' => $this->nombre_area,
+            'descripcion' => $this->descripcion,
+            'cedula_personal' => $this->cedula_personal
+        ]);
+        if (!is_array($val) || !isset($val['codigo'])) {
+            return ['resultado' => 'error', 'mensaje' => 'Error al validar campos'];
+        }
+        if ($val['codigo'] !== 0) {
+            return ['resultado' => 'error', 'mensaje' => $val['mensaje']];
+        }
+
         $conexion = $this->conecta();
 
         try {
@@ -459,6 +576,16 @@ private function incluir_area()
     private function eliminar_area()
     {
         $r = array();
+
+        // Validar cod_area
+        $val = $this->validar_campos(['cod_area' => $this->cod_area]);
+        if (!is_array($val) || !isset($val['codigo'])) {
+            return ['resultado' => 'error', 'mensaje' => 'Error al validar campos'];
+        }
+        if ($val['codigo'] !== 0) {
+            return ['resultado' => 'error', 'mensaje' => $val['mensaje']];
+        }
+
         $conexion = $this->conecta();
 
         try {
@@ -586,5 +713,109 @@ private function incluir_area()
         if ($conexion) {
             $conexion = null;
         }
+    }
+
+    // Nueva función de validación de campos (similar a consultasm::validar_campos)
+    private function validar_campos($datos)
+    {
+        $r = array('codigo' => 0, 'mensaje' => 'Campos válidos');
+
+        // Cedula estudiante (si está presente)
+        if (isset($datos['cedula_estudiante'])) {
+            if (!preg_match('/^[0-9]{7,8}$/', $datos['cedula_estudiante'])) {
+                $r['codigo'] = 1;
+                $r['mensaje'] = 'Formato de cédula de estudiante inválido (7-8 dígitos)';
+                return $r;
+            }
+        }
+
+        // Nombre y apellido
+        if (isset($datos['nombre']) && !preg_match('/^[A-Za-z\sñÑáéíóúÁÉÍÓÚ]{3,30}$/u', $datos['nombre'])) {
+            $r['codigo'] = 2;
+            $r['mensaje'] = 'Nombre inválido (3-30 letras)';
+            return $r;
+        }
+        if (isset($datos['apellido']) && !preg_match('/^[A-Za-z\sñÑáéíóúÁÉÍÓÚ]{3,30}$/u', $datos['apellido'])) {
+            $r['codigo'] = 3;
+            $r['mensaje'] = 'Apellido inválido (3-30 letras)';
+            return $r;
+        }
+
+        // Teléfono opcional
+        if (isset($datos['telefono']) && trim($datos['telefono']) !== '' && !preg_match('/^[0-9]{11}$/', $datos['telefono'])) {
+            $r['codigo'] = 4;
+            $r['mensaje'] = 'Teléfono inválido (11 dígitos)';
+            return $r;
+        }
+
+        // Fechas formato YYYY-MM-DD
+        if (isset($datos['fecha_inicio']) && !(\DateTime::createFromFormat('Y-m-d', $datos['fecha_inicio']) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $datos['fecha_inicio']))) {
+            $r['codigo'] = 5;
+            $r['mensaje'] = 'Formato de fecha_inicio inválido (YYYY-MM-DD)';
+            return $r;
+        }
+        if (isset($datos['fecha_fin']) && $datos['fecha_fin'] !== null && !(\DateTime::createFromFormat('Y-m-d', $datos['fecha_fin']) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $datos['fecha_fin']))) {
+            $r['codigo'] = 6;
+            $r['mensaje'] = 'Formato de fecha_fin inválido (YYYY-MM-DD)';
+            return $r;
+        }
+        if (isset($datos['fecha_inicio']) && isset($datos['fecha_fin']) && $datos['fecha_fin'] !== null) {
+            $d1 = \DateTime::createFromFormat('Y-m-d', $datos['fecha_inicio']);
+            $d2 = \DateTime::createFromFormat('Y-m-d', $datos['fecha_fin']);
+            if ($d1 && $d2 && $d2 < $d1) {
+                $r['codigo'] = 7;
+                $r['mensaje'] = 'fecha_fin no puede ser anterior a fecha_inicio';
+                return $r;
+            }
+        }
+
+        // cod_area si existe debe ser numérico
+        if (isset($datos['cod_area']) && $datos['cod_area'] !== null && !is_numeric($datos['cod_area'])) {
+            $r['codigo'] = 8;
+            $r['mensaje'] = 'Código de área inválido';
+            return $r;
+        }
+
+        // Validar área: nombre y descripción
+        if (isset($datos['nombre_area']) && !preg_match('/^[A-Za-z0-9\s\-\.,]{3,100}$/u', $datos['nombre_area'])) {
+            $r['codigo'] = 9;
+            $r['mensaje'] = 'Nombre de área inválido (3-100 caracteres)';
+            return $r;
+        }
+        if (isset($datos['descripcion']) && mb_strlen($datos['descripcion']) > 1000) {
+            $r['codigo'] = 10;
+            $r['mensaje'] = 'Descripción de área demasiado larga';
+            return $r;
+        }
+
+        // Cedula responsable formato y existencia en personal (si viene)
+        if (isset($datos['cedula_personal'])) {
+            if (!preg_match('/^[0-9]{7,8}$/', $datos['cedula_personal'])) {
+                $r['codigo'] = 11;
+                $r['mensaje'] = 'Formato de cédula del responsable inválido';
+                return $r;
+            }
+            // Verificar existencia en BD
+            try {
+                $co = $this->conecta();
+                $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $stmt = $co->prepare("SELECT 1 FROM personal WHERE cedula_personal = ? LIMIT 1");
+                $stmt->execute([$datos['cedula_personal']]);
+                $existe = ($stmt->fetchColumn() !== false);
+                if (!$existe) {
+                    $r['codigo'] = 12;
+                    $r['mensaje'] = 'La cédula del responsable no existe en la base de datos';
+                    return $r;
+                }
+            } catch (Exception $e) {
+                $r['codigo'] = 13;
+                $r['mensaje'] = 'Error al validar responsable: ' . $e->getMessage();
+                return $r;
+            } finally {
+                if (isset($co)) $co = null;
+            }
+        }
+
+        return $r;
     }
 }

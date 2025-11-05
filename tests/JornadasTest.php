@@ -3,7 +3,7 @@
 use PHPUnit\Framework\TestCase;
 use Shm\Shm\modelo\jornadas;
 
-class TestJornadas extends TestCase
+class JornadasTest extends TestCase
 {
     private $jornadas;
 

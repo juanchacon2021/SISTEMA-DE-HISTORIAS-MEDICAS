@@ -3,7 +3,7 @@ use PHPUnit\Framework\TestCase;
 use Shm\Shm\modelo\personal;
 
 
-class testPersonal extends TestCase{
+class PersonalTest extends TestCase{
     
     private $personal;
     private $datosPrueba;

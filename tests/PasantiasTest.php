@@ -3,7 +3,7 @@
 use PHPUnit\Framework\TestCase;
 use Shm\Shm\modelo\pasantias;
 
-class TestPasantias extends TestCase
+class PasantiasTest extends TestCase
 {
     private $pasantias;
     // Variables estáticas para almacenar códigos/cédulas creadas en un test y usadas en otros

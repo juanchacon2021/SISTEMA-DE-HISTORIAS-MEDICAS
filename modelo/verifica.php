@@ -26,7 +26,6 @@ class verifica {
     }
     
     function validar_captcha($captcha_ingresado) {
-        // La verificación es necesaria aquí también
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }

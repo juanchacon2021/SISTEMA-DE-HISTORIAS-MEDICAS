@@ -76,6 +76,19 @@ class emergencias extends datos{
  function incluir($datos) {
         $r = array();
 
+        // Validar campos antes de cualquier operación
+        $val_campos = $this->validar_campos($datos);
+        if (!is_array($val_campos) || !isset($val_campos['codigo'])) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = 'Error al validar campos';
+            return $r;
+        }
+        if ($val_campos['codigo'] !== 0) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $val_campos['mensaje'];
+            return $r;
+        }
+
         // Validar cédulas antes de cualquier operación
         $val = $this->validar_cedulas($datos['cedula_paciente'], $datos['cedula_personal']);
         if (!is_array($val) || !isset($val['codigo'])) {
@@ -153,6 +166,19 @@ class emergencias extends datos{
         $co = $this->conecta();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
+
+        // Validar campos nuevos antes de modificar
+        $val_campos = $this->validar_campos($datos);
+        if (!is_array($val_campos) || !isset($val_campos['codigo'])) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = 'Error al validar campos';
+            return $r;
+        }
+        if ($val_campos['codigo'] !== 0) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $val_campos['mensaje'];
+            return $r;
+        }
 
         // Validar las cédulas nuevas antes de modificar
         $val = $this->validar_cedulas($datos['cedula_paciente'], $datos['cedula_personal']);
@@ -354,6 +380,72 @@ class emergencias extends datos{
         return $r;
     }
 	
+	// Nueva función de validación de campos (inspirada en consultasm::validar_campos)
+    private function validar_campos($datos) {
+        $r = array('codigo' => 0, 'mensaje' => 'Campos válidos');
+
+        // Campos requeridos
+        $requeridos = ['horaingreso', 'fechaingreso', 'motingreso', 'diagnostico_e', 'tratamientos', 'cedula_personal', 'cedula_paciente'];
+        foreach ($requeridos as $campo) {
+            if (!isset($datos[$campo]) || trim($datos[$campo]) === '') {
+                $r['codigo'] = 1;
+                $r['mensaje'] = "El campo {$campo} es requerido";
+                return $r;
+            }
+        }
+
+        // Validar hora HH:MM
+        if (!preg_match('/^([01]\d|2[0-3]):([0-5]\d)$/', $datos['horaingreso'])) {
+            $r['codigo'] = 2;
+            $r['mensaje'] = 'Formato de hora inválido (HH:MM)';
+            return $r;
+        }
+
+        // Validar fecha YYYY-MM-DD
+        $d = \DateTime::createFromFormat('Y-m-d', $datos['fechaingreso']);
+        if (!($d && $d->format('Y-m-d') === $datos['fechaingreso'])) {
+            $r['codigo'] = 3;
+            $r['mensaje'] = 'Formato de fecha inválido (YYYY-MM-DD)';
+            return $r;
+        }
+
+        // Longitudes razonables
+        if (mb_strlen($datos['motingreso']) > 255) {
+            $r['codigo'] = 4;
+            $r['mensaje'] = 'Motivo de ingreso demasiado largo';
+            return $r;
+        }
+        if (mb_strlen($datos['diagnostico_e']) > 1000) {
+            $r['codigo'] = 5;
+            $r['mensaje'] = 'Diagnóstico demasiado largo';
+            return $r;
+        }
+        if (mb_strlen($datos['tratamientos']) > 1000) {
+            $r['codigo'] = 6;
+            $r['mensaje'] = 'Tratamientos demasiado largos';
+            return $r;
+        }
+        if (isset($datos['procedimiento']) && mb_strlen($datos['procedimiento']) > 1000) {
+            $r['codigo'] = 7;
+            $r['mensaje'] = 'Procedimiento demasiado largo';
+            return $r;
+        }
+
+        // Validar formato simple de cédulas (letra opcional + 6-9 dígitos)
+        $cedulaPattern = '/^[A-Z]?\d{6,9}$/i';
+        if (!preg_match($cedulaPattern, $datos['cedula_paciente'])) {
+            $r['codigo'] = 8;
+            $r['mensaje'] = 'Formato de cédula de paciente inválido';
+            return $r;
+        }
+        if (!preg_match($cedulaPattern, $datos['cedula_personal'])) {
+            $r['codigo'] = 9;
+            $r['mensaje'] = 'Formato de cédula de personal inválido';
+            return $r;
+        }
+
+        return $r;
+    }
 
 	
 	

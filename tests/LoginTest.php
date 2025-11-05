@@ -2,7 +2,7 @@
 use PHPUnit\Framework\TestCase;
 use Shm\Shm\modelo\login;
 
-class testLogin extends TestCase{
+class LoginTest extends TestCase{
 
     private $login;
 

@@ -263,6 +263,25 @@ class examenes extends datos
         $r = array();
         $conexion = $this->conecta();
 
+        // Validar campos antes de insertar
+        $val = $this->validar_campos([
+            'fecha_e' => $this->fecha_e,
+            'hora_e' => $this->hora_e,
+            'cedula_paciente' => $this->cedula_paciente,
+            'cod_examen' => $this->cod_examen,
+            'observacion_examen' => $this->observacion_examen
+        ]);
+        if (!is_array($val) || !isset($val['codigo'])) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = 'Error al validar campos';
+            return $r;
+        }
+        if ($val['codigo'] !== 0) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $val['mensaje'];
+            return $r;
+        }
+
         try {
             $conexion->beginTransaction();
 
@@ -313,6 +332,25 @@ class examenes extends datos
     {
         $r = array();
         $conexion = $this->conecta();
+
+        // Validar campos antes de modificar
+        $val = $this->validar_campos([
+            'fecha_e' => $this->fecha_e,
+            'hora_e' => $this->hora_e,
+            'cedula_paciente' => $this->cedula_paciente,
+            'cod_examen' => $this->cod_examen,
+            'observacion_examen' => $this->observacion_examen
+        ]);
+        if (!is_array($val) || !isset($val['codigo'])) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = 'Error al validar campos';
+            return $r;
+        }
+        if ($val['codigo'] !== 0) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $val['mensaje'];
+            return $r;
+        }
 
         try {
             $conexion->beginTransaction();
@@ -475,5 +513,70 @@ class examenes extends datos
         if ($conexion) {
             $conexion = null;
         }
+    }
+
+    // Validación de campos para registros de examen
+    private function validar_campos($datos)
+    {
+        $r = array('codigo' => 0, 'mensaje' => 'Campos válidos');
+
+        // Campos requeridos
+        $requeridos = ['fecha_e', 'hora_e', 'cedula_paciente', 'cod_examen'];
+        foreach ($requeridos as $campo) {
+            if (!isset($datos[$campo]) || trim($datos[$campo]) === '') {
+                $r['codigo'] = 1;
+                $r['mensaje'] = "El campo {$campo} es requerido";
+                return $r;
+            }
+        }
+
+        // Validar hora HH:MM:SS
+        if (!preg_match('/^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/', $datos['hora_e'])) {
+    $r['codigo'] = 2;
+    $r['mensaje'] = 'Formato de hora inválido (HH:MM:SS)';
+    return $r;
+}
+
+        // Validar fecha YYYY-MM-DD
+        $d = \DateTime::createFromFormat('Y-m-d', $datos['fecha_e']);
+        if (!($d && $d->format('Y-m-d') === $datos['fecha_e'])) {
+            $r['codigo'] = 3;
+            $r['mensaje'] = 'Formato de fecha inválido (YYYY-MM-DD)';
+            return $r;
+        }
+
+        // Validar formato simple de cédula (7-8 dígitos) — coherente con validaciones JS
+        if (!preg_match('/^[0-9]{7,8}$/', $datos['cedula_paciente'])) {
+            $r['codigo'] = 4;
+            $r['mensaje'] = 'Formato de cédula de paciente inválido';
+            return $r;
+        }
+
+        // Validar longitud de observación
+        if (isset($datos['observacion_examen']) && mb_strlen($datos['observacion_examen']) > 1000) {
+            $r['codigo'] = 5;
+            $r['mensaje'] = 'Observación demasiado larga';
+            return $r;
+        }
+
+        // Verificar existencia del paciente en la BD
+        try {
+            $co = $this->conecta();
+            $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $co->prepare("SELECT 1 FROM paciente WHERE cedula_paciente = ? LIMIT 1");
+            $stmt->execute([$datos['cedula_paciente']]);
+            $existePaciente = ($stmt->fetchColumn() !== false);
+            if (!$existePaciente) {
+                $r['codigo'] = 6;
+                $r['mensaje'] = 'La cédula del paciente no existe';
+                return $r;
+            }
+        } catch (Exception $e) {
+            $r['codigo'] = 7;
+            $r['mensaje'] = 'Error al validar paciente: ' . $e->getMessage();
+            return $r;
+        }
+
+        return $r;
     }
 }

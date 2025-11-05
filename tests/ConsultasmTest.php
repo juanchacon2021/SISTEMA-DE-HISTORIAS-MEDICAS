@@ -3,7 +3,7 @@ use PHPUnit\Framework\TestCase;
 use Shm\Shm\modelo\consultasm;
 use Shm\Shm\modelo\observaciones;
 
-class testconsultasm extends TestCase{
+class consultasmTest extends TestCase{
 
     private $consultasm;
     private $observaciones;

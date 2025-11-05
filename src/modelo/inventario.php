@@ -146,10 +146,20 @@ class inventario extends datos {
 
     // Incluir medicamento
     public function incluir($datos) {
-        $co = $this->conecta();
-        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $r = array();
-        try {
+        // validaciones básicas
+        if (!isset($datos['nombre']) || trim($datos['nombre']) === '') {
+            return ['resultado' => 'error', 'mensaje' => 'El nombre del medicamento es requerido'];
+        }
+        if (!isset($datos['unidad_medida']) || trim($datos['unidad_medida']) === '') {
+            return ['resultado' => 'error', 'mensaje' => 'La unidad de medida es requerida'];
+        }
+        if (isset($datos['stock_min']) && !is_numeric($datos['stock_min'])) {
+            return ['resultado' => 'error', 'mensaje' => 'stock_min debe ser numérico'];
+        }
+         $co = $this->conecta();
+         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+         $r = array();
+         try {
             $co->beginTransaction();
 
             // Llamar al procedimiento almacenado con stock_min
@@ -179,10 +189,23 @@ class inventario extends datos {
 
     // Modificar medicamento
     public function modificar($datos) {
-        $co = $this->conecta();
-        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $r = array();
-        try {
+        // validaciones
+        if (!isset($datos['cod_medicamento']) || trim($datos['cod_medicamento']) === '') {
+            return ['resultado' => 'error', 'mensaje' => 'cod_medicamento es requerido'];
+        }
+        if (!isset($datos['nombre']) || trim($datos['nombre']) === '') {
+            return ['resultado' => 'error', 'mensaje' => 'El nombre del medicamento es requerido'];
+        }
+        if (!isset($datos['unidad_medida']) || trim($datos['unidad_medida']) === '') {
+            return ['resultado' => 'error', 'mensaje' => 'La unidad de medida es requerida'];
+        }
+        if (isset($datos['stock_min']) && !is_numeric($datos['stock_min'])) {
+            return ['resultado' => 'error', 'mensaje' => 'stock_min debe ser numérico'];
+        }
+         $co = $this->conecta();
+         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+         $r = array();
+         try {
             $stmt = $co->prepare("UPDATE medicamentos SET nombre = ?, descripcion = ?, unidad_medida = ?, stock_min = ? WHERE cod_medicamento = ?");
             $stmt->execute([
                 $datos['nombre'] ?? '',
@@ -202,6 +225,11 @@ class inventario extends datos {
 
     // Registrar entrada de medicamento (nuevo lote)
     public function registrar_entrada($datos) {
+        // validar datos del lote
+        $val = $this->validar_entrada($datos);
+        if ($val['codigo'] !== 0) {
+            return ['resultado' => 'error', 'mensaje' => $val['mensaje']];
+        }
         $co = $this->conecta();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
@@ -243,6 +271,11 @@ class inventario extends datos {
 
     // Registrar salida de medicamento
     public function registrar_salida($datos) {
+        // validar request de salida
+        $val = $this->validar_salida_simple($datos);
+        if ($val['codigo'] !== 0) {
+            return ['resultado' => 'error', 'mensaje' => $val['mensaje']];
+        }
         $co = $this->conecta();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
@@ -297,10 +330,13 @@ class inventario extends datos {
 
     // Eliminar medicamento
     public function eliminar($datos) {
-        $co = $this->conecta();
-        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $r = array();
-        try {
+        if (!isset($datos['cod_medicamento']) || trim($datos['cod_medicamento']) === '') {
+            return ['resultado' => 'error', 'mensaje' => 'cod_medicamento es requerido'];
+        }
+         $co = $this->conecta();
+         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+         $r = array();
+         try {
             // Verificar stock
             $stmt = $co->prepare("SELECT SUM(cantidad) FROM lotes WHERE cod_medicamento = ?");
             $stmt->execute([$datos['cod_medicamento']]);
@@ -333,6 +369,11 @@ class inventario extends datos {
 
     // Registrar entrada múltiple
     public function registrar_entrada_multiple($datos) {
+        // validar arreglo de lotes y cedula_personal
+        $val = $this->validar_entrada_multiple($datos);
+        if ($val['codigo'] !== 0) {
+            return ['resultado' => 'error', 'mensaje' => $val['mensaje']];
+        }
         $co = $this->conecta();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
@@ -385,6 +426,10 @@ class inventario extends datos {
 
     // Registrar salida múltiple
     public function registrar_salida_multiple($datos) {
+        $val = $this->validar_salida_multiple($datos);
+        if ($val['codigo'] !== 0) {
+            return ['resultado' => 'error', 'mensaje' => $val['mensaje']];
+        }
         $co = $this->conecta();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
@@ -420,4 +465,128 @@ class inventario extends datos {
         }
         return $r;
     }
-}
+
+    // --- VALIDACIONES AUXILIARES ---
+    private function validar_fecha($fecha) {
+        $d = \DateTime::createFromFormat('Y-m-d', $fecha);
+        return ($d && $d->format('Y-m-d') === $fecha);
+    }
+
+    private function validar_personal_existe($cedula_personal) {
+        try {
+            $co = $this->conecta();
+            $stmt = $co->prepare("SELECT 1 FROM personal WHERE cedula_personal = ? LIMIT 1");
+            $stmt->execute([$cedula_personal]);
+            return ($stmt->fetchColumn() !== false);
+        } catch(Exception $e) {
+            return false;
+        }
+    }
+
+    private function validar_medicamento_existe($cod_medicamento) {
+        try {
+            $co = $this->conecta();
+            $stmt = $co->prepare("SELECT 1 FROM medicamentos WHERE cod_medicamento = ? LIMIT 1");
+            $stmt->execute([$cod_medicamento]);
+            return ($stmt->fetchColumn() !== false);
+        } catch(Exception $e) {
+            return false;
+        }
+    }
+
+    private function validar_lote_existe($cod_lote) {
+        try {
+            $co = $this->conecta();
+            $stmt = $co->prepare("SELECT cantidad FROM lotes WHERE cod_lote = ? LIMIT 1");
+            $stmt->execute([$cod_lote]);
+            $fila = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $fila !== false ? intval($fila['cantidad']) : false;
+        } catch(Exception $e) {
+            return false;
+        }
+    }
+
+    private function validar_entrada($datos) {
+        $r = ['codigo' => 0, 'mensaje' => 'OK'];
+        if (!isset($datos['cod_medicamento']) || trim($datos['cod_medicamento']) === '') {
+            return ['codigo' => 1, 'mensaje' => 'cod_medicamento requerido'];
+        }
+        if (!$this->validar_medicamento_existe($datos['cod_medicamento'])) {
+            return ['codigo' => 2, 'mensaje' => 'Medicamento no existe'];
+        }
+        if (!isset($datos['cantidad']) || !is_numeric($datos['cantidad']) || intval($datos['cantidad']) <= 0) {
+            return ['codigo' => 3, 'mensaje' => 'cantidad inválida'];
+        }
+        if (!isset($datos['fecha_vencimiento']) || !$this->validar_fecha($datos['fecha_vencimiento'])) {
+            return ['codigo' => 4, 'mensaje' => 'fecha_vencimiento inválida (YYYY-MM-DD)'];
+        }
+        if (!isset($datos['proveedor']) || trim($datos['proveedor']) === '') {
+            return ['codigo' => 5, 'mensaje' => 'proveedor requerido'];
+        }
+        if (!isset($datos['cedula_personal']) || trim($datos['cedula_personal']) === '') {
+            return ['codigo' => 6, 'mensaje' => 'cedula_personal requerida'];
+        }
+        if (!$this->validar_personal_existe($datos['cedula_personal'])) {
+            return ['codigo' => 7, 'mensaje' => 'Personal no existe'];
+        }
+        return $r;
+    }
+
+    private function validar_entrada_multiple($datos) {
+        if (!isset($datos['lotes']) || !is_array($datos['lotes']) || count($datos['lotes']) === 0) {
+            return ['codigo' => 1, 'mensaje' => 'lotes requeridos'];
+        }
+        if (!isset($datos['cedula_personal']) || !$this->validar_personal_existe($datos['cedula_personal'])) {
+            return ['codigo' => 2, 'mensaje' => 'cedula_personal inválida o no existe'];
+        }
+        $cod_medicamento = $datos['lotes'][0]['cod_medicamento'] ?? null;
+        if (!$cod_medicamento || !$this->validar_medicamento_existe($cod_medicamento)) {
+            return ['codigo' => 3, 'mensaje' => 'cod_medicamento inválido o no existe'];
+        }
+        foreach ($datos['lotes'] as $lote) {
+            if (!isset($lote['cantidad']) || !is_numeric($lote['cantidad']) || intval($lote['cantidad']) <= 0) {
+                return ['codigo' => 4, 'mensaje' => 'cantidad de lote inválida'];
+            }
+            if (!isset($lote['fecha_vencimiento']) || !$this->validar_fecha($lote['fecha_vencimiento'])) {
+                return ['codigo' => 5, 'mensaje' => 'fecha_vencimiento de lote inválida'];
+            }
+        }
+        return ['codigo' => 0, 'mensaje' => 'OK'];
+    }
+
+    private function validar_salida_simple($datos) {
+        if (!isset($datos['cod_medicamento']) || !$this->validar_medicamento_existe($datos['cod_medicamento'])) {
+            return ['codigo' => 1, 'mensaje' => 'cod_medicamento inválido o no existe'];
+        }
+        if (!isset($datos['cantidad']) || !is_numeric($datos['cantidad']) || intval($datos['cantidad']) <= 0) {
+            return ['codigo' => 2, 'mensaje' => 'cantidad inválida'];
+        }
+        if (!isset($datos['cedula_personal']) || !$this->validar_personal_existe($datos['cedula_personal'])) {
+            return ['codigo' => 3, 'mensaje' => 'cedula_personal inválida o no existe'];
+        }
+        return ['codigo' => 0, 'mensaje' => 'OK'];
+    }
+
+    private function validar_salida_multiple($datos) {
+        if (!isset($datos['salidas']) || !is_array($datos['salidas']) || count($datos['salidas']) === 0) {
+            return ['codigo' => 1, 'mensaje' => 'salidas requeridas'];
+        }
+        if (!isset($datos['cedula_personal']) || !$this->validar_personal_existe($datos['cedula_personal'])) {
+            return ['codigo' => 2, 'mensaje' => 'cedula_personal inválida o no existe'];
+        }
+        foreach ($datos['salidas'] as $s) {
+            if (!isset($s['cod_lote']) || !$this->validar_lote_existe($s['cod_lote'])) {
+                return ['codigo' => 3, 'mensaje' => "lote {$s['cod_lote']} inválido o no existe"];
+            }
+            if (!isset($s['cantidad']) || !is_numeric($s['cantidad']) || intval($s['cantidad']) <= 0) {
+                return ['codigo' => 4, 'mensaje' => "cantidad inválida para lote {$s['cod_lote']}"];
+            }
+            $stockLote = $this->validar_lote_existe($s['cod_lote']);
+            if ($stockLote === false || $stockLote < intval($s['cantidad'])) {
+                return ['codigo' => 5, 'mensaje' => "Stock insuficiente en lote {$s['cod_lote']} (disponible: $stockLote)"];
+            }
+        }
+        return ['codigo' => 0, 'mensaje' => 'OK'];
+    }
+
+ }

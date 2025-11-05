@@ -1,0 +1,1 @@
+2025-10-27 02:39:18 | cod_medicamento: Mx00000007 | stock: 0 | stock_min: 0 | cantidad_salida: 1
