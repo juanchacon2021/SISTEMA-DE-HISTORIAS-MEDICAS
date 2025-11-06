@@ -2,7 +2,7 @@
 use PHPUnit\Framework\TestCase;
 use Shm\Shm\modelo\datos;
 
-class testDatos extends TestCase{
+class DatosTest extends TestCase{
     
     public function testConexion(){
         $datos = new datos();

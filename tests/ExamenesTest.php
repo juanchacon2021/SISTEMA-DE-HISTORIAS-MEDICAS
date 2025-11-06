@@ -4,7 +4,7 @@ use PHPUnit\Framework\TestCase;
 
 use Shm\Shm\modelo\examenes;
 
-class TestExamenes extends TestCase
+class ExamenesTest extends TestCase
 {
     private $examenes;
 

@@ -10,7 +10,7 @@
 use PHPUnit\Framework\TestCase;
 use Shm\Shm\modelo\inventario;
 
-class testinventario extends TestCase
+class InventarioTest extends TestCase
 {
     private inventario $inventario;
 

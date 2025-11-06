@@ -73,7 +73,7 @@ class PDF extends FPDF
 // Conexión a la base de datos
 function conexion() {
     try {
-        return new PDO('mysql:host=localhost;dbname=sgm;charset=utf8mb4', 'root', '');
+        return new PDO('mysql:host=localhost;dbname=sgm2;charset=utf8mb4', 'root', '');
     } catch (PDOException $e) {
         die('Error de conexión: ' . $e->getMessage());
     }

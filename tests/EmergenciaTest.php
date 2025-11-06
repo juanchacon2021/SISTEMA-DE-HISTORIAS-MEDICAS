@@ -4,7 +4,7 @@ use Shm\Shm\modelo\emergencias;
 
 
 
-class testemergencia extends TestCase{
+class EmergenciaTest extends TestCase{
 
     private $resultado;
 

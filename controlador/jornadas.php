@@ -44,11 +44,15 @@ if(is_file("vista/".$pagina.".php")){
                 break;
             case 'eliminar':
                 $resultado = $o->gestionar_jornada($datos);
+                
+                $codigo_eliminado = $datos['cod_jornada'] ?? 'DESCONOCIDO'; 
+                
                 bitacora::registrarYNotificar(
                     'Eliminar',
-                    'Se ha eliminado la jornada en: '.$datos['ubicacion'],
+                    'Se ha eliminado la jornada con código: ' . $codigo_eliminado, // Línea 49 corregida
                     $_SESSION['usuario']
                 );
+                
                 echo json_encode($resultado);
                 break;
             case 'obtener_personal':

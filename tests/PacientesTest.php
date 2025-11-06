@@ -2,7 +2,7 @@
 use PHPUnit\Framework\TestCase;
 use Shm\Shm\modelo\pacientes;
 
-class testPacientes extends TestCase
+class PacientesTest extends TestCase
 {
     private pacientes $pacientes;
     private static int $cedula;

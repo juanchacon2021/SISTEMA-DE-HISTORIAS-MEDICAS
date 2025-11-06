@@ -55,13 +55,13 @@ function cargarJornadas() {
             <td>${jornada.responsable}</td>
             <td class="text-center">
                 <div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
-                    <button type="button" class="btn btn-success" onclick='editarJornada(${jornada.cod_jornada})'>
+                    <button type="button" class="btn btn-success" onclick="editarJornada('${jornada.cod_jornada}')">
                         <img src="img/lapiz.svg" style="width: 20px">
                     </button>
-                    <button type="button" class="btn btn-danger" onclick='confirmarEliminar(${jornada.cod_jornada})'>
+                    <button type="button" class="btn btn-danger" onclick="confirmarEliminar('${jornada.cod_jornada}')">
                         <img src="img/basura.svg" style="width: 20px">
                     </button>
-                    <button type="button" class="btn btn-primary" onclick='generarReporteIndividual(${jornada.cod_jornada})'>
+                    <button type="button" class="btn btn-primary" onclick="generarReporteIndividual('${jornada.cod_jornada}')">
                         <img src="img/descarga.svg" style="width: 20px">
                     </button>
                 </div>
@@ -391,25 +391,83 @@ function enviaAjax(datos, callback) {
     processData: false,
     cache: false,
     timeout: 10000,
-    beforeSend: function () {},
-    success: function (respuesta) {
+    beforeSend: function () {
+      // Opcional: mostrar un spinner de carga aquí
+    },
+    success: function (respuesta, textStatus, xhr) { // Añadimos xhr aquí
       try {
         const json = JSON.parse(respuesta);
+        
+        // 1. Manejo de error de negocio (si el PHP devolvió {"resultado": "error", ...})
+        if (json.resultado === "error" && json.mensaje) {
+          muestraMensaje(json.mensaje, "error");
+          return;
+        }
+        
+        // 2. Si es exitoso, llama al callback para actualizar la tabla
         if (typeof callback === "function") {
-          callback(json);
+          callback(json); 
         }
       } catch (e) {
-        console.error("Error parsing JSON:", e);
-        muestraMensaje("Error al procesar la respuesta del servidor");
+        console.error("Error al intentar parsear JSON:", e);
+        console.error("Respuesta cruda del servidor (causa del error):", respuesta); 
+        
+        // Mensaje de error más específico para el usuario
+        muestraMensaje(
+          "La operación en BD fue exitosa, pero la respuesta no es JSON válido. (Revisar consola y PHP).",
+          "error"
+        );
       }
     },
     error: function (xhr, status, err) {
-      if (status == "timeout") {
-        muestraMensaje("Servidor ocupado, intente de nuevo");
+      let mensajeError = "Error desconocido en la solicitud.";
+
+      // 1. Manejo de Timeouts
+      if (status === "timeout") {
+        mensajeError = "El servidor tardó demasiado en responder. Intente de nuevo.";
+      } 
+      // 2. Intentar parsear el error del servidor (JSON)
+      else if (xhr.responseText) {
+        try {
+          const errorJson = JSON.parse(xhr.responseText);
+          // Si el servidor (e.g., PHP catch block) devuelve un JSON con 'mensaje'
+          if (errorJson.mensaje) {
+            mensajeError = errorJson.mensaje;
+          } else {
+            mensajeError = `Error del servidor (${xhr.status}): ${xhr.statusText}.`;
+          }
+        } catch (e) {
+          // Si no es JSON, manejar el error HTTP genérico
+          switch (xhr.status) {
+            case 404:
+              mensajeError = "Recurso no encontrado (404). Revise la ruta de la solicitud.";
+              break;
+            case 403:
+              mensajeError = "Acceso denegado (403). No tiene permisos.";
+              break;
+            case 500:
+              mensajeError = "Error interno del servidor (500). Contacte a soporte técnico.";
+              break;
+            default:
+              if (xhr.status > 0) {
+                mensajeError = `Error en la conexión: ${xhr.status} ${xhr.statusText}`;
+              } else {
+                 mensajeError = `Error de red. Verifique su conexión a Internet.`;
+              }
+              break;
+          }
+        }
       } else {
-        muestraMensaje("Error en la solicitud: " + err);
+         // Error de conexión sin respuesta de texto
+          mensajeError = `Error de solicitud: ${err}. Verifique su conexión.`;
       }
+      
+      console.error("Error AJAX:", xhr, status, err);
+      muestraMensaje(mensajeError, "error");
     },
+    complete: function () {
+      // Opcional: ocultar el spinner de carga aquí
+    }
   });
 }
 

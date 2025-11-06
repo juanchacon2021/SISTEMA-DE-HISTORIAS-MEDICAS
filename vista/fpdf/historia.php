@@ -42,7 +42,7 @@ class PDF extends FPDF
 include '../../modelo/datos.php';
 
 function conexion() {
-    return new PDO('mysql:host=localhost;dbname=sgm', 'root', '123456');
+    return new PDO('mysql:host=localhost;dbname=sgm2', 'root', '');
 }
 
 $pdf = new PDF();
