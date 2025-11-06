@@ -7,14 +7,14 @@ require_once("comunes/notificaciones.php");
 <body class="hold-transition sidebar-mini layout-fixed">
     <?php
     if (!isset($_SESSION['permisos']) || !is_array($_SESSION['permisos'])) {
-        header("Location: ?pagina=login");
+        header("Location: /SISTEMA-DE-HISTORIAS-MEDICAS/login");
         exit();
     } elseif (!isset($_SESSION['permisos']['modulos']) || !in_array('Jornadas', $_SESSION['permisos']['modulos'])) {
         http_response_code(403);
         die('<div class="container text-center py-5">
                 <h1 class="text-danger">403 - Acceso prohibido</h1>
                 <p class="lead">No tienes permiso para acceder a este módulo</p>
-                <a href="?pagina=principal" class="btn btn-primary">Volver al inicio</a>
+                <a href="/SISTEMA-DE-HISTORIAS-MEDICAS/principal" class="btn btn-primary">Volver al inicio</a>
              </div>');
     }
     ?>
@@ -118,7 +118,7 @@ require_once("comunes/notificaciones.php");
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label for="pacientes_embarazadas">Pacientes Embarazadas</label>
+                                        <label for="pacientes_embarazadas">Embarazadas</label>
                                         <input type="number" class="form-control bg-gray-200 rounded-lg border-white p-3 text" id="pacientes_embarazadas" name="pacientes_embarazadas" min="0" value="0">
                                     </div>
                                 </div>

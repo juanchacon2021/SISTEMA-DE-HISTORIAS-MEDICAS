@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\phpunit.xml" tests="117" assertions="607" errors="0" failures="0" skipped="0" time="2.361163">
+    <testsuite name="Pruebas con PHPUNIT" tests="117" assertions="607" errors="0" failures="0" skipped="0" time="2.361163">
+      <testsuite name="consultasmTest" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\ConsultasmTest.php" tests="12" assertions="50" errors="0" failures="0" skipped="0" time="0.437967">
+        <testcase name="testListadopersonal" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\ConsultasmTest.php" line="18" class="consultasmTest" classname="consultasmTest" assertions="5" time="0.104331"/>
+        <testcase name="testListadopacientes" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\ConsultasmTest.php" line="28" class="consultasmTest" classname="consultasmTest" assertions="5" time="0.005052"/>
+        <testcase name="testConsultar" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\ConsultasmTest.php" line="38" class="consultasmTest" classname="consultasmTest" assertions="5" time="0.009343"/>
+        <testcase name="testIncluirConsulta" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\ConsultasmTest.php" line="49" class="consultasmTest" classname="consultasmTest" assertions="5" time="0.054179"/>
+        <testcase name="testExiste" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\ConsultasmTest.php" line="76" class="consultasmTest" classname="consultasmTest" assertions="1" time="0.035126"/>
+        <testcase name="testModificarConsulta" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\ConsultasmTest.php" line="90" class="consultasmTest" classname="consultasmTest" assertions="5" time="0.020228"/>
+        <testcase name="testEliminarConsulta" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\ConsultasmTest.php" line="117" class="consultasmTest" classname="consultasmTest" assertions="4" time="0.022510"/>
+        <testcase name="testListadoObservaciones" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\ConsultasmTest.php" line="141" class="consultasmTest" classname="consultasmTest" assertions="5" time="0.002309"/>
+        <testcase name="testIncluirObservacion" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\ConsultasmTest.php" line="151" class="consultasmTest" classname="consultasmTest" assertions="6" time="0.021310"/>
+        <testcase name="testExisteObservacion" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\ConsultasmTest.php" line="170" class="consultasmTest" classname="consultasmTest" assertions="1" time="0.002770"/>
+        <testcase name="testModificarObservacion" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\ConsultasmTest.php" line="182" class="consultasmTest" classname="consultasmTest" assertions="4" time="0.029340"/>
+        <testcase name="testEliminarObservacion" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\ConsultasmTest.php" line="205" class="consultasmTest" classname="consultasmTest" assertions="4" time="0.131468"/>
+      </testsuite>
+      <testsuite name="DatosTest" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\DatosTest.php" tests="1" assertions="4" errors="0" failures="0" skipped="0" time="0.015233">
+        <testcase name="testConexion" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\DatosTest.php" line="7" class="DatosTest" classname="DatosTest" assertions="4" time="0.015233"/>
+      </testsuite>
+      <testsuite name="EmergenciaTest" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\EmergenciaTest.php" tests="8" assertions="36" errors="0" failures="0" skipped="0" time="0.106807">
+        <testcase name="testListadopersonal" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\EmergenciaTest.php" line="14" class="EmergenciaTest" classname="EmergenciaTest" assertions="5" time="0.009297"/>
+        <testcase name="testlistadopacientes" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\EmergenciaTest.php" line="26" class="EmergenciaTest" classname="EmergenciaTest" assertions="5" time="0.003195"/>
+        <testcase name="testIncluir" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\EmergenciaTest.php" line="37" class="EmergenciaTest" classname="EmergenciaTest" assertions="5" time="0.025059"/>
+        <testcase name="testIncluirConCedulasInvalidas" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\EmergenciaTest.php" line="61" class="EmergenciaTest" classname="EmergenciaTest" assertions="5" time="0.003324"/>
+        <testcase name="testIncluirConRegistroDuplicado" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\EmergenciaTest.php" line="84" class="EmergenciaTest" classname="EmergenciaTest" assertions="5" time="0.012343"/>
+        <testcase name="testExiste" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\EmergenciaTest.php" line="109" class="EmergenciaTest" classname="EmergenciaTest" assertions="1" time="0.003381"/>
+        <testcase name="testModificar" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\EmergenciaTest.php" line="128" class="EmergenciaTest" classname="EmergenciaTest" assertions="5" time="0.027315"/>
+        <testcase name="testEliminar" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\EmergenciaTest.php" line="155" class="EmergenciaTest" classname="EmergenciaTest" assertions="5" time="0.022892"/>
+      </testsuite>
+      <testsuite name="EstadisticaTest" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\EstadisticaTest.php" tests="11" assertions="82" errors="0" failures="0" skipped="0" time="0.068833">
+        <testcase name="testConsultarReturnsArrayWithValidStructure" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\EstadisticaTest.php" line="13" class="EstadisticaTest" classname="EstadisticaTest" assertions="10" time="0.013326"/>
+        <testcase name="testConsultarCronicosReturnsArrayWithValidStructure" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\EstadisticaTest.php" line="31" class="EstadisticaTest" classname="EstadisticaTest" assertions="7" time="0.010507"/>
+        <testcase name="testMedicamentosPorVencerReturnsArrayWithValidStructure" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\EstadisticaTest.php" line="48" class="EstadisticaTest" classname="EstadisticaTest" assertions="5" time="0.004566"/>
+        <testcase name="testTotalesGeneralesReturnsArrayWithValidStructure" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\EstadisticaTest.php" line="68" class="EstadisticaTest" classname="EstadisticaTest" assertions="11" time="0.009364"/>
+        <testcase name="testEmergenciasPorDiaMesActualReturnsArrayWithValidStructure" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\EstadisticaTest.php" line="87" class="EstadisticaTest" classname="EstadisticaTest" assertions="7" time="0.009255"/>
+        <testcase name="testConsultasPorDiaMesActualReturnsArrayWithValidStructure" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\EstadisticaTest.php" line="110" class="EstadisticaTest" classname="EstadisticaTest" assertions="7" time="0.003150"/>
+        <testcase name="testMesConMasEmergenciasReturnsArrayWithValidStructure" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\EstadisticaTest.php" line="133" class="EstadisticaTest" classname="EstadisticaTest" assertions="9" time="0.003150"/>
+        <testcase name="testMedicamentosMasUsadosReturnsArrayWithValidStructure" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\EstadisticaTest.php" line="156" class="EstadisticaTest" classname="EstadisticaTest" assertions="5" time="0.004196"/>
+        <testcase name="testMesConMasConsultasReturnsArrayWithValidStructure" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\EstadisticaTest.php" line="173" class="EstadisticaTest" classname="EstadisticaTest" assertions="9" time="0.003965"/>
+        <testcase name="testEmergenciasPorDiaMesActualWithoutPostParameters" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\EstadisticaTest.php" line="196" class="EstadisticaTest" classname="EstadisticaTest" assertions="6" time="0.004611"/>
+        <testcase name="testConsultasPorDiaMesActualWithoutPostParameters" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\EstadisticaTest.php" line="213" class="EstadisticaTest" classname="EstadisticaTest" assertions="6" time="0.002743"/>
+      </testsuite>
+      <testsuite name="ExamenesTest" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\ExamenesTest.php" tests="7" assertions="29" errors="0" failures="0" skipped="0" time="0.068223">
+        <testcase name="test1_IncluirTipoRetornaSuccessYGeneraCodigo" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\ExamenesTest.php" line="32" class="ExamenesTest" classname="ExamenesTest" assertions="3" time="0.028257"/>
+        <testcase name="test2_ModificarTipoRetornaSuccess" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\ExamenesTest.php" line="57" class="ExamenesTest" classname="ExamenesTest" assertions="3" time="0.014074"/>
+        <testcase name="test3_IncluirTipoDuplicadoRetornaError" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\ExamenesTest.php" line="79" class="ExamenesTest" classname="ExamenesTest" assertions="2" time="0.005088"/>
+        <testcase name="test4_EliminarTipoRetornaSuccess" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\ExamenesTest.php" line="94" class="ExamenesTest" classname="ExamenesTest" assertions="3" time="0.019272"/>
+        <testcase name="testGestionarTipoAccionNoValidaRetornaError" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\ExamenesTest.php" line="118" class="ExamenesTest" classname="ExamenesTest" assertions="2" time="0.000577"/>
+        <testcase name="testGestionarRegistroAccionNoValidaRetornaError" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\ExamenesTest.php" line="126" class="ExamenesTest" classname="ExamenesTest" assertions="2" time="0.000491"/>
+        <testcase name="testModeloTieneMetodosEsperados" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\ExamenesTest.php" line="134" class="ExamenesTest" classname="ExamenesTest" assertions="14" time="0.000465"/>
+      </testsuite>
+      <testsuite name="HelloTest" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\HelloTest.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.000335">
+        <testcase name="testHola" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\HelloTest.php" line="5" class="HelloTest" classname="HelloTest" assertions="1" time="0.000335"/>
+      </testsuite>
+      <testsuite name="InventarioTest" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\InventarioTest.php" tests="8" assertions="39" errors="0" failures="0" skipped="0" time="0.182256">
+        <testcase name="testConsultarMedicamentosDevuelveEstructuraValida" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\InventarioTest.php" line="34" class="InventarioTest" classname="InventarioTest" assertions="5" time="0.019059"/>
+        <testcase name="testConsultarMovimientosDevuelveEstructuraValida" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\InventarioTest.php" line="45" class="InventarioTest" classname="InventarioTest" assertions="5" time="0.016559"/>
+        <testcase name="testIncluirYObtenerMedicamento" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\InventarioTest.php" line="56" class="InventarioTest" classname="InventarioTest" assertions="11" time="0.027391"/>
+        <testcase name="testRegistrarEntradaConPersonalInvalidoDaError" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\InventarioTest.php" line="84" class="InventarioTest" classname="InventarioTest" assertions="4" time="0.081994"/>
+        <testcase name="testRegistrarSalidaSinStockDaError" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\InventarioTest.php" line="110" class="InventarioTest" classname="InventarioTest" assertions="3" time="0.022295"/>
+        <testcase name="testConsultarLotesMedicamentoCodigoInexistenteDevuelveArray" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\InventarioTest.php" line="133" class="InventarioTest" classname="InventarioTest" assertions="5" time="0.003757"/>
+        <testcase name="testEliminarMedicamentoInexistenteManejaRespuesta" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\InventarioTest.php" line="144" class="InventarioTest" classname="InventarioTest" assertions="3" time="0.008201"/>
+        <testcase name="testModificarConDatosIncompletosDaError" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\InventarioTest.php" line="153" class="InventarioTest" classname="InventarioTest" assertions="3" time="0.002999"/>
+      </testsuite>
+      <testsuite name="JornadasTest" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\JornadasTest.php" tests="15" assertions="89" errors="0" failures="0" skipped="0" time="0.133994">
+        <testcase name="testConsultarJornadasRetornaArrayCorrectamente" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\JornadasTest.php" line="15" class="JornadasTest" classname="JornadasTest" assertions="7" time="0.008396"/>
+        <testcase name="testObtenerPersonalRetornaArrayCorrectamente" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\JornadasTest.php" line="32" class="JornadasTest" classname="JornadasTest" assertions="30" time="0.009879"/>
+        <testcase name="testObtenerResponsablesRetornaArrayCorrectamente" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\JornadasTest.php" line="47" class="JornadasTest" classname="JornadasTest" assertions="12" time="0.003334"/>
+        <testcase name="testConsultarJornadaInexistenteRetornaError" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\JornadasTest.php" line="62" class="JornadasTest" classname="JornadasTest" assertions="3" time="0.002741"/>
+        <testcase name="testAccionNoValidaRetornaError" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\JornadasTest.php" line="71" class="JornadasTest" classname="JornadasTest" assertions="3" time="0.000423"/>
+        <testcase name="testValidacionEmbarazadasConReflection" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\JornadasTest.php" line="86" class="JornadasTest" classname="JornadasTest" assertions="2" time="0.008947"/>
+        <testcase name="testValidacionEmbarazadasValidasConReflection" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\JornadasTest.php" line="105" class="JornadasTest" classname="JornadasTest" assertions="2" time="0.000491"/>
+        <testcase name="testValidacionSinEmbarazadasConReflection" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\JornadasTest.php" line="128" class="JornadasTest" classname="JornadasTest" assertions="2" time="0.000448"/>
+        <testcase name="testValidacionTodosCerosConReflection" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\JornadasTest.php" line="151" class="JornadasTest" classname="JornadasTest" assertions="2" time="0.001069"/>
+        <testcase name="testGestionarJornadaConDatosInvalidos" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\JornadasTest.php" line="174" class="JornadasTest" classname="JornadasTest" assertions="5" time="0.000487"/>
+        <testcase name="testGestionarJornadaConDatosValidosPeroBDInvalida" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\JornadasTest.php" line="198" class="JornadasTest" classname="JornadasTest" assertions="1" time="0.032237"/>
+        <testcase name="testModificarJornadaInexistenteRetornaComportamientoEsperado" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\JornadasTest.php" line="217" class="JornadasTest" classname="JornadasTest" assertions="2" time="0.038726"/>
+        <testcase name="testEliminarJornadaInexistenteRetornaComportamientoEsperado" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\JornadasTest.php" line="238" class="JornadasTest" classname="JornadasTest" assertions="2" time="0.026325"/>
+        <testcase name="testModeloTieneMetodosEsperados" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\JornadasTest.php" line="251" class="JornadasTest" classname="JornadasTest" assertions="15" time="0.000287"/>
+        <testcase name="testSettersAceptanTiposCorrectos" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\JornadasTest.php" line="279" class="JornadasTest" classname="JornadasTest" assertions="1" time="0.000204"/>
+      </testsuite>
+      <testsuite name="LoginTest" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\LoginTest.php" tests="6" assertions="36" errors="0" failures="0" skipped="0" time="0.210373">
+        <testcase name="testSettersAndGettersWorkCorrectly" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\LoginTest.php" line="22" class="LoginTest" classname="LoginTest" assertions="2" time="0.007446"/>
+        <testcase name="testExisteWithValidCredentials" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\LoginTest.php" line="33" class="LoginTest" classname="LoginTest" assertions="15" time="0.099862"/>
+        <testcase name="testExisteWithInvalidCedula" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\LoginTest.php" line="60" class="LoginTest" classname="LoginTest" assertions="5" time="0.004572"/>
+        <testcase name="testExisteWithInvalidPassword" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\LoginTest.php" line="73" class="LoginTest" classname="LoginTest" assertions="5" time="0.088801"/>
+        <testcase name="testExisteWithEmptyCredentials" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\LoginTest.php" line="86" class="LoginTest" classname="LoginTest" assertions="4" time="0.004362"/>
+        <testcase name="testObtenerPermisosRolWithValidRolId" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\LoginTest.php" line="106" class="LoginTest" classname="LoginTest" assertions="5" time="0.005330"/>
+      </testsuite>
+      <testsuite name="P_cronicoTest" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\P_cronicoTest.php" tests="13" assertions="47" errors="0" failures="0" skipped="0" time="0.293113">
+        <testcase name="testListadopacientesReturnsArray" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\P_cronicoTest.php" line="19" class="P_cronicoTest" classname="P_cronicoTest" assertions="6" time="0.014761"/>
+        <testcase name="testListalistado_patologiasReturnsArray" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\P_cronicoTest.php" line="29" class="P_cronicoTest" classname="P_cronicoTest" assertions="6" time="0.005145"/>
+        <testcase name="testConsultarReturnsArrayWithData" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\P_cronicoTest.php" line="40" class="P_cronicoTest" classname="P_cronicoTest" assertions="5" time="0.018487"/>
+        <testcase name="testIncluirPatologia" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\P_cronicoTest.php" line="50" class="P_cronicoTest" classname="P_cronicoTest" assertions="7" time="0.116614"/>
+        <testcase name="testModificarPatologia" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\P_cronicoTest.php" line="76" class="P_cronicoTest" classname="P_cronicoTest" assertions="5" time="0.016417"/>
+        <testcase name="testExistePatologia" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\P_cronicoTest.php" line="99" class="P_cronicoTest" classname="P_cronicoTest" assertions="1" time="0.002983"/>
+        <testcase name="testExisteNombrePatologia" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\P_cronicoTest.php" line="114" class="P_cronicoTest" classname="P_cronicoTest" assertions="1" time="0.002896"/>
+        <testcase name="testIncluirPacienteCronico" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\P_cronicoTest.php" line="126" class="P_cronicoTest" classname="P_cronicoTest" assertions="3" time="0.017851"/>
+        <testcase name="testObtenerPatologiasPaciente" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\P_cronicoTest.php" line="149" class="P_cronicoTest" classname="P_cronicoTest" assertions="1" time="0.002720"/>
+        <testcase name="testModificarPacienteCronicoActualizaPatologias" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\P_cronicoTest.php" line="157" class="P_cronicoTest" classname="P_cronicoTest" assertions="3" time="0.037822"/>
+        <testcase name="testExisteReturnsTrueForPacienteConPatologias" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\P_cronicoTest.php" line="179" class="P_cronicoTest" classname="P_cronicoTest" assertions="1" time="0.023686"/>
+        <testcase name="testEliminarPacienteCronicoEliminaPatologias" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\P_cronicoTest.php" line="191" class="P_cronicoTest" classname="P_cronicoTest" assertions="3" time="0.017081"/>
+        <testcase name="testEliminar2EliminaPatologiaCorrectamente" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\P_cronicoTest.php" line="207" class="P_cronicoTest" classname="P_cronicoTest" assertions="5" time="0.016650"/>
+      </testsuite>
+      <testsuite name="PacientesTest" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PacientesTest.php" tests="6" assertions="34" errors="0" failures="0" skipped="0" time="0.099933">
+        <testcase name="testConsultarDevuelveEstructuraValida" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PacientesTest.php" line="25" class="PacientesTest" classname="PacientesTest" assertions="5" time="0.003483"/>
+        <testcase name="testListadoPatologiasDevuelveEstructuraValida" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PacientesTest.php" line="36" class="PacientesTest" classname="PacientesTest" assertions="5" time="0.004410"/>
+        <testcase name="testIncluirPacienteRegistraCorrectamente" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PacientesTest.php" line="47" class="PacientesTest" classname="PacientesTest" assertions="5" time="0.016604"/>
+        <testcase name="testModificarPacienteActualizaCorrectamente" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PacientesTest.php" line="96" class="PacientesTest" classname="PacientesTest" assertions="9" time="0.018110"/>
+        <testcase name="testObtenerPatologiasPacienteDevuelveArray" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PacientesTest.php" line="143" class="PacientesTest" classname="PacientesTest" assertions="5" time="0.003319"/>
+        <testcase name="testEliminarPacienteEliminaCorrectamente" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PacientesTest.php" line="154" class="PacientesTest" classname="PacientesTest" assertions="5" time="0.054005"/>
+      </testsuite>
+      <testsuite name="PasantiasTest" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PasantiasTest.php" tests="11" assertions="73" errors="0" failures="0" skipped="0" time="0.052941">
+        <testcase name="testConsultarEstudiantesRetornaArrayCorrectamente" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PasantiasTest.php" line="21" class="PasantiasTest" classname="PasantiasTest" assertions="10" time="0.024446"/>
+        <testcase name="testConsultarAreasRetornaArrayCorrectamente" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PasantiasTest.php" line="46" class="PasantiasTest" classname="PasantiasTest" assertions="10" time="0.009387"/>
+        <testcase name="testObtenerAreasSelectRetornaArrayCorrectamente" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PasantiasTest.php" line="71" class="PasantiasTest" classname="PasantiasTest" assertions="9" time="0.003046"/>
+        <testcase name="testConsultarAsistenciaRetornaArrayCorrectamente" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PasantiasTest.php" line="93" class="PasantiasTest" classname="PasantiasTest" assertions="10" time="0.008000"/>
+        <testcase name="testGestionarEstudianteAccionNoValidaRetornaError" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PasantiasTest.php" line="121" class="PasantiasTest" classname="PasantiasTest" assertions="3" time="0.000466"/>
+        <testcase name="testGestionarAreaAccionNoValidaRetornaError" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PasantiasTest.php" line="135" class="PasantiasTest" classname="PasantiasTest" assertions="3" time="0.000461"/>
+        <testcase name="testGestionarAsistenciaAccionNoValidaRetornaError" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PasantiasTest.php" line="149" class="PasantiasTest" classname="PasantiasTest" assertions="3" time="0.000422"/>
+        <testcase name="testModificarEstudianteInexistenteRetornaComportamientoEsperado" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PasantiasTest.php" line="165" class="PasantiasTest" classname="PasantiasTest" assertions="2" time="0.003194"/>
+        <testcase name="testEliminarAreaConEstudiantesRetornaErrorPorRestriccion" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PasantiasTest.php" line="182" class="PasantiasTest" classname="PasantiasTest" assertions="2" time="0.003012"/>
+        <testcase name="testModeloTieneMetodosEsperados" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PasantiasTest.php" line="212" class="PasantiasTest" classname="PasantiasTest" assertions="20" time="0.000283"/>
+        <testcase name="testSettersAceptanTiposCorrectos" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PasantiasTest.php" line="234" class="PasantiasTest" classname="PasantiasTest" assertions="1" time="0.000223"/>
+      </testsuite>
+      <testsuite name="PersonalTest" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PersonalTest.php" tests="10" assertions="53" errors="0" failures="0" skipped="0" time="0.440728">
+        <testcase name="testConsultarReturnsArray" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PersonalTest.php" line="25" class="PersonalTest" classname="PersonalTest" assertions="10" time="0.094457"/>
+        <testcase name="testObtenerDoctoresReturnsArray" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PersonalTest.php" line="45" class="PersonalTest" classname="PersonalTest" assertions="7" time="0.003209"/>
+        <testcase name="testIncluirPersonal" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PersonalTest.php" line="62" class="PersonalTest" classname="PersonalTest" assertions="5" time="0.020014"/>
+        <testcase name="testIncluirPersonalConTelefonosStringJSON" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PersonalTest.php" line="74" class="PersonalTest" classname="PersonalTest" assertions="3" time="0.169224"/>
+        <testcase name="testIncluirPersonalConTelefonoStringSimple" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PersonalTest.php" line="87" class="PersonalTest" classname="PersonalTest" assertions="3" time="0.017329"/>
+        <testcase name="testModificarPersonal" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PersonalTest.php" line="100" class="PersonalTest" classname="PersonalTest" assertions="5" time="0.067633"/>
+        <testcase name="testEliminarPersonal" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PersonalTest.php" line="127" class="PersonalTest" classname="PersonalTest" assertions="5" time="0.039144"/>
+        <testcase name="testAccionNoValida" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PersonalTest.php" line="149" class="PersonalTest" classname="PersonalTest" assertions="5" time="0.000495"/>
+        <testcase name="testObtenerUsuarioPersonal" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PersonalTest.php" line="164" class="PersonalTest" classname="PersonalTest" assertions="5" time="0.026049"/>
+        <testcase name="testObtenerUsuarioPersonalNoExistente" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PersonalTest.php" line="181" class="PersonalTest" classname="PersonalTest" assertions="5" time="0.003175"/>
+      </testsuite>
+      <testsuite name="PlanificacionTest" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PlanificacionTest.php" tests="5" assertions="24" errors="0" failures="0" skipped="0" time="0.027224">
+        <testcase name="testConsultarPublicacionesRetornaArrayCorrectamente" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PlanificacionTest.php" line="15" class="PlanificacionTest" classname="PlanificacionTest" assertions="9" time="0.007642"/>
+        <testcase name="testObtenerPublicacionInexistenteRetornaNullEnDatos" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PlanificacionTest.php" line="36" class="PlanificacionTest" classname="PlanificacionTest" assertions="5" time="0.003073"/>
+        <testcase name="testIncluirPublicacionDevuelveResultadoExitoso" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PlanificacionTest.php" line="49" class="PlanificacionTest" classname="PlanificacionTest" assertions="3" time="0.013522"/>
+        <testcase name="testVerificarAutorConPublicacionInexistente" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PlanificacionTest.php" line="68" class="PlanificacionTest" classname="PlanificacionTest" assertions="1" time="0.002648"/>
+        <testcase name="testModeloTieneMetodosEsperados" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\PlanificacionTest.php" line="82" class="PlanificacionTest" classname="PlanificacionTest" assertions="6" time="0.000339"/>
+      </testsuite>
+      <testsuite name="UsuariosTest" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\UsuariosTest.php" tests="3" assertions="10" errors="0" failures="0" skipped="0" time="0.223202">
+        <testcase name="testIncluirUsuarioAgregaUsuarioCorrectamente" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\UsuariosTest.php" line="16" class="UsuariosTest" classname="UsuariosTest" assertions="3" time="0.117849"/>
+        <testcase name="testModificarUsuarioActualizaCorrectamente" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\UsuariosTest.php" line="42" class="UsuariosTest" classname="UsuariosTest" assertions="3" time="0.086722"/>
+        <testcase name="testEliminarUsuarioEliminaCorrectamente" file="C:\xampp\htdocs\SISTEMA-DE-HISTORIAS-MEDICAS\tests\UsuariosTest.php" line="68" class="UsuariosTest" classname="UsuariosTest" assertions="4" time="0.018631"/>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>

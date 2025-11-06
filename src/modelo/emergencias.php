@@ -73,124 +73,177 @@ class emergencias extends datos{
 
 
 
-	function incluir($datos) {
-		$r = array();
+ function incluir($datos) {
+        $r = array();
 
-		if(!$this->existe($datos['cedula_paciente'], $datos['cedula_personal'], $datos['fechaingreso'], $datos['horaingreso'])) {
-			$co = $this->conecta();
-			$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        // Validar campos antes de cualquier operación
+        $val_campos = $this->validar_campos($datos);
+        if (!is_array($val_campos) || !isset($val_campos['codigo'])) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = 'Error al validar campos';
+            return $r;
+        }
+        if ($val_campos['codigo'] !== 0) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $val_campos['mensaje'];
+            return $r;
+        }
 
-			try {
-				// Consulta preparada con parámetros nombrados
-				$stmt = $co->prepare("INSERT INTO emergencia (
-					horaingreso,
-					fechaingreso,
-					motingreso,
-					diagnostico_e,
-					tratamientos,
-					cedula_personal,
-					cedula_paciente,
-					procedimiento
-				) VALUES (
-					:horaingreso,
-					:fechaingreso,
-					:motingreso,
-					:diagnostico_e,
-					:tratamientos,
-					:cedula_personal,
-					:cedula_paciente,
-					:procedimiento
-				)");
+        // Validar cédulas antes de cualquier operación
+        $val = $this->validar_cedulas($datos['cedula_paciente'], $datos['cedula_personal']);
+        if (!is_array($val) || !isset($val['codigo'])) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = 'Error al validar cédulas';
+            return $r;
+        }
+        if ($val['codigo'] !== 0) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $val['mensaje'];
+            return $r;
+        }
 
-				// Ejecutar la consulta con el array de datos
-				$stmt->execute([
-					':horaingreso' => $datos['horaingreso'],
-					':fechaingreso' => $datos['fechaingreso'],
-					':motingreso' => $datos['motingreso'],
-					':diagnostico_e' => $datos['diagnostico_e'],
-					':tratamientos' => $datos['tratamientos'],
-					':cedula_personal' => $datos['cedula_personal'],
-					':cedula_paciente' => $datos['cedula_paciente'],
-					':procedimiento' => $datos['procedimiento']
-				]);
+        if(!$this->existe($datos['cedula_paciente'], $datos['cedula_personal'], $datos['fechaingreso'], $datos['horaingreso'])) {
+            $co = $this->conecta();
+            $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-				if($stmt->rowCount() > 0) {
-					$r['resultado'] = 'incluir';
-					$r['mensaje'] = 'Registro Incluido';
-				} else {
-					$r['resultado'] = 'error';
-					$r['mensaje'] = 'No se pudo insertar el registro';
-				}
+            try {
+                // Consulta preparada con parámetros nombrados
+                $stmt = $co->prepare("INSERT INTO emergencia (
+                    horaingreso,
+                    fechaingreso,
+                    motingreso,
+                    diagnostico_e,
+                    tratamientos,
+                    cedula_personal,
+                    cedula_paciente,
+                    procedimiento
+                ) VALUES (
+                    :horaingreso,
+                    :fechaingreso,
+                    :motingreso,
+                    :diagnostico_e,
+                    :tratamientos,
+                    :cedula_personal,
+                    :cedula_paciente,
+                    :procedimiento
+                )");
 
-				$stmt->closeCursor();
+                // Ejecutar la consulta con el array de datos
+                $stmt->execute([
+                    ':horaingreso' => $datos['horaingreso'],
+                    ':fechaingreso' => $datos['fechaingreso'],
+                    ':motingreso' => $datos['motingreso'],
+                    ':diagnostico_e' => $datos['diagnostico_e'],
+                    ':tratamientos' => $datos['tratamientos'],
+                    ':cedula_personal' => $datos['cedula_personal'],
+                    ':cedula_paciente' => $datos['cedula_paciente'],
+                    ':procedimiento' => $datos['procedimiento']
+                ]);
 
-			} catch(Exception $e) {
-				$r['resultado'] = 'error';
-				$r['mensaje'] = 'Error al insertar: ' . $e->getMessage();
-			}
-		} else {
-			$r['resultado'] = 'incluir';
-			$r['mensaje'] = 'Ya existe el registro con estos datos';
-		}
+                if($stmt->rowCount() > 0) {
+                    $r['resultado'] = 'incluir';
+                    $r['mensaje'] = 'Registro Incluido';
+                } else {
+                    $r['resultado'] = 'error';
+                    $r['mensaje'] = 'No se pudo insertar el registro';
+                }
 
-		return $r;
-	}
-	
-	function modificar($datos){
-		$co = $this->conecta();
-		$co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$r = array();
-			if($this->existe(
-				$datos['old_cedula_paciente'],
-				$datos['old_cedula_personal'],
-				$datos['old_fechaingreso'],
-				$datos['old_horaingreso']
-			)){
-			try {
-				$stmt = $co->prepare("
-					UPDATE emergencia SET 
-						motingreso = :motingreso,
-						diagnostico_e = :diagnostico_e,
-						tratamientos = :tratamientos,
-						procedimiento = :procedimiento,
-						cedula_paciente = :cedula_paciente,
-						cedula_personal = :cedula_personal,
-						fechaingreso = :fechaingreso,
-						horaingreso = :horaingreso
-					WHERE cedula_paciente = :old_cedula_paciente
-					AND cedula_personal = :old_cedula_personal
-					AND fechaingreso = :old_fechaingreso
-					AND horaingreso = :old_horaingreso
-				");
+                $stmt->closeCursor();
 
-				$stmt->execute([
-					':motingreso' => $datos['motingreso'],
-					':diagnostico_e' => $datos['diagnostico_e'],
-					':tratamientos' => $datos['tratamientos'],
-					':procedimiento' => $datos['procedimiento'],
-					':cedula_paciente' => $datos['cedula_paciente'],
-					':cedula_personal' => $datos['cedula_personal'],
-					':fechaingreso' => $datos['fechaingreso'],
-					':horaingreso' => $datos['horaingreso'],
-					':old_cedula_paciente' => $datos['old_cedula_paciente'],
-					':old_cedula_personal' => $datos['old_cedula_personal'],
-					':old_fechaingreso' => $datos['old_fechaingreso'],
-					':old_horaingreso' => $datos['old_horaingreso'],
-				]);
+            } catch(Exception $e) {
+                $r['resultado'] = 'error';
+                $r['mensaje'] = 'Error al insertar: ' . $e->getMessage();
+            }
+        } else {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = 'Ya existe el registro con estos datos';
+        }
 
-				$r['resultado'] = 'modificar';
-				$r['mensaje'] = 'Registro Modificado';
-			} catch(Exception $e) {
-				$r['resultado'] = 'error';
-				$r['mensaje'] = $e->getMessage();
-			}
-		} else {
-			$r['resultado'] = 'modificar';
-			$r['mensaje'] = 'Registro no encontrado';
-		}
+        return $r;
+    }
+    
+    function modificar($datos){
+        $co = $this->conecta();
+        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $r = array();
 
-		return $r;
-	}
+        // Validar campos nuevos antes de modificar
+        $val_campos = $this->validar_campos($datos);
+        if (!is_array($val_campos) || !isset($val_campos['codigo'])) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = 'Error al validar campos';
+            return $r;
+        }
+        if ($val_campos['codigo'] !== 0) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $val_campos['mensaje'];
+            return $r;
+        }
+
+        // Validar las cédulas nuevas antes de modificar
+        $val = $this->validar_cedulas($datos['cedula_paciente'], $datos['cedula_personal']);
+        if (!is_array($val) || !isset($val['codigo'])) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = 'Error al validar cédulas';
+            return $r;
+        }
+        if ($val['codigo'] !== 0) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $val['mensaje'];
+            return $r;
+        }
+
+        if($this->existe(
+            $datos['old_cedula_paciente'],
+            $datos['old_cedula_personal'],
+            $datos['old_fechaingreso'],
+            $datos['old_horaingreso']
+        )){
+            try {
+                $stmt = $co->prepare("
+                    UPDATE emergencia SET 
+                        motingreso = :motingreso,
+                        diagnostico_e = :diagnostico_e,
+                        tratamientos = :tratamientos,
+                        procedimiento = :procedimiento,
+                        cedula_paciente = :cedula_paciente,
+                        cedula_personal = :cedula_personal,
+                        fechaingreso = :fechaingreso,
+                        horaingreso = :horaingreso
+                    WHERE cedula_paciente = :old_cedula_paciente
+                    AND cedula_personal = :old_cedula_personal
+                    AND fechaingreso = :old_fechaingreso
+                    AND horaingreso = :old_horaingreso
+                ");
+
+                $stmt->execute([
+                    ':motingreso' => $datos['motingreso'],
+                    ':diagnostico_e' => $datos['diagnostico_e'],
+                    ':tratamientos' => $datos['tratamientos'],
+                    ':procedimiento' => $datos['procedimiento'],
+                    ':cedula_paciente' => $datos['cedula_paciente'],
+                    ':cedula_personal' => $datos['cedula_personal'],
+                    ':fechaingreso' => $datos['fechaingreso'],
+                    ':horaingreso' => $datos['horaingreso'],
+                    ':old_cedula_paciente' => $datos['old_cedula_paciente'],
+                    ':old_cedula_personal' => $datos['old_cedula_personal'],
+                    ':old_fechaingreso' => $datos['old_fechaingreso'],
+                    ':old_horaingreso' => $datos['old_horaingreso'],
+                ]);
+
+                $r['resultado'] = 'modificar';
+                $r['mensaje'] = 'Registro Modificado';
+            } catch(Exception $e) {
+                $r['resultado'] = 'error';
+                $r['mensaje'] = $e->getMessage();
+            }
+        } else {
+            $r['resultado'] = 'modificar';
+            $r['mensaje'] = 'Registro no encontrado';
+        }
+
+        return $r;
+    }
 
 	function eliminar($datos){
 		$co = $this->conecta();
@@ -280,8 +333,119 @@ class emergencias extends datos{
 			return false;
 		}
 	}
+
+
 	
+    public function validar_cedulas($cedula_paciente, $cedula_personal) {
+        $r = array();
+        $co = $this->conecta();
+        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        try {
+            // Verificar existencia paciente
+            $stmt = $co->prepare("SELECT 1 FROM paciente WHERE cedula_paciente = ? LIMIT 1");
+            $stmt->execute([$cedula_paciente]);
+            $existePaciente = ($stmt->fetchColumn() !== false);
+
+            // Verificar existencia personal
+            $stmt = $co->prepare("SELECT cedula_personal FROM personal WHERE cedula_personal = ? LIMIT 1");
+            $stmt->execute([$cedula_personal]);
+            $existePersonal = ($stmt->fetchColumn() !== false);
+
+            // Código: 0 = ambas existen, 1 = paciente no existe, 2 = personal no existe, 3 = ninguna existe
+            if ($existePaciente && $existePersonal) {
+                $codigo = 0;
+                $mensaje = 'Ambas cédulas existen';
+            } elseif (!$existePaciente && $existePersonal) {
+                $codigo = 1;
+                $mensaje = 'La cédula del paciente no existe';
+            } elseif ($existePaciente && !$existePersonal) {
+                $codigo = 2;
+                $mensaje = 'La cédula del personal no existe';
+            } else {
+                $codigo = 3;
+                $mensaje = 'Ninguna de las cédulas existe';
+            }
+
+            $r['resultado'] = 'validar_cedulas';
+            $r['codigo'] = $codigo;
+            $r['mensaje'] = $mensaje;
+            $r['existe_paciente'] = $existePaciente;
+            $r['existe_personal'] = $existePersonal;
+        } catch (Exception $e) {
+            $r['resultado'] = 'error';
+            $r['mensaje'] = $e->getMessage();
+        }
+
+        return $r;
+    }
 	
+	// Nueva función de validación de campos (inspirada en consultasm::validar_campos)
+    private function validar_campos($datos) {
+        $r = array('codigo' => 0, 'mensaje' => 'Campos válidos');
+
+        // Campos requeridos
+        $requeridos = ['horaingreso', 'fechaingreso', 'motingreso', 'diagnostico_e', 'tratamientos', 'cedula_personal', 'cedula_paciente'];
+        foreach ($requeridos as $campo) {
+            if (!isset($datos[$campo]) || trim($datos[$campo]) === '') {
+                $r['codigo'] = 1;
+                $r['mensaje'] = "El campo {$campo} es requerido";
+                return $r;
+            }
+        }
+
+        // Validar hora HH:MM
+        if (!preg_match('/^([01]\d|2[0-3]):([0-5]\d)$/', $datos['horaingreso'])) {
+            $r['codigo'] = 2;
+            $r['mensaje'] = 'Formato de hora inválido (HH:MM)';
+            return $r;
+        }
+
+        // Validar fecha YYYY-MM-DD
+        $d = \DateTime::createFromFormat('Y-m-d', $datos['fechaingreso']);
+        if (!($d && $d->format('Y-m-d') === $datos['fechaingreso'])) {
+            $r['codigo'] = 3;
+            $r['mensaje'] = 'Formato de fecha inválido (YYYY-MM-DD)';
+            return $r;
+        }
+
+        // Longitudes razonables
+        if (mb_strlen($datos['motingreso']) > 255) {
+            $r['codigo'] = 4;
+            $r['mensaje'] = 'Motivo de ingreso demasiado largo';
+            return $r;
+        }
+        if (mb_strlen($datos['diagnostico_e']) > 1000) {
+            $r['codigo'] = 5;
+            $r['mensaje'] = 'Diagnóstico demasiado largo';
+            return $r;
+        }
+        if (mb_strlen($datos['tratamientos']) > 1000) {
+            $r['codigo'] = 6;
+            $r['mensaje'] = 'Tratamientos demasiado largos';
+            return $r;
+        }
+        if (isset($datos['procedimiento']) && mb_strlen($datos['procedimiento']) > 1000) {
+            $r['codigo'] = 7;
+            $r['mensaje'] = 'Procedimiento demasiado largo';
+            return $r;
+        }
+
+        // Validar formato simple de cédulas (letra opcional + 6-9 dígitos)
+        $cedulaPattern = '/^[A-Z]?\d{6,9}$/i';
+        if (!preg_match($cedulaPattern, $datos['cedula_paciente'])) {
+            $r['codigo'] = 8;
+            $r['mensaje'] = 'Formato de cédula de paciente inválido';
+            return $r;
+        }
+        if (!preg_match($cedulaPattern, $datos['cedula_personal'])) {
+            $r['codigo'] = 9;
+            $r['mensaje'] = 'Formato de cédula de personal inválido';
+            return $r;
+        }
+
+        return $r;
+    }
 
 	
 	

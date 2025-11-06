@@ -228,7 +228,7 @@ function cargarRegistrosExamen() {
                             ? `<button type="button" class="btn btn-primary" onclick='mostrarImagenExamen("${registro.ruta_imagen}")'>
                               <img src="img/ojo.svg" style="width: 20px">
                           </button>`
-                            : '<button type="button" class="btn btn-danger" disabled><img src="img/ojo-cruzado.svg" style="width: 20px"></button>'
+                            : '<button type="button" class="btn btn-danger" disabled><img src="img/ojo.svg" style="width: 20px"></button>'
                         }
                         <button type="button" class="btn btn-danger" onclick='generarReporteExamen("${
                           registro.cedula_paciente
@@ -529,7 +529,7 @@ function validarkeyup(er, etiqueta, etiquetamensaje, mensaje) {
 function enviaAjax(datos, callback) {
   $.ajax({
     async: true,
-    url: "?pagina=examenes",
+    url: "/SISTEMA-DE-HISTORIAS-MEDICAS/examenes",
     type: "POST",
     contentType: false,
     data: datos,

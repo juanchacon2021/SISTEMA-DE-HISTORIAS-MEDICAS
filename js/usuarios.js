@@ -244,7 +244,7 @@ function guardarUsuario() {
     formData.append("foto_perfil", $("#fotoPerfil")[0].files[0]);
 
     $.ajax({
-      url: "?pagina=usuarios",
+      url: "/SISTEMA-DE-HISTORIAS-MEDICAS/usuarios",
       type: "POST",
       data: formData,
       processData: false,
@@ -878,7 +878,7 @@ function validarkeyup(er, etiqueta, etiquetamensaje, mensaje) {
 function enviaAjax(datos, callback) {
   $.ajax({
     async: true,
-    url: "?pagina=usuarios",
+    url: "/SISTEMA-DE-HISTORIAS-MEDICAS/usuarios",
     type: "POST",
     contentType: false,
     data: datos,

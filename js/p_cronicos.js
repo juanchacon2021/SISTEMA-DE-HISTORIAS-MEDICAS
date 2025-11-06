@@ -162,7 +162,7 @@ $(document).ready(function(){
 			} else {
 				$("#scedula_paciente")
 					.html(`Cédula no está registrada, registrar cédula
-							<a style="color: green; text-decoration: underline;" href="?pagina=pacientes&accion=registrar">aquí</a>`)
+							<a style="color: green; text-decoration: underline;" href="/SISTEMA-DE-HISTORIAS-MEDICAS/pacientes&accion=registrar">aquí</a>`)
 					.css("color", "red");
 			}
 		} else {
@@ -542,7 +542,7 @@ function pone(pos, accion) {
             $("#cod_patologia").val($(linea).find("td:eq(0)").text());
             $("#nombre_patologia").val($(pos).attr('nombre_patologia'));
             $("#nombre_patologia").prop("readonly", false);
-            $("#proceso2").text("Actualizar");
+            $("#proceso2").text("actualizar");
             $("#modal2").modal("show");
             break;
     }

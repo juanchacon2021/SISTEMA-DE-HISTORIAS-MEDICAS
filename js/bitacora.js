@@ -17,7 +17,7 @@ $(document).ready(function () {
     processing: true,
     serverSide: false,
     ajax: {
-      url: "?pagina=bitacora",
+      url: "/SISTEMA-DE-HISTORIAS-MEDICAS/bitacora",
       type: "POST",
       data: function (d) {
         return {

@@ -46,6 +46,7 @@ class jornadas extends datos
     }
 
     public function gestionar_jornada($datos) {
+    try {
         $this->set_cod_jornada($datos['cod_jornada'] ?? '');
         $this->set_fecha_jornada($datos['fecha_jornada'] ?? '');
         $this->set_ubicacion($datos['ubicacion'] ?? '');
@@ -55,6 +56,24 @@ class jornadas extends datos
         $this->set_pacientes_embarazadas($datos['pacientes_embarazadas'] ?? 0);
         $this->set_cedula_responsable($datos['cedula_responsable'] ?? '');
         $this->set_participantes($datos['participantes'] ?? array());
+
+        // Validación antes de ejecutar acción
+        $val = $this->validar_campos([
+            'fecha_jornada' => $this->fecha_jornada,
+            'ubicacion' => $this->ubicacion,
+            'descripcion' => $this->descripcion,
+            'pacientes_masculinos' => $this->pacientes_masculinos,
+            'pacientes_femeninos' => $this->pacientes_femeninos,
+            'pacientes_embarazadas' => $this->pacientes_embarazadas,
+            'cedula_responsable' => $this->cedula_responsable,
+            'participantes' => $this->participantes
+        ]);
+        if (!is_array($val) || !isset($val['codigo'])) {
+            return array("resultado" => "error", "mensaje" => "Error al validar campos");
+        }
+        if ($val['codigo'] !== 0) {
+            return array("resultado" => "error", "mensaje" => $val['mensaje']);
+        }
 
         switch ($datos['accion']) {
             case 'incluir':
@@ -66,10 +85,14 @@ class jornadas extends datos
             default:
                 return array("resultado" => "error", "mensaje" => "Acción no válida");
         }
+    } catch (\Exception $e) {
+        return array("resultado" => "error", "mensaje" => $e->getMessage());
     }
+}
+
 
     private function incluir() {
-        $this->validarPacientes();
+        // validar_campos ya fue ejecutado desde gestionar_jornada
         $conexion = $this->conecta();
         $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $r = array();
@@ -357,6 +380,102 @@ class jornadas extends datos
         } finally {
             $this->cerrar_conexion($conexion);
         }
+        return $r;
+    }
+
+    // Validaciones similares a consultasm::validar_campos
+    private function validar_campos($datos) {
+        $r = array('codigo' => 0, 'mensaje' => 'Campos válidos');
+
+        // Fecha YYYY-MM-DD
+        if (!isset($datos['fecha_jornada']) || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $datos['fecha_jornada']) || !\DateTime::createFromFormat('Y-m-d', $datos['fecha_jornada'])) {
+            $r['codigo'] = 1;
+            $r['mensaje'] = 'Formato de fecha inválido (YYYY-MM-DD)';
+            return $r;
+        }
+
+        // Ubicación: 3-100 caracteres (letras, números, espacios)
+        if (!isset($datos['ubicacion']) || !preg_match('/^[A-Za-z0-9\s\-\.,]{3,100}$/u', $datos['ubicacion'])) {
+            $r['codigo'] = 2;
+            $r['mensaje'] = 'Ubicación inválida (3-100 caracteres)';
+            return $r;
+        }
+
+        // Descripción opcional, hasta 1000 chars
+        if (isset($datos['descripcion']) && mb_strlen($datos['descripcion']) > 1000) {
+            $r['codigo'] = 3;
+            $r['mensaje'] = 'Descripción demasiado larga';
+            return $r;
+        }
+
+        // Conteos numéricos no negativos
+        foreach (['pacientes_masculinos','pacientes_femeninos','pacientes_embarazadas'] as $campo) {
+            if (!isset($datos[$campo]) || !is_numeric($datos[$campo]) || $datos[$campo] < 0) {
+                $r['codigo'] = 4;
+                $r['mensaje'] = "El campo {$campo} debe ser un número entero no negativo";
+                return $r;
+            }
+        }
+
+        // coherencia: embarazadas <= femeninos
+        if ($datos['pacientes_embarazadas'] > $datos['pacientes_femeninos']) {
+            $r['codigo'] = 5;
+            $r['mensaje'] = 'El número de embarazadas no puede ser mayor al número de pacientes femeninos';
+            return $r;
+        }
+
+        // Cedula responsable formato 7-8 dígitos
+        if (!isset($datos['cedula_responsable']) || !preg_match('/^[0-9]{7,8}$/', $datos['cedula_responsable'])) {
+            $r['codigo'] = 6;
+            $r['mensaje'] = 'Formato de cédula del responsable inválido';
+            return $r;
+        }
+
+        // Verificar existencia del responsable en la BD
+        try {
+            $co = $this->conecta();
+            $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $co->prepare("SELECT 1 FROM personal WHERE cedula_personal = ? LIMIT 1");
+            $stmt->execute([$datos['cedula_responsable']]);
+            $existeResp = ($stmt->fetchColumn() !== false);
+            if (!$existeResp) {
+                $r['codigo'] = 7;
+                $r['mensaje'] = 'La cédula del responsable no existe en la base de datos';
+                return $r;
+            }
+        } catch (Exception $e) {
+            $r['codigo'] = 8;
+            $r['mensaje'] = 'Error al validar responsable: ' . $e->getMessage();
+            return $r;
+        }
+
+        // Participantes: si vienen, deben ser array de cédulas válidas y existentes
+        if (isset($datos['participantes']) && is_array($datos['participantes'])) {
+            try {
+                $co = $this->conecta();
+                $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $stmt = $co->prepare("SELECT 1 FROM personal WHERE cedula_personal = ? LIMIT 1");
+                foreach ($datos['participantes'] as $p) {
+                    if (!preg_match('/^[0-9]{7,8}$/', $p)) {
+                        $r['codigo'] = 9;
+                        $r['mensaje'] = "Formato de cédula de participante inválido: {$p}";
+                        return $r;
+                    }
+                    // comprobar existencia
+                    $stmt->execute([$p]);
+                    if ($stmt->fetchColumn() === false) {
+                        $r['codigo'] = 10;
+                        $r['mensaje'] = "La cédula de participante no existe: {$p}";
+                        return $r;
+                    }
+                }
+            } catch (Exception $e) {
+                $r['codigo'] = 11;
+                $r['mensaje'] = 'Error al validar participantes: ' . $e->getMessage();
+                return $r;
+            }
+        }
+
         return $r;
     }
 

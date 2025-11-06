@@ -1,3 +1,7 @@
+<<<<<<< HEAD
 2025-10-22 04:51:12 | cod_medicamento: Mx00000002 | stock: 0 | stock_min: 8 | cantidad_salida: 1
 2025-10-22 05:03:18 | cod_medicamento: Mx00000005 | stock: 0 | stock_min: 0 | cantidad_salida: 1
 2025-10-24 17:28:16 | cod_medicamento: Mx00000008 | stock: 0 | stock_min: 0 | cantidad_salida: 1
+=======
+2025-10-27 02:39:18 | cod_medicamento: Mx00000007 | stock: 0 | stock_min: 0 | cantidad_salida: 1
+>>>>>>> 310412fe38a8e24676871b2f20d040da4efce68c

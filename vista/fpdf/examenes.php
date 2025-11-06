@@ -67,7 +67,7 @@ class PDF extends FPDF
 // Conexión a la base de datos
 function conexion() {
     $host = 'localhost';
-    $dbname = 'SGM';
+    $dbname = 'SGM2';
     $user = 'root';
     $pass = '';
     
