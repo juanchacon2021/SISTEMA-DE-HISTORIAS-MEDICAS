@@ -209,7 +209,7 @@ function generarReporte() {
 function enviaAjax(datos, callback) {
   $.ajax({
     async: true,
-    url: "?pagina=reportes_p",
+    url: "/SISTEMA-DE-HISTORIAS-MEDICAS/reportes_p",
     type: "POST",
     contentType: false,
     data: datos,

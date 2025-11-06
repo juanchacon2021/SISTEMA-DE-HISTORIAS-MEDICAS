@@ -529,7 +529,7 @@ function validarkeyup(er, etiqueta, etiquetamensaje, mensaje) {
 function enviaAjax(datos, callback) {
   $.ajax({
     async: true,
-    url: "?pagina=examenes",
+    url: "/SISTEMA-DE-HISTORIAS-MEDICAS/examenes",
     type: "POST",
     contentType: false,
     data: datos,

@@ -296,7 +296,7 @@ function confirmarEliminar(tipo, id) {
 function enviaAjax(datos, callback) {
     $.ajax({
         async: true,
-        url: "?pagina=personal",
+        url: "/SISTEMA-DE-HISTORIAS-MEDICAS/personal",
         type: "POST",
         contentType: false,
         data: datos,

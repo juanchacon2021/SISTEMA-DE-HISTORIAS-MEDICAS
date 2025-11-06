@@ -750,7 +750,7 @@ function validarkeyup(er, etiqueta, etiquetamensaje, mensaje) {
 function enviaAjax(datos, callback) {
   $.ajax({
     async: true,
-    url: "?pagina=pasantias",
+    url: "/SISTEMA-DE-HISTORIAS-MEDICAS/pasantias",
     type: "POST",
     contentType: false,
     data: datos,

@@ -107,7 +107,7 @@ $(document).ready(function() {
         limpiarFormulario(); // Limpia el formulario
         pone(null, 3);       // Abre el modal en modo "INCLUIR"
         // Limpiar la URL
-        window.history.replaceState({}, document.title, "?pagina=pacientes");
+        window.history.replaceState({}, document.title, "/SISTEMA-DE-HISTORIAS-MEDICAS/pacientes");
     }
 });
 

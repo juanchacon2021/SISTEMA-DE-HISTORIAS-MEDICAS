@@ -8,6 +8,19 @@ if (!isset($_SESSION['usuario']) && $pagina !== 'login') {
     exit();
 }
 
+// Normalizar URL limpia -> $_GET['pagina']
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$base = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
+$path = trim(preg_replace('#^'.preg_quote($base,'#').'#','',$uri), '/');
+
+if ($path !== '') {
+    // Solo permitir nombres simples (letras, números, guión bajo y guión)
+    $page = preg_replace('/[^a-z0-9_\-]/i', '', $path);
+    if ($page !== '') {
+        $_GET['pagina'] = $page;
+    }
+}
+
 require_once("vendor/autoload.php");
 $nivel = ""; 
 if (is_file("modelo/verifica.php")) {
