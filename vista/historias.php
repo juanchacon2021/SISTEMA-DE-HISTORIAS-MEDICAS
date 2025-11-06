@@ -3,7 +3,19 @@
  require_once("comunes/sidebar.php");
  require_once("comunes/notificaciones.php");
 ?>
-
+<?php
+    if (!isset($_SESSION['permisos']) || !is_array($_SESSION['permisos'])) {
+        header("Location: /SISTEMA-DE-HISTORIAS-MEDICAS/login");
+        exit();
+    } elseif (!isset($_SESSION['permisos']['modulos']) || !in_array('Historias', $_SESSION['permisos']['modulos'])) {
+        http_response_code(403);
+        die('<div class="container text-center py-5">
+                <h1 class="text-danger">403 - Acceso prohibido</h1>
+                <p class="lead">No tienes permiso para acceder a este módulo</p>
+                <a href="/SISTEMA-DE-HISTORIAS-MEDICAS/principal" class="btn btn-primary">Volver al inicio</a>
+             </div>');
+    }
+    ?>
 
 <div class="container texto-bienvenida h2 text-center py-8 text-zinc-800 bg-stone-100 mb-4">
     Historias Médicas
@@ -12,7 +24,7 @@
     <div class="container">
         <div class="row mt-3 botones">
             <div class="btn botonrojo">    
-                <a href="?pagina=principal">Volver</a>
+                <a href="/SISTEMA-DE-HISTORIAS-MEDICAS/principal">Volver</a>
             </div>
         </div>
     </div>

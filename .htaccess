@@ -1,0 +1,19 @@
+Options -Indexes +FollowSymLinks
+RewriteEngine On
+RewriteBase /SISTEMA-DE-HISTORIAS-MEDICAS/
+
+# Redirige index.php?pagina=xxx a /xxx (canónico)
+RewriteCond %{THE_REQUEST} \s/+index\.php\?pagina=([^\s&]+) [NC]
+RewriteRule ^ /SISTEMA-DE-HISTORIAS-MEDICAS/%1? [R=301,L]
+
+# Si el recurso existe servirlo directamente
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Reescritura limpia: /pagina  -> index.php?pagina=pagina
+RewriteRule ^([^/]+)/?$ index.php?pagina=$1 [L,QSA]
+
+# Proteger directorios sensibles (403)
+RedirectMatch 403 ^/(src|controlador|modelo|vendor)/
+

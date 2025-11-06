@@ -148,7 +148,7 @@ $(document).ready(function(){
 			} else {
 				$("#scedula_paciente")
 					.html(`Cédula no está registrada, registrar cédula
-							<a style="color: green; text-decoration: underline;" href="?pagina=pacientes&accion=registrar">aquí</a>`)
+							<a style="color: green; text-decoration: underline;" href="/SISTEMA-DE-HISTORIAS-MEDICAS/pacientes&accion=registrar">aquí</a>`)
 					.css("color", "red");
 			}
 		} else {
@@ -179,7 +179,7 @@ $(document).ready(function(){
 			} else {
 				$("#scedula_personal")
 					.html(`Cédula no está registrada, registrar cédula
-							<a style="color: green; text-decoration: underline;" href="?pagina=personal&accion=registrar">aqui</a>`)
+							<a style="color: green; text-decoration: underline;" href="/SISTEMA-DE-HISTORIAS-MEDICAS/personal&accion=registrar">aqui</a>`)
 					.css("color", "red");
 			}
 		} else {

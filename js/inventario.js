@@ -479,7 +479,7 @@ $(document).ready(function() {
                     intro: 'Haz clic aquí para registrar una salida de medicamentos.'
                 },
                 {
-                    element: document.querySelector('.btn.botonrojo a[href="?pagina=principal"]'),
+                    element: document.querySelector('.btn.botonrojo a[href="/SISTEMA-DE-HISTORIAS-MEDICAS/principal"]'),
                     intro: 'Haz clic aquí para volver al panel principal.'
                 },
                 {
@@ -524,7 +524,7 @@ $(document).ready(function() {
                     intro: 'Haz clic aquí para registrar una salida de medicamentos.'
                 },
                 {
-                    element: document.querySelector('.btn.botonrojo a[href="?pagina=principal"]'),
+                    element: document.querySelector('.btn.botonrojo a[href="/SISTEMA-DE-HISTORIAS-MEDICAS/principal"]'),
                     intro: 'Haz clic aquí para volver al panel principal.'
                 },
                 {

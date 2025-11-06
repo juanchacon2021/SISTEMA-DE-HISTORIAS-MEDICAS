@@ -7,14 +7,14 @@ require_once("comunes/notificaciones.php");
 <body class="hold-transition sidebar-mini layout-fixed">
     <?php
     if (!isset($_SESSION['permisos']) || !is_array($_SESSION['permisos'])) {
-        header("Location: ?pagina=login");
+        header("Location: /SISTEMA-DE-HISTORIAS-MEDICAS/login");
         exit();
     } elseif (!isset($_SESSION['permisos']['modulos']) || !in_array('Reportes Parametrizados', $_SESSION['permisos']['modulos'])) {
         http_response_code(403);
         die('<div class="container text-center py-5">
                 <h1 class="text-danger">403 - Acceso prohibido</h1>
                 <p class="lead">No tienes permiso para acceder a este módulo</p>
-                <a href="?pagina=principal" class="btn btn-primary">Volver al inicio</a>
+                <a href="/SISTEMA-DE-HISTORIAS-MEDICAS/principal" class="btn btn-primary">Volver al inicio</a>
              </div>');
     }
     ?>

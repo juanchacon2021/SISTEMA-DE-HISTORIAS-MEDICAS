@@ -162,7 +162,7 @@ $(document).ready(function(){
 			} else {
 				$("#scedula_paciente")
 					.html(`Cédula no está registrada, registrar cédula
-							<a style="color: green; text-decoration: underline;" href="?pagina=pacientes&accion=registrar">aquí</a>`)
+							<a style="color: green; text-decoration: underline;" href="/SISTEMA-DE-HISTORIAS-MEDICAS/pacientes&accion=registrar">aquí</a>`)
 					.css("color", "red");
 			}
 		} else {
