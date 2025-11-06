@@ -7,7 +7,7 @@ use Pdo;
 class datos
 {
     private $ip = "localhost";
-    private $bd = "prueva";
+    private $bd = "prueba";
     private $bd2 = "seguridad";
     private $usuario = "root";
     private $contrasena = "123456";
