@@ -26,7 +26,7 @@ require_once("comunes/notificaciones.php");
 <div class="container espacio">
     <div class="container">
         <div class="row mt-9 botones">
-            <a href="#" class="btn botonverde d-flex" style="cursor: pointer;" onclick="mostrarFormularioMedicamento()">
+            <a href="#" id="registrarmedicamento" class="btn botonverde d-flex" style="cursor: pointer;" onclick="mostrarFormularioMedicamento()">
                 Registrar Medicamento
             </a>
 
