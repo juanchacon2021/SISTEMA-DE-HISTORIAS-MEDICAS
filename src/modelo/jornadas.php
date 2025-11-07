@@ -57,6 +57,12 @@ class jornadas extends datos
         $this->set_cedula_responsable($datos['cedula_responsable'] ?? '');
         $this->set_participantes($datos['participantes'] ?? array());
 
+        if (isset($datos['accion']) && $datos['accion'] === 'eliminar') {
+            return $this->eliminar();
+        }
+
+        $this->validarPacientes();
+
         // Validación antes de ejecutar acción
         $val = $this->validar_campos([
             'fecha_jornada' => $this->fecha_jornada,
@@ -80,8 +86,6 @@ class jornadas extends datos
                 return $this->incluir();
             case 'modificar':
                 return $this->modificar();
-            case 'eliminar':
-                return $this->eliminar();
             default:
                 return array("resultado" => "error", "mensaje" => "Acción no válida");
         }

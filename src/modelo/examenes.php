@@ -418,9 +418,10 @@ class examenes extends datos
                 unlink($fila['ruta_imagen']);
             }
 
-            // Usar procedure para eliminar examen
-            $stmt = $conexion->prepare("CALL eliminar_examen(:cedula, :fecha, :examen)");
-            $stmt->execute([
+            // Eliminar registro directamente en la tabla examen (sin procedure)
+            $sqlDelete = "DELETE FROM examen WHERE cedula_paciente = :cedula AND fecha_e = :fecha AND cod_examen = :examen";
+            $stmtDel = $conexion->prepare($sqlDelete);
+            $stmtDel->execute([
                 ':cedula' => $this->cedula_paciente,
                 ':fecha' => $this->fecha_e,
                 ':examen' => $this->cod_examen
@@ -530,20 +531,6 @@ class examenes extends datos
             }
         }
 
-        // Validar hora HH:MM:SS
-        if (!preg_match('/^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/', $datos['hora_e'])) {
-    $r['codigo'] = 2;
-    $r['mensaje'] = 'Formato de hora inválido (HH:MM:SS)';
-    return $r;
-}
-
-        // Validar fecha YYYY-MM-DD
-        $d = \DateTime::createFromFormat('Y-m-d', $datos['fecha_e']);
-        if (!($d && $d->format('Y-m-d') === $datos['fecha_e'])) {
-            $r['codigo'] = 3;
-            $r['mensaje'] = 'Formato de fecha inválido (YYYY-MM-DD)';
-            return $r;
-        }
 
         // Validar formato simple de cédula (7-8 dígitos) — coherente con validaciones JS
         if (!preg_match('/^[0-9]{7,8}$/', $datos['cedula_paciente'])) {
