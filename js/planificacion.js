@@ -46,10 +46,10 @@ function cargarPublicaciones() {
                                     <div class="d-flex gap-2">`;
                         if (pub.cedula_personal == cedulaActual) {
                             html += `
-                                <button class="btn btn-sm btn-warning me-2" onclick="editarPublicacion('${pub.cod_pub}')" style="height:40px;">
+                                <button class="btn btn-sm btn-warning me-2"  onclick="editarPublicacion('${pub.cod_pub}')" style="height:40px;">
                                     <img src="img/lapiz.svg" alt="Editar" style="width:20px;">
                                 </button>
-                                <button class="btn btn-sm btn-danger" onclick="confirmarEliminacion('${pub.cod_pub}')" style="height:40px;">
+                                <button class="btn btn-sm btn-danger" id="eliminarpub" onclick="confirmarEliminacion('${pub.cod_pub}')" style="height:40px;">
                                     <img src="img/basura.svg" alt="Eliminar" style="width:20px;">
                                 </button>
                             `;
