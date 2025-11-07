@@ -199,9 +199,11 @@ class pasantias extends datos
 
     private function ejecutar_insert_asistencia($conexion)
     {
+        // Inserta una asistencia inicial usando INSERT directo en lugar de procedure
         $fechaActual = date('Y-m-d');
-        // Usar procedure para insertar asistencia
-        $sql = "CALL insertar_asistencia_pasantia(:area, :cedula, :inicio)";
+
+        $sql = "INSERT INTO periodo_pasantias (cod_area, cedula_estudiante, fecha_inicio, fecha_fin, activo)
+                VALUES (:area, :cedula, :inicio, NULL, 1)";
         $stmt = $conexion->prepare($sql);
         $stmt->execute(array(
             ':area' => $this->cod_area,
@@ -270,16 +272,15 @@ class pasantias extends datos
         $conexion = $this->conecta();
 
         try {
+            // Reemplazo de llamadas a procedimientos por DELETE directos
             $conexion->beginTransaction();
 
-            // Usar procedure para eliminar asistencias del estudiante
-            $sql = "CALL eliminar_asistencias_pasantia(:cedula)";
-            $stmt = $conexion->prepare($sql);
-            $stmt->execute([':cedula' => $this->cedula_estudiante]);
+            // 1. Eliminar periodos/asistencias asociados
+            $stmt1 = $conexion->prepare("DELETE FROM periodo_pasantias WHERE cedula_estudiante = :cedula");
+            $stmt1->execute([':cedula' => $this->cedula_estudiante]);
 
-            // Usar procedure para eliminar estudiante
-            $sql2 = "CALL eliminar_estudiante_pasantia(:cedula)";
-            $stmt2 = $conexion->prepare($sql2);
+            // 2. Eliminar estudiante
+            $stmt2 = $conexion->prepare("DELETE FROM estudiantes_pasantia WHERE cedula_estudiante = :cedula");
             $stmt2->execute([':cedula' => $this->cedula_estudiante]);
 
             $conexion->commit();
@@ -342,8 +343,9 @@ class pasantias extends datos
         $conexion = $this->conecta();
 
         try {
-            // Usar procedure para insertar asistencia
-            $sql = "CALL insertar_asistencia_pasantia_completa(:area, :cedula, :inicio, :fin, :activo)";
+            // Reemplazo del procedure por INSERT directo
+            $sql = "INSERT INTO periodo_pasantias (cod_area, cedula_estudiante, fecha_inicio, fecha_fin, activo)
+                    VALUES (:area, :cedula, :inicio, :fin, :activo)";
             $stmt = $conexion->prepare($sql);
             $stmt->execute(array(
                 ':area' => $this->cod_area,
@@ -386,19 +388,26 @@ class pasantias extends datos
         $conexion = $this->conecta();
 
         try {
-            // Usar procedure para modificar asistencia
-            $sql = "CALL modificar_asistencia_pasantia(:area, :cedula, :inicio, :fin, :activo)";
+            // Reemplazo del procedure por UPDATE directo
+            $sql = "UPDATE periodo_pasantias
+                    SET fecha_fin = :fin, activo = :activo, cod_area = :area
+                    WHERE cedula_estudiante = :cedula AND fecha_inicio = :inicio";
             $stmt = $conexion->prepare($sql);
             $stmt->execute(array(
+                ':fin' => $this->fecha_fin,
+                ':activo' => $this->activo,
                 ':area' => $this->cod_area,
                 ':cedula' => $this->cedula_estudiante,
-                ':inicio' => $this->fecha_inicio,
-                ':fin' => $this->fecha_fin,
-                ':activo' => $this->activo
+                ':inicio' => $this->fecha_inicio
             ));
 
-            $r['resultado'] = 'modificar';
-            $r['mensaje'] = 'Asistencia actualizada exitosamente';
+            if ($stmt->rowCount() > 0) {
+                $r['resultado'] = 'modificar';
+                $r['mensaje'] = 'Asistencia actualizada exitosamente';
+            } else {
+                $r['resultado'] = 'error';
+                $r['mensaje'] = 'No se encontró la asistencia especificada para actualizar';
+            }
         } catch (Exception $e) {
             $r['resultado'] = 'error';
             $r['mensaje'] = $e->getMessage();
@@ -427,17 +436,28 @@ class pasantias extends datos
         $conexion = $this->conecta();
 
         try {
-            // Usar procedure para eliminar asistencia
-            $sql = "CALL eliminar_asistencia_pasantia(:cedula, :fecha_inicio)";
+            $conexion->beginTransaction();
+
+            $sql = "DELETE FROM periodo_pasantias 
+                    WHERE cedula_estudiante = :cedula AND fecha_inicio = :fecha_inicio";
             $stmt = $conexion->prepare($sql);
             $stmt->execute(array(
                 ':cedula' => $this->cedula_estudiante,
                 ':fecha_inicio' => $this->fecha_inicio
             ));
 
-            $r['resultado'] = 'eliminar';
-            $r['mensaje'] = 'Asistencia eliminada exitosamente';
+            $deleted = $stmt->rowCount();
+            $conexion->commit();
+
+            if ($deleted > 0) {
+                $r['resultado'] = 'eliminar';
+                $r['mensaje'] = 'Asistencia eliminada exitosamente';
+            } else {
+                $r['resultado'] = 'error';
+                $r['mensaje'] = 'No se encontró la asistencia especificada';
+            }
         } catch (Exception $e) {
+            $conexion->rollBack();
             $r['resultado'] = 'error';
             $r['mensaje'] = $e->getMessage();
         } finally {
@@ -769,12 +789,7 @@ private function incluir_area()
             }
         }
 
-        // cod_area si existe debe ser numérico
-        if (isset($datos['cod_area']) && $datos['cod_area'] !== null && !is_numeric($datos['cod_area'])) {
-            $r['codigo'] = 8;
-            $r['mensaje'] = 'Código de área inválido';
-            return $r;
-        }
+        
 
         // Validar área: nombre y descripción
         if (isset($datos['nombre_area']) && !preg_match('/^[A-Za-z0-9\s\-\.,]{3,100}$/u', $datos['nombre_area'])) {
