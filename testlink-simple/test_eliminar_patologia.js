@@ -5,7 +5,7 @@ const xmlrpc = require('xmlrpc');
 // === CONFIGURACIÓN TESTLINK ===
 const TESTLINK_URL = 'http://localhost/testlink-code-testlink_1_9_20_fixed/testlink-code-testlink_1_9_20_fixed/lib/api/xmlrpc/v1/xmlrpc.php';
 const DEV_KEY = '0ef0ac472356c5dacfdb9353b4a097d1';  // tu API Key
-const TEST_CASE_EXTERNAL_ID = 'SGM-2'; // cambia al ID real en tu TestLink
+const TEST_CASE_EXTERNAL_ID = 'SGM-9'; // cambia al ID real en tu TestLink
 const TEST_PLAN_ID = 3; // ✅ tu test plan ID real
 const BUILD_NAME = 'v.1';
 
@@ -56,79 +56,60 @@ async function runTest() {
         await driver.executeScript("arguments[0].click();", entrarButton);
 
 
-        // === Paso 4: Ir al modulo de emergencias ===
-        console.log('🖱️ Haciendo clic en el enlace "Emergencias"...');
-        await driver.findElement(By.css('a[href="/SISTEMA-DE-HISTORIAS-MEDICAS/emergencias"]')).click();
+        // === Paso 4: Ir al modulo de pacientes cronicos ===
+        console.log('🖱️ Haciendo clic en el enlace "pacientes cronicos"...');
+        await driver.findElement(By.css('a[href="/SISTEMA-DE-HISTORIAS-MEDICAS/p_cronicos"]')).click();
         await driver.sleep(1000);
 
 
         // === Paso 5: Verificar redirección al home ===
-        console.log('⏳ Esperando redirección a la página de Emergencias...');
-        await driver.wait(until.urlIs('http://localhost/SISTEMA-DE-HISTORIAS-MEDICAS/emergencias'), 1000);
+        console.log('⏳ Esperando redirección a la página de Pacientes cronicos...');
+        await driver.wait(until.urlIs('http://localhost/SISTEMA-DE-HISTORIAS-MEDICAS/p_cronicos'), 1000);
 
-        // === Paso 6: Abrir el modal de registro ===
-        console.log('🖱️ Haciendo clic en "Registrar Emergencias"...');
-        // Usamos normalize-space() para ignorar espacios y saltos de línea extra.
-        await driver.findElement(By.xpath("//div[contains(@class, 'botonverde') and normalize-space(text())='Registrar Emergencias']")).click();
-         await driver.sleep(1000);
+        // === Paso 6: Abrir el modal de patologias ===
+        console.log('🖱️ Haciendo clic en "Patologías"...');
 
-         // === Paso 7: Abrir el modal de listado de pacientes ===
-        console.log('🖱️ Haciendo clic en "Listado de Pacientes"...');
-        await driver.findElement(By.id('listadodepacientes')).click();
+        // 1. Espera para asegurar que el elemento existe y es localizable por su ID.
+        await driver.wait(until.elementLocated(By.id("btnPatologias")), 500);
+
+        // 2. Espera para asegurar que el elemento está visible y es clickeable (crucial para modales).
+        await driver.wait(until.elementIsVisible(driver.findElement(By.id("btnPatologias"))), 500);
+
+        // 3. Ejecutar el clic.
+        await driver.findElement(By.id("btnPatologias")).click();
+
+        await driver.sleep(500);
+
+      
+        // === Paso 6: Busca patología ===
+        console.log('👀 buscando patología...');
+
+        const cssSelector = '#tabla_Patologias_filter input[type="search"]';
+        await driver.wait(
+            until.elementLocated(By.css(cssSelector)), 
+            5000 
+        );
+        await driver.findElement(By.css(cssSelector)).sendKeys('cancer');
+
+        await driver.sleep(500);
+
+        // === PASO 7: Hacer clic en el botón de eliminar "Cancer" ===
+        console.log('🖱️ Localizando y forzando clic en el botón "Cancer" con JS...');
+
+
+        const codigoPatologiaAEliminar = 'Px00000001';
+
+        const xpathBotonEliminar = `//a[@cod_patologia='${codigoPatologiaAEliminar}' and contains(@class, 'btn-danger')]`;
+
+        await driver.findElement(By.xpath(xpathBotonEliminar)).click();
+
         await driver.sleep(1000);
 
-        // === Paso 8: seleccionar paciente ===
-        console.log('🖱️ Buscando y haciendo clic en la fila del paciente con cédula 10000001...');
-        const cedulaPaciente = '10000001';
-        const pacienteRowLocator = By.xpath(`//tbody[@id='listadopacientes']/tr[.//td[@class='sorting_1'][normalize-space(.)='${cedulaPaciente}']]`);
-       
-        await driver.wait(until.elementLocated(pacienteRowLocator), 15000);
-        const pacienteRow = await driver.findElement(pacienteRowLocator);
-        await driver.executeScript("arguments[0].click();", pacienteRow);
-        await driver.sleep(500);
 
-        // === Paso 8: Abrir el modal de listado de personal ===
-        console.log('🖱️ Haciendo clic en "Listado de Personal"...');
-        await driver.findElement(By.id('listadodepersonal')).click();
-        await driver.sleep(1000);
-
-        // === Paso 9: seleccionar personal ===
-        console.log('🖱️ Buscando y haciendo clic en la fila del personal con cédula 20000001...');
-        const cedulaPersonal = '20000001';
-        const personalRowLocator = By.xpath(`//tbody[@id='listadopersonal']/tr[.//td[@class='sorting_1'][normalize-space(.)='${cedulaPersonal}']]`);
-
-        await driver.wait(until.elementLocated(personalRowLocator), 15000);
-        const personalRow = await driver.findElement(personalRowLocator);
-        await driver.executeScript("arguments[0].click();", personalRow);
-        await driver.sleep(500);
-
-        // === Paso 10: Ingresar datos ===
-        console.log('✏️ Ingresando datos');
-
-        // 1. Hora de Ingreso (Formato HH:MM)
-        await driver.findElement(By.id('horaingreso')).sendKeys('1130a');
-
-        // 2. Fecha de Ingreso (Formato YYYY-MM-DD)
-        await driver.findElement(By.id('fechaingreso')).sendKeys('05112025');
-
-        // 3. Motivo de Ingreso
-        await driver.findElement(By.id('motingreso')).sendKeys('Fuerte dolor abdominal y fiebre alta');
-
-        // 4. Diagnóstico
-        await driver.findElement(By.id('diagnostico_e')).sendKeys('Sospecha de apendicitis aguda');
-
-        // 5. Procedimiento
-        await driver.findElement(By.id('procedimiento')).sendKeys('Examenes de sangre y ecografia abdominal');
-
-        // 6. Tratamientos
-        await driver.findElement(By.id('tratamientos')).sendKeys('Hidratacion intravenosa y analgesicos');
-
-        await driver.sleep(500);
-
-        // === Paso 11: precionar el boton de envio ===
+        // === Paso 9: precionar el boton de envio ===
         console.log('🖱️ Haciendo clic en el botón "proceso" para guardar/continuar...');
         // Usamos el ID único para localizar y hacer clic en el botón
-        await driver.findElement(By.id('proceso')).click();
+        await driver.findElement(By.id('proceso2')).click();
         await driver.sleep(1000);
 
         // === Paso 12: Validar el modal de éxito ===
@@ -137,7 +118,7 @@ async function runTest() {
 
         const textoExitoElement = await driver.findElement(By.id('contenidodemodal'));
         const textoObtenido = await textoExitoElement.getText();
-        const textoEsperado = 'Registro Incluido';
+        const textoEsperado = 'Registro Eliminado';
 
         if (textoObtenido.trim() === textoEsperado) {
             console.log(`✅ Validación exitosa: El modal muestra el texto esperado: "${textoEsperado}"`);

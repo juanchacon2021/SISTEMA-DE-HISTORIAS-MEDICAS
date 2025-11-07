@@ -5,7 +5,7 @@ const xmlrpc = require('xmlrpc');
 // === CONFIGURACIÓN TESTLINK ===
 const TESTLINK_URL = 'http://localhost/testlink-code-testlink_1_9_20_fixed/testlink-code-testlink_1_9_20_fixed/lib/api/xmlrpc/v1/xmlrpc.php';
 const DEV_KEY = '0ef0ac472356c5dacfdb9353b4a097d1';  // tu API Key
-const TEST_CASE_EXTERNAL_ID = 'SGM-2'; // cambia al ID real en tu TestLink
+const TEST_CASE_EXTERNAL_ID = 'SGM-10'; // cambia al ID real en tu TestLink
 const TEST_PLAN_ID = 3; // ✅ tu test plan ID real
 const BUILD_NAME = 'v.1';
 
@@ -56,21 +56,22 @@ async function runTest() {
         await driver.executeScript("arguments[0].click();", entrarButton);
 
 
-        // === Paso 4: Ir al modulo de emergencias ===
-        console.log('🖱️ Haciendo clic en el enlace "Emergencias"...');
-        await driver.findElement(By.css('a[href="/SISTEMA-DE-HISTORIAS-MEDICAS/emergencias"]')).click();
+        // === Paso 4: Ir al modulo de pacientes cronicos ===
+        console.log('🖱️ Haciendo clic en el enlace "pacientes cronicos"...');
+        await driver.findElement(By.css('a[href="/SISTEMA-DE-HISTORIAS-MEDICAS/p_cronicos"]')).click();
         await driver.sleep(1000);
 
 
         // === Paso 5: Verificar redirección al home ===
-        console.log('⏳ Esperando redirección a la página de Emergencias...');
-        await driver.wait(until.urlIs('http://localhost/SISTEMA-DE-HISTORIAS-MEDICAS/emergencias'), 1000);
+        console.log('⏳ Esperando redirección a la página de Pacientes cronicos...');
+        await driver.wait(until.urlIs('http://localhost/SISTEMA-DE-HISTORIAS-MEDICAS/p_cronicos'), 1000);
 
-        // === Paso 6: Abrir el modal de registro ===
-        console.log('🖱️ Haciendo clic en "Registrar Emergencias"...');
-        // Usamos normalize-space() para ignorar espacios y saltos de línea extra.
-        await driver.findElement(By.xpath("//div[contains(@class, 'botonverde') and normalize-space(text())='Registrar Emergencias']")).click();
-         await driver.sleep(1000);
+        // === Paso 6: Abrir el modal de registrar paciente cronico ===
+        console.log('🖱️ Haciendo clic en "Registrar Paciente Crónico"...');
+
+        await driver.findElement(By.id('btnRegistrarPaciente')).click();
+
+        await driver.sleep(500);
 
          // === Paso 7: Abrir el modal de listado de pacientes ===
         console.log('🖱️ Haciendo clic en "Listado de Pacientes"...');
@@ -87,45 +88,57 @@ async function runTest() {
         await driver.executeScript("arguments[0].click();", pacienteRow);
         await driver.sleep(500);
 
-        // === Paso 8: Abrir el modal de listado de personal ===
-        console.log('🖱️ Haciendo clic en "Listado de Personal"...');
-        await driver.findElement(By.id('listadodepersonal')).click();
-        await driver.sleep(1000);
+       // === Paso 9: Seleccionar la patología ===
+        console.log('🔽 Seleccionando la patología con valor "1" del menú desplegable...');
 
-        // === Paso 9: seleccionar personal ===
-        console.log('🖱️ Buscando y haciendo clic en la fila del personal con cédula 20000001...');
-        const cedulaPersonal = '20000001';
-        const personalRowLocator = By.xpath(`//tbody[@id='listadopersonal']/tr[.//td[@class='sorting_1'][normalize-space(.)='${cedulaPersonal}']]`);
+        // 1. Definir el ID del menú desplegable
+        const selectId = 'select_patologia';
 
-        await driver.wait(until.elementLocated(personalRowLocator), 15000);
-        const personalRow = await driver.findElement(personalRowLocator);
-        await driver.executeScript("arguments[0].click();", personalRow);
-        await driver.sleep(500);
+        // 2. Definir el valor de la opción que quieres seleccionar
+        const optionValue = '1';
 
-        // === Paso 10: Ingresar datos ===
-        console.log('✏️ Ingresando datos');
+        // 3. Selector CSS para apuntar directamente a la opción deseada
+        // Localiza el <option> que es descendiente del <select> con el ID 'select_patologia' 
+        // y tiene el atributo 'value' igual a '1'.
+        const cssSelectorOpcion = `#${selectId} option[value="${optionValue}"]`;
 
-        // 1. Hora de Ingreso (Formato HH:MM)
-        await driver.findElement(By.id('horaingreso')).sendKeys('1130a');
-
-        // 2. Fecha de Ingreso (Formato YYYY-MM-DD)
-        await driver.findElement(By.id('fechaingreso')).sendKeys('05112025');
-
-        // 3. Motivo de Ingreso
-        await driver.findElement(By.id('motingreso')).sendKeys('Fuerte dolor abdominal y fiebre alta');
-
-        // 4. Diagnóstico
-        await driver.findElement(By.id('diagnostico_e')).sendKeys('Sospecha de apendicitis aguda');
-
-        // 5. Procedimiento
-        await driver.findElement(By.id('procedimiento')).sendKeys('Examenes de sangre y ecografia abdominal');
-
-        // 6. Tratamientos
-        await driver.findElement(By.id('tratamientos')).sendKeys('Hidratacion intravenosa y analgesicos');
+        // 4. Hacer clic en la opción para seleccionarla
+        await driver.findElement(By.css(cssSelectorOpcion)).click();
 
         await driver.sleep(500);
 
-        // === Paso 11: precionar el boton de envio ===
+        // === Paso 10: Clic en el botón Agregar Patología ===
+        console.log('➕ Haciendo clic en el botón "Agregar" patología...');
+
+        // Localizar el botón por su ID único
+        await driver.findElement(By.id('agregar_patologia')).click();
+
+        await driver.sleep(500);
+
+
+        // === Paso 11: Ingresar datos en Tratamiento y Administración ===
+        console.log('📝 Ingresando texto en los campos de Tratamiento y Administración...');
+
+        // --- 1. Campo de Tratamiento (ya lo teníamos) ---
+        const campoTratamientoName = 'tratamiento_1';
+        const textoTratamiento = 'Dieta estricta, ejercicio diario y monitoreo semanal de glucosa.';
+        await driver.findElement(By.name(campoTratamientoName)).sendKeys(textoTratamiento);
+        console.log(`Datos ingresados en: ${campoTratamientoName}`);
+
+
+        // --- 2. Campo de Administración del Tratamiento (el nuevo) ---
+        const campoAdministracionName = 'administracion_t_1';
+        const textoAdministracion = 'Administrar dosis de insulina 10 unidades por la mañana y 8 por la noche.';
+        await driver.findElement(By.name(campoAdministracionName)).sendKeys(textoAdministracion);
+        console.log(`Datos ingresados en: ${campoAdministracionName}`);
+
+
+        await driver.sleep(500);
+
+
+
+
+        // === Paso 12: precionar el boton de envio ===
         console.log('🖱️ Haciendo clic en el botón "proceso" para guardar/continuar...');
         // Usamos el ID único para localizar y hacer clic en el botón
         await driver.findElement(By.id('proceso')).click();
