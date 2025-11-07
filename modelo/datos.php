@@ -2,10 +2,10 @@
 class datos
 {
     private $ip = "localhost";
-    private $bd = "prueba";
+    private $bd = "prueva";
     private $bd2 = "seguridad";
     private $usuario = "root";
-    private $contrasena = "";
+    private $contrasena = "123456";
 
 
 
