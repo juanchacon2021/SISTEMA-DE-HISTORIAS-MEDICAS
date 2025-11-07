@@ -13,6 +13,7 @@ class ComposerStaticInitea8ae71f45285d7b28f23286d4fa8152
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '662a729f963d39afe703c9d9b7ab4a8c' => __DIR__ . '/..' . '/symfony/polyfill-php83/bootstrap.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
+        '9b38cf48e83f5d8f60375221cd213eee' => __DIR__ . '/..' . '/phpstan/phpstan/bootstrap.php',
         'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
     );
 
@@ -1389,12 +1390,12 @@ class ComposerStaticInitea8ae71f45285d7b28f23286d4fa8152
         'Shm\\Shm\\modelo\\estadisticas' => __DIR__ . '/../..' . '/src/modelo/estadistica.php',
         'Shm\\Shm\\modelo\\examenes' => __DIR__ . '/../..' . '/src/modelo/examenes.php',
         'Shm\\Shm\\modelo\\historias' => __DIR__ . '/../..' . '/src/modelo/historias.php',
-        'Shm\\Shm\\modelo\\inventario' => __DIR__ . '/../..' . '/src/modelo/inventario.php',
+        'Shm\\Shm\\modelo\\inventario' => __DIR__ . '/../..' . '/src/modelo/inventario modelo.php',
         'Shm\\Shm\\modelo\\jornadas' => __DIR__ . '/../..' . '/src/modelo/jornadas.php',
         'Shm\\Shm\\modelo\\login' => __DIR__ . '/../..' . '/src/modelo/login.php',
         'Shm\\Shm\\modelo\\observaciones' => __DIR__ . '/../..' . '/src/modelo/consultasm.php',
         'Shm\\Shm\\modelo\\p_cronicos' => __DIR__ . '/../..' . '/src/modelo/p_cronicos.php',
-        'Shm\\Shm\\modelo\\pacientes' => __DIR__ . '/../..' . '/src/modelo/pacientes.php',
+        'Shm\\Shm\\modelo\\pacientes' => __DIR__ . '/../..' . '/src/modelo/pacientes modelo.php',
         'Shm\\Shm\\modelo\\pasantias' => __DIR__ . '/../..' . '/src/modelo/pasantias.php',
         'Shm\\Shm\\modelo\\patologias' => __DIR__ . '/../..' . '/src/modelo/p_cronicos.php',
         'Shm\\Shm\\modelo\\personal' => __DIR__ . '/../..' . '/src/modelo/personal.php',

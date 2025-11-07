@@ -8,13 +8,77 @@ use Exception;
 
 class reportes_p extends datos
 {
+    // Nueva función privada para validar tabla, columnas y filtros
+    private function validarTablaYColumnas($conexion, $tabla, $campos = array(), $filtros = array(), &$columnasDisponibles = array())
+    {
+        // Nombre de tabla seguro (solo alfanumérico y guion bajo)
+        if (!preg_match('/^[A-Za-z0-9_]+$/', $tabla)) {
+            return ['ok' => false, 'mensaje' => 'Nombre de tabla inválido'];
+        }
+
+        // Verificar existencia de la tabla
+        $stmt = $conexion->prepare("SHOW TABLES LIKE ?");
+        $stmt->execute([$tabla]);
+        if (!$stmt->fetch(PDO::FETCH_NUM)) {
+            return ['ok' => false, 'mensaje' => "Tabla '{$tabla}' no encontrada"];
+        }
+
+        // Obtener columnas reales de la tabla
+        $stmt = $conexion->prepare("DESCRIBE `$tabla`");
+        $stmt->execute();
+        $columnasDisponibles = [];
+        while ($fila = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $columnasDisponibles[] = $fila['Field'];
+        }
+
+        // Validar campos solicitados (si hay)
+        if (!empty($campos)) {
+            if (!is_array($campos)) {
+                return ['ok' => false, 'mensaje' => 'Campos inválidos'];
+            }
+            foreach ($campos as $c) {
+                if (!in_array($c, $columnasDisponibles)) {
+                    return ['ok' => false, 'mensaje' => "Campo solicitado '{$c}' no existe en la tabla"];
+                }
+            }
+        }
+
+        // Validar filtros
+        $operadoresPermitidos = ['LIKE', '=', '!=', '>', '<', '>=', '<='];
+        if (!empty($filtros)) {
+            if (!is_array($filtros)) {
+                return ['ok' => false, 'mensaje' => 'Filtros inválidos'];
+            }
+            foreach ($filtros as $f) {
+                if (!isset($f['campo']) || !isset($f['operador']) || !array_key_exists('valor', $f)) {
+                    return ['ok' => false, 'mensaje' => 'Estructura de filtro inválida'];
+                }
+                if (!in_array($f['campo'], $columnasDisponibles)) {
+                    return ['ok' => false, 'mensaje' => "Campo de filtro '{$f['campo']}' no existe"];
+                }
+                if (!in_array(strtoupper($f['operador']), $operadoresPermitidos)) {
+                    return ['ok' => false, 'mensaje' => "Operador '{$f['operador']}' no permitido"];
+                }
+            }
+        }
+
+        return ['ok' => true];
+    }
+
     public function obtenerEstructuraTabla($tabla)
     {
         $r = array();
         $conexion = $this->conecta();
 
         try {
-            $sql = "DESCRIBE $tabla";
+            // validar nombre de tabla básico
+            if (!preg_match('/^[A-Za-z0-9_]+$/', $tabla)) {
+                $r['resultado'] = 'error';
+                $r['mensaje'] = 'Nombre de tabla inválido';
+                return $r;
+            }
+
+            $sql = "DESCRIBE `$tabla`";
             $stmt = $conexion->prepare($sql);
             $stmt->execute();
 
@@ -47,20 +111,44 @@ class reportes_p extends datos
         $conexion = $this->conecta();
 
         try {
+            // Validar tabla, campos y filtros antes de construir la consulta
+            $columnasDisponibles = [];
+            $val = $this->validarTablaYColumnas($conexion, $tabla, $campos, $filtros, $columnasDisponibles);
+            if (!$val['ok']) {
+                $r['resultado'] = 'error';
+                $r['mensaje'] = $val['mensaje'];
+                return $r;
+            }
+
             // Construir SELECT
             if (empty($campos)) {
-                $sql = "SELECT * FROM $tabla";
+                $sql = "SELECT * FROM `$tabla`";
             } else {
-                $sql = "SELECT " . implode(', ', $campos) . " FROM $tabla";
+                // ya validados: se puede mapear con backticks
+                $camposSeguros = array_map(function ($c) {
+                    return "`$c`";
+                }, $campos);
+                $sql = "SELECT " . implode(', ', $camposSeguros) . " FROM `$tabla`";
             }
 
             // Construir WHERE
             $where = array();
             $params = array();
             foreach ($filtros as $filtro) {
-                if (!empty($filtro['valor'])) {
-                    $where[] = $filtro['campo'] . ' ' . $filtro['operador'] . ' ?';
-                    $params[] = $filtro['valor'];
+                // Sólo procesar filtros con valor no vacío
+                if ($filtro['valor'] !== '' && $filtro['valor'] !== null) {
+                    $operador = strtoupper($filtro['operador']);
+                    // Campo ya validado; proteger con backticks
+                    $campoSeguro = "`" . $filtro['campo'] . "`";
+
+                    // Para LIKE, se espera que el frontend ya haya añadido %
+                    if ($operador === 'LIKE') {
+                        $where[] = $campoSeguro . ' LIKE ?';
+                        $params[] = $filtro['valor'];
+                    } else {
+                        $where[] = $campoSeguro . ' ' . $operador . ' ?';
+                        $params[] = $filtro['valor'];
+                    }
                 }
             }
 
