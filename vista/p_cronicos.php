@@ -25,12 +25,12 @@ Pacientes cronicos
 <div class="container espacio">
 	<div class="container">
 		<div class="row mt-3 botones">
-		    <div style="color: white;" class="btn botonverde" style="cursor: pointer;" onclick='pone(this,3), limpiarm()' >
+		    <div style="color: white;" id="btnRegistrarPaciente" class="btn botonverde" style="cursor: pointer;" onclick='pone(this,3), limpiarm()' >
 				Registrar Paciente Crónico
 			</div>
 
 			<div class="col-md-2">
-				<button type="button" class="btn botonverde" data-bs-toggle="modal" data-bs-target="#modalopatologias">
+				<button type="button" id="btnPatologias" class="btn botonverde" data-bs-toggle="modal" data-bs-target="#modalopatologias">
 					Patologías
 				</button>
 			</div>
@@ -212,7 +212,7 @@ Pacientes cronicos
 				</div>
 
 				<div class="row mt-3 justify-content-center mb-4">
-					<div style="color: white;" class="btn botonverde" style="cursor: pointer;" onclick='pone(this,4)' >
+					<div style="color: white;" id="btnRePatologias" class="btn botonverde" style="cursor: pointer;" onclick='pone(this,4)' >
 						Registrar Patologia
 					</div>			
 				</div>

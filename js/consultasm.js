@@ -846,7 +846,7 @@ function enviaAjax(datos) {
 					<td>${fila.nom_observaciones}</td>
 						<td>
 						<div class="button-containerotro" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px">
-							<a type="button" class="btn btn-success" onclick="pone(this,6)"
+							<a type="button" id="modpub" class="btn btn-success" onclick="pone(this,6)"
 								nom_observaciones="${fila.nom_observaciones}"
 								cod_observacion="${fila.cod_observacion}">
 								<img src="img/lapiz.svg" style="width: 20px">

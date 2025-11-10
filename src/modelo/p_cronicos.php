@@ -57,7 +57,7 @@ class p_cronicos extends datos{
 
         // Validar estructura de cada patología
         foreach ($patologias as $i => $pat) {
-            if (!isset($pat['cod_patologia']) || !is_numeric($pat['cod_patologia']) || intval($pat['cod_patologia']) <= 0) {
+            if (!isset($pat['cod_patologia']) || !preg_match('/^[A-Za-z0-9]+$/', $pat['cod_patologia'])) {
                 $r['resultado'] = 'error';
                 $r['mensaje'] = "cod_patologia inválido en índice $i";
                 return $r;
@@ -84,7 +84,7 @@ class p_cronicos extends datos{
                 foreach ($patologias as $pat) {
                     $stmt->execute([
                         $datos['cedula_paciente'],
-                        intval($pat['cod_patologia']),
+                        (string)$pat['cod_patologia'],
                         isset($pat['tratamiento']) ? $pat['tratamiento'] : null,
                         isset($pat['administracion_t']) ? $pat['administracion_t'] : null
                     ]);
@@ -151,7 +151,7 @@ class p_cronicos extends datos{
             if (!empty($patologias) && is_array($patologias)) {
                 $stmtInsert = $co->prepare("INSERT INTO padece (cedula_paciente, cod_patologia, tratamiento, administracion_t) VALUES (?, ?, ?, ?)");
                 foreach ($patologias as $i => $pat) {
-                    if (!isset($pat['cod_patologia']) || !is_numeric($pat['cod_patologia']) || intval($pat['cod_patologia']) <= 0) {
+                    if (!isset($pat['cod_patologia']) || !preg_match('/^[A-Za-z0-9]+$/', $pat['cod_patologia'])) {
                         $co->rollBack();
                         $r['resultado'] = 'error';
                         $r['mensaje'] = "cod_patologia inválido en índice $i";
@@ -159,7 +159,7 @@ class p_cronicos extends datos{
                     }
                     $stmtInsert->execute([
                         $datos['cedula_paciente'],
-                        intval($pat['cod_patologia']),
+                        (string)$pat['cod_patologia'],
                         $pat['tratamiento'] ?? null,
                         $pat['administracion_t'] ?? null
                     ]);
@@ -397,11 +397,13 @@ class patologias extends datos{
     function modificar2($datos) {
         $r = array();
 
-        if (!isset($datos['cod_patologia']) || !is_numeric($datos['cod_patologia']) || intval($datos['cod_patologia']) <= 0) {
+        // Validar código de patología (ahora alfanumérico)
+        if (!isset($datos['cod_patologia']) || !preg_match('/^[A-Za-z0-9]+$/', $datos['cod_patologia'])) {
             $r['resultado'] = 'error';
             $r['mensaje'] = 'Código de patología inválido';
             return $r;
         }
+
         if (!isset($datos['nombre_patologia']) || !preg_match('/^[A-Za-z0-9\sñÑáéíóúÁÉÍÓÚ]{3,100}$/u', $datos['nombre_patologia'])) {
             $r['resultado'] = 'error';
             $r['mensaje'] = 'Nombre de patología inválido';
@@ -416,7 +418,7 @@ class patologias extends datos{
                 $stmt = $co->prepare("UPDATE patologia SET nombre_patologia = :nombre WHERE cod_patologia = :cod");
                 $stmt->execute([
                     ':nombre' => $datos['nombre_patologia'],
-                    ':cod' => intval($datos['cod_patologia'])
+                    ':cod' => (string)$datos['cod_patologia']
                 ]);
                 $r['resultado'] = 'actualizar';
                 $r['mensaje'] = 'Registro Modificado';
@@ -436,44 +438,48 @@ class patologias extends datos{
     function eliminar2($datos) {
         $r = array();
 
-        if (!isset($datos['cod_patologia']) || !is_numeric($datos['cod_patologia']) || intval($datos['cod_patologia']) <= 0) {
-            $r['resultado'] = 'error';
-            $r['mensaje'] = 'Código de patología inválido';
-            return $r;
-        }
+        // Validar código de patología
+        if (!isset($datos['cod_patologia']) || !preg_match('/^[A-Za-z0-9]+$/', $datos['cod_patologia'])) {
+             $r['resultado'] = 'descartar';
+             $r['mensaje'] = 'Código de patología inválido';
+             return $r;
+         }
 
-        $co = $this->conecta();
-        $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+         $co = $this->conecta();
+         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        if($this->existe2($datos['cod_patologia'])){
-            try {
-                $stmt = $co->prepare("DELETE FROM patologia WHERE cod_patologia = :cod_patologia");
-                $stmt->execute([':cod_patologia' => intval($datos['cod_patologia'])]);
-                $r['resultado'] = 'descartar';
-                $r['mensaje'] =  'Registro Eliminado';
-            } catch(Exception $e) {
-                $r['resultado'] = 'error';
-                $r['mensaje'] =  $e->getMessage();
-            } finally {
-                $co = null;
-            }
-        }
-        else{
-            $r['resultado'] = 'descartar';
-            $r['mensaje'] =  'No existe el registro';
-        }
-        return $r;
+         if($this->existe2($datos['cod_patologia'])){
+             try {
+                 $stmt = $co->prepare("DELETE FROM patologia WHERE cod_patologia = :cod_patologia");
+                 $stmt->execute([':cod_patologia' => (string)$datos['cod_patologia']]);
+                 $r['resultado'] = 'descartar';
+                 $r['mensaje'] =  'Registro Eliminado';
+             } catch(Exception $e) {
+                 $r['resultado'] = 'error';
+                 $r['mensaje'] =  $e->getMessage();
+             } finally {
+                 $co = null;
+             }
+         }
+         else{
+             $r['resultado'] = 'descartar';
+             $r['mensaje'] =  'No existe el registro';
+         }
+         return $r;
     }
 
     private function existe2($cod_patologia) {
-        if (!isset($cod_patologia) || !is_numeric($cod_patologia)) return false;
+        // Validar entrada antes de consultar
+        if (!isset($cod_patologia) || !preg_match('/^[A-Za-z0-9]+$/', $cod_patologia)) {
+             return false;
+         }
 
         $co = $this->conecta();
         $co->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         try {
             $stmt = $co->prepare("SELECT 1 FROM patologia c WHERE c.cod_patologia = :cod LIMIT 1");
-            $stmt->execute([':cod' => intval($cod_patologia)]);
+            $stmt->execute([':cod' => (string)$cod_patologia]);
             $fila = $stmt->fetch();
             return !empty($fila);
         } catch(Exception $e) {

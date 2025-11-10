@@ -156,10 +156,7 @@ class planificacion extends datos {
         $publicacion = $stmt->fetch(PDO::FETCH_ASSOC);
         return ($publicacion && $publicacion['cedula_personal'] == $cedula_personal);
     }
-<<<<<<< HEAD
-=======
 
 
->>>>>>> 310412fe38a8e24676871b2f20d040da4efce68c
 }
 ?>

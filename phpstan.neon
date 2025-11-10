@@ -1,0 +1,10 @@
+parameters:
+  level: 4
+  paths:
+    - src
+    - controlador
+    - modelo
+    - tests
+  excludePaths:
+    - vendor/*
+  

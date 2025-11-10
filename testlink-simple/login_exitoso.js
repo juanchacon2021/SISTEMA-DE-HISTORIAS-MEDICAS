@@ -4,8 +4,8 @@ const xmlrpc = require("xmlrpc");
 
 // === CONFIGURACIÓN TESTLINK ===
 const TESTLINK_URL =
-  "http://localhost/testlink/lib/api/xmlrpc/v1/xmlrpc.php";
-const DEV_KEY = "87c0ed89622a1f6767e3e5d414578e97"; // tu API Key
+  "http://localhost/testlink-code-testlink_1_9_20_fixed/lib/api/xmlrpc/v1/xmlrpc.php";
+const DEV_KEY = "0808f3b59861f5c2a52a7d5ca1fab8fa"; // tu API Key
 const TEST_CASE_EXTERNAL_ID = "SGM-1"; // cambia al ID real en tu TestLink
 const TEST_PLAN_ID = 3; // ✅ tu test plan ID real
 const BUILD_NAME = "v.1";

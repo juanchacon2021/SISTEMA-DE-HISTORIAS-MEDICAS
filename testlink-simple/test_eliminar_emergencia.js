@@ -18,7 +18,7 @@ async function runTest() {
     try {
         // === Paso 1: Entrar al login ===
         console.log('🧭 Navegando al formulario de login...');
-        await driver.get('http://localhost/SHM-UPTAEB/SISTEMA-DE-HISTORIAS-MEDICAS/?pagina=login');
+        await driver.get('http://localhost/SISTEMA-DE-HISTORIAS-MEDICAS/?pagina=login');
 
         // Esperar un poco para verificar que la página carga
         await driver.sleep(2000);
@@ -58,13 +58,13 @@ async function runTest() {
 
         // === Paso 4: Ir al modulo de emergencias ===
         console.log('🖱️ Haciendo clic en el enlace "Emergencias"...');
-        await driver.findElement(By.css('a[href="?pagina=emergencias"]')).click();
+        await driver.findElement(By.css('a[href="/SISTEMA-DE-HISTORIAS-MEDICAS/emergencias"]')).click();
         await driver.sleep(1000);
 
 
         // === Paso 5: Verificar redirección al home ===
         console.log('⏳ Esperando redirección a la página de Emergencias...');
-        await driver.wait(until.urlIs('http://localhost/SHM-UPTAEB/SISTEMA-DE-HISTORIAS-MEDICAS/?pagina=emergencias'), 1000);
+        await driver.wait(until.urlIs('http://localhost/SISTEMA-DE-HISTORIAS-MEDICAS/emergencias'), 1000);
 
         // === Paso 6: Busca paciente ===
         const xpathAlternativo = "//label[normalize-space(.)='Buscar:']/input";
