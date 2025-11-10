@@ -203,8 +203,13 @@ require_once("comunes/notificaciones.php");
                             <!-- Opciones cargadas por JS -->
                         </select>
                     </div>
-                    <div id="lotesDisponiblesSalida"></div>
-                    <button type="button" class="btn btn-secondary mb-2" id="btnAgregarLoteSalida">Agregar Lote a Salida</button>
+
+                    <!-- Agrego id esperado por el JS para que el handler funcione -->
+                    <button type="button" id="btnAgregarLoteSalida" class="btn btn-secondary mb-2">Agregar Lote</button>
+
+                    <div id="lotesDisponiblesSalida">
+                        <!-- Lotes generados por AJAX -->
+                    </div>
                     <div id="salidasMultiples"></div>
                     <div class="modal-footer">
                         <button type="button" class="btn boton" data-bs-dismiss="modal">Cancelar</button>

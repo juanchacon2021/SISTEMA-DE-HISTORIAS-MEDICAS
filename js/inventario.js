@@ -338,74 +338,201 @@ $(document).ready(function() {
         $("#modalSalida").modal("hide");
     });
     
-    $("#btnAgregarLoteSalida").on("click", function() {
+    // Normaliza la renderización de lotes y el handler de agregar lote
+    function renderLotesDisponibles(containerSelector, lotes, unidad_medida = '') {
+        if (!Array.isArray(lotes) || lotes.length === 0) {
+            $(containerSelector).html('<div class="alert alert-warning">No hay lotes disponibles para este medicamento</div>');
+            return;
+        }
+
+        let html = `<div class="mb-3"><label class="form-label">Lotes Disponibles</label><div class="list-group">`;
+        lotes.forEach(function(lote, i) {
+            const checkboxId = `chk_lote_${lote.cod_lote.replace(/[^a-zA-Z0-9]/g,'')}_${i}`;
+            html += `
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <input type="checkbox" id="${checkboxId}" class="form-check-input chkLoteSalida me-2" value="${lote.cod_lote}" data-max="${lote.cantidad}">
+                        <label for="${checkboxId}" class="mb-0">
+                            <strong>Lote ${lote.cod_lote}</strong> - Vence: ${new Date(lote.fecha_vencimiento).toLocaleDateString()}<br>
+                            <small class="text-muted">Proveedor: ${lote.proveedor || 'N/A'}</small>
+                        </label>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span class="badge bg-primary me-2">${lote.cantidad} ${unidad_medida}</span>
+                        <input type="number" class="form-control inputCantidadLoteSalida" style="width:120px" min="1" max="${lote.cantidad}" data-cod="${lote.cod_lote}" placeholder="Cantidad">
+                    </div>
+                </div>`;
+        });
+        html += `</div></div>`;
+        $(containerSelector).html(html);
+    }
+
+    // Reemplazar llamadas que rellenaban #infoLotes o #lotesDisponiblesSalida para usar renderLotesDisponibles.
+    // Ejemplo dentro de la respuesta AJAX que trae lotes (sustituir la plantilla antigua por la función):
+    // renderLotesDisponibles("#lotesDisponiblesSalida", res.datos, res.unidad_medida || '');
+
+    // Mejorar handler del botón Agregar Lote
+    $(document).off('click', '#btnAgregarLoteSalida').on('click', '#btnAgregarLoteSalida', function() {
         let $btn = $(this);
         setBotonProcesando($btn, "Procesando...", "Agregar Lote", true);
+
         setTimeout(() => {
-            // Obtener stock actual y stock mínimo del medicamento seleccionado
             const cod_medicamento = $("#selectMedicamentoSalida").val();
+            if (!cod_medicamento) {
+                muestraMensaje("Seleccione un medicamento antes de agregar lotes", "error");
+                setBotonProcesando($btn, "Procesando...", "Agregar Lote", false);
+                return;
+            }
+
+            // Buscar checkboxes dentro del contenedor del modal para evitar colisiones con otros componentes
+            const $checked = $("#lotesDisponiblesSalida").find('.chkLoteSalida').filter(function() {
+                return $(this).prop('checked') === true;
+            });
+
+            if ($checked.length === 0) {
+                muestraMensaje("Seleccione al menos un lote para agregar", "error");
+                setBotonProcesando($btn, "Procesando...", "Agregar Lote", false);
+                return;
+            }
+
+            // obtener stock min desde el option seleccionado si existe
+            const stockMin = parseInt($("#selectMedicamentoSalida option:selected").data("stock-min") || 0, 10);
+            // calcular stockActual sumando data-max de todos lotes mostrados
             let stockActual = 0;
-            let stockMin = 0;
-            // Busca el stock actual y mínimo en los atributos del select o consulta AJAX si lo necesitas
-            // Aquí asumimos que ya tienes los datos cargados en el select o puedes guardarlos en variables globales
-
-            // Puedes guardar los datos en variables globales al cargar los lotes
-            stockActual = parseInt($("#selectMedicamentoSalida option:selected").data("stock-actual") || 0, 10);
-            stockMin = parseInt($("#selectMedicamentoSalida option:selected").data("stock-min") || 0, 10);
-
-            // Si no tienes los datos en el select, puedes calcular el stock sumando los lotes disponibles
-            // Aquí un ejemplo usando los lotes mostrados en la tabla:
-            let totalStockDisponible = 0;
-            $(".chkLoteSalida").each(function() {
-                totalStockDisponible += parseInt($(this).data("max") || 0, 10);
-            });
-            stockActual = totalStockDisponible;
-
-            // Sumar las cantidades ya agregadas a la salida
-            let totalARetirar = 0;
-            salidasTemporales.forEach(s => {
-                totalARetirar += parseInt(s.cantidad, 10);
+            $("#lotesDisponiblesSalida .chkLoteSalida").each(function() {
+                stockActual += parseInt($(this).data("max") || 0, 10);
             });
 
-            // Recorre los checkboxes de lotes seleccionados
-            $(".chkLoteSalida:checked").each(function() {
-                let cod_lote = $(this).val();
-                let cantidad = $(`.inputCantidadLoteSalida[data-cod='${cod_lote}']`).val();
-                let max = parseInt($(this).data("max"));
-                cantidad = parseInt(cantidad);
+            // total ya reservado por salidas temporales
+            let totalARetirar = salidasTemporales.reduce((acc, s) => acc + parseInt(s.cantidad || 0, 10), 0);
 
-                if (!cantidad || cantidad <= 0 || cantidad > max) {
-                    muestraMensaje("Cantidad inválida para el lote " + cod_lote);
-                    setBotonProcesando($btn, "Procesando...", "Agregar Lote", false);
+            let nuevos = [];
+            let abort = false;
+
+            $checked.each(function() {
+                const cod_lote = $(this).val();
+                const max = parseInt($(this).data("max") || 0, 10);
+                const cantidadStr = $(`.inputCantidadLoteSalida[data-cod='${cod_lote}']`).val() || "0";
+                const cantidad = parseInt(cantidadStr, 10);
+
+                if (!cantidad || cantidad <= 0) {
+                    muestraMensaje("Ingrese una cantidad válida para el lote " + cod_lote, "error");
+                    abort = true;
+                    return false; // break
+                }
+                if (cantidad > max) {
+                    muestraMensaje(`Cantidad inválida para lote ${cod_lote}. Máximo disponible: ${max}`, "error");
+                    abort = true;
+                    return false;
+                }
+                if (salidasTemporales.some(s => s.cod_lote == cod_lote) || nuevos.some(n => n.cod_lote == cod_lote)) {
+                    muestraMensaje("Ya agregaste el lote " + cod_lote + " a la salida", "error");
+                    abort = true;
+                    return false;
+                }
+                if ((stockActual - (totalARetirar + cantidad)) < stockMin) {
+                    muestraMensaje(`No puedes retirar esa cantidad. Quedaría por debajo del stock mínimo (${stockMin})`, "error");
+                    abort = true;
                     return false;
                 }
 
-                // Evita duplicados
-                if (salidasTemporales.some(s => s.cod_lote == cod_lote)) {
-                    muestraMensaje("Ya agregaste este lote a la salida");
-                    setBotonProcesando($btn, "Procesando...", "Agregar Lote", false);
-                    return false;
-                }
-
-                // Validar stock mínimo global
-                let totalARetirarNuevo = totalARetirar + cantidad;
-                if ((stockActual - totalARetirarNuevo) < stockMin) {
-                    muestraMensaje(`No puedes retirar esa cantidad. El stock mínimo permitido es ${stockMin} y el stock quedaría en ${stockActual - totalARetirarNuevo}.`);
-                    setBotonProcesando($btn, "Procesando...", "Agregar Lote", false);
-                    return false;
-                }
-
-                salidasTemporales.push({
-                    cod_lote: cod_lote,
-                    cantidad: cantidad
-                });
+                nuevos.push({ cod_lote, cantidad });
                 totalARetirar += cantidad;
             });
 
-            // Actualiza la lista visual de lotes agregados a la salida
+            if (abort) {
+                setBotonProcesando($btn, "Procesando...", "Agregar Lote", false);
+                return;
+            }
+
+            // Agregar y refrescar lista
+            nuevos.forEach(n => salidasTemporales.push(n));
             actualizarListaSalidasTemporales();
+
             setBotonProcesando($btn, "Procesando...", "Agregar Lote", false);
-        }, 500); // Simula un pequeño retardo visual
+        }, 150);
+    });
+    
+    $(document).on('click', '#btnAgregarLoteSalida', function() {
+        let $btn = $(this);
+        setBotonProcesando($btn, "Procesando...", "Agregar Lote", true);
+
+        setTimeout(() => {
+            const cod_medicamento = $("#selectMedicamentoSalida").val();
+            if (!cod_medicamento) {
+                muestraMensaje("Seleccione un medicamento antes de agregar lotes", "error");
+                setBotonProcesando($btn, "Procesando...", "Agregar Lote", false);
+                return;
+            }
+
+            // Obtener stock actual (si está en el option del select) o calcular desde lotes mostrados
+            let stockActual = 0;
+            const stockMin = parseInt($("#selectMedicamentoSalida option:selected").data("stock-min") || 0, 10);
+
+            // calcular stockActual sumando data-max de checkboxes (fallback)
+            $(".chkLoteSalida").each(function() {
+                stockActual += parseInt($(this).data("max") || 0, 10);
+            });
+
+            // total ya reservado para salida
+            let totalARetirar = salidasTemporales.reduce((acc, s) => acc + parseInt(s.cantidad || 0, 10), 0);
+
+            // Recorre los checkboxes seleccionados
+            let anyChecked = false;
+            let nuevos = [];
+            let abort = false;
+            $(".chkLoteSalida:checked").each(function() {
+                anyChecked = true;
+                const cod_lote = $(this).val();
+                const max = parseInt($(this).data("max") || 0, 10);
+                const cantidadStr = $(`.inputCantidadLoteSalida[data-cod='${cod_lote}']`).val() || "0";
+                const cantidad = parseInt(cantidadStr, 10);
+
+                if (!cantidad || cantidad <= 0) {
+                    muestraMensaje("Ingrese una cantidad válida para el lote " + cod_lote, "error");
+                    abort = true;
+                    return false; // break each
+                }
+                if (cantidad > max) {
+                    muestraMensaje(`Cantidad inválida para lote ${cod_lote}. Máximo disponible: ${max}`, "error");
+                    abort = true;
+                    return false;
+                }
+                // Evita duplicados
+                if (salidasTemporales.some(s => s.cod_lote == cod_lote) || nuevos.some(n => n.cod_lote == cod_lote)) {
+                    muestraMensaje("Ya agregaste el lote " + cod_lote + " a la salida", "error");
+                    abort = true;
+                    return false;
+                }
+
+                // Validar stock mínimo global (si aplica)
+                if ((stockActual - (totalARetirar + cantidad)) < stockMin) {
+                    muestraMensaje(`No puedes retirar esa cantidad. Quedaría por debajo del stock mínimo (${stockMin})`, "error");
+                    abort = true;
+                    return false;
+                }
+
+                nuevos.push({ cod_lote, cantidad });
+                totalARetirar += cantidad;
+            });
+
+            if (abort) {
+                setBotonProcesando($btn, "Procesando...", "Agregar Lote", false);
+                return;
+            }
+
+            if (!anyChecked) {
+                muestraMensaje("Seleccione al menos un lote para agregar", "error");
+                setBotonProcesando($btn, "Procesando...", "Agregar Lote", false);
+                return;
+            }
+
+            // Agregar nuevos lotes a salidasTemporales
+            nuevos.forEach(n => salidasTemporales.push(n));
+            actualizarListaSalidasTemporales();
+
+            setBotonProcesando($btn, "Procesando...", "Agregar Lote", false);
+        }, 200);
     });
 
     // Evento para mostrar lotes al seleccionar un medicamento en salida global
@@ -423,21 +550,7 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(res) {
                 if (res.resultado === 'consultar_lotes' && res.datos.length > 0) {
-                    let html = '<div class="mb-3"><label class="form-label">Lotes Disponibles</label><div class="list-group">';
-                    res.datos.forEach(function(lote) {
-                        html += `<div class="d-flex justify-between">
-                            <div>
-                                <input type="checkbox" class="form-check-input chkLoteSalida" value="${lote.cod_lote}" data-max="${lote.cantidad}">
-                                <span>Lote ${lote.cod_lote} - Vence: ${new Date(lote.fecha_vencimiento).toLocaleDateString()}
-                            </div>
-                            <div>
-                                <b>${lote.cantidad}</b> unidades disponibles</span>
-                                <input type="number" class="form-control inputCantidadLoteSalida d-inline-block ms-2" style="width:200px" min="1" max="${lote.cantidad}" data-cod="${lote.cod_lote}" placeholder="Cantidad">
-                            </div>
-                        </div>`;
-                    });
-                    html += '</div></div>';
-                    $("#lotesDisponiblesSalida").html(html);
+                    renderLotesDisponibles("#lotesDisponiblesSalida", res.datos, res.unidad_medida || '');
                 } else {
                     $("#lotesDisponiblesSalida").html('<div class="alert alert-warning">No hay lotes disponibles para este medicamento</div>');
                 }
@@ -686,18 +799,7 @@ function procesarRespuesta(respuesta) {
 
                 // Mostrar lotes disponibles
                 if(lee.lotes && lee.lotes.length > 0) {
-                    var html = '<div class="mb-3"><label class="form-label">Lotes Disponibles</label><div class="list-group">';
-                    lee.lotes.forEach(function(lote) {
-                        html += `<div class="list-group-item">
-                            <div class="d-flex justify-content-between">
-                                <span>Lote ${lote.cod_lote} - Vence: ${new Date(lote.fecha_vencimiento).toLocaleDateString()}</span>
-                                <span class="badge bg-primary">${lote.cantidad} ${lee.datos.unidad_medida}</span>
-                            </div>
-                            <small class="text-muted">Proveedor: ${lote.proveedor}</small>
-                        </div>`;
-                    });
-                    html += '</div></div>';
-                    $("#infoLotes").html(html);
+                    renderLotesDisponibles("#infoLotes", lee.lotes, lee.datos.unidad_medida || '');
                 } else {
                     $("#infoLotes").html('<div class="alert alert-warning">No hay lotes disponibles</div>');
                 }
